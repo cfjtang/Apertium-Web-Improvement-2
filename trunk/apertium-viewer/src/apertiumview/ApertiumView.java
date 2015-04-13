@@ -1,7 +1,6 @@
 /*
  * ApertiumView.java
  */
-
 package apertiumview;
 
 import java.awt.Color;
@@ -60,489 +59,478 @@ import org.apertium.pipeline.Mode;
 import org.apertium.pipeline.Program;
 import org.apertium.utils.IOUtils;
 
-/*
- * See  http://wiki.apertium.org/wiki/Apertium-vju
- */
-
 /**
  * The application's main frame.
+ * See  http://wiki.apertium.org/wiki/Apertium-viewer
  */
 public class ApertiumView extends FrameView {
 
-    ArrayList<TextWidget> textWidgets = new ArrayList<TextWidget>();
-    ArrayList<JSplitPane> splitPanes = new ArrayList<JSplitPane>();
+	ArrayList<TextWidget> textWidgets = new ArrayList<TextWidget>();
+	ArrayList<JSplitPane> splitPanes = new ArrayList<JSplitPane>();
 
-    private boolean popupMenuVisible;
+	private boolean popupMenuVisible;
 
-    JSplitPane lastSplitPane;
+	JSplitPane lastSplitPane;
 
-    boolean startingUp = true;
+	boolean startingUp = true;
 
-    public ApertiumView(SingleFrameApplication app) {
-        super(app);
-        initComponents();
-        modesComboBox.setRenderer(new DefaultListCellRenderer() {
-          public Component getListCellRendererComponent(JList list, Object value, int index,
-              boolean isSelected, boolean cellHasFocus) {
-            JLabel renderer = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+	public ApertiumView(SingleFrameApplication app) {
+		super(app);
+		initComponents();
+		modesComboBox.setRenderer(new DefaultListCellRenderer() {
+			public Component getListCellRendererComponent(JList list, Object value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				JLabel renderer = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-						if (value instanceof Mode) {
-              Mode m = (Mode) value;
-              if (!popupMenuVisible) {
-                renderer.setText(m.toString());
-              } else {
-                File f = new File(m.getFilename());
-                renderer.setText("<html>"+m.toString()+"<small><br/>"+f.getParent()+File.separator+"<br/>"+f.getName());
-		            setHScrollFor(list);
-								renderer.setBorder(new EmptyBorder(5, 0, 5, 0) );
-              }
-              renderer.setToolTipText(m.getFilename());
-            } else if (value instanceof String && !local) {
-              if (popupMenuVisible && !value.equals("SELECT A MODE")) {
-								URLClassLoader cl = onlineModeToLoader.get(value);
-								String url = cl==null?"":Arrays.toString(cl.getURLs());
-                renderer.setText("<html>"+value+"<small><br/>"+url+"<br/>"+ onlineModeToCode.get(value)+ ".mode");
-		            setHScrollFor(list);
-							}
-              String mode = (String) value;
-              renderer.setToolTipText(mode != null && mode.equals("SELECT A MODE") ? "[Select a mode]" : onlineModeToCode.get(mode) + ".mode");
-            }
-
-            return renderer;
-          }
-
-
-          // Source: https://community.oracle.com/thread/1775495?tstart=0
-          private void setHScrollFor(JList list) {
-            JScrollPane scrollPane =
-                    (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, list);
-            if (scrollPane.getHorizontalScrollBar() == null
-                    || scrollPane.getHorizontalScrollBarPolicy()
-                    != JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED) {
-              scrollPane.setHorizontalScrollBar(new JScrollBar(JScrollBar.HORIZONTAL));
-              scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-            }
-          }
-        });
-			modesComboBox.addPopupMenuListener(new PopupMenuListener() {
-				@Override
-				public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-					popupMenuVisible = true;
+				if (value instanceof Mode) {
+					Mode m = (Mode) value;
+					if (!popupMenuVisible) {
+						renderer.setText(m.toString());
+					} else {
+						File f = new File(m.getFilename());
+						renderer.setText("<html>" + m.toString() + "<small><br/>" + f.getParent() + File.separator + "<br/>" + f.getName());
+						setHScrollFor(list);
+						renderer.setBorder(new EmptyBorder(5, 0, 5, 0));
+					}
+					renderer.setToolTipText(m.getFilename());
+				} else if (value instanceof String && !local) {
+					if (popupMenuVisible && !value.equals("SELECT A MODE")) {
+						URLClassLoader cl = onlineModeToLoader.get(value);
+						String url = cl == null ? "" : Arrays.toString(cl.getURLs());
+						renderer.setText("<html>" + value + "<small><br/>" + url + "<br/>" + onlineModeToCode.get(value) + ".mode");
+						setHScrollFor(list);
+					}
+					String mode = (String) value;
+					renderer.setToolTipText(mode != null && mode.equals("SELECT A MODE") ? "[Select a mode]" : onlineModeToCode.get(mode) + ".mode");
 				}
-				@Override
-				public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-					popupMenuVisible = false;
-				}
-				@Override
-				public void popupMenuCanceled(PopupMenuEvent e) {
-					popupMenuVisible = false;
-				}
-			});
 
-        try {
-            String mpref = prefs.get("modeFiles", null);
-            if (mpref != null) {
-                for (String fn : mpref.split("\n")) {
-                    loadMode(fn);
-                }
-                sortModesComboBox();
-            } else {
-                LinkedHashSet<File> fal = new LinkedHashSet<File>();								
-                try {
-                    fal.addAll(Arrays.asList(new File("/usr/share/apertium/modes/").listFiles()));
-                } catch (Exception e) { }
-                try {
-                    fal.addAll(Arrays.asList(new File("/usr/local/share/apertium/modes/").listFiles()));
-                } catch (Exception e) { }
-                try {
-                    fal.addAll(Arrays.asList(new File(".").listFiles()));
-                } catch (Exception e) { }
-								
-                if (!fal.isEmpty()) {
-                    for (File f : fal) {
-                        if (f.getName().endsWith(".mode")) {
-                            loadMode(f.getPath());
-                        }
-                    }
-                    sortModesComboBox();
-										warnUser("Welcome to Apertium-viewer.\nIt seems this is the first time you run this program."
-														+"\nI have searched in standard places for 'modes' (language translation pairs)"
-														+"\nI will let you revise the list now (you can always re-edit the list by choosing File | Edit modes)");
-                    editModesMenuItemActionPerformed(null);
-										warnUser("If some modes (language pairs) were missing you can choose File | Load mode"
-														+"\nand select a mode (for example, Esperanto-English pair is called eo-en.mode)"
-													  +"\nto add it to the list (you'll have to download and compile the pair first)."
-													  +"\nYou can also download some pre-compiled pairs - choose 'Online' in upper right corner."
-										);
-                } else {
-										warnUser("Welcome to Apertium-viewer.\nIt seems this is the first time you run this program."
-														+"\nI have searched in standard places for language translation pairs ('modes'), but I didn't find any."
-														+"\nI will now get download a list of 'online' modes, which are downloaded on the fly."
-														+"\nIf you DO have Apertium language pairs installed, please use File | Load mode to load them,"
-														+"\nand switch to 'Local' in the top right");
-										prefs.getBoolean("local", false);
-								}
-            }
+				return renderer;
+			}
 
-		        if (prefs.getBoolean("local", true)) {
-								local = false; // to trigger the button
-								rdbtnLocalActionPerformed(null);
-						} else {
-								rdbtnOnline.setSelected(true);
-								rdbtnOnlineActionPerformed(null);
+			// Source: https://community.oracle.com/thread/1775495?tstart=0
+			private void setHScrollFor(JList list) {
+				JScrollPane scrollPane
+						= (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, list);
+				if (scrollPane.getHorizontalScrollBar() == null
+						|| scrollPane.getHorizontalScrollBarPolicy()
+						!= JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED) {
+					scrollPane.setHorizontalScrollBar(new JScrollBar(JScrollBar.HORIZONTAL));
+					scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+				}
+			}
+		});
+		modesComboBox.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				popupMenuVisible = true;
+			}
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				popupMenuVisible = false;
+			}
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+				popupMenuVisible = false;
+			}
+		});
+
+		try {
+			String mpref = prefs.get("modeFiles", null);
+			if (mpref != null) {
+				for (String fn : mpref.split("\n")) {
+					loadMode(fn);
+				}
+				sortModesComboBox();
+			} else {
+				LinkedHashSet<File> fal = new LinkedHashSet<File>();
+				try {
+					fal.addAll(Arrays.asList(new File("/usr/share/apertium/modes/").listFiles()));
+				} catch (Exception e) {}
+				try {
+					fal.addAll(Arrays.asList(new File("/usr/local/share/apertium/modes/").listFiles()));
+				} catch (Exception e) {}
+				try {
+					fal.addAll(Arrays.asList(new File(".").listFiles()));
+				} catch (Exception e) {}
+
+				if (!fal.isEmpty()) {
+					for (File f : fal) {
+						if (f.getName().endsWith(".mode")) {
+							loadMode(f.getPath());
 						}
-            int idx = prefs.getInt("modesComboBox", -1);
-            if (idx >= 0 && idx<modes.size()) {
-                modesComboBox.setSelectedIndex(idx);
-            }
-            showCommandsCheckBox.setSelected(prefs.getBoolean("showCommands", true));
-            showCommandsCheckBoxActionPerformed(null); // is this necesary?
+					}
+					sortModesComboBox();
+					warnUser("Welcome to Apertium-viewer.\nIt seems this is the first time you run this program."
+							+ "\nI have searched in standard places for 'modes' (language translation pairs)"
+							+ "\nI will let you revise the list now (you can always re-edit the list by choosing File | Edit modes)");
+					editModesMenuItemActionPerformed(null);
+					warnUser("If some modes (language pairs) were missing you can choose File | Load mode"
+							+ "\nand select a mode (for example, Esperanto-English pair is called eo-en.mode)"
+							+ "\nto add it to the list (you'll have to download and compile the pair first)."
+							+ "\nYou can also download some pre-compiled pairs - choose 'Online' in upper right corner."
+					);
+				} else {
+					warnUser("Welcome to Apertium-viewer.\nIt seems this is the first time you run this program."
+							+ "\nI have searched in standard places for language translation pairs ('modes'), but I didn't find any."
+							+ "\nI will now get download a list of 'online' modes, which are downloaded on the fly."
+							+ "\nIf you DO have Apertium language pairs installed, please use File | Load mode to load them,"
+							+ "\nand switch to 'Local' in the top right");
+					prefs.getBoolean("local", false);
+				}
+			}
 
-            for (int i=0; i<10; i++) {
-              final String s = prefs.get("storedTexts."+i,"");
-              if (s!=null && s.length()>0) {
-                addStoredText(s);
-              }
-            }
+			if (prefs.getBoolean("local", true)) {
+				local = false; // to trigger the button
+				rdbtnLocalActionPerformed(null);
+			} else {
+				rdbtnOnline.setSelected(true);
+				rdbtnOnlineActionPerformed(null);
+			}
+			int idx = prefs.getInt("modesComboBox", -1);
+			if (idx >= 0 && idx < modes.size()) {
+				modesComboBox.setSelectedIndex(idx);
+			}
+			showCommandsCheckBox.setSelected(prefs.getBoolean("showCommands", true));
+			showCommandsCheckBoxActionPerformed(null); // is this necesary?
 
-        } catch (Exception e) {
-           e.printStackTrace();
-            warnUser("An error occured during startup:\n\n"+e);
-            try {
-                prefs.clear();
-            } catch (Exception e1) {
-							e1.printStackTrace();
-							warnUser("An error ocurred while trying to reset the settings.\nIf the problem persists try removing your .java/.userPrefs/apertiumview/prefs.xml file manually.");
-            }
-            System.exit(1);
-        }
+			for (int i = 0; i < 10; i++) {
+				final String s = prefs.get("storedTexts." + i, "");
+				if (s != null && s.length() > 0) {
+					addStoredText(s);
+				}
+			}
 
-        Translator.setCacheEnabled(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			warnUser("An error occured during startup:\n\n" + e);
+			try {
+				prefs.clear();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				warnUser("An error ocurred while trying to reset the settings.\nIf the problem persists try removing your .java/.userPrefs/apertiumview/prefs.xml file manually.");
+			}
+			System.exit(1);
+		}
 
-        startingUp = false;
+		Translator.setCacheEnabled(true);
 
-        showSelectedMode();
+		startingUp = false;
 
-        String txt = prefs.get("inputText", textWidget1.getText());
-        System.err.println("startup txt = " + txt);
-        try {
-          textWidget1.setText(txt);
-        } catch (Exception e) {
-           e.printStackTrace();
-            warnUser("An error occured during startup:\n\n"+e);
-        }
+		showSelectedMode();
 
-        textWidget1.commandTextField.requestFocusInWindow();
-        textWidget1.textEditor.addFocusListener(scrollToVisibleFocusListener); // done here to avoid multiple adds
-        textWidget1.textEditor.addKeyListener(switchFocus);
+		String txt = prefs.get("inputText", textWidget1.getText());
+		System.err.println("startup txt = " + txt);
+		try {
+			textWidget1.setText(txt);
+		} catch (Exception e) {
+			e.printStackTrace();
+			warnUser("An error occured during startup:\n\n" + e);
+		}
 
-        menuBar.addKeyListener(switchFocus);
-        markUnknownWordsCheckBox.addKeyListener(switchFocus);
-        showCommandsCheckBox.addKeyListener(switchFocus);
-        storeTextButton.addKeyListener(switchFocus);
-        copyTextButton.addKeyListener(switchFocus);
-        fitToTextButton.addKeyListener(switchFocus);
+		textWidget1.commandTextField.requestFocusInWindow();
+		textWidget1.textEditor.addFocusListener(scrollToVisibleFocusListener); // done here to avoid multiple adds
+		textWidget1.textEditor.addKeyListener(switchFocus);
 
-        //app.getMainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+		menuBar.addKeyListener(switchFocus);
+		markUnknownWordsCheckBox.addKeyListener(switchFocus);
+		showCommandsCheckBox.addKeyListener(switchFocus);
+		storeTextButton.addKeyListener(switchFocus);
+		copyTextButton.addKeyListener(switchFocus);
+		fitToTextButton.addKeyListener(switchFocus);
 
+		//app.getMainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
 
-    public void shutdown() {
-        prefs.putBoolean("showCommands", showCommandsCheckBox.isSelected());
-        prefs.putBoolean("local", local);
-        String divLoc = "";
-        for (JSplitPane p : splitPanes) divLoc += ","+p.getDividerLocation();
-        prefs.put("dividerLocation", divLoc);
-        prefs.put("inputText", textWidget1.getText());
-        Pipeline.getPipeline().shutdown();
-    }
+	public void shutdown() {
+		prefs.putBoolean("showCommands", showCommandsCheckBox.isSelected());
+		prefs.putBoolean("local", local);
+		String divLoc = "";
+		for (JSplitPane p : splitPanes) divLoc += "," + p.getDividerLocation();
+		prefs.put("dividerLocation", divLoc);
+		prefs.put("inputText", textWidget1.getText());
+		Pipeline.getPipeline().shutdown();
+	}
 
+	FocusListener scrollToVisibleFocusListener = new FocusAdapter() {
+		@Override
+		public void focusGained(FocusEvent e) {
+			JComponent comp = (JComponent) e.getSource();
+			// Ugly hack to get the enclosing TextWidget
+			final TextWidget tw = (TextWidget) ((JComponent) e.getSource()).getParent().getParent().getParent();
+			// Scroll so that the TextWidget's scoll pane (containing the text area) is fully visible
+			Rectangle b = tw.jScrollPane1.getBounds();
+			Rectangle b2 = tw.getBounds();
+			//System.out.println("b = " + b);
+			//System.out.println("b2 = " + b2);
+			b.x += b2.x;
+			b.y += b2.y;
+			tw.scrollRectToVisible(b);
 
-    FocusListener scrollToVisibleFocusListener = new FocusAdapter() {
-        @Override
-        public void focusGained(FocusEvent e) {
-            JComponent comp = (JComponent) e.getSource();
-            // Ugly hack to get the enclosing TextWidget
-            final TextWidget tw = (TextWidget) ((JComponent) e.getSource()).getParent().getParent().getParent();
-            // Scroll so that the TextWidget's scoll pane (containing the text area) is fully visible
-            Rectangle b = tw.jScrollPane1.getBounds();
-            Rectangle b2 = tw.getBounds();
-            //System.out.println("b = " + b);
-            //System.out.println("b2 = " + b2);
-            b.x += b2.x;
-            b.y += b2.y;
-            tw.scrollRectToVisible(b);
+			// Make it blink for a short while
+			Graphics2D g = (Graphics2D) tw.getGraphics();
+			g.setColor(Color.RED);
+			g.drawRect(1, 1, tw.getWidth() - 2, tw.getHeight() - 2);
 
-
-            // Make it blink for a short while
-            Graphics2D g = (Graphics2D) tw.getGraphics();
-            g.setColor(Color.RED);
-            g.drawRect(1, 1, tw.getWidth()-2, tw.getHeight()-2);
-
-            /*
-            // Make it blink for a short while
-            comp = (JComponent) (comp.getParent());
-            b = comp.getBounds(b);
-            comp = (JComponent) (comp.getParent());
-            Graphics2D g = (Graphics2D) comp.getGraphics();
-            g.setColor(Color.RED);
-            g.drawRect(b.x+1, b.y+1, b.width-2, b.height-2);
-
-
-            b = comp.getBounds(b);
-            comp = (JComponent) (comp.getParent().getParent());
-            g = (Graphics2D) comp.getGraphics();
-            g.setColor(Color.BLUE);
-            g.drawRect(b.x+1, b.y+1, b.width-2, b.height-2);
-            g.setColor(Color.CYAN);
-            g.drawRect(b.x, b.y-5, b.width, b.height+10);
-             */
-
-            //tw.repaint(100); // behaves as 0, but the blink is visible for me
-            // this is a waste of threads,but who cares, this is a GUI program!
-            new Thread() { public void run() {
-                    try {
-                        Thread.sleep(200);
-                        tw.repaint(0);
-                    } catch (InterruptedException ex) {
-                    }
-            }
-            }.start();
-        }
-    };
-
-  private void addStoredText(final String s) {
-      String menT = s.length()<4000? s : s.substring(0,40)+"...";
-      JMenuItem mi = new JMenuItem(menT,storedTextsMenu.getMenuComponentCount()+1);
-      mi.addActionListener(new ActionListener() {
-
-      public void actionPerformed(ActionEvent e) {
-        textWidget1.setText(s);
-      }
-
-      });
-      storedTextsMenu.add(mi);
-  }
-
-  public static String notNull(String text) {
-    if (text==null) return "";
-   return text;
-  }
-
-    KeyListener switchFocus = new KeyAdapter() {
-        public void keyPressed(KeyEvent e) {
-            if (!e.isControlDown() && !e.isAltDown() && !e.isAltGraphDown()) return;
-            int keyCode =   e.getKeyCode();
+			/*
+			 // Make it blink for a short while
+			 comp = (JComponent) (comp.getParent());
+			 b = comp.getBounds(b);
+			 comp = (JComponent) (comp.getParent());
+			 Graphics2D g = (Graphics2D) comp.getGraphics();
+			 g.setColor(Color.RED);
+			 g.drawRect(b.x+1, b.y+1, b.width-2, b.height-2);
 
 
+			 b = comp.getBounds(b);
+			 comp = (JComponent) (comp.getParent().getParent());
+			 g = (Graphics2D) comp.getGraphics();
+			 g.setColor(Color.BLUE);
+			 g.drawRect(b.x+1, b.y+1, b.width-2, b.height-2);
+			 g.setColor(Color.CYAN);
+			 g.drawRect(b.x, b.y-5, b.width, b.height+10);
+			 */
+			//tw.repaint(100); // behaves as 0, but the blink is visible for me
+			// this is a waste of threads,but who cares, this is a GUI program!
+			new Thread() {
+				public void run() {
+					try {
+						Thread.sleep(200);
+						tw.repaint(0);
+					} catch (InterruptedException ex) {
+					}
+				}
+			}.start();
+		}
+	};
 
-            int nowFocus=-1;
+	private void addStoredText(final String s) {
+		String menT = s.length() < 4000 ? s : s.substring(0, 40) + "...";
+		JMenuItem mi = new JMenuItem(menT, storedTextsMenu.getMenuComponentCount() + 1);
+		mi.addActionListener(new ActionListener() {
 
-            if (keyCode >=  e.VK_0 && keyCode <=  e.VK_9) {
-                nowFocus = Math.max(0, keyCode -  e.VK_1);  // Alt-0 and Alt-1 gives first widget
-                nowFocus = Math.min(nowFocus, textWidgets.size()-1); // Alt-9 gives last widget
+			public void actionPerformed(ActionEvent e) {
+				textWidget1.setText(s);
+			}
 
-            } else if (keyCode ==  e.VK_PAGE_UP || keyCode ==  e.VK_PAGE_DOWN)  {
+		});
+		storedTextsMenu.add(mi);
+	}
 
-                for (int i=0; i<textWidgets.size(); i++) { // find widget which has the focus
-                    TextWidget tw = textWidgets.get(i);
-                    if (SwingUtilities.findFocusOwner(tw)!=null) nowFocus = i;
-                }
+	public static String notNull(String text) {
+		if (text == null) return "";
+		return text;
+	}
 
-                if (nowFocus!=-1) {
-                    if (keyCode ==  e.VK_PAGE_UP) {
-                        do
-                            nowFocus = (nowFocus-1 + textWidgets.size()) % textWidgets.size(); // cycle upwards
-                        while (textWidgets.get(nowFocus).getVisibleRect().isEmpty());
-                    } else  {
-                        do
-                            nowFocus = (nowFocus+1) % textWidgets.size(); // cycle downwards
-                        while (textWidgets.get(nowFocus).getVisibleRect().isEmpty());
-                    }
-                } else {
-                    System.err.println("Hm! No widget has focus!" );
-                    if (keyCode ==  e.VK_PAGE_UP) {
-                        nowFocus = 0; // cycle upwards
-                    } else  {
-                        nowFocus = textWidgets.size()-1; // cycle downwards
-                    }
-                }
-            } else return;
+	KeyListener switchFocus = new KeyAdapter() {
+		public void keyPressed(KeyEvent e) {
+			if (!e.isControlDown() && !e.isAltDown() && !e.isAltGraphDown()) return;
+			int keyCode = e.getKeyCode();
 
-            menuBar.requestFocusInWindow(); // crude way to force focus notify
-            textWidgets.get(nowFocus).textEditor.requestFocusInWindow();
-        }
-    };
+			int nowFocus = -1;
 
-  private void ajustSplitPaneHeights(int toth) {
-    for (JSplitPane s : splitPanes) {
-      if (s.getDividerLocation()>2) {
-        //System.out.println("getDividerLocation()"+s.getDividerLocation());
-        Dimension d=s.getTopComponent().getMinimumSize();
-        s.setDividerLocation(d.height);
-        //System.out.println("dp="+d);
-        toth+=s.getDividerSize()+2;
-        //System.out.println("getDividerLocation()"+s.getDividerLocation());
-      }
-    }
-    Dimension d=textWidgetsPanel.getSize();
-    d.height=toth; //Math.max(toth, d.height);
-    textWidgetsPanel.setSize(d);
-    d=textWidgetsPanel.getPreferredSize();
-    d.height=toth;
-    textWidgetsPanel.setMinimumSize(d);
-    textWidgetsPanel.setPreferredSize(d);
-    mainPanel.validate();
-    for (TextWidget w : textWidgets) {
-      w.jScrollPane1.setMinimumSize(null);
-      w.textEditor.setMinimumSize(null);
-      w.setMinimumSize(new Dimension(5, 5));
-      w.jScrollPane1.setPreferredSize(null);
-      w.textEditor.setPreferredSize(null);
-      w.setPreferredSize(null);
-    }
-  }
+			if (keyCode >= e.VK_0 && keyCode <= e.VK_9) {
+				nowFocus = Math.max(0, keyCode - e.VK_1);  // Alt-0 and Alt-1 gives first widget
+				nowFocus = Math.min(nowFocus, textWidgets.size() - 1); // Alt-9 gives last widget
 
-    private void showSelectedMode() {
-        Mode m = null;
-        Object item = modesComboBox.getSelectedItem();
+			} else if (keyCode == e.VK_PAGE_UP || keyCode == e.VK_PAGE_DOWN) {
 
-        if (item instanceof Mode) {
-            IOUtils.setClassLoader(null);
-            m = (Mode) item;
-        } else if (item instanceof String) {
-            if (item.equals("SELECT A MODE")) return;
-            try {
-                IOUtils.setClassLoader(onlineModeToLoader.get((String)item));
-                m = new Mode("data/modes/" + onlineModeToCode.get((String)item) + ".mode");
-            } catch (Exception e) {
-                warnUser("Unexpected error while trying to load online package: " + e);
-            }
-        } else return;
+				for (int i = 0; i < textWidgets.size(); i++) { // find widget which has the focus
+					TextWidget tw = textWidgets.get(i);
+					if (SwingUtilities.findFocusOwner(tw) != null) nowFocus = i;
+				}
 
-        if (m==null) {
-            return;
-        }
+				if (nowFocus != -1) {
+					if (keyCode == e.VK_PAGE_UP) {
+						do
+							nowFocus = (nowFocus - 1 + textWidgets.size()) % textWidgets.size(); // cycle upwards
+						while (textWidgets.get(nowFocus).getVisibleRect().isEmpty());
+					} else {
+						do
+							nowFocus = (nowFocus + 1) % textWidgets.size(); // cycle downwards
+						while (textWidgets.get(nowFocus).getVisibleRect().isEmpty());
+					}
+				} else {
+					System.err.println("Hm! No widget has focus!");
+					if (keyCode == e.VK_PAGE_UP) {
+						nowFocus = 0; // cycle upwards
+					} else {
+						nowFocus = textWidgets.size() - 1; // cycle downwards
+					}
+				}
+			} else return;
 
-        if (m.getPipelineLength()+1 != textWidgets.size()) {
-            // Number of text widgets are different, dispose all and regenerate
-            lastSplitPane = jSplitPane1;
-            jSplitPane1.setBottomComponent(null);
+			menuBar.requestFocusInWindow(); // crude way to force focus notify
+			textWidgets.get(nowFocus).textEditor.requestFocusInWindow();
+		}
+	};
 
-            TextWidget lastTextWidget = textWidget1;
-            //lastTextWidget.textEditor.setFocusAccelerator('1');
-            //textWidget1.setCommand("");
-            textWidget1.priority = 0;
+	private void ajustSplitPaneHeights(int toth) {
+		for (JSplitPane s : splitPanes) {
+			if (s.getDividerLocation() > 2) {
+				//System.out.println("getDividerLocation()"+s.getDividerLocation());
+				Dimension d = s.getTopComponent().getMinimumSize();
+				s.setDividerLocation(d.height);
+				//System.out.println("dp="+d);
+				toth += s.getDividerSize() + 2;
+				//System.out.println("getDividerLocation()"+s.getDividerLocation());
+			}
+		}
+		Dimension d = textWidgetsPanel.getSize();
+		d.height = toth; //Math.max(toth, d.height);
+		textWidgetsPanel.setSize(d);
+		d = textWidgetsPanel.getPreferredSize();
+		d.height = toth;
+		textWidgetsPanel.setMinimumSize(d);
+		textWidgetsPanel.setPreferredSize(d);
+		mainPanel.validate();
+		for (TextWidget w : textWidgets) {
+			w.jScrollPane1.setMinimumSize(null);
+			w.textEditor.setMinimumSize(null);
+			w.setMinimumSize(new Dimension(5, 5));
+			w.jScrollPane1.setPreferredSize(null);
+			w.textEditor.setPreferredSize(null);
+			w.setPreferredSize(null);
+		}
+	}
 
-            // should dispose old GUI components here...
-            //for (TextWidget tw : textWidgets) tw.removeKeyListener(switchFocus);
-            textWidgets.clear();
-            splitPanes.clear();
+	private void showSelectedMode() {
+		Mode m = null;
+		Object item = modesComboBox.getSelectedItem();
 
-            textWidgets.add(textWidget1);
-            splitPanes.add(jSplitPane1);
+		if (item instanceof Mode) {
+			IOUtils.setClassLoader(null);
+			m = (Mode) item;
+		} else if (item instanceof String) {
+			if (item.equals("SELECT A MODE")) return;
+			try {
+				IOUtils.setClassLoader(onlineModeToLoader.get((String) item));
+				m = new Mode("data/modes/" + onlineModeToCode.get((String) item) + ".mode");
+			} catch (Exception e) {
+				warnUser("Unexpected error while trying to load online package: " + e);
+			}
+		} else return;
 
-            String[] divLocs = prefs.get("dividerLocation", "").split(",");
-            if (divLocs.length>1) try {
-                jSplitPane1.setDividerLocation(Integer.parseInt(divLocs[1]));
-            } catch (Exception e) { e.printStackTrace(); }
-              else jSplitPane1.setDividerLocation(60);
+		if (m == null) {
+			return;
+		}
 
-            for (int i = 0; i < m.getPipelineLength(); i++) {
-                TextWidget tw = new TextWidget();
-                tw.textEditor.addKeyListener(switchFocus);
-                textWidgets.add(tw);
-                tw.priority = i+1;
-                lastTextWidget.next = tw;
-                lastTextWidget = tw;
-                //lastTextWidget.textEditor.setFocusAccelerator((char)('0'+i+2));
-                lastTextWidget.textEditor.addFocusListener(scrollToVisibleFocusListener);
+		if (m.getPipelineLength() + 1 != textWidgets.size()) {
+			// Number of text widgets are different, dispose all and regenerate
+			lastSplitPane = jSplitPane1;
+			jSplitPane1.setBottomComponent(null);
 
-                if (i < m.getPipelineLength() - 1) {
-                    JSplitPane sp = new JSplitPane();
-                    sp.setBorder(BorderFactory.createEmptyBorder());
-                    sp.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-                    sp.setOneTouchExpandable(true);
-                    sp.setContinuousLayout(true);
-                    sp.setTopComponent(tw);
-                    lastSplitPane.setBottomComponent(sp);
-                    splitPanes.add(sp);
-                    lastSplitPane = sp;
-                    if (divLocs.length>2+i) try {
-                        sp.setDividerLocation(Integer.parseInt(divLocs[2+i]));
-                    } catch (Exception e) { e.printStackTrace(); }
-                       else sp.setDividerLocation(60);
-                } else {
-                    lastSplitPane.setBottomComponent(tw);
-                    //lastTextWidget.textEditor.setFocusAccelerator('9');
-                }
-            }
+			TextWidget lastTextWidget = textWidget1;
+			//lastTextWidget.textEditor.setFocusAccelerator('1');
+			//textWidget1.setCommand("");
+			textWidget1.priority = 0;
 
-            if (textWidgetFont != null) for (TextWidget t : textWidgets) {
-                t.textEditor.setFont(textWidgetFont);
-            }
+			// should dispose old GUI components here...
+			//for (TextWidget tw : textWidgets) tw.removeKeyListener(switchFocus);
+			textWidgets.clear();
+			splitPanes.clear();
 
+			textWidgets.add(textWidget1);
+			splitPanes.add(jSplitPane1);
 
-        }
+			String[] divLocs = prefs.get("dividerLocation", "").split(",");
+			if (divLocs.length > 1) try {
+				jSplitPane1.setDividerLocation(Integer.parseInt(divLocs[1]));
+			} catch (Exception e) { e.printStackTrace(); }
+			else jSplitPane1.setDividerLocation(60);
 
-        for (int i = 0; i < m.getPipelineLength(); i++) {
-            Program p = m.getProgramByIndex(i);
-            TextWidget tw = textWidgets.get(i+1);
-            tw.setProgram(p);
-        }
+			for (int i = 0; i < m.getPipelineLength(); i++) {
+				TextWidget tw = new TextWidget();
+				tw.textEditor.addKeyListener(switchFocus);
+				textWidgets.add(tw);
+				tw.priority = i + 1;
+				lastTextWidget.next = tw;
+				lastTextWidget = tw;
+				//lastTextWidget.textEditor.setFocusAccelerator((char)('0'+i+2));
+				lastTextWidget.textEditor.addFocusListener(scrollToVisibleFocusListener);
 
-        Pipeline.getPipeline().externalProcessing = local && Boolean.parseBoolean(prefs.get("externalProcessing", "false"));
-        if (Pipeline.getPipeline().externalProcessing) {
-            // Set the working directory of the mode. This is necesary in case the mode contains relative paths
-            // to (development) files
-            String workingDir = prefs.get("workingDir", "").trim();
-            if (!workingDir.isEmpty()) {
-              Pipeline.getPipeline().execPath  = new File(workingDir);
-            } else {
-              File parentFile = new File(m.getFilename()).getParentFile();
-              if (parentFile.getName().equals("modes"))
-                Pipeline.getPipeline().execPath  = parentFile.getParentFile();
-              else
-                Pipeline.getPipeline().execPath  = parentFile;
-            }
-            System.err.println("Pipeline.getPipeline().execPath = " + Pipeline.getPipeline().execPath);
-            //new Exception().printStackTrace();
+				if (i < m.getPipelineLength() - 1) {
+					JSplitPane sp = new JSplitPane();
+					sp.setBorder(BorderFactory.createEmptyBorder());
+					sp.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+					sp.setOneTouchExpandable(true);
+					sp.setContinuousLayout(true);
+					sp.setTopComponent(tw);
+					lastSplitPane.setBottomComponent(sp);
+					splitPanes.add(sp);
+					lastSplitPane = sp;
+					if (divLocs.length > 2 + i) try {
+						sp.setDividerLocation(Integer.parseInt(divLocs[2 + i]));
+					} catch (Exception e) { e.printStackTrace(); }
+					else sp.setDividerLocation(60);
+				} else {
+					lastSplitPane.setBottomComponent(tw);
+					//lastTextWidget.textEditor.setFocusAccelerator('9');
+				}
+			}
 
-            String envVars = prefs.get("envVars", "").trim();
-            Pipeline.getPipeline().envp = envVars.isEmpty()?null: envVars.split("\n");
-            System.err.println("Pipeline.getPipeline().envp = " + envVars);
+			if (textWidgetFont != null) for (TextWidget t : textWidgets) {
+				t.textEditor.setFont(textWidgetFont);
+			}
 
-            Pipeline.getPipeline().ignoreErrorMessages = Boolean.parseBoolean(prefs.get("ignoreErrorMessages", "false"));
-        }
+		}
 
-        Pipeline.getPipeline().markUnknownWords = markUnknownWordsCheckBox.isSelected();
+		for (int i = 0; i < m.getPipelineLength(); i++) {
+			Program p = m.getProgramByIndex(i);
+			TextWidget tw = textWidgets.get(i + 1);
+			tw.setProgram(p);
+		}
 
-        // Set title to mode - easens window tabbing
-        ApertiumViewMain.getApplication().getMainFrame().setTitle("Apertium-viewer ("+m+")");
+		Pipeline.getPipeline().externalProcessing = local && Boolean.parseBoolean(prefs.get("externalProcessing", "false"));
+		if (Pipeline.getPipeline().externalProcessing) {
+			// Set the working directory of the mode. This is necesary in case the mode contains relative paths
+			// to (development) files
+			String workingDir = prefs.get("workingDir", "").trim();
+			if (!workingDir.isEmpty()) {
+				Pipeline.getPipeline().execPath = new File(workingDir);
+			} else {
+				File parentFile = new File(m.getFilename()).getParentFile();
+				if (parentFile.getName().equals("modes"))
+					Pipeline.getPipeline().execPath = parentFile.getParentFile();
+				else
+					Pipeline.getPipeline().execPath = parentFile;
+			}
+			System.err.println("Pipeline.getPipeline().execPath = " + Pipeline.getPipeline().execPath);
+			//new Exception().printStackTrace();
 
+			String envVars = prefs.get("envVars", "").trim();
+			Pipeline.getPipeline().envp = envVars.isEmpty() ? null : envVars.split("\n");
+			System.err.println("Pipeline.getPipeline().envp = " + envVars);
 
-        if (startingUp) return;
+			Pipeline.getPipeline().ignoreErrorMessages = Boolean.parseBoolean(prefs.get("ignoreErrorMessages", "false"));
+		}
 
-        textWidget1.textChg(true);
+		Pipeline.getPipeline().markUnknownWords = markUnknownWordsCheckBox.isSelected();
 
-    }
+		// Set title to mode - easens window tabbing
+		ApertiumViewMain.getApplication().getMainFrame().setTitle("Apertium-viewer (" + m + ")");
 
-    @Action
-    public void showAboutBox() {
-        if (aboutBox == null) {
-            JFrame mainFrame = ApertiumViewMain.getApplication().getMainFrame();
-            aboutBox = new ApertiumViewAboutBox(mainFrame);
-            aboutBox.setLocationRelativeTo(mainFrame);
-        }
-        ApertiumViewMain.getApplication().show(aboutBox);
-    }
+		if (startingUp) return;
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
+		textWidget1.textChg(true);
+
+	}
+
+	@Action
+	public void showAboutBox() {
+		if (aboutBox == null) {
+			JFrame mainFrame = ApertiumViewMain.getApplication().getMainFrame();
+			aboutBox = new ApertiumViewAboutBox(mainFrame);
+			aboutBox.setLocationRelativeTo(mainFrame);
+		}
+		ApertiumViewMain.getApplication().show(aboutBox);
+	}
+
+	/** This method is called from within the constructor to
+	 * initialize the form.
+	 * WARNING: Do NOT modify this code. The content of this method is
+	 * always regenerated by the Form Editor.
+	 */
+	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -812,316 +800,312 @@ public class ApertiumView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
 private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modesComboBoxActionPerformed
-  if (local) {
-      Mode mode = (Mode) modesComboBox.getSelectedItem();
-      String tooltip = "[No mode selected]";
-      if (mode != null) {
-        tooltip = mode.getFilename();
-      }
-      modesComboBox.setToolTipText(tooltip);
-  } else {
-      String mode = (String) modesComboBox.getSelectedItem();
-      String tooltip = mode != null && mode.equals("SELECT A MODE") ? "[No mode selected]" : onlineModeToCode.get(mode) + ".mode";
-      modesComboBox.setToolTipText(tooltip);
-  }
-  if (!startingUp) {
-      Translator.clearCache();
-      showSelectedMode();
-  }
+	if (local) {
+		Mode mode = (Mode) modesComboBox.getSelectedItem();
+		String tooltip = "[No mode selected]";
+		if (mode != null) {
+			tooltip = mode.getFilename();
+		}
+		modesComboBox.setToolTipText(tooltip);
+	} else {
+		String mode = (String) modesComboBox.getSelectedItem();
+		String tooltip = mode != null && mode.equals("SELECT A MODE") ? "[No mode selected]" : onlineModeToCode.get(mode) + ".mode";
+		modesComboBox.setToolTipText(tooltip);
+	}
+	if (!startingUp) {
+		Translator.clearCache();
+		showSelectedMode();
+	}
 }//GEN-LAST:event_modesComboBoxActionPerformed
 
 private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editModesMenuItemActionPerformed
-    String mpref = "";
-    for (Mode mo : modes) mpref = mpref + mo.getFilename()+"\n";
-    JTextArea ta = new JTextArea(mpref);
-    // Fix for Jimmy: On my system, in the 'edit list of modes' part, the list of modes is
-    // longer than can be displayed on screen. I know I'm not the typical
-    // user, but do you think you could fit a scroll bar in there?
-    JScrollPane sp = new JScrollPane(ta);
-    Dimension ps = sp.getPreferredSize();
-    Dimension sceen = Toolkit.getDefaultToolkit().getScreenSize();
-    if (ps.height>sceen.height-150) {
-      ps.height = sceen.height-150;
-      ps.width += 50; // some space
-      sp.setPreferredSize(ps);
-    }
-    int ret = JOptionPane.showConfirmDialog(mainPanel,  sp,
-        "Edit the list of modes", JOptionPane.OK_CANCEL_OPTION);
-    if (ret==JOptionPane.OK_OPTION) {
-        modes.clear();
-        modesComboBox.removeAllItems();
-        mpref = ta.getText();
-        for (String fn : mpref.split("\n")) {
-            loadMode(fn);
-        }
-        sortModesComboBox();
-        prefs.put("modeFiles", mpref);
-    }
+	String mpref = "";
+	for (Mode mo : modes) mpref = mpref + mo.getFilename() + "\n";
+	JTextArea ta = new JTextArea(mpref);
+	// Fix for Jimmy: On my system, in the 'edit list of modes' part, the list of modes is
+	// longer than can be displayed on screen. I know I'm not the typical
+	// user, but do you think you could fit a scroll bar in there?
+	JScrollPane sp = new JScrollPane(ta);
+	Dimension ps = sp.getPreferredSize();
+	Dimension sceen = Toolkit.getDefaultToolkit().getScreenSize();
+	if (ps.height > sceen.height - 150) {
+		ps.height = sceen.height - 150;
+		ps.width += 50; // some space
+		sp.setPreferredSize(ps);
+	}
+	int ret = JOptionPane.showConfirmDialog(mainPanel, sp,
+			"Edit the list of modes", JOptionPane.OK_CANCEL_OPTION);
+	if (ret == JOptionPane.OK_OPTION) {
+		modes.clear();
+		modesComboBox.removeAllItems();
+		mpref = ta.getText();
+		for (String fn : mpref.split("\n")) {
+			loadMode(fn);
+		}
+		sortModesComboBox();
+		prefs.put("modeFiles", mpref);
+	}
 }//GEN-LAST:event_editModesMenuItemActionPerformed
 
 private void markUnknownWordsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markUnknownWordsCheckBoxActionPerformed
-    showSelectedMode();
+	showSelectedMode();
 }//GEN-LAST:event_markUnknownWordsCheckBoxActionPerformed
 
 private void showCommandsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCommandsCheckBoxActionPerformed
 
-    boolean show = showCommandsCheckBox.isSelected();
-    //System.out.println("show = " + show);
-    for (TextWidget w : textWidgets) {
-        w.commandTextField.setVisible(show);
-        w.zoomButton.setVisible(show);
-        w.freezeCheckBox.setVisible(show);
-        w.setSize(w.getSize());
-    }
-    textWidget1.commandTextField.setVisible(false);
-    textWidget1.zoomButton.setVisible(false);
-    textWidget1.freezeCheckBox.setVisible(false);
-    mainPanel.validate();
+	boolean show = showCommandsCheckBox.isSelected();
+	//System.out.println("show = " + show);
+	for (TextWidget w : textWidgets) {
+		w.commandTextField.setVisible(show);
+		w.zoomButton.setVisible(show);
+		w.freezeCheckBox.setVisible(show);
+		w.setSize(w.getSize());
+	}
+	textWidget1.commandTextField.setVisible(false);
+	textWidget1.zoomButton.setVisible(false);
+	textWidget1.freezeCheckBox.setVisible(false);
+	mainPanel.validate();
 }//GEN-LAST:event_showCommandsCheckBoxActionPerformed
 
 private void storeTextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_storeTextButtonActionPerformed
 
-  try {
-  addStoredText(textWidget1.getText());
+	try {
+		addStoredText(textWidget1.getText());
 
-  // Store last 10 in prefs
-  for (int i=0; i<10; i++) {
-    int n = storedTextsMenu.getMenuComponentCount() - 10 + i;
-    String s = "";
-    if (n>=0) {
-       s = ((JMenuItem) storedTextsMenu.getMenuComponent(n)).getText();
-    }
+		// Store last 10 in prefs
+		for (int i = 0; i < 10; i++) {
+			int n = storedTextsMenu.getMenuComponentCount() - 10 + i;
+			String s = "";
+			if (n >= 0) {
+				s = ((JMenuItem) storedTextsMenu.getMenuComponent(n)).getText();
+			}
 
-    prefs.put("storedTexts."+i,s);
-  }
-    warnUser("Your text is stored for future use. \nRetrieve it in the menu View | Stored text.\nNote: On restart only the last 10 stored texts will be remenbered.");
+			prefs.put("storedTexts." + i, s);
+		}
+		warnUser("Your text is stored for future use. \nRetrieve it in the menu View | Stored text.\nNote: On restart only the last 10 stored texts will be remenbered.");
 
-  } catch (Exception e) {
-    warnUser(e.getLocalizedMessage());
-  }
+	} catch (Exception e) {
+		warnUser(e.getLocalizedMessage());
+	}
 }//GEN-LAST:event_storeTextButtonActionPerformed
 
 private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
-        try {
-            // TODO add your handling code here:
-            java.awt.Desktop.getDesktop().browse(new URI("http://wiki.apertium.org/wiki/Apertium-viewer#Features"));
-        } catch (Exception ex) {
-            Logger.getLogger(ApertiumView.class.getName()).log(Level.SEVERE, null, ex);
-            warnUser(ex.toString());
-        }
+	try {
+		// TODO add your handling code here:
+		java.awt.Desktop.getDesktop().browse(new URI("http://wiki.apertium.org/wiki/Apertium-viewer#Features"));
+	} catch (Exception ex) {
+		Logger.getLogger(ApertiumView.class.getName()).log(Level.SEVERE, null, ex);
+		warnUser(ex.toString());
+	}
 
 
 }//GEN-LAST:event_helpMenuItemActionPerformed
 
 private void editOptions(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOptions
-  OptionsPanel op = new OptionsPanel();
-  boolean externalProcessing = Boolean.parseBoolean(prefs.get("externalProcessing", "false"));
-  op.externalProcessing.setSelected(externalProcessing);
-  op.setExternalProcessingOptionsEnabled(externalProcessing);
-  op.workingDirTextField.setText(prefs.get("workingDir", ""));
-  op.envVarsTextArea.setText(prefs.get("envVars", ""));
-  op.ignoreErrorMessages.setSelected(Boolean.parseBoolean(prefs.get("ignoreErrorMessages", "false")));
-  int ret = JOptionPane.showConfirmDialog(mainPanel, op,"Edit Options", JOptionPane.OK_CANCEL_OPTION);
-  if (ret == JOptionPane.OK_OPTION) {
-    prefs.put("externalProcessing", Boolean.toString(op.externalProcessing.isSelected()));
-    prefs.put("workingDir", op.workingDirTextField.getText());
-    prefs.put("envVars", op.envVarsTextArea.getText());
-    prefs.put("ignoreErrorMessages", Boolean.toString(op.ignoreErrorMessages.isSelected()));
-    modesComboBoxActionPerformed(null); // reload the current mode
-  }
+	OptionsPanel op = new OptionsPanel();
+	boolean externalProcessing = Boolean.parseBoolean(prefs.get("externalProcessing", "false"));
+	op.externalProcessing.setSelected(externalProcessing);
+	op.setExternalProcessingOptionsEnabled(externalProcessing);
+	op.workingDirTextField.setText(prefs.get("workingDir", ""));
+	op.envVarsTextArea.setText(prefs.get("envVars", ""));
+	op.ignoreErrorMessages.setSelected(Boolean.parseBoolean(prefs.get("ignoreErrorMessages", "false")));
+	int ret = JOptionPane.showConfirmDialog(mainPanel, op, "Edit Options", JOptionPane.OK_CANCEL_OPTION);
+	if (ret == JOptionPane.OK_OPTION) {
+		prefs.put("externalProcessing", Boolean.toString(op.externalProcessing.isSelected()));
+		prefs.put("workingDir", op.workingDirTextField.getText());
+		prefs.put("envVars", op.envVarsTextArea.getText());
+		prefs.put("ignoreErrorMessages", Boolean.toString(op.ignoreErrorMessages.isSelected()));
+		modesComboBoxActionPerformed(null); // reload the current mode
+	}
 }//GEN-LAST:event_editOptions
 
 private void importTestCase(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importTestCase
-  // TODO add your handling code here:
-   String text = "Here you can import input sentences you want to test.\n"+
-       "For example, go to http://wiki.apertium.org/wiki/English_and_Esperanto/Regression_tests\nand copy some tests into this window, like this:\n\n"+
-       "# (en) My dog → Mia hundo\n"+
-       "# (en) My big dogs → Miaj grandaj hundoj\n"+
-       "# (en) Your big dogs → Viaj grandaj hundoj\n"+
-       "# (en) Her cat → Ŝia kato\n"+
-       "# (en) Her small cats → Ŝiaj malgrandaj katoj \n"+
-       "# (en) The fastest snails -> La plej rapidaj helikoj \n\n"+
-       "All souce text will be extracted.";
-  JTextArea ta = new JTextArea(text);
-  String res = "";
-  int ret = JOptionPane.showConfirmDialog(mainPanel, ta,"Past test cases from a Wiki page", JOptionPane.OK_CANCEL_OPTION);
-  if (ret == JOptionPane.OK_OPTION) {
-        for (String s : ta.getText().split("\n")) {
-            int x1 = s.indexOf(')');
-            if (x1==-1) continue; // no ), so skip line
-            int x2 = s.indexOf('→');
-            if (x2==-1) x2 = s.indexOf("->");
-            if (x2==-1) x2 = s.indexOf("=>");
-            if (x2<x1) continue; // no → found after ), so skip line
-            res = res + "\n" + s.substring(x1+1, x2).trim();
-        }
-        if (res.trim().length()==0) {
-            JOptionPane.showMessageDialog(mainPanel, "You didn't enter any test cases with text between a ) and a →. \nTry again.");
-        } else {
-          textWidget1.setText(res.trim());
-        }
-  }
+	// TODO add your handling code here:
+	String text = "Here you can import input sentences you want to test.\n"
+			+ "For example, go to http://wiki.apertium.org/wiki/English_and_Esperanto/Regression_tests\nand copy some tests into this window, like this:\n\n"
+			+ "# (en) My dog → Mia hundo\n"
+			+ "# (en) My big dogs → Miaj grandaj hundoj\n"
+			+ "# (en) Your big dogs → Viaj grandaj hundoj\n"
+			+ "# (en) Her cat → Ŝia kato\n"
+			+ "# (en) Her small cats → Ŝiaj malgrandaj katoj \n"
+			+ "# (en) The fastest snails -> La plej rapidaj helikoj \n\n"
+			+ "All souce text will be extracted.";
+	JTextArea ta = new JTextArea(text);
+	String res = "";
+	int ret = JOptionPane.showConfirmDialog(mainPanel, ta, "Past test cases from a Wiki page", JOptionPane.OK_CANCEL_OPTION);
+	if (ret == JOptionPane.OK_OPTION) {
+		for (String s : ta.getText().split("\n")) {
+			int x1 = s.indexOf(')');
+			if (x1 == -1) continue; // no ), so skip line
+			int x2 = s.indexOf('→');
+			if (x2 == -1) x2 = s.indexOf("->");
+			if (x2 == -1) x2 = s.indexOf("=>");
+			if (x2 < x1) continue; // no → found after ), so skip line
+			res = res + "\n" + s.substring(x1 + 1, x2).trim();
+		}
+		if (res.trim().length() == 0) {
+			JOptionPane.showMessageDialog(mainPanel, "You didn't enter any test cases with text between a ) and a →. \nTry again.");
+		} else {
+			textWidget1.setText(res.trim());
+		}
+	}
 }//GEN-LAST:event_importTestCase
 
 private void hideIntermediate(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hideIntermediate
-    int toth = 0;
-    for (TextWidget w : textWidgets) {
-        Dimension d = w.textEditor.getPreferredSize();
-        d.height += insetHeight(w.textEditor) + insetHeight(w) + insetHeight(w.jScrollPane1) +6;
+	int toth = 0;
+	for (TextWidget w : textWidgets) {
+		Dimension d = w.textEditor.getPreferredSize();
+		d.height += insetHeight(w.textEditor) + insetHeight(w) + insetHeight(w.jScrollPane1) + 6;
 
+		if (w == textWidget1 || w == textWidgets.get(textWidgets.size() - 1)) {
+			d.height += w.commandTextField.getPreferredSize().height;
+			d.height += insetHeight(w.commandTextField);
+		} else {
+			d.height = 0;
+		}
 
-        if (w == textWidget1 || w == textWidgets.get(textWidgets.size()-1)) {
-            d.height += w.commandTextField.getPreferredSize().height;
-            d.height += insetHeight(w.commandTextField);
-        } else {
-            d.height = 0;
-        }
+		w.setMinimumSize(d);
+		w.setPreferredSize(d);
+		toth += d.height;
+	}
 
-        w.setMinimumSize(d);
-        w.setPreferredSize(d);
-        toth += d.height;
-    }
-
-   ajustSplitPaneHeights(toth);
+	ajustSplitPaneHeights(toth);
 }//GEN-LAST:event_hideIntermediate
 
 private void copyText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyText
-    String tottxt = "";
-    String lasttxt = "";
-    for (TextWidget w : textWidgets) {
-        if (!w.getVisibleRect().isEmpty()) {
-            String txt = w.getText();
-            if (!txt.equals(lasttxt)) {
-                tottxt += txt + "\n";
-            }
-            lasttxt = txt;
-        }
-    }
+	String tottxt = "";
+	String lasttxt = "";
+	for (TextWidget w : textWidgets) {
+		if (!w.getVisibleRect().isEmpty()) {
+			String txt = w.getText();
+			if (!txt.equals(lasttxt)) {
+				tottxt += txt + "\n";
+			}
+			lasttxt = txt;
+		}
+	}
 
-    System.out.println(tottxt);
-    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(tottxt), null);
-		JOptionPane.showMessageDialog(mainPanel,new JTextArea(tottxt),"Contents of clipboard", JOptionPane.INFORMATION_MESSAGE);
+	System.out.println(tottxt);
+	Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(tottxt), null);
+	JOptionPane.showMessageDialog(mainPanel, new JTextArea(tottxt), "Contents of clipboard", JOptionPane.INFORMATION_MESSAGE);
 }//GEN-LAST:event_copyText
 
-    private int insetHeight(JComponent c) {
-        Insets i = c.getInsets();
-        return i.top + i.bottom;
-    }
+	private int insetHeight(JComponent c) {
+		Insets i = c.getInsets();
+		return i.top + i.bottom;
+	}
 
 private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToText
-    //System.out.println();
-    //System.out.println("============fitToText()");
-    int toth = 0;
-    for (TextWidget w : textWidgets) {
+	//System.out.println();
+	//System.out.println("============fitToText()");
+	int toth = 0;
+	for (TextWidget w : textWidgets) {
 
-        Dimension d = w.textEditor.getPreferredSize();
-        d.height += insetHeight(w.textEditor) + insetHeight(w) + insetHeight(w.jScrollPane1) +6;
+		Dimension d = w.textEditor.getPreferredSize();
+		d.height += insetHeight(w.textEditor) + insetHeight(w) + insetHeight(w.jScrollPane1) + 6;
 
-        if (w.commandTextField.isVisible()) {
-            d.height += w.commandTextField.getPreferredSize().height;
-            d.height += insetHeight(w.commandTextField);
-        }
+		if (w.commandTextField.isVisible()) {
+			d.height += w.commandTextField.getPreferredSize().height;
+			d.height += insetHeight(w.commandTextField);
+		}
 
-        //System.out.println("d="+d.height);
+		//System.out.println("d="+d.height);
+		if (w.getStatus() == w.STATUS_EQUAL) d.height = 0;
 
-        if (w.getStatus()==w.STATUS_EQUAL) d.height = 0;
+		w.setMinimumSize(d);
+		w.setPreferredSize(d);
+		toth += d.height;
+	}
 
-        w.setMinimumSize(d);
-        w.setPreferredSize(d);
-        toth += d.height;
-    }
-
-    ajustSplitPaneHeights(toth);
+	ajustSplitPaneHeights(toth);
 }//GEN-LAST:event_fitToText
 
 	private void setSelectedIndex(JComboBox modesComboBox, int index) {
-		modesComboBox.setSelectedIndex(index<modesComboBox.getModel().getSize()?index: -1 );
+		modesComboBox.setSelectedIndex(index < modesComboBox.getModel().getSize() ? index : -1);
 	}
 
-    private boolean local = true;
+	private boolean local = true;
 
     private void rdbtnLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbtnLocalActionPerformed
-        if (local) return;
-        local = true;
-				prefs.putInt("modesComboBoxOnline", modesComboBox.getSelectedIndex());
-        modesComboBox.removeAllItems();
-        for (Mode m : modes) modesComboBox.addItem(m);
-				setSelectedIndex(modesComboBox, prefs.getInt("modesComboBoxLocal", 0));
+			if (local) return;
+			local = true;
+			prefs.putInt("modesComboBoxOnline", modesComboBox.getSelectedIndex());
+			modesComboBox.removeAllItems();
+			for (Mode m : modes) modesComboBox.addItem(m);
+			setSelectedIndex(modesComboBox, prefs.getInt("modesComboBoxLocal", 0));
     }//GEN-LAST:event_rdbtnLocalActionPerformed
 
     private void rdbtnOnlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbtnOnlineActionPerformed
-        if (!local) return;
-        local = false;
-				prefs.putInt("modesComboBoxLocal", modesComboBox.getSelectedIndex());
-        if (onlineModeToLoader != null) {
-						modesComboBox.removeAllItems();
-						modesComboBox.addItem("SELECT A MODE");
-						for (String s : onlineModes) modesComboBox.addItem(s);
-						setSelectedIndex(modesComboBox, prefs.getInt("modesComboBoxOnline", 0));
-				} else {
-						final JDialog dialog = new JDialog(getFrame(), "Downloading, please wait...", false);
-						dialog.setContentPane(new JOptionPane("Please wait while downloading the list of pairs",
-                JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null));
-						dialog.pack();
-						dialog.setLocationRelativeTo(getFrame());
-						dialog.setVisible(true);
+			if (!local) return;
+			local = false;
+			prefs.putInt("modesComboBoxLocal", modesComboBox.getSelectedIndex());
+			if (onlineModeToLoader != null) {
+				modesComboBox.removeAllItems();
+				modesComboBox.addItem("SELECT A MODE");
+				for (String s : onlineModes) modesComboBox.addItem(s);
+				setSelectedIndex(modesComboBox, prefs.getInt("modesComboBoxOnline", 0));
+			} else {
+				final JDialog dialog = new JDialog(getFrame(), "Downloading, please wait...", false);
+				dialog.setContentPane(new JOptionPane("Please wait while downloading the list of pairs",
+						JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[] {}, null));
+				dialog.pack();
+				dialog.setLocationRelativeTo(getFrame());
+				dialog.setVisible(true);
 
-						new Thread() {
-							@Override
-							public void run() {
-								try {
-										initOnlineModes();
-										modesComboBox.removeAllItems();
-										modesComboBox.addItem("SELECT A MODE");
-										for (String s : onlineModes) modesComboBox.addItem(s);
-										setSelectedIndex(modesComboBox, prefs.getInt("modesComboBoxOnline", 0));
-										jSplitPane1.setBottomComponent(new JLabel("Please select a mode"));
-										modesComboBox.showPopup();
-								} catch (Exception e) {
-										e.printStackTrace();
-										warnUser("Error loading online modes: " + e);
-								} finally {
-										dialog.setVisible(false);
-								}
-							}
-						}.start();
-				}
+				new Thread() {
+					@Override
+					public void run() {
+						try {
+							initOnlineModes();
+							modesComboBox.removeAllItems();
+							modesComboBox.addItem("SELECT A MODE");
+							for (String s : onlineModes) modesComboBox.addItem(s);
+							setSelectedIndex(modesComboBox, prefs.getInt("modesComboBoxOnline", 0));
+							jSplitPane1.setBottomComponent(new JLabel("Please select a mode"));
+							modesComboBox.showPopup();
+						} catch (Exception e) {
+							e.printStackTrace();
+							warnUser("Error loading online modes: " + e);
+						} finally {
+							dialog.setVisible(false);
+						}
+					}
+				}.start();
+			}
     }//GEN-LAST:event_rdbtnOnlineActionPerformed
 
-    void fitToText() {
-      fitToText(null);
-    }
+	void fitToText() {
+		fitToText(null);
+	}
 
+	JFileChooser modeFileChooser;
 
+	@Action
+	public void loadMode() {
+		if (modeFileChooser == null) {
+			modeFileChooser = new JFileChooser(prefs.get("lastModePath", "."));
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("Apertium mode files", "mode");
+			modeFileChooser.setFileFilter(filter);
+			modeFileChooser.setMultiSelectionEnabled(true);
+		}
+		int returnVal = modeFileChooser.showOpenDialog(mainPanel);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			System.out.println("You chose to open this file: "
+					+ modeFileChooser.getSelectedFile().getName());
+			prefs.put("lastModePath", modeFileChooser.getSelectedFile().getParent());
+			File fs[] = modeFileChooser.getSelectedFiles();
+			//System.out.println("txt=" + fs.length);
+			for (File f : fs) {
+				loadMode(f.getPath());
+			}
+			sortModesComboBox();
+			String mpref = "";
+			for (Mode mo : modes) mpref = mpref + mo.getFilename() + "\n";
+			prefs.put("modeFiles", mpref);
+		}
+	}
 
-    JFileChooser modeFileChooser;
-
-    @Action
-    public void loadMode() {
-        if (modeFileChooser == null) {
-            modeFileChooser = new JFileChooser(prefs.get("lastModePath", "."));
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("Apertium mode files", "mode");
-            modeFileChooser.setFileFilter(filter);
-            modeFileChooser.setMultiSelectionEnabled(true);
-        }
-        int returnVal = modeFileChooser.showOpenDialog(mainPanel);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            System.out.println("You chose to open this file: " +
-                    modeFileChooser.getSelectedFile().getName());
-            prefs.put("lastModePath", modeFileChooser.getSelectedFile().getParent());
-            File fs[] = modeFileChooser.getSelectedFiles();
-            //System.out.println("txt=" + fs.length);
-            for (File f : fs)  {
-                loadMode(f.getPath());
-            }
-            sortModesComboBox();
-            String mpref = "";
-            for (Mode mo : modes) mpref = mpref + mo.getFilename()+"\n";
-            prefs.put("modeFiles", mpref);
-        }
-    }
-
-    public final static Preferences prefs = Preferences.userNodeForPackage(ApertiumView.class);
+	public final static Preferences prefs = Preferences.userNodeForPackage(ApertiumView.class);
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1154,116 +1138,114 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
     javax.swing.JMenu toolsMenu;
     // End of variables declaration//GEN-END:variables
 
-    private JDialog aboutBox;
+	private JDialog aboutBox;
 
-    ArrayList<Mode> modes = new ArrayList<Mode>();
-    ArrayList<String> onlineModes;
-    HashMap<String, URLClassLoader> onlineModeToLoader;
-    HashMap<String, String> onlineModeToCode;
+	ArrayList<Mode> modes = new ArrayList<Mode>();
+	ArrayList<String> onlineModes;
+	HashMap<String, URLClassLoader> onlineModeToLoader;
+	HashMap<String, String> onlineModeToCode;
 
-    private void initOnlineModes() throws IOException {
-        final String REPO_URL = "https://apertium.svn.sourceforge.net/svnroot/apertium/builds/language-pairs";
-        onlineModes = new ArrayList<String>();
-        onlineModeToLoader = new HashMap<String, URLClassLoader>();
-        onlineModeToCode = new HashMap<String, String>();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(REPO_URL).openStream()));
-        String line;
-        while ((line = reader.readLine()) != null) {
-            String[] columns = line.split("\t");
-            if (columns.length > 3) {
-                URLClassLoader cl = new URLClassLoader(new URL[]{new URL(columns[1])}, this.getClass().getClassLoader());
-                String pairs[] = columns[3].split(",");
-                for (int i = 0; i < pairs.length; i++) {
-                    final String pair = pairs[i].trim();
-                    if (!pair.contains("-")) continue;
-                    String title = Translator.getTitle(pair);
-                    onlineModes.add(title);
-                    onlineModeToCode.put(title, pair);
-                    onlineModeToLoader.put(title, cl);
-                }
-            }
-        }
-        Collections.sort(onlineModes);
-    }
+	private void initOnlineModes() throws IOException {
+		final String REPO_URL = "https://apertium.svn.sourceforge.net/svnroot/apertium/builds/language-pairs";
+		onlineModes = new ArrayList<String>();
+		onlineModeToLoader = new HashMap<String, URLClassLoader>();
+		onlineModeToCode = new HashMap<String, String>();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(REPO_URL).openStream()));
+		String line;
+		while ((line = reader.readLine()) != null) {
+			String[] columns = line.split("\t");
+			if (columns.length > 3) {
+				URLClassLoader cl = new URLClassLoader(new URL[] { new URL(columns[1]) }, this.getClass().getClassLoader());
+				String pairs[] = columns[3].split(",");
+				for (int i = 0; i < pairs.length; i++) {
+					final String pair = pairs[i].trim();
+					if (!pair.contains("-")) continue;
+					String title = Translator.getTitle(pair);
+					onlineModes.add(title);
+					onlineModeToCode.put(title, pair);
+					onlineModeToLoader.put(title, cl);
+				}
+			}
+		}
+		Collections.sort(onlineModes);
+	}
 
-    public static String legu(File fil) throws IOException {
-	FileChannel fc = new FileInputStream(fil).getChannel();
-	MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fil.length());
-	//CharBuffer cb = Charset.forName("ISO-8859-1").decode(bb);
-	CharBuffer cb = Charset.forName("UTF-8").decode(bb);
-	return new String(cb.array());
-    }
+	public static String legu(File fil) throws IOException {
+		FileChannel fc = new FileInputStream(fil).getChannel();
+		MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fil.length());
+		//CharBuffer cb = Charset.forName("ISO-8859-1").decode(bb);
+		CharBuffer cb = Charset.forName("UTF-8").decode(bb);
+		return new String(cb.array());
+	}
 
+	private void loadMode(String filename) {
+		try {
+			Mode m = new Mode(filename);
+			modes.add(m);
+			modesComboBox.addItem(m);
+		} catch (IOException ex) {
+			Logger.getLogger(ApertiumView.class.getName()).log(Level.INFO, null, ex);
+			warnUser("Loading of mode " + filename + " failed:\n\n" + ex.toString() + "\n\nContinuing without this mode.");
+		}
+	}
 
-    private void loadMode(String filename) {
-        try {
-            Mode m = new Mode(filename);
-            modes.add(m);
-            modesComboBox.addItem(m);
-        } catch (IOException ex) {
-            Logger.getLogger(ApertiumView.class.getName()).log(Level.INFO, null, ex);
-            warnUser("Loading of mode "+filename+" failed:\n\n"+ex.toString()+"\n\nContinuing without this mode.");
-        }
-    }
+	private void sortModesComboBox() {
+		//We always keep online modes sorted, so we don't need to do anything with them
+		if (!local) return;
 
-
-    private void sortModesComboBox() {
-        //We always keep online modes sorted, so we don't need to do anything with them
-        if (!local) return;
-
-        /* don't sort; its confusing
-        Collections.sort(modes, new Comparator<Mode>() {
-            @Override
-            public int compare(Mode m1, Mode m2) {
-                return m1.toString().compareTo(m2.toString());
-            }
-        });
-        */
-        modesComboBox.removeAllItems();
-        for (Mode m : modes) modesComboBox.addItem(m);
-    }
+		/* don't sort; its confusing
+		 Collections.sort(modes, new Comparator<Mode>() {
+		 @Override
+		 public int compare(Mode m1, Mode m2) {
+		 return m1.toString().compareTo(m2.toString());
+		 }
+		 });
+		 */
+		modesComboBox.removeAllItems();
+		for (Mode m : modes) modesComboBox.addItem(m);
+	}
 
 	public void warnUser(String txt) {
-		System.out.println("warnUser("+txt);
-		JOptionPane.showMessageDialog(mainPanel,txt,"Warning", JOptionPane.WARNING_MESSAGE);
+		System.out.println("warnUser(" + txt);
+		JOptionPane.showMessageDialog(mainPanel, txt, "Warning", JOptionPane.WARNING_MESSAGE);
 		//JOptionPane.showMessageDialog(null,txt,"Warning", JOptionPane.WARNING_MESSAGE);
 	}
 
-    Font textWidgetFont = null;
+	Font textWidgetFont = null;
 
-    @Action
-    public void changeFont() {
+	@Action
+	public void changeFont() {
 
-        FontDialog fd = new FontDialog((Frame) SwingUtilities.getWindowAncestor(mainPanel));
-        fd.setInitialFont(textWidget1.textEditor.getFont());
-        fd.setVisible(true);
-        textWidgetFont = fd.getFont();
-        for (TextWidget t : textWidgets) {
-            t.textEditor.setFont(textWidgetFont);
-        }
-        System.out.println("f = " + textWidgetFont);
-    }
+		FontDialog fd = new FontDialog((Frame) SwingUtilities.getWindowAncestor(mainPanel));
+		fd.setInitialFont(textWidget1.textEditor.getFont());
+		fd.setVisible(true);
+		textWidgetFont = fd.getFont();
+		for (TextWidget t : textWidgets) {
+			t.textEditor.setFont(textWidgetFont);
+		}
+		System.out.println("f = " + textWidgetFont);
+	}
 
-  @Action
-  public void makeTestCase() {
-        String[] firstTxt = null;
-        String[] lastTxt = null;
-        for (TextWidget w : textWidgets) { // ugly but it works :-)
-            String[] txt = w.getText().split("\n");
-            if (firstTxt==null) firstTxt=txt;
-            lastTxt = txt;
-        }
+	@Action
+	public void makeTestCase() {
+		String[] firstTxt = null;
+		String[] lastTxt = null;
+		for (TextWidget w : textWidgets) { // ugly but it works :-)
+			String[] txt = w.getText().split("\n");
+			if (firstTxt == null) firstTxt = txt;
+			lastTxt = txt;
+		}
 
-        Mode mode = (Mode) modesComboBox.getSelectedItem();
-        String sourceLanguage = mode.toString().split("-")[0];
+		Mode mode = (Mode) modesComboBox.getSelectedItem();
+		String sourceLanguage = mode.toString().split("-")[0];
 
-        String tottxt = "";
-        for (int i=0; i<firstTxt.length; i++) {
-          tottxt = tottxt + "* ("+sourceLanguage+") ''" + firstTxt[i] + "'' → " + lastTxt[i] + "\n";
-        }
+		String tottxt = "";
+		for (int i = 0; i < firstTxt.length; i++) {
+			tottxt = tottxt + "* (" + sourceLanguage + ") ''" + firstTxt[i] + "'' → " + lastTxt[i] + "\n";
+		}
 
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(tottxt.trim()), null);
-    		JOptionPane.showMessageDialog(mainPanel,new JTextArea(tottxt.trim()),"Paste into a Wiki test page", JOptionPane.INFORMATION_MESSAGE);
-  }
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(tottxt.trim()), null);
+		JOptionPane.showMessageDialog(mainPanel, new JTextArea(tottxt.trim()), "Paste into a Wiki test page", JOptionPane.INFORMATION_MESSAGE);
+	}
 
 }
