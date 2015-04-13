@@ -37,6 +37,7 @@ import java.util.*;
 import java.util.prefs.Preferences;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -97,6 +98,12 @@ public class ApertiumView extends FrameView {
               }
               renderer.setToolTipText(m.getFilename());
             } else if (value instanceof String && !local) {
+              if (popupMenuVisible && !value.equals("SELECT A MODE")) {
+								URLClassLoader cl = onlineModeToLoader.get(value);
+								String url = cl==null?"":Arrays.toString(cl.getURLs());
+                renderer.setText("<html>"+value+"<small><br/>"+url+"<br/>"+ onlineModeToCode.get(value)+ ".mode");
+		            setHScrollFor(list);
+							}
               String mode = (String) value;
               renderer.setToolTipText(mode != null && mode.equals("SELECT A MODE") ? "[Select a mode]" : onlineModeToCode.get(mode) + ".mode");
             }
@@ -140,11 +147,7 @@ public class ApertiumView extends FrameView {
                 }
                 sortModesComboBox();
             } else {
-                warnUser("Welcome to Apertium-viewer.\nIt seems this is first time you run this program."
-                        +"\nI will therefore try to search install language pairs ('modes') from standart places."
-                        +"\nIf you wish to install other language pairs you can use the File menu"
-                        +"\n(for example, Esperanto-English pair is called eo-en.mode).");
-                LinkedHashSet<File> fal = new LinkedHashSet<File>();
+                LinkedHashSet<File> fal = new LinkedHashSet<File>();								
                 try {
                     fal.addAll(Arrays.asList(new File("/usr/share/apertium/modes/").listFiles()));
                 } catch (Exception e) { }
@@ -154,7 +157,7 @@ public class ApertiumView extends FrameView {
                 try {
                     fal.addAll(Arrays.asList(new File(".").listFiles()));
                 } catch (Exception e) { }
-
+								
                 if (!fal.isEmpty()) {
                     for (File f : fal) {
                         if (f.getName().endsWith(".mode")) {
@@ -162,15 +165,32 @@ public class ApertiumView extends FrameView {
                         }
                     }
                     sortModesComboBox();
+										warnUser("Welcome to Apertium-viewer.\nIt seems this is the first time you run this program."
+														+"\nI have searched in standard places for 'modes' (language translation pairs)"
+														+"\nI will let you revise the list now (you can always re-edit the list by choosing File | Edit modes)");
                     editModesMenuItemActionPerformed(null);
-                }
+										warnUser("If some modes (language pairs) were missing you can choose File | Load mode"
+														+"\nand select a mode (for example, Esperanto-English pair is called eo-en.mode)"
+													  +"\nto add it to the list (you'll have to download and compile the pair first)."
+													  +"\nYou can also download some pre-compiled pairs - choose 'Online' in upper right corner."
+										);
+                } else {
+										warnUser("Welcome to Apertium-viewer.\nIt seems this is the first time you run this program."
+														+"\nI have searched in standard places for language translation pairs ('modes'), but I didn't find any."
+														+"\nI will now get download a list of 'online' modes, which are downloaded on the fly."
+														+"\nIf you DO have Apertium language pairs installed, please use File | Load mode to load them,"
+														+"\nand switch to 'Local' in the top right");
+										prefs.getBoolean("local", false);
+								}
             }
 
-
-            if (modes.isEmpty()) {
-                warnUser("No language pairs could be loaded.\nPlease use the File menu to install local modes or use online ones instead.");
-            }
-
+		        if (prefs.getBoolean("local", true)) {
+								local = false; // to trigger the button
+								rdbtnLocalActionPerformed(null);
+						} else {
+								rdbtnOnline.setSelected(true);
+								rdbtnOnlineActionPerformed(null);
+						}
             int idx = prefs.getInt("modesComboBox", -1);
             if (idx >= 0 && idx<modes.size()) {
                 modesComboBox.setSelectedIndex(idx);
@@ -191,7 +211,8 @@ public class ApertiumView extends FrameView {
             try {
                 prefs.clear();
             } catch (Exception e1) {
-                warnUser("An error ocurred while trying to reset the settings.\nIf the problem persists try removing your prefs.xml file manually.");
+							e1.printStackTrace();
+							warnUser("An error ocurred while trying to reset the settings.\nIf the problem persists try removing your .java/.userPrefs/apertiumview/prefs.xml file manually.");
             }
             System.exit(1);
         }
@@ -228,7 +249,7 @@ public class ApertiumView extends FrameView {
 
     public void shutdown() {
         prefs.putBoolean("showCommands", showCommandsCheckBox.isSelected());
-        prefs.putInt("modesComboBox", local ? modesComboBox.getSelectedIndex() : savedIdx);
+        prefs.putBoolean("local", local);
         String divLoc = "";
         for (JSplitPane p : splitPanes) divLoc += ","+p.getDividerLocation();
         prefs.put("dividerLocation", divLoc);
@@ -1013,34 +1034,58 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
     ajustSplitPaneHeights(toth);
 }//GEN-LAST:event_fitToText
 
-    private int savedIdx;
+	private void setSelectedIndex(JComboBox modesComboBox, int index) {
+		modesComboBox.setSelectedIndex(index<modesComboBox.getModel().getSize()?index: -1 );
+	}
+
     private boolean local = true;
 
     private void rdbtnLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbtnLocalActionPerformed
         if (local) return;
         local = true;
-        int idxToSave = modesComboBox.getSelectedIndex();
+				prefs.putInt("modesComboBoxOnline", modesComboBox.getSelectedIndex());
         modesComboBox.removeAllItems();
         for (Mode m : modes) modesComboBox.addItem(m);
-        modesComboBox.setSelectedIndex(savedIdx);
-        savedIdx = idxToSave;
+				setSelectedIndex(modesComboBox, prefs.getInt("modesComboBoxLocal", 0));
     }//GEN-LAST:event_rdbtnLocalActionPerformed
 
     private void rdbtnOnlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbtnOnlineActionPerformed
         if (!local) return;
         local = false;
-        int idxToSave = modesComboBox.getSelectedIndex();
-        if (onlineModeToLoader == null)
-            try {
-                initOnlineModes();
-            } catch (IOException e) {
-                warnUser("Error loading online modes: " + e);
-            }
-        modesComboBox.removeAllItems();
-        modesComboBox.addItem("SELECT A MODE");
-        for (String s : onlineModes) modesComboBox.addItem(s);
-        modesComboBox.setSelectedIndex(savedIdx);
-        savedIdx = idxToSave;
+				prefs.putInt("modesComboBoxLocal", modesComboBox.getSelectedIndex());
+        if (onlineModeToLoader != null) {
+						modesComboBox.removeAllItems();
+						modesComboBox.addItem("SELECT A MODE");
+						for (String s : onlineModes) modesComboBox.addItem(s);
+						setSelectedIndex(modesComboBox, prefs.getInt("modesComboBoxOnline", 0));
+				} else {
+						final JDialog dialog = new JDialog(getFrame(), "Downloading, please wait...", false);
+						dialog.setContentPane(new JOptionPane("Please wait while downloading the list of pairs",
+                JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null));
+						dialog.pack();
+						dialog.setLocationRelativeTo(getFrame());
+						dialog.setVisible(true);
+
+						new Thread() {
+							@Override
+							public void run() {
+								try {
+										initOnlineModes();
+										modesComboBox.removeAllItems();
+										modesComboBox.addItem("SELECT A MODE");
+										for (String s : onlineModes) modesComboBox.addItem(s);
+										setSelectedIndex(modesComboBox, prefs.getInt("modesComboBoxOnline", 0));
+										jSplitPane1.setBottomComponent(new JLabel("Please select a mode"));
+										modesComboBox.showPopup();
+								} catch (Exception e) {
+										e.printStackTrace();
+										warnUser("Error loading online modes: " + e);
+								} finally {
+										dialog.setVisible(false);
+								}
+							}
+						}.start();
+				}
     }//GEN-LAST:event_rdbtnOnlineActionPerformed
 
     void fitToText() {

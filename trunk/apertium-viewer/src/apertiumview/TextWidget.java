@@ -255,7 +255,7 @@ public class TextWidget extends javax.swing.JPanel {
         changing = true;
         try {
 
-          System.err.println("newTxt = " + newTxt);
+          //System.err.println("newTxt = " + newTxt);
             textEditor.setText(newTxt);
         } catch (Exception e) {
             // For some reason this sometimes fails. Try again and then give up
