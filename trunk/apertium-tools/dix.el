@@ -3,7 +3,7 @@
 ;; Copyright (C) 2009-2014 Kevin Brubeck Unhammer
 
 ;; Author: Kevin Brubeck Unhammer <unhammer@fsfe.org>
-;; Version: 0.1.2
+;; Version: 0.1.3
 ;; Url: http://wiki.apertium.org/wiki/Emacs
 ;; Keywords: languages
 
@@ -99,7 +99,7 @@
 
 ;;; Code:
 
-(defconst dix-version "0.1.2")
+(defconst dix-version "0.1.3")
 
 (require 'nxml-mode)
 (require 'cl)
@@ -1270,12 +1270,8 @@ can go back with C-u \\[set-mark-command]."
 	 (pos (save-excursion
 		(goto-char (point-min))
 		(when (re-search-forward
-		       (concat "<pardef *n=\"\\("
-			       (replace-regexp-in-string
-				"\\\\"     ; replace single \ (double-escaped)
-				"\\\\\\\\" ; with \\ (double-escaped)
-				pdname 'fixedcase)
-			       "\\)\"") nil t)
+		       (concat "<pardef *n=\"\\(" (regexp-quote pdname) "\\)\"")
+                       nil t)
 		  (match-beginning 0)))))
     (if pos
 	(progn
