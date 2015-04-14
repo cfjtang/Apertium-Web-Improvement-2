@@ -165,8 +165,8 @@ public class ApertiumView extends FrameView {
 							+ "\nI will let you revise the list now (you can always re-edit the list by choosing File | Edit modes)");
 					editModesMenuItemActionPerformed(null);
 					warnUser("If some modes (language pairs) were missing you can choose File | Load mode"
-							+ "\nand select a mode (for example, Esperanto-English pair is called eo-en.mode)"
-							+ "\nto add it to the list (you'll have to download and compile the pair first)."
+							+ "\nand select a mode to add it to the list (you'll have to download and compile the pair first)."
+							+ "\n(for example, Esperanto-English pair is called eo-en.mode)"
 							+ "\nYou can also download some pre-compiled pairs - choose 'Online' in upper right corner."
 					);
 				} else {
@@ -266,31 +266,11 @@ public class ApertiumView extends FrameView {
 			g.setColor(Color.RED);
 			g.drawRect(1, 1, tw.getWidth() - 2, tw.getHeight() - 2);
 
-			/*
-			 // Make it blink for a short while
-			 comp = (JComponent) (comp.getParent());
-			 b = comp.getBounds(b);
-			 comp = (JComponent) (comp.getParent());
-			 Graphics2D g = (Graphics2D) comp.getGraphics();
-			 g.setColor(Color.RED);
-			 g.drawRect(b.x+1, b.y+1, b.width-2, b.height-2);
-
-
-			 b = comp.getBounds(b);
-			 comp = (JComponent) (comp.getParent().getParent());
-			 g = (Graphics2D) comp.getGraphics();
-			 g.setColor(Color.BLUE);
-			 g.drawRect(b.x+1, b.y+1, b.width-2, b.height-2);
-			 g.setColor(Color.CYAN);
-			 g.drawRect(b.x, b.y-5, b.width, b.height+10);
-			 */
-			//tw.repaint(100); // behaves as 0, but the blink is visible for me
-			// this is a waste of threads,but who cares, this is a GUI program!
 			new Thread() {
 				public void run() {
 					try {
-						Thread.sleep(200);
-						tw.repaint(0);
+						Thread.sleep(300);
+						tw.repaint();
 					} catch (InterruptedException ex) {
 					}
 				}
@@ -389,26 +369,40 @@ public class ApertiumView extends FrameView {
 	}
 
 	private void showSelectedMode() {
-		Mode m = null;
-		Object item = modesComboBox.getSelectedItem();
+		final Object item = modesComboBox.getSelectedItem();
 
-		if (item instanceof Mode) {
+		if (item instanceof Mode) { // local
 			IOUtils.setClassLoader(null);
-			m = (Mode) item;
-		} else if (item instanceof String) {
+			showMode((Mode) item);
+		} else { // online
 			if (item.equals("SELECT A MODE")) return;
-			try {
-				IOUtils.setClassLoader(onlineModeToLoader.get((String) item));
-				m = new Mode("data/modes/" + onlineModeToCode.get((String) item) + ".mode");
-			} catch (Exception e) {
-				warnUser("Unexpected error while trying to load online package: " + e);
-			}
-		} else return;
 
-		if (m == null) {
-			return;
+			final JDialog dialog = createDialog("Please wait while downloading "+item);
+
+			new Thread() {
+				@Override
+				public void run() {
+					try {
+						IOUtils.setClassLoader(onlineModeToLoader.get((String) item));
+						final Mode m = new Mode("data/modes/" + onlineModeToCode.get((String) item) + ".mode");
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								showMode(m);
+							}
+						});
+					} catch (Exception e) {
+						e.printStackTrace();
+						warnUser("Unexpected error while trying to load online package: " + e);
+					} finally {
+						dialog.setVisible(false);
+					}
+				}
+			}.start();
 		}
+	}
 
+	private void showMode(Mode m) {
 		if (m.getPipelineLength() + 1 != textWidgets.size()) {
 			// Number of text widgets are different, dispose all and regenerate
 			lastSplitPane = jSplitPane1;
@@ -796,7 +790,7 @@ public class ApertiumView extends FrameView {
 
 private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modesComboBoxActionPerformed
 	System.out.println("modesComboBox.getSelectedIndex()="+modesComboBox.getSelectedIndex() + local+ignoreEvents);
-	System.out.println("modesComboBox.getSelectedIndex()="+modesComboBox.getSelectedItem());
+	System.out.println("modesComboBox.getSelectedIndex()="+modesComboBox.getSelectedItem() + local+ignoreEvents);
 	if (ignoreEvents) return;
 	if (local) {
 		prefs.putInt("modesComboBoxLocal", modesComboBox.getSelectedIndex());
@@ -1044,22 +1038,26 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 			local = false;
 			if (onlineModeToLoader != null) {
 				updateModesComboBox();
+			} else if (prefs.get("onlineModes","").length()>0) {
+				initOnlineModes();
+				updateModesComboBox();
 			} else {
-				final JDialog dialog = new JDialog(getFrame(), "Downloading, please wait...", false);
-				dialog.setContentPane(new JOptionPane("Please wait while downloading the list of pairs",
-						JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[] {}, null));
-				dialog.pack();
-				dialog.setLocationRelativeTo(getFrame());
-				dialog.setVisible(true);
+				final JDialog dialog = createDialog("Please wait while downloading the list of pairs");
 
 				new Thread() {
 					@Override
 					public void run() {
 						try {
-							initOnlineModes();
-							updateModesComboBox();
-							jSplitPane1.setBottomComponent(new JLabel("Please select a mode"));
-							modesComboBox.showPopup();
+							downloadOnlineModes();
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {
+									jSplitPane1.setBottomComponent(new JLabel("Please select a mode"));
+									initOnlineModes();
+									updateModesComboBox();
+									modesComboBox.showPopup();
+								}
+							});
 						} catch (Exception e) {
 							e.printStackTrace();
 							warnUser("Error loading online modes: " + e);
@@ -1070,6 +1068,16 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 				}.start();
 			}
     }//GEN-LAST:event_rdbtnOnlineActionPerformed
+
+	private JDialog createDialog(String message) {
+		final JDialog dialog = new JDialog(getFrame(), "Downloading, please wait...", false);
+		dialog.setContentPane(new JOptionPane(message,
+				JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[] {}, null));
+		dialog.pack();
+		dialog.setLocationRelativeTo(getFrame());
+		dialog.setVisible(true);
+		return dialog;
+	}
 
 	void fitToText() {
 		fitToText(null);
@@ -1142,14 +1150,22 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 	HashMap<String, URLClassLoader> onlineModeToLoader;
 	HashMap<String, String> onlineModeToCode;
 
-	private void initOnlineModes() throws IOException {
+
+	private void downloadOnlineModes() throws IOException {
 		final String REPO_URL = "https://apertium.svn.sourceforge.net/svnroot/apertium/builds/language-pairs";
+		StringBuilder sb = new StringBuilder();
+		InputStreamReader isr = new InputStreamReader(new URL(REPO_URL).openStream());
+		int ch = isr.read();
+		while (ch != -1) { sb.append((char)ch); ch = isr.read(); }
+		isr.close();
+		prefs.put("onlineModes", sb.toString());
+	}
+
+	private void initOnlineModes() {
 		onlineModes = new ArrayList<String>();
 		onlineModeToLoader = new HashMap<String, URLClassLoader>();
 		onlineModeToCode = new HashMap<String, String>();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(REPO_URL).openStream()));
-		String line;
-		while ((line = reader.readLine()) != null) {
+		for (String line : prefs.get("onlineModes","").split("\n")) try {
 			String[] columns = line.split("\t");
 			if (columns.length > 3) {
 				URLClassLoader cl = new URLClassLoader(new URL[] { new URL(columns[1]) }, this.getClass().getClassLoader());
@@ -1163,8 +1179,8 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 					onlineModeToLoader.put(title, cl);
 				}
 			}
-		}
-		Collections.sort(onlineModes);
+		} catch (Exception e) { e.printStackTrace(); }
+		// Collections.sort(onlineModes); // don't sort; better to keep original order intact as related modes are near to each other
 	}
 
 	public static String legu(File fil) throws IOException {
