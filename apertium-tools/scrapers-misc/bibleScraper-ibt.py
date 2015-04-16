@@ -37,6 +37,8 @@ if args.x:
     OT = ['Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zechariah', 'Zephaniah', 'Haggai', 'Malachi']
     if "OT" in args.x:
         toSkip = OT
+else:
+	toSkip = []
 
 def firstPage(url):
     
@@ -125,6 +127,7 @@ CODES = {   'ADG'   :   'Adygei',
             'CHV'   :   'Chuvash',
             'CTT'   :   'Crimean Tatar',
             'KHK'   :   'Khakas',
+            'XKS'   :   'Khakas',
             'KJV'   :   'English',
             'WEB'   :   'English',
             'KUMYK' :   'Kumyk',
@@ -137,6 +140,7 @@ CODES = {   'ADG'   :   'Adygei',
             'TKL'   :   'Turkmen',
             'TKLI'  :   'Turkmen',
             'TKCI'  :   'Turkmen Cyrillic',
+            'TYV'   :   'Tuvan',
             'RSP'   :   'Russian',
             'UZVL'  :   'Uzbek',
             'UZIBTL':   'Uzbek',
