@@ -81,6 +81,7 @@ public class ApertiumView extends FrameView {
 			public Component getListCellRendererComponent(JList list, Object value, int index,
 					boolean isSelected, boolean cellHasFocus) {
 				JLabel renderer = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				System.out.println("getListCellRendererComponent "+popupMenuVisible+isSelected+cellHasFocus);
 
 				if (value instanceof Mode) {
 					Mode m = (Mode) value;
@@ -89,19 +90,20 @@ public class ApertiumView extends FrameView {
 					} else {
 						File f = new File(m.getFilename());
 						renderer.setText("<html>" + m.toString() + "<small><br/>" + f.getParent() + File.separator + "<br/>" + f.getName());
-						setHScrollFor(list);
-						renderer.setBorder(new EmptyBorder(5, 0, 5, 0));
 					}
 					renderer.setToolTipText(m.getFilename());
 				} else if (value instanceof String && !local) {
 					if (popupMenuVisible && !value.equals("SELECT A MODE")) {
 						URLClassLoader cl = onlineModeToLoader.get(value);
 						String url = cl == null ? "" : Arrays.toString(cl.getURLs());
-						renderer.setText("<html>" + value + "<small><br/>" + url + "<br/>" + onlineModeToCode.get(value) + ".mode");
-						setHScrollFor(list);
+						renderer.setText("<html>" + value + "<small><br/>" + onlineModeToCode.get(value) + ".mode "  + url);
 					}
 					String mode = (String) value;
 					renderer.setToolTipText(mode != null && mode.equals("SELECT A MODE") ? "[Select a mode]" : onlineModeToCode.get(mode) + ".mode");
+				}
+				if (popupMenuVisible) {
+					setHScrollFor(list);
+					renderer.setBorder(new EmptyBorder(5, 0, 5, 0));
 				}
 
 				return renderer;
@@ -109,11 +111,9 @@ public class ApertiumView extends FrameView {
 
 			// Source: https://community.oracle.com/thread/1775495?tstart=0
 			private void setHScrollFor(JList list) {
-				JScrollPane scrollPane
-						= (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, list);
+				JScrollPane scrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, list);
 				if (scrollPane.getHorizontalScrollBar() == null
-						|| scrollPane.getHorizontalScrollBarPolicy()
-						!= JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED) {
+						|| scrollPane.getHorizontalScrollBarPolicy() != JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED) {
 					scrollPane.setHorizontalScrollBar(new JScrollBar(JScrollBar.HORIZONTAL));
 					scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 				}
@@ -587,15 +587,15 @@ public class ApertiumView extends FrameView {
         textWidgetsPanel.setLayout(textWidgetsPanelLayout);
         textWidgetsPanelLayout.setHorizontalGroup(
             textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 981, Short.MAX_VALUE)
+            .addGap(0, 1106, Short.MAX_VALUE)
             .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 981, Short.MAX_VALUE))
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1106, Short.MAX_VALUE))
         );
         textWidgetsPanelLayout.setVerticalGroup(
             textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 411, Short.MAX_VALUE)
+            .addGap(0, 414, Short.MAX_VALUE)
             .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE))
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(textWidgetsPanel);
@@ -640,7 +640,7 @@ public class ApertiumView extends FrameView {
 
         jLabel1.setDisplayedMnemonic('M');
         jLabel1.setLabelFor(modesComboBox);
-        jLabel1.setText("Mode");
+        jLabel1.setText("Mode:");
         jLabel1.setToolTipText("Change mode (language pair)");
 
         jButton1.setMnemonic('D');
@@ -686,16 +686,16 @@ public class ApertiumView extends FrameView {
                 .addComponent(copyTextButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(storeTextButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(modesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(modesComboBox, 0, 229, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rdbtnLocal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rdbtnOnline)
                 .addContainerGap())
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 983, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1108, Short.MAX_VALUE)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -707,12 +707,12 @@ public class ApertiumView extends FrameView {
                     .addComponent(fitToTextButton)
                     .addComponent(copyTextButton)
                     .addComponent(storeTextButton)
-                    .addComponent(jLabel1)
                     .addComponent(jButton1)
                     .addComponent(rdbtnLocal)
-                    .addComponent(rdbtnOnline))
+                    .addComponent(rdbtnOnline)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE))
         );
 
         fileMenu.setMnemonic('F');
@@ -789,8 +789,6 @@ public class ApertiumView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
 private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modesComboBoxActionPerformed
-	System.out.println("modesComboBox.getSelectedIndex()="+modesComboBox.getSelectedIndex() + local+ignoreEvents);
-	System.out.println("modesComboBox.getSelectedIndex()="+modesComboBox.getSelectedItem() + local+ignoreEvents);
 	if (ignoreEvents) return;
 	if (local) {
 		prefs.putInt("modesComboBoxLocal", modesComboBox.getSelectedIndex());

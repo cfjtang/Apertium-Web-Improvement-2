@@ -125,7 +125,8 @@ public class Pipeline {
                     output_ = sw.toString();
                 } catch (Exception e) {
                     retval_ = -1;
-                    output_ = e.getLocalizedMessage();
+                    output_ = e.toString();
+										e.printStackTrace();
                 }
             }
             else {
