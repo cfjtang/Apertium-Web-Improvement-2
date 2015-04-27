@@ -2,14 +2,14 @@ apertium-viewer
 
 QUICKSTART
 
-$ java -jar dist/apertium-viewer.jar
+$ java -jar apertium-viewer.jar
 
 Find all the information in:
 http://wiki.apertium.org/wiki/Apertium-viewer
 
 Download from SVN
 
-$ svn co https://apertium.svn.sourceforge.net/svnroot/apertium/trunk/apertium-viewer
+$ svn co https://svn.code.sf.net/p/apertium/svn/trunk/apertium-viewer
 
 Software prerequisites
 
@@ -21,19 +21,17 @@ COMPILING
 
 $ cd apertium-viewer
 $ ant
+$ ant run
 
 INSTALLING
 
-
-$ sudo rm -rf /usr/local/apertium-viewer
-$ sudo cp -r dist /usr/local/apertium-viewer
-$ sudo echo "java -jar /usr/local/apertium-viewer/apertium-viewer.jar" > /usr/local/bin/apertium-viewer
-$ sudo chmod a+x /usr/local/bin/apertium-viewer
+ant jar
+sudo rm -rf /usr/local/apertium-viewer*
+sudo cp -r apertium-viewer.jar /usr/local/
+sudo echo "java -jar /usr/local/apertium-viewer.jar" > /usr/local/bin/apertium-viewer
+sudo chmod a+x /usr/local/bin/apertium-viewer
 
 Installing is actually optional. The program can also be execute using only the .jar file:
-$ java -jar dist/apertium-dixtools.jar
+java -jar apertium-dixtools.jar
 or just make a shortcut to apertium-viewer.jar on your desktop.
 
-PACK AS WAR FILE AND SEND (Jacob)
-cd dist
-zip -9r ../apertium-viewer.war .
