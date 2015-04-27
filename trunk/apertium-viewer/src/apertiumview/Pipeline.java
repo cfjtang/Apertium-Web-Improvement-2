@@ -171,12 +171,13 @@ public class Pipeline {
                 }
             };
             SwingUtilities.invokeLater(runnable);
-          } catch (IOException ex) {
-              recieverWidget.setText(ex.getLocalizedMessage());
-              Logger.getLogger(Pipeline.class.getName()).log(Level.SEVERE, null, ex);
           } catch (InterruptedException ex) {
+          } catch (Throwable ex) {
+						System.err.println("Error for "+program+" on input '"+input+"'");
+						ex.printStackTrace();
+						recieverWidget.setText(ex.getLocalizedMessage());
           } finally {
-              task = null;
+						task = null;
           }
         }    
     }
