@@ -85,6 +85,7 @@ public class ApertiumViewMain extends SingleFrameApplication {
 
     /**
      * Main method launching the application.
+		 * @param args arguments (ignored)
      */
     public static void main(String[] args) {
         launch(ApertiumViewMain.class, args);

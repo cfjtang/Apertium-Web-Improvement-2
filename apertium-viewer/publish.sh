@@ -1,10 +1,10 @@
 ant clean
 
-ant
+ant jar
 
-cp dist/apertium-viewer.jar ../../builds/apertium-viewer/
-
-cp dist/lib/*.jar ../../builds/apertium-viewer/lib/
+cp apertium-viewer.jar ../../builds/apertium-viewer/
 
 svn commit ../../builds/apertium-viewer/
+
+# scp apertium-viewer.jar j:javabog.dk/filer/apertium/
 
