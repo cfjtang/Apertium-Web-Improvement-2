@@ -75,6 +75,7 @@ public class ApertiumView extends FrameView {
 	JSplitPane lastSplitPane;
 
 	boolean ignoreEvents = true;
+	private Mode currentMode;
 
 	public ApertiumView(SingleFrameApplication app) {
 		super(app);
@@ -214,12 +215,9 @@ public class ApertiumView extends FrameView {
 
 		ignoreEvents = false;
 
-		showSelectedMode();
 
-		String txt = prefs.get("inputText", textWidget1.getText());
-		System.err.println("startup txt = " + txt);
 		try {
-			textWidget1.setText(txt);
+			showSelectedMode();
 		} catch (Exception e) {
 			e.printStackTrace();
 			warnUser("An error occured during startup:\n\n" + e);
@@ -246,6 +244,11 @@ public class ApertiumView extends FrameView {
 		for (JSplitPane p : splitPanes) divLoc += "," + p.getDividerLocation();
 		prefs.put("dividerLocation", divLoc);
 		prefs.put("inputText", textWidget1.getText());
+
+		// Store current text under current language
+		String currentLanguage = currentMode==null?null:currentMode.toString().split("\\s")[0];
+		prefs.put("inputText "+currentLanguage, textWidget1.getText());
+
 		Pipeline.getPipeline().shutdown();
 	}
 
@@ -506,6 +509,19 @@ public class ApertiumView extends FrameView {
 
 		// Set title to mode - easens window tabbing
 		ApertiumViewMain.getApplication().getMainFrame().setTitle("Apertium-viewer (" + m + ")");
+
+		// Update input text to match the current input language
+		try {
+			String language = m.toString().split("\\s")[0];
+			String currentLanguage = currentMode==null?null:currentMode.toString().split("\\s")[0];
+			if (!language.equals(currentLanguage)) {
+				prefs.put("inputText "+currentLanguage, textWidget1.getText());
+				String txt = prefs.get("inputText "+language, null);
+				if (txt!=null) textWidget1.setText(txt);
+			}
+		} catch (Exception e) { e.printStackTrace(); }
+
+		currentMode = m;
 
 		if (ignoreEvents) return;
 
