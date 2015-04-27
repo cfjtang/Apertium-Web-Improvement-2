@@ -35,6 +35,8 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.prefs.Preferences;
 import javax.swing.BorderFactory;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -81,7 +83,6 @@ public class ApertiumView extends FrameView {
 			public Component getListCellRendererComponent(JList list, Object value, int index,
 					boolean isSelected, boolean cellHasFocus) {
 				JLabel renderer = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-				System.out.println("getListCellRendererComponent "+popupMenuVisible+isSelected+cellHasFocus);
 
 				if (value instanceof Mode) {
 					Mode m = (Mode) value;
@@ -99,7 +100,7 @@ public class ApertiumView extends FrameView {
 						renderer.setText("<html>" + value + "<small><br/>" + onlineModeToCode.get(value) + ".mode "  + url);
 					}
 					String mode = (String) value;
-					renderer.setToolTipText(mode != null && mode.equals("SELECT A MODE") ? "[Select a mode]" : onlineModeToCode.get(mode) + ".mode");
+					renderer.setToolTipText(mode != null || mode.equals("SELECT A MODE") ? "[Select a mode]" : onlineModeToCode.get(mode) + ".mode");
 				}
 				if (popupMenuVisible) {
 					setHScrollFor(list);
@@ -138,6 +139,7 @@ public class ApertiumView extends FrameView {
 			String mpref = prefs.get("modeFiles", null);
 			if (mpref != null) {
 				for (String fn : mpref.split("\n")) {
+					if (fn.trim().isEmpty()) continue;
 					loadMode(fn);
 				}
 				updateModesComboBox();
@@ -175,7 +177,8 @@ public class ApertiumView extends FrameView {
 							+ "\nI will now get download a list of 'online' modes, which are downloaded on the fly."
 							+ "\nIf you DO have Apertium language pairs installed, please use File | Load mode to load them,"
 							+ "\nand switch to 'Local' in the top right");
-					prefs.getBoolean("local", false);
+					prefs.putBoolean("local", false);
+					prefs.put("modeFiles", "");
 				}
 			}
 
@@ -375,7 +378,7 @@ public class ApertiumView extends FrameView {
 			IOUtils.setClassLoader(null);
 			showMode((Mode) item);
 		} else { // online
-			if (item.equals("SELECT A MODE")) return;
+			if (item==null || item.equals("SELECT A MODE")) return;
 
 			final JDialog dialog = createDialog("Please wait while downloading "+item);
 
@@ -383,19 +386,25 @@ public class ApertiumView extends FrameView {
 				@Override
 				public void run() {
 					try {
+						SwingUtilities.invokeAndWait(new Runnable() { public void run() {}}); // Let the UI thread settle
 						IOUtils.setClassLoader(onlineModeToLoader.get((String) item));
 						final Mode m = new Mode("data/modes/" + onlineModeToCode.get((String) item) + ".mode");
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
+								dialog.setVisible(false);
 								showMode(m);
 							}
 						});
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						e.printStackTrace();
-						warnUser("Unexpected error while trying to load online package: " + e);
-					} finally {
-						dialog.setVisible(false);
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								dialog.setVisible(false);
+								warnUser("Unexpected error while trying to load online package:\n" + e);
+							}
+						});
 					}
 				}
 			}.start();
@@ -1015,14 +1024,20 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 		int index;
 		if (local) {
 			for (Mode m : modes) modesComboBox.addItem(m);
-			index = prefs.getInt("modesComboBoxLocal", -1);
+			index = prefs.getInt("modesComboBoxLocal", 0);
 		} else {
 			modesComboBox.addItem("SELECT A MODE");
 			for (String s : onlineModes) modesComboBox.addItem(s);
-			index = prefs.getInt("modesComboBoxOnline", -1);
+			index = prefs.getInt("modesComboBoxOnline", 0);
 		}
-		ignoreEvents = false;
 		modesComboBox.setSelectedIndex(index < modesComboBox.getModel().getSize() ? index : -1);
+		// Ugly hack - see http://stackoverflow.com/questions/29841044/jcombobox-popup-cell-height-wrong-after-call-to-setselecteditem
+		ComboBoxModel model = modesComboBox.getModel();
+		modesComboBox.setModel(new DefaultComboBoxModel());
+		modesComboBox.setModel(model);
+
+		ignoreEvents = false;
+		modesComboBoxActionPerformed(null);
 	}
 
 	private boolean local = true;
@@ -1039,6 +1054,16 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 			} else if (prefs.get("onlineModes","").length()>0) {
 				initOnlineModes();
 				updateModesComboBox();
+				// Download a fresh version of the online modes for next time the program is started
+				new Thread() {
+					public void run() {
+						try {
+							downloadOnlineModes();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}.start();
 			} else {
 				final JDialog dialog = createDialog("Please wait while downloading the list of pairs");
 

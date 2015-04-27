@@ -126,7 +126,7 @@ public class Pipeline {
                 } catch (Exception e) {
                     retval_ = -1;
                     output_ = e.toString();
-										e.printStackTrace();
+										//e.printStackTrace();
                 }
             }
             else {
