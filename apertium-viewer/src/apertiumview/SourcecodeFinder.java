@@ -6,9 +6,7 @@
 package apertiumview;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,9 +20,9 @@ import org.apertium.pipeline.Program;
  *
  * @author j
  */
-class Editor {
+class SourcecodeFinder {
 
-	public static String findHtmlLinkText(Program program, StringBuilder popuplinks) {
+	public static String createHtmlLinkText(Program program, StringBuilder popuplinks) {
 		StringBuilder text = new StringBuilder();
 //        commandTextPane.setText("<html><div style='white-space:nowrap;font-size:12pt'><a href='http://javabog.dk'>hej</a> "+program.toString());
 
@@ -139,7 +137,7 @@ class Editor {
 	public static void main(String[] args) throws Exception {
 		Mode m = new Mode("/home/j/esperanto/apertium/trunk/apertium-eo-en/modes/en-eo.mode");
 		for (Program p : m.getPrograms()) {
-			String html = findHtmlLinkText(p, new StringBuilder());
+			String html = createHtmlLinkText(p, new StringBuilder());
 			System.out.println(p + "\n -> " + html);
 		}
 	}
@@ -147,7 +145,7 @@ class Editor {
 	public static void xmain(String[] args) throws Exception {
 		Mode m = new Mode("/home/j/esperanto/apertium/ENG-SCO/apertium-eng-sco/modes/eng-sco.mode");
 		for (Program p : m.getPrograms()) {
-			String html = findHtmlLinkText(p, new StringBuilder());
+			String html = createHtmlLinkText(p, new StringBuilder());
 			System.out.println(p + "\n -> " + html);
 		}
 	}
