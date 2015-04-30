@@ -61,17 +61,17 @@ class FontDialog extends JDialog implements ActionListener{
 		getContentPane().add(p,BorderLayout.SOUTH);
  
 		doneButton = new JButton("Done");
-		doneButton.setPreferredSize(new Dimension(80,30));
+//		doneButton.setPreferredSize(new Dimension(80,30));
 		doneButton.addActionListener(this);
 		p.add(doneButton);
  
-		reset = new JButton("reset");
-		reset.setPreferredSize(new Dimension(80,30));
+		reset = new JButton("Reset");
+//		reset.setPreferredSize(new Dimension(80,30));
 		reset.addActionListener(this);
 		p.add(reset);
 		
 		cancel = new JButton("Cancel");
-		cancel.setPreferredSize(new Dimension(80,30));
+//		cancel.setPreferredSize(new Dimension(80,30));
 		cancel.addActionListener(this);
 		p.add(cancel);
  

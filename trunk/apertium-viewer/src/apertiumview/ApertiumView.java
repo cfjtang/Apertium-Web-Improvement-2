@@ -53,6 +53,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -76,10 +78,19 @@ public class ApertiumView extends FrameView {
 
 	boolean ignoreEvents = true;
 	private Mode currentMode;
+	HyperlinkListener hyperlinkListener = new HyperlinkListener() {
+      @Override
+      public void hyperlinkUpdate(HyperlinkEvent e) {
+        if (e.getEventType() != HyperlinkEvent.EventType.ACTIVATED) return;
+        System.out.println(e.getURL() + "  "+e.getEventType() + "  "+e.getInputEvent());
+      }
+    };
 
 	public ApertiumView(SingleFrameApplication app) {
 		super(app);
 		initComponents();
+		textWidget1.commandTextPane.addHyperlinkListener(hyperlinkListener);
+
 		modesComboBox.setRenderer(new DefaultListCellRenderer() {
 			public Component getListCellRendererComponent(JList list, Object value, int index,
 					boolean isSelected, boolean cellHasFocus) {
@@ -223,7 +234,7 @@ public class ApertiumView extends FrameView {
 			warnUser("An error occured during startup:\n\n" + e);
 		}
 
-		textWidget1.commandTextField.requestFocusInWindow();
+		textWidget1.commandTextPane.requestFocusInWindow();
 		textWidget1.textEditor.addFocusListener(scrollToVisibleFocusListener); // done here to avoid multiple adds
 		textWidget1.textEditor.addKeyListener(switchFocus);
 
@@ -442,6 +453,7 @@ public class ApertiumView extends FrameView {
 			for (int i = 0; i < m.getPipelineLength(); i++) {
 				TextWidget tw = new TextWidget();
 				tw.textEditor.addKeyListener(switchFocus);
+				tw.commandTextPane.addHyperlinkListener(hyperlinkListener);
 				textWidgets.add(tw);
 				tw.priority = i + 1;
 				lastTextWidget.next = tw;
@@ -479,6 +491,13 @@ public class ApertiumView extends FrameView {
 			Program p = m.getProgramByIndex(i);
 			TextWidget tw = textWidgets.get(i + 1);
 			tw.setProgram(p);
+
+			StringBuilder linkspopup = new StringBuilder();
+			String htmlText = Editor.findHtmlLinkText(p, linkspopup);
+			tw.commandTextPane.setText(htmlText);
+				//else commandTextPane.setText("<html><div style='white-space:nowrap;font-size:12pt'>" + program.toString());
+			tw.commandTextPane.setCaretPosition(0); // scroll to start of text
+			tw.commandTextPane.setToolTipText(linkspopup.toString().trim());
 		}
 
 		Pipeline.getPipeline().externalProcessing = local && Boolean.parseBoolean(prefs.get("externalProcessing", "false"));
@@ -870,12 +889,12 @@ private void showCommandsCheckBoxActionPerformed(java.awt.event.ActionEvent evt)
 	boolean show = showCommandsCheckBox.isSelected();
 	//System.out.println("show = " + show);
 	for (TextWidget w : textWidgets) {
-		w.commandTextField.setVisible(show);
+		w.commandTextPane.setVisible(show);
 		w.zoomButton.setVisible(show);
 		w.freezeCheckBox.setVisible(show);
 		w.setSize(w.getSize());
 	}
-	textWidget1.commandTextField.setVisible(false);
+	textWidget1.commandScrollPane.setVisible(false);
 	textWidget1.zoomButton.setVisible(false);
 	textWidget1.freezeCheckBox.setVisible(false);
 	mainPanel.validate();
@@ -972,8 +991,8 @@ private void hideIntermediate(java.awt.event.ActionEvent evt) {//GEN-FIRST:event
 		d.height += insetHeight(w.textEditor) + insetHeight(w) + insetHeight(w.jScrollPane1) + 6;
 
 		if (w == textWidget1 || w == textWidgets.get(textWidgets.size() - 1)) {
-			d.height += w.commandTextField.getPreferredSize().height;
-			d.height += insetHeight(w.commandTextField);
+			d.height += w.commandScrollPane.getPreferredSize().height;
+			d.height += insetHeight(w.commandScrollPane);
 		} else {
 			d.height = 0;
 		}
@@ -1018,9 +1037,9 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 		Dimension d = w.textEditor.getPreferredSize();
 		d.height += insetHeight(w.textEditor) + insetHeight(w) + insetHeight(w.jScrollPane1) + 6;
 
-		if (w.commandTextField.isVisible()) {
-			d.height += w.commandTextField.getPreferredSize().height;
-			d.height += insetHeight(w.commandTextField);
+		if (w.commandScrollPane.isVisible()) {
+			d.height += w.commandScrollPane.getPreferredSize().height;
+			d.height += insetHeight(w.commandScrollPane);
 		}
 
 		//System.out.println("d="+d.height);
