@@ -82,7 +82,12 @@ public class ApertiumView extends FrameView {
       @Override
       public void hyperlinkUpdate(HyperlinkEvent e) {
         if (e.getEventType() != HyperlinkEvent.EventType.ACTIVATED) return;
-        System.out.println(e.getURL() + "  "+e.getEventType() + "  "+e.getInputEvent());
+				try {
+					java.awt.Desktop.getDesktop().open(new File(e.getURL().getPath()));
+				} catch (IOException ex) {
+	        warnUser("Error opening "+e+ ":\n"+ex);
+					ex.printStackTrace();
+				}
       }
     };
 
