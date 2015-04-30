@@ -136,7 +136,8 @@ class SourcecodeFinder {
 
 	public static void main(String[] args) throws Exception {
 		Mode m = new Mode("/home/j/esperanto/apertium/trunk/apertium-eo-en/modes/en-eo.mode");
-		for (Program p : m.getPrograms()) {
+		for (int i = 0; i<m.getPipelineLength(); i++) {
+			Program p = m.getProgramByIndex(i);
 			String html = createHtmlLinkText(p, new StringBuilder());
 			System.out.println(p + "\n -> " + html);
 		}
@@ -144,7 +145,8 @@ class SourcecodeFinder {
 
 	public static void xmain(String[] args) throws Exception {
 		Mode m = new Mode("/home/j/esperanto/apertium/ENG-SCO/apertium-eng-sco/modes/eng-sco.mode");
-		for (Program p : m.getPrograms()) {
+		for (int i = 0; i<m.getPipelineLength(); i++) {
+			Program p = m.getProgramByIndex(i);
 			String html = createHtmlLinkText(p, new StringBuilder());
 			System.out.println(p + "\n -> " + html);
 		}
