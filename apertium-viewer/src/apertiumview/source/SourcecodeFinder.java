@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package apertiumview;
+package apertiumview.source;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -20,7 +20,7 @@ import org.apertium.pipeline.Program;
  *
  * @author j
  */
-class SourcecodeFinder {
+public class SourcecodeFinder {
 
 	public static String createHtmlLinkText(Program program, StringBuilder popuplinks) {
 		StringBuilder text = new StringBuilder();
@@ -50,7 +50,7 @@ class SourcecodeFinder {
 						}
 						System.out.println(program.getProgram() + " " + param + " -> " + link);
 						text.append(" <font color='#aaaaaa'>").append(paramFile.getParent()).append("/</font>"); // grey path
-						if (link!=null) text.append("<a href='file://").append(link).append("'>").append(paramFile.getName()).append("</a>");
+						if (link!=null) text.append("<a href='file://").append(link).append("?program=").append(program.getProgram()).append("'>").append(paramFile.getName()).append("</a>");
 						else text.append(paramFile.getName());
 					} else {
 						text.append(" ").append(param);
