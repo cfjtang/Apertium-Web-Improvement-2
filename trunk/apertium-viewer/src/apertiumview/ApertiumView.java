@@ -3,6 +3,8 @@
  */
 package apertiumview;
 
+import apertiumview.source.SourcecodeFinder;
+import apertiumview.source.SourceEditor;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -82,17 +84,28 @@ public class ApertiumView extends FrameView {
       @Override
       public void hyperlinkUpdate(HyperlinkEvent e) {
         if (e.getEventType() != HyperlinkEvent.EventType.ACTIVATED) return;
+				String path = e.getURL().getPath();
+
 				try {
-					java.awt.Desktop.getDesktop().edit(new File(e.getURL().getPath()));
-				} catch (Exception ex0) {
+					SourceEditor se = new SourceEditor();
+					se.setVisible(true);
+					se.loadFile(path, e.getURL().getQuery());
+				} catch (Exception ex00) {
 					try {
-						java.awt.Desktop.getDesktop().open(new File(e.getURL().getPath()));
-					} catch (Exception ex) {
-						warnUser("Error opening "+e.getURL().getPath()+ ":\n"+ex);
-						ex.printStackTrace();
+						java.awt.Desktop.getDesktop().edit(new File(path));
+					} catch (Exception ex0) {
+						try {
+							java.awt.Desktop.getDesktop().open(new File(path));
+						} catch (Exception ex) {
+							warnUser("Error opening "+path+ ":\n"+ex);
+							ex.printStackTrace();
+						}
 					}
+
 				}
-      }
+
+
+			}
     };
 
 	public ApertiumView(SingleFrameApplication app) {
