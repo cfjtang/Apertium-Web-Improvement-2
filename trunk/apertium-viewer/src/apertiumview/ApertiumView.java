@@ -8,7 +8,6 @@
  */
 package apertiumview;
 
-import apertiumview.source.SourcecodeFinder;
 import apertiumview.source.SourceEditor;
 import java.awt.Color;
 import java.awt.Component;
@@ -28,10 +27,10 @@ import org.jdesktop.application.*;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import java.awt.event.*;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import static java.lang.Integer.parseInt;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -45,7 +44,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -76,8 +74,8 @@ import org.apertium.utils.IOUtils;
  */
 public class ApertiumView extends FrameView {
 
-	ArrayList<TextWidget> textWidgets = new ArrayList<TextWidget>();
-	ArrayList<JSplitPane> splitPanes = new ArrayList<JSplitPane>();
+	ArrayList<TextWidget> textWidgets = new ArrayList<>();
+	ArrayList<JSplitPane> splitPanes = new ArrayList<>();
 
 	private boolean popupMenuVisible;
 
@@ -85,7 +83,7 @@ public class ApertiumView extends FrameView {
 	boolean ignoreEvents = true;
 	private Mode currentMode;
 
-	HyperlinkListener hyperlinkListener = new HyperlinkListener() {			
+	HyperlinkListener hyperlinkListener = new HyperlinkListener() {
       @Override
       public void hyperlinkUpdate(HyperlinkEvent e) {
         if (e.getEventType() != HyperlinkEvent.EventType.ACTIVATED) return;
@@ -94,16 +92,24 @@ public class ApertiumView extends FrameView {
     };
 
 	private HashMap <String, SourceEditor> openSourceEditors = new HashMap<>();
-	private void openSourceEditor(URL url) {
+	public void openSourceEditor(URL url) {
 		String path = url.getPath();
 
 		SourceEditor se0 = openSourceEditors.get(path);
+		System.out.println("openSourceEditor("+path+" ->"+se0);
 		if (se0 != null) {
+//			se0.setVisible(false);
+//			se0.setVisible(true);
+			se0.setState(java.awt.Frame.NORMAL);
 			se0.toFront();
+//			se0.repaint();
 			return;
 		}
 		try {
 			SourceEditor se = new SourceEditor(this);
+			String[] d = prefs.get(getBoundsKey(path),"").split(",");
+			if (d.length==4) se.setBounds(parseInt(d[0]), parseInt(d[1]), parseInt(d[2]), parseInt(d[3]));
+			else se.setLocationByPlatform(true);
 			se.setVisible(true);
 			se.loadFile(path, url.getQuery());
 			openSourceEditors.put(path, se);
@@ -122,12 +128,20 @@ public class ApertiumView extends FrameView {
 
 		}
 	}
-	public void closeSourceEditor(String loadedFilename) {
-		openSourceEditors.remove(loadedFilename);
-		System.out.println("closeSourceEditor("+loadedFilename);
+	private String getBoundsKey(String path) {
+		if (path.length()>20) path=path.substring(path.length()-20);
+		return "bounds-"+path;
 	}
-	public void compiledWithSourceEditor(String loadedFilename) {
-		System.out.println("compiledWithSourceEditor("+loadedFilename);
+
+	public void closeSourceEditor(String path) {
+		SourceEditor se = openSourceEditors.remove(path);
+		se.setState(JFrame.NORMAL);
+		Rectangle r = se.getBounds();
+		prefs.put(getBoundsKey(path), r.x+","+r.y+","+r.width+","+r.height);
+		System.out.println("closeSourceEditor("+path);
+	}
+	public void compiledSourceEditor(String path) {
+		System.out.println("compiledWithSourceEditor("+path);
 		Translator.clearCache();
 		textWidget1.textChg(true);
 	}
@@ -501,6 +515,7 @@ public class ApertiumView extends FrameView {
 			for (int i = 0; i < m.getPipelineLength(); i++) {
 				TextWidget tw = new TextWidget();
 				tw.textEditor.addKeyListener(switchFocus);
+        tw.owner = this;
 				tw.commandTextPane.addHyperlinkListener(hyperlinkListener);
 				textWidgets.add(tw);
 				tw.priority = i + 1;
@@ -539,13 +554,6 @@ public class ApertiumView extends FrameView {
 			Program p = m.getProgramByIndex(i);
 			TextWidget tw = textWidgets.get(i + 1);
 			tw.setProgram(p);
-
-			StringBuilder linkspopup = new StringBuilder();
-			String htmlText = SourcecodeFinder.createHtmlLinkText(p, linkspopup);
-			tw.commandTextPane.setText(htmlText);
-				//else commandTextPane.setText("<html><div style='white-space:nowrap;font-size:12pt'>" + program.toString());
-			tw.commandTextPane.setCaretPosition(0); // scroll to start of text
-			tw.commandTextPane.setToolTipText(linkspopup.toString().trim());
 		}
 
 		Pipeline.getPipeline().externalProcessing = local && Boolean.parseBoolean(prefs.get("externalProcessing", "false"));
@@ -936,15 +944,8 @@ private void showCommandsCheckBoxActionPerformed(java.awt.event.ActionEvent evt)
 
 	boolean show = showCommandsCheckBox.isSelected();
 	//System.out.println("show = " + show);
-	for (TextWidget w : textWidgets) {
-		w.commandTextPane.setVisible(show);
-		w.zoomButton.setVisible(show);
-		w.freezeCheckBox.setVisible(show);
-		w.setSize(w.getSize());
-	}
-	textWidget1.commandScrollPane.setVisible(false);
-	textWidget1.zoomButton.setVisible(false);
-	textWidget1.freezeCheckBox.setVisible(false);
+	for (TextWidget w : textWidgets) w.setShowCommands(show);
+	textWidget1.setShowCommands(false);
 	mainPanel.validate();
 }//GEN-LAST:event_showCommandsCheckBoxActionPerformed
 
