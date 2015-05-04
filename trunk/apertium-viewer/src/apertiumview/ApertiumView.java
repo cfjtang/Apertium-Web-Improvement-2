@@ -106,12 +106,7 @@ public class ApertiumView extends FrameView {
 			return;
 		}
 		try {
-			SourceEditor se = new SourceEditor(this);
-			String[] d = prefs.get(getBoundsKey(path),"").split(",");
-			if (d.length==4) se.setBounds(parseInt(d[0]), parseInt(d[1]), parseInt(d[2]), parseInt(d[3]));
-			else se.setLocationByPlatform(true);
-			se.setVisible(true);
-			se.loadFile(path, url.getQuery());
+			SourceEditor se = new SourceEditor(this, path, url.getQuery());
 			openSourceEditors.put(path, se);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -128,17 +123,10 @@ public class ApertiumView extends FrameView {
 
 		}
 	}
-	private String getBoundsKey(String path) {
-		if (path.length()>20) path=path.substring(path.length()-20);
-		return "bounds-"+path;
-	}
 
 	public void closeSourceEditor(String path) {
 		SourceEditor se = openSourceEditors.remove(path);
-		se.setState(JFrame.NORMAL);
-		Rectangle r = se.getBounds();
-		prefs.put(getBoundsKey(path), r.x+","+r.y+","+r.width+","+r.height);
-		System.out.println("closeSourceEditor("+path);
+		System.out.println("closeSourceEditor("+path+" "+se);
 	}
 	public void compiledSourceEditor(String path) {
 		System.out.println("compiledWithSourceEditor("+path);

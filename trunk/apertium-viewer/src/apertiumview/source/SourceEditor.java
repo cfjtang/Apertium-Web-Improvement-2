@@ -9,6 +9,9 @@
 package apertiumview.source;
 
 import apertiumview.ApertiumView;
+import static apertiumview.ApertiumView.prefs;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ItemEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import static java.lang.Integer.parseInt;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,17 +29,16 @@ import java.util.LinkedHashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.Element;
 import jsyntaxpane.DefaultSyntaxKit;
-import jsyntaxpane.SyntaxDocument;
-import jsyntaxpane.Token;
-import jsyntaxpane.actions.ActionUtils;
 import jsyntaxpane.actions.CaretMonitor;
-import jsyntaxpane.syntaxkits.XmlSyntaxKit;
 import org.apertium.pipeline.Program;
 import static org.apertium.pipeline.Program.ProgEnum.*;
 
@@ -45,24 +48,39 @@ public class SourceEditor extends javax.swing.JFrame {
 	private Program.ProgEnum loadedFileProgram;
 	private ApertiumView owner;
 
-	public SourceEditor(ApertiumView aThis) {
+	public SourceEditor(ApertiumView aThis, String path, String properties) throws IOException {
 		owner = aThis;
 		initComponents();
 		jCmbLangs.setModel(new DefaultComboBoxModel(DefaultSyntaxKit.getContentTypes()));
 		jCmbLangs.setSelectedItem("text/xml");
-		new CaretMonitor(jEdtTest, lblCaretPos);
+		new CaretMonitor(jEditorPane, lblCaretPos);
+
+		String[] d = prefs.get(getBoundsKey(path),"").split(",");
+		if (d.length==5) setBounds(parseInt(d[0]), parseInt(d[1]), parseInt(d[2]), parseInt(d[3]));
+		else setLocationByPlatform(true);
+		setVisible(true);
+		loadFile(path, properties);
+		if (d.length==5) jEditorPane.setCaretPosition(parseInt(d[4]));
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				centerLineInScrollPane();
+			}
+		});
 	}
 
-	public SourceEditor() {
-		this(null);
+	private String getBoundsKey(String path) {
+		if (path.length()>20) path=path.substring(path.length()-20);
+		return "bounds-"+path;
 	}
+
 
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
     lblCaretPos = new javax.swing.JLabel();
     jScrollPane1 = new javax.swing.JScrollPane();
-    jEdtTest = new javax.swing.JEditorPane();
+    jEditorPane = new javax.swing.JEditorPane();
     jCmbLangs = new javax.swing.JComboBox();
     jToolBar1 = new javax.swing.JToolBar();
     jButtonValidate = new javax.swing.JButton();
@@ -81,8 +99,8 @@ public class SourceEditor extends javax.swing.JFrame {
     lblCaretPos.setText(bundle.getString("SourceEditor.lblCaretPos.text")); // NOI18N
     lblCaretPos.setToolTipText(bundle.getString("SourceEditor.lblCaretPos.toolTipText")); // NOI18N
 
-    jEdtTest.setContentType("text/java"); // NOI18N
-    jScrollPane1.setViewportView(jEdtTest);
+    jEditorPane.setContentType("text/java"); // NOI18N
+    jScrollPane1.setViewportView(jEditorPane);
 
     jCmbLangs.setMaximumRowCount(20);
     jCmbLangs.setFocusable(false);
@@ -152,16 +170,16 @@ public class SourceEditor extends javax.swing.JFrame {
 
 			// save the state of the current JEditorPane, as it's Document is about
 			// to be replaced.
-			String oldText = jEdtTest.getText();
+			String oldText = jEditorPane.getText();
 
 			// install a new DefaultSyntaxKit on the JEditorPane for the requested language.
-			jEdtTest.setContentType(lang);
+			jEditorPane.setContentType(lang);
 			// Recreate the Toolbar
 			jToolBar1.removeAll();
-			EditorKit kit = jEdtTest.getEditorKit();
+			EditorKit kit = jEditorPane.getEditorKit();
 			if (kit instanceof DefaultSyntaxKit) {
 				DefaultSyntaxKit defaultSyntaxKit = (DefaultSyntaxKit) kit;
-				defaultSyntaxKit.addToolBarActions(jEdtTest, jToolBar1);
+				defaultSyntaxKit.addToolBarActions(jEditorPane, jToolBar1);
 			}
 	    jToolBar1.add(jButtonValidate);
 	    jToolBar1.add(jButtonSave);
@@ -171,13 +189,13 @@ public class SourceEditor extends javax.swing.JFrame {
 				// method and create a new document.
 				Document doc = kit.createDefaultDocument();
 				doc.insertString(0, oldText, null);				
-				jEdtTest.setDocument(doc);
+				jEditorPane.setDocument(doc);
 				//jEdtTest.read(new StringReader(oldText), lang);
 			} catch (Exception ex) {
 				Logger.getLogger(SourceEditor.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
-		jEdtTest.requestFocusInWindow();
+		jEditorPane.requestFocusInWindow();
     }//GEN-LAST:event_jCmbLangsItemStateChanged
 
   private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
@@ -186,7 +204,7 @@ public class SourceEditor extends javax.swing.JFrame {
 			return;
 		
 		try {
-			String text = jEdtTest.getText();
+			String text = jEditorPane.getText();
 			Path filePath = Paths.get(loadedPath);
 			Files.write(filePath, text.getBytes("UTF-8"));
 			LinkedHashSet<Path> compileDirs = new LinkedHashSet<>();
@@ -235,7 +253,7 @@ public class SourceEditor extends javax.swing.JFrame {
 			String[] fn = new File(loadedPath).getName().split("\\.", 2);
 			File tmpFileContent = File.createTempFile(fn[0], fn[1]);
 			tmpFileContent.deleteOnExit();
-			String text = jEdtTest.getText();
+			String text = jEditorPane.getText();
 			Files.write(Paths.get(tmpFileContent.getPath()), text.getBytes("UTF-8"));
 
 			Process p = new ProcessBuilder(cmd, tmpFileContent.getPath()).redirectErrorStream(true).start();
@@ -255,10 +273,11 @@ public class SourceEditor extends javax.swing.JFrame {
 			int lineNo = Integer.parseInt(err[1]);
 			String msg = err[2];
 
-			Element root = jEdtTest.getDocument().getDefaultRootElement();
+			Element root = jEditorPane.getDocument().getDefaultRootElement();
 			lineNo = Math.min(lineNo, root.getElementCount());
 			int startOfLineOffset = root.getElement( lineNo - 1 ).getStartOffset();
-			jEdtTest.setCaretPosition( startOfLineOffset );
+			jEditorPane.setCaretPosition( startOfLineOffset );
+			centerLineInScrollPane();
 
 			lblCaretPos.setText(msg);
 		} catch (Exception e) {
@@ -275,6 +294,9 @@ public class SourceEditor extends javax.swing.JFrame {
 
   private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
     // TODO add your handling code here:
+		setState(JFrame.NORMAL);
+		Rectangle r = getBounds();
+		prefs.put(getBoundsKey(loadedPath), r.x+","+r.y+","+r.width+","+r.height+","+jEditorPane.getCaretPosition());
 		owner.closeSourceEditor(loadedPath);
   }//GEN-LAST:event_formWindowClosing
 
@@ -283,13 +305,13 @@ public class SourceEditor extends javax.swing.JFrame {
   private javax.swing.JButton jButtonSave;
   private javax.swing.JButton jButtonValidate;
   private javax.swing.JComboBox jCmbLangs;
-  private javax.swing.JEditorPane jEdtTest;
+  private javax.swing.JEditorPane jEditorPane;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JToolBar jToolBar1;
   private javax.swing.JLabel lblCaretPos;
   // End of variables declaration//GEN-END:variables
 
-	public void loadFile(String path, String properties) throws BadLocationException, IOException {
+	public void loadFile(String path, String properties) throws IOException {
 		setTitle(new File(path).getName());
 		loadedPath = path;
 		loadedFileProperties = new HashMap<>();
@@ -301,15 +323,19 @@ public class SourceEditor extends javax.swing.JFrame {
 		System.out.println(loadedFileProgram+ " "+properties);
 		EnumSet<Program.ProgEnum> xmlFiles = EnumSet.of(LT_PROC, TAGGER, PRETRANSFER, TRANSFER, INTERCHUNK, POSTCHUNK);
 		if (xmlFiles.contains(loadedFileProgram)) {
-			jEdtTest.setContentType("text/xml");
+			jEditorPane.setContentType("text/xml");
 		} else {
-			jEdtTest.setContentType("text/plain");
+			jEditorPane.setContentType("text/plain");
 		}
-		jCmbLangs.setSelectedItem(jEdtTest.getContentType());
-		Document doc = jEdtTest.getEditorKit().createDefaultDocument();
+		jCmbLangs.setSelectedItem(jEditorPane.getContentType());
+		Document doc = jEditorPane.getEditorKit().createDefaultDocument();
 		String str = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
-		doc.insertString(0,str,null);
-		jEdtTest.setDocument(doc);
+		try {
+			doc.insertString(0,str,null);
+		} catch (BadLocationException ex) {
+			throw new IOException(ex);
+		}
+		jEditorPane.setDocument(doc);
 	}
 
 
@@ -324,13 +350,27 @@ public class SourceEditor extends javax.swing.JFrame {
 			public void run() {
 				try {
 					DefaultSyntaxKit.initKit();
-					jFrame = new SourceEditor();
+					jFrame = new SourceEditor(null, "/home/j/esperanto/apertium/trunk/apertium-eo-en/apertium-eo-en.eo-en.dix", "x=y");
 					jFrame.setVisible(true);
-//					jFrame.read("/home/j/esperanto/apertium/trunk/apertium-eo-en/apertium-eo-en.eo-en.dix");
+//					jFrame.read();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+	}
+
+	private void centerLineInScrollPane() {
+		try {
+			Rectangle r = jEditorPane.modelToView(jEditorPane.getCaretPosition());
+			JViewport viewport = jScrollPane1.getViewport();
+			int extentHeight = viewport.getExtentSize().height;
+			int viewHeight = viewport.getViewSize().height;
+
+			int y = Math.max(0, r.y - (extentHeight / 2));
+			y = Math.min(y, viewHeight - extentHeight);
+
+			viewport.setViewPosition(new Point(0, y));
+		} catch (BadLocationException ex) {ex.printStackTrace();}
 	}
 }

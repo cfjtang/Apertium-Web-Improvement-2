@@ -52,7 +52,7 @@ public class SourcecodeFinder {
 								sourceFiles.append(link).append('\n');
 							}
 						}
-						System.out.println(program.getProgram() + " " + param + " -> " + link);
+						//System.out.println(program.getProgram() + " " + param + " -> " + link);
 						text.append(" <font color='#aaaaaa'>").append(paramFile.getParent()).append("/</font>"); // grey path
 						if (link!=null) text.append("<a href='file://").append(link)
 								.append("?program=").append(program.getProgram())
