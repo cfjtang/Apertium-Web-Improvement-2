@@ -9,28 +9,20 @@
 package apertiumview;
 
 import apertiumview.highlight.HighlightTextEditor;
+import apertiumview.source.SourcecodeFinder;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.event.*;
-import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
@@ -43,7 +35,10 @@ import org.apertium.pipeline.Program;
  * @author  j
  */
 public class TextWidget extends javax.swing.JPanel {
-    int priority;
+	int priority;
+  ApertiumView owner;
+  private String commandsHtmlText;
+	private String sourceFiles = "";
 
     /** Creates new form TextWidget */
     public TextWidget() {
@@ -164,6 +159,7 @@ public class TextWidget extends javax.swing.JPanel {
         freezeCheckBox = new javax.swing.JCheckBox();
         commandScrollPane = new javax.swing.JScrollPane();
         commandTextPane = new javax.swing.JTextPane();
+        jButtonEditSource = new javax.swing.JButton();
 
         setName("Form"); // NOI18N
 
@@ -209,12 +205,22 @@ public class TextWidget extends javax.swing.JPanel {
         commandTextPane.setName("commandTextPane"); // NOI18N
         commandScrollPane.setViewportView(commandTextPane);
 
+        jButtonEditSource.setText(resourceMap.getString("jButtonEditSource.text")); // NOI18N
+        jButtonEditSource.setName("jButtonEditSource"); // NOI18N
+        jButtonEditSource.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditSourceActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(commandScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+                .addComponent(commandScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonEditSource)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(freezeCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -225,12 +231,13 @@ public class TextWidget extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(commandScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(zoomButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(freezeCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(commandScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE))
+                        .addComponent(zoomButton, 0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonEditSource, 0, 0, Short.MAX_VALUE)
+                        .addComponent(freezeCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(0, 0, 0)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -249,10 +256,25 @@ public class TextWidget extends javax.swing.JPanel {
         zoomDialog.setVisible(!zoomDialog.isVisible()); // show/hide
 }//GEN-LAST:event_zoomButtonActionPerformed
 
+  private void jButtonEditSourceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditSourceActionPerformed
+    // Find all the links in in the commands and open them
+					System.out.println(commandsHtmlText);
+
+        Pattern pattern = Pattern.compile("<a href='([^']*)'>");
+
+        Matcher matcher = pattern.matcher(commandsHtmlText);
+        while (matcher.find()) try {
+					String url = matcher.group(1);
+					System.out.println(url);
+					owner.openSourceEditor(new URL(url));
+        } catch (Exception e) { e.printStackTrace(); }
+  }//GEN-LAST:event_jButtonEditSourceActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JScrollPane commandScrollPane;
     javax.swing.JTextPane commandTextPane;
     javax.swing.JCheckBox freezeCheckBox;
+    javax.swing.JButton jButtonEditSource;
     javax.swing.JScrollPane jScrollPane1;
     apertiumview.highlight.HighlightTextEditor textEditor;
     javax.swing.JButton zoomButton;
@@ -320,5 +342,23 @@ public class TextWidget extends javax.swing.JPanel {
 
     public void setProgram(Program program) {
         this.program = program;
+
+			StringBuilder sourceFilesSb = new StringBuilder();
+			commandsHtmlText = SourcecodeFinder.createHtmlLinkText(program, sourceFilesSb);
+			commandTextPane.setText(commandsHtmlText);
+				//else commandTextPane.setText("<html><div style='white-space:nowrap;font-size:12pt'>" + program.toString());
+			commandTextPane.setCaretPosition(0); // scroll to start of text
+			sourceFiles = sourceFilesSb.toString().trim();
+			commandTextPane.setToolTipText(sourceFiles);
+	    jButtonEditSource.setVisible(sourceFilesSb.length()>0);
 		}
+
+  void setShowCommands(boolean show) {
+		commandTextPane.setVisible(show);
+		commandScrollPane.setVisible(show);
+    jButtonEditSource.setVisible(show && sourceFiles.length()>0);
+		zoomButton.setVisible(show);
+		freezeCheckBox.setVisible(show);
+//		setSize(getSize()); // why?
+	}
 }

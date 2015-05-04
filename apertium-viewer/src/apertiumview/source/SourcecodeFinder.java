@@ -25,7 +25,7 @@ import org.apertium.pipeline.Program;
  */
 public class SourcecodeFinder {
 
-	public static String createHtmlLinkText(Program program, StringBuilder popuplinks) {
+	public static String createHtmlLinkText(Program program, StringBuilder sourceFiles) {
 		StringBuilder text = new StringBuilder();
 //        commandTextPane.setText("<html><div style='white-space:nowrap;font-size:12pt'><a href='http://javabog.dk'>hej</a> "+program.toString());
 
@@ -44,11 +44,12 @@ public class SourcecodeFinder {
 							if (param.endsWith(".bin")) {
 								// its a binary file....
 								link = findSourcefileFromBinaryFile(paramFile, sourcedirs);
-								if (link != null) popuplinks.append(link).append('\n');
+								if (link != null) sourceFiles.append(link).append('\n');
 							} else if (param.endsWith(".prob")) {
 								// no link
 							} else { // t1x, antaux_t2x, t2x, t3x,
 								link = paramFile.getPath();
+								sourceFiles.append(link).append('\n');
 							}
 						}
 						System.out.println(program.getProgram() + " " + param + " -> " + link);
@@ -87,7 +88,7 @@ public class SourcecodeFinder {
 			// -> apertium-eo-en.en.dix
 			String[] parts = bin.getName().split("\\."); // "en-eo", "automorf", "bin"
 			String dirname = bin.getParentFile().getName(); // "apertium-eo-en"
-			
+
 
 			if ("automorf".equals(parts[1])) { // source language .dix
 				// en-eo.automorf.bin -> apertium-eo-en.en.dix

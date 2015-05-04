@@ -40,7 +40,7 @@ import org.apertium.pipeline.Program;
 import static org.apertium.pipeline.Program.ProgEnum.*;
 
 public class SourceEditor extends javax.swing.JFrame {
-	private String loadedFilename;
+	private String loadedPath;
 	private HashMap<String,String> loadedFileProperties;
 	private Program.ProgEnum loadedFileProgram;
 	private ApertiumView owner;
@@ -187,7 +187,7 @@ public class SourceEditor extends javax.swing.JFrame {
 		
 		try {
 			String text = jEdtTest.getText();
-			Path filePath = Paths.get(loadedFilename);
+			Path filePath = Paths.get(loadedPath);
 			Files.write(filePath, text.getBytes("UTF-8"));
 			LinkedHashSet<Path> compileDirs = new LinkedHashSet<>();
 			compileDirs.add(filePath.getParent()); // Directory of the source file
@@ -208,7 +208,7 @@ public class SourceEditor extends javax.swing.JFrame {
 				}
 			}
 			lblCaretPos.setText("The pair was compiled sucessfully");
-			owner.compiledWithSourceEditor(loadedFilename);
+			owner.compiledSourceEditor(loadedPath);
 
 		} catch (Exception ex) {
 			Logger.getLogger(SourceEditor.class.getName()).log(Level.SEVERE, null, ex);
@@ -222,7 +222,7 @@ public class SourceEditor extends javax.swing.JFrame {
 			switch (loadedFileProgram) {
 				case LT_PROC: cmd = "apertium-validate-dictionary"; break;
 				case TRANSFER:
-					if (loadedFilename.contains("dix")) cmd = "apertium-validate-dictionary"; // guess
+					if (loadedPath.contains("dix")) cmd = "apertium-validate-dictionary"; // guess
 					else cmd = "apertium-validate-transfer";
 					break;
 				case INTERCHUNK: cmd = "apertium-validate-interchunk"; break;
@@ -232,7 +232,7 @@ public class SourceEditor extends javax.swing.JFrame {
 				lblCaretPos.setText("Don't know how to validate this file");
 				return true;
 			}
-			String[] fn = new File(loadedFilename).getName().split("\\.", 2);
+			String[] fn = new File(loadedPath).getName().split("\\.", 2);
 			File tmpFileContent = File.createTempFile(fn[0], fn[1]);
 			tmpFileContent.deleteOnExit();
 			String text = jEdtTest.getText();
@@ -275,7 +275,7 @@ public class SourceEditor extends javax.swing.JFrame {
 
   private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
     // TODO add your handling code here:
-		owner.closeSourceEditor(loadedFilename);
+		owner.closeSourceEditor(loadedPath);
   }//GEN-LAST:event_formWindowClosing
 
 
@@ -289,9 +289,9 @@ public class SourceEditor extends javax.swing.JFrame {
   private javax.swing.JLabel lblCaretPos;
   // End of variables declaration//GEN-END:variables
 
-	public void loadFile(String filename, String properties) throws BadLocationException, IOException {
-		setTitle(filename);
-		loadedFilename = filename;
+	public void loadFile(String path, String properties) throws BadLocationException, IOException {
+		setTitle(new File(path).getName());
+		loadedPath = path;
 		loadedFileProperties = new HashMap<>();
 		for (String pair : properties.split("&")) {
 			String[] vv = pair.split("=");
@@ -307,7 +307,7 @@ public class SourceEditor extends javax.swing.JFrame {
 		}
 		jCmbLangs.setSelectedItem(jEdtTest.getContentType());
 		Document doc = jEdtTest.getEditorKit().createDefaultDocument();
-		String str = new String(Files.readAllBytes(Paths.get(filename)), "UTF-8");
+		String str = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
 		doc.insertString(0,str,null);
 		jEdtTest.setDocument(doc);
 	}
