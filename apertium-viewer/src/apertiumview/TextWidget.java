@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.event.*;
 import javax.swing.text.JTextComponent;
+import javax.swing.text.Utilities;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
@@ -257,17 +258,15 @@ public class TextWidget extends javax.swing.JPanel {
 }//GEN-LAST:event_zoomButtonActionPerformed
 
   private void jButtonEditSourceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditSourceActionPerformed
-    // Find all the links in in the commands and open them
-					System.out.println(commandsHtmlText);
+    // Find all the links in in the command HTML representation and open them
+		Pattern pattern = Pattern.compile("<a href='([^']*)'>");
 
-        Pattern pattern = Pattern.compile("<a href='([^']*)'>");
-
-        Matcher matcher = pattern.matcher(commandsHtmlText);
-        while (matcher.find()) try {
-					String url = matcher.group(1);
-					System.out.println(url);
-					owner.openSourceEditor(new URL(url));
-        } catch (Exception e) { e.printStackTrace(); }
+		Matcher matcher = pattern.matcher(commandsHtmlText);
+		while (matcher.find()) try {
+			String url = matcher.group(1);
+			//System.out.println(url);
+			owner.openSourceEditor(new URL(url));
+		} catch (Exception e) { e.printStackTrace(); }
   }//GEN-LAST:event_jButtonEditSourceActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
