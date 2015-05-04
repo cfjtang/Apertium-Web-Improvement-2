@@ -592,16 +592,6 @@ public class ApertiumView extends FrameView {
 
 	}
 
-	@Action
-	public void showAboutBox() {
-		if (aboutBox == null) {
-			JFrame mainFrame = ApertiumViewMain.getApplication().getMainFrame();
-			aboutBox = new ApertiumViewAboutBox(mainFrame);
-			aboutBox.setLocationRelativeTo(mainFrame);
-		}
-		ApertiumViewMain.getApplication().show(aboutBox);
-	}
-
 	/** This method is called from within the constructor to
 	 * initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is
@@ -806,8 +796,14 @@ public class ApertiumView extends FrameView {
         fileMenu.setMnemonic('F');
         fileMenu.setText("File");
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
-        loadModeMenuItem.setAction(actionMap.get("loadMode")); // NOI18N
+        loadModeMenuItem.setMnemonic('L');
+        loadModeMenuItem.setText("Load mode");
+        loadModeMenuItem.setToolTipText("<html>Load an Apertium .mode file");
+        loadModeMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadMode(evt);
+            }
+        });
         fileMenu.add(loadModeMenuItem);
 
         editModesMenuItem.setText("Edit modes");
@@ -819,6 +815,7 @@ public class ApertiumView extends FrameView {
         fileMenu.add(editModesMenuItem);
         fileMenu.add(jSeparator1);
 
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
         fileMenu.add(exitMenuItem);
 
@@ -827,7 +824,13 @@ public class ApertiumView extends FrameView {
         toolsMenu.setMnemonic('T');
         toolsMenu.setText("Tools");
 
-        makeTestCaseMenuItem.setAction(actionMap.get("makeTestCase")); // NOI18N
+        makeTestCaseMenuItem.setText("Make Test Case");
+        makeTestCaseMenuItem.setToolTipText("Creates text suitable for inserting in a Wiki test page");
+        makeTestCaseMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                makeTestCase(evt);
+            }
+        });
         toolsMenu.add(makeTestCaseMenuItem);
 
         importTestCaseMenuItem.setText("Import Test Case...");
@@ -847,7 +850,12 @@ public class ApertiumView extends FrameView {
         helpMenu.setMnemonic('V');
         helpMenu.setText("View");
 
-        changeFontMenuItem.setAction(actionMap.get("changeFont")); // NOI18N
+        changeFontMenuItem.setText("Change font");
+        changeFontMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeFont(evt);
+            }
+        });
         helpMenu.add(changeFontMenuItem);
 
         optionsMenuItem.setMnemonic('O');
@@ -867,7 +875,12 @@ public class ApertiumView extends FrameView {
         });
         helpMenu.add(helpMenuItem);
 
-        aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
+        aboutMenuItem.setText("About...");
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showAboutBox(evt);
+            }
+        });
         helpMenu.add(aboutMenuItem);
 
         menuBar.add(helpMenu);
@@ -1164,6 +1177,15 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 			}
     }//GEN-LAST:event_rdbtnOnlineActionPerformed
 
+  private void showAboutBox(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAboutBox
+		if (aboutBox == null) {
+			JFrame mainFrame = ApertiumViewMain.getApplication().getMainFrame();
+			aboutBox = new ApertiumViewAboutBox(mainFrame);
+			aboutBox.setLocationRelativeTo(mainFrame);
+		}
+		ApertiumViewMain.getApplication().show(aboutBox);
+  }//GEN-LAST:event_showAboutBox
+
 	private JDialog createDialog(String message) {
 		final JDialog dialog = new JDialog(getFrame(), "Downloading, please wait...", false);
 		dialog.setContentPane(new JOptionPane(message,
@@ -1180,8 +1202,7 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 
 	JFileChooser modeFileChooser;
 
-	@Action
-	public void loadMode() {
+  private void loadMode(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMode
 		if (modeFileChooser == null) {
 			modeFileChooser = new JFileChooser(prefs.get("lastModePath", "."));
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("Apertium mode files", "mode");
@@ -1203,7 +1224,39 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 			for (Mode mo : modes) mpref = mpref + mo.getFilename() + "\n";
 			prefs.put("modeFiles", mpref);
 		}
-	}
+  }//GEN-LAST:event_loadMode
+
+  private void changeFont(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeFont
+		FontDialog fd = new FontDialog((Frame) SwingUtilities.getWindowAncestor(mainPanel));
+		fd.setInitialFont(textWidget1.textEditor.getFont());
+		fd.setVisible(true);
+		textWidgetFont = fd.getFont();
+		for (TextWidget t : textWidgets) {
+			t.textEditor.setFont(textWidgetFont);
+		}
+		System.out.println("f = " + textWidgetFont);
+  }//GEN-LAST:event_changeFont
+
+  private void makeTestCase(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeTestCase
+		String[] firstTxt = null;
+		String[] lastTxt = null;
+		for (TextWidget w : textWidgets) { // ugly but it works :-)
+			String[] txt = w.getText().split("\n");
+			if (firstTxt == null) firstTxt = txt;
+			lastTxt = txt;
+		}
+
+		Mode mode = (Mode) modesComboBox.getSelectedItem();
+		String sourceLanguage = mode.toString().split("-")[0];
+
+		String tottxt = "";
+		for (int i = 0; i < firstTxt.length; i++) {
+			tottxt = tottxt + "* (" + sourceLanguage + ") ''" + firstTxt[i] + "'' → " + lastTxt[i] + "\n";
+		}
+
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(tottxt.trim()), null);
+		JOptionPane.showMessageDialog(mainPanel, new JTextArea(tottxt.trim()), "Paste into a Wiki test page", JOptionPane.INFORMATION_MESSAGE);
+  }//GEN-LAST:event_makeTestCase
 
 	public final static Preferences prefs = Preferences.userNodeForPackage(ApertiumView.class);
 
@@ -1304,40 +1357,5 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 	}
 
 	Font textWidgetFont = null;
-
-	@Action
-	public void changeFont() {
-
-		FontDialog fd = new FontDialog((Frame) SwingUtilities.getWindowAncestor(mainPanel));
-		fd.setInitialFont(textWidget1.textEditor.getFont());
-		fd.setVisible(true);
-		textWidgetFont = fd.getFont();
-		for (TextWidget t : textWidgets) {
-			t.textEditor.setFont(textWidgetFont);
-		}
-		System.out.println("f = " + textWidgetFont);
-	}
-
-	@Action
-	public void makeTestCase() {
-		String[] firstTxt = null;
-		String[] lastTxt = null;
-		for (TextWidget w : textWidgets) { // ugly but it works :-)
-			String[] txt = w.getText().split("\n");
-			if (firstTxt == null) firstTxt = txt;
-			lastTxt = txt;
-		}
-
-		Mode mode = (Mode) modesComboBox.getSelectedItem();
-		String sourceLanguage = mode.toString().split("-")[0];
-
-		String tottxt = "";
-		for (int i = 0; i < firstTxt.length; i++) {
-			tottxt = tottxt + "* (" + sourceLanguage + ") ''" + firstTxt[i] + "'' → " + lastTxt[i] + "\n";
-		}
-
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(tottxt.trim()), null);
-		JOptionPane.showMessageDialog(mainPanel, new JTextArea(tottxt.trim()), "Paste into a Wiki test page", JOptionPane.INFORMATION_MESSAGE);
-	}
 
 }
