@@ -77,36 +77,57 @@ public class ApertiumView extends FrameView {
 	private boolean popupMenuVisible;
 
 	JSplitPane lastSplitPane;
-
 	boolean ignoreEvents = true;
 	private Mode currentMode;
-	HyperlinkListener hyperlinkListener = new HyperlinkListener() {
+
+	HyperlinkListener hyperlinkListener = new HyperlinkListener() {			
       @Override
       public void hyperlinkUpdate(HyperlinkEvent e) {
         if (e.getEventType() != HyperlinkEvent.EventType.ACTIVATED) return;
-				String path = e.getURL().getPath();
-
-				try {
-					SourceEditor se = new SourceEditor();
-					se.setVisible(true);
-					se.loadFile(path, e.getURL().getQuery());
-				} catch (Exception ex00) {
-					try {
-						java.awt.Desktop.getDesktop().edit(new File(path));
-					} catch (Exception ex0) {
-						try {
-							java.awt.Desktop.getDesktop().open(new File(path));
-						} catch (Exception ex) {
-							warnUser("Error opening "+path+ ":\n"+ex);
-							ex.printStackTrace();
-						}
-					}
-
-				}
-
-
+				openSourceEditor(e.getURL());
 			}
     };
+
+	private HashMap <String, SourceEditor> openSourceEditors = new HashMap<>();
+	private void openSourceEditor(URL url) {
+		String path = url.getPath();
+
+		SourceEditor se0 = openSourceEditors.get(path);
+		if (se0 != null) {
+			se0.toFront();
+			return;
+		}
+		try {
+			SourceEditor se = new SourceEditor(this);
+			se.setVisible(true);
+			se.loadFile(path, url.getQuery());
+			openSourceEditors.put(path, se);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			try {
+				java.awt.Desktop.getDesktop().edit(new File(path));
+			} catch (Exception ex0) {
+				try {
+					java.awt.Desktop.getDesktop().open(new File(path));
+				} catch (Exception ex1) {
+					warnUser("Error opening "+path+ ":\n"+ex);
+					ex.printStackTrace();
+				}
+			}
+
+		}
+	}
+	public void closeSourceEditor(String loadedFilename) {
+		openSourceEditors.remove(loadedFilename);
+		System.out.println("closeSourceEditor("+loadedFilename);
+	}
+	public void compiledWithSourceEditor(String loadedFilename) {
+		System.out.println("compiledWithSourceEditor("+loadedFilename);
+		Translator.clearCache();
+		textWidget1.textChg(true);
+	}
+
+
 
 	public ApertiumView(SingleFrameApplication app) {
 		super(app);
