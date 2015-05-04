@@ -50,7 +50,10 @@ public class SourcecodeFinder {
 						}
 						System.out.println(program.getProgram() + " " + param + " -> " + link);
 						text.append(" <font color='#aaaaaa'>").append(paramFile.getParent()).append("/</font>"); // grey path
-						if (link!=null) text.append("<a href='file://").append(link).append("?program=").append(program.getProgram()).append("'>").append(paramFile.getName()).append("</a>");
+						if (link!=null) text.append("<a href='file://").append(link)
+								.append("?program=").append(program.getProgram())
+								.append("&dir=").append(paramFile.getParent())
+								.append("'>").append(paramFile.getName()).append("</a>");
 						else text.append(paramFile.getName());
 					} else {
 						text.append(" ").append(param);
@@ -153,7 +156,7 @@ public class SourcecodeFinder {
 	}
 
 	private static HashMap<String, ArrayList<Path>> dirToSourcedirs = new HashMap<>();
-	static ArrayList<Path> findSourcedirsFromMakefile(String binDir) {
+	private static ArrayList<Path> findSourcedirsFromMakefile(String binDir) {
 		ArrayList<Path> sourcedirs = new ArrayList<>();
 		Path makefile = Paths.get(binDir, "Makefile");
 		if (Files.exists(makefile)) {
@@ -177,7 +180,7 @@ public class SourcecodeFinder {
 		return sourcedirs;
 	}
 
-	private static ArrayList<Path> getSourcedirs(String binDir) {
+	public static ArrayList<Path> getSourcedirs(String binDir) {
 		ArrayList<Path> sourcedirs = dirToSourcedirs.get(binDir);
 		if (sourcedirs == null) dirToSourcedirs.put(binDir, sourcedirs = findSourcedirsFromMakefile(binDir));
 		return sourcedirs;

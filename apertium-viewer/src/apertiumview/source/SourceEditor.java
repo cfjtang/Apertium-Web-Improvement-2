@@ -13,6 +13,7 @@
  */
 package apertiumview.source;
 
+import apertiumview.ApertiumView;
 import java.awt.event.ItemEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,9 +22,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -45,12 +48,18 @@ public class SourceEditor extends javax.swing.JFrame {
 	private String loadedFilename;
 	private HashMap<String,String> loadedFileProperties;
 	private Program.ProgEnum loadedFileProgram;
+	private ApertiumView owner;
 
-	public SourceEditor() {
+	public SourceEditor(ApertiumView aThis) {
+		owner = aThis;
 		initComponents();
 		jCmbLangs.setModel(new DefaultComboBoxModel(DefaultSyntaxKit.getContentTypes()));
 		jCmbLangs.setSelectedItem("text/xml");
 		new CaretMonitor(jEdtTest, lblCaretPos);
+	}
+
+	public SourceEditor() {
+		this(null);
 	}
 
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -64,8 +73,14 @@ public class SourceEditor extends javax.swing.JFrame {
     jButtonValidate = new javax.swing.JButton();
     jButtonSave = new javax.swing.JButton();
 
+    setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("apertiumview/source/Bundle"); // NOI18N
     setTitle(bundle.getString("SourceEditor.title")); // NOI18N
+    addWindowListener(new java.awt.event.WindowAdapter() {
+      public void windowClosing(java.awt.event.WindowEvent evt) {
+        formWindowClosing(evt);
+      }
+    });
 
     lblCaretPos.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
     lblCaretPos.setText(bundle.getString("SourceEditor.lblCaretPos.text")); // NOI18N
@@ -125,12 +140,12 @@ public class SourceEditor extends javax.swing.JFrame {
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(0, 0, 0)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
-        .addGap(10, 10, 10)
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
+        .addGap(0, 0, 0)
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(lblCaretPos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
           .addComponent(jCmbLangs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addContainerGap())
+        .addGap(0, 0, 0))
     );
 
     pack();
@@ -171,46 +186,83 @@ public class SourceEditor extends javax.swing.JFrame {
     }//GEN-LAST:event_jCmbLangsItemStateChanged
 
   private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
+		if (!validateFile() &&
+			JOptionPane.showConfirmDialog(this, "The file doesent validate. Are you sure you want to save it?", "Save file?", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION)
+			return;
+		
 		try {
 			String text = jEdtTest.getText();
-			Files.write(Paths.get(loadedFilename), text.getBytes("UTF-8"));
-		} catch (IOException ex) {
+			Path filePath = Paths.get(loadedFilename);
+			Files.write(filePath, text.getBytes("UTF-8"));
+			LinkedHashSet<Path> compileDirs = new LinkedHashSet<>();
+			compileDirs.add(filePath.getParent()); // Directory of the source file
+			compileDirs.add(Paths.get(loadedFileProperties.get("dir"))); // Directory of the binary file
+
+			for (Path dir : compileDirs) {
+				Process p = new ProcessBuilder("make").directory(dir.toFile()).redirectErrorStream(true).start();
+				BufferedReader std = new BufferedReader(new InputStreamReader(p.getInputStream(),"UTF-8"));
+				final StringBuilder outputsb = new StringBuilder();
+				String lin;
+				while ( (lin=std.readLine())!=null) {
+					System.out.println(lin);
+					outputsb.append(lin).append('\n');
+				}
+				if (p.waitFor()!=0) {
+					JOptionPane.showMessageDialog(this, outputsb.toString(), "Compiler error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+			}
+			lblCaretPos.setText("The pair was compiled sucessfully");
+			owner.compiledWithSourceEditor(loadedFilename);
+
+		} catch (Exception ex) {
 			Logger.getLogger(SourceEditor.class.getName()).log(Level.SEVERE, null, ex);
 		}
   }//GEN-LAST:event_jButtonSaveActionPerformed
 
-  private void jButtonValidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonValidateActionPerformed
-    try {
+
+	private boolean validateFile() {
+		try {
 			String cmd = null;
 			switch (loadedFileProgram) {
 				case LT_PROC: cmd = "apertium-validate-dictionary"; break;
-				case TRANSFER: cmd = "apertium-validate-transfer"; break;
+				case TRANSFER:
+					if (loadedFilename.contains("dix")) cmd = "apertium-validate-dictionary"; // guess
+					else cmd = "apertium-validate-transfer";
+					break;
 				case INTERCHUNK: cmd = "apertium-validate-interchunk"; break;
 				case POSTCHUNK: cmd = "apertium-validate-postchunk"; break;
 			}
 			if (cmd==null) {
 				lblCaretPos.setText("Don't know how to validate this file");
-				return;
+				return true;
 			}
 			String[] fn = new File(loadedFilename).getName().split("\\.", 2);
-			File tempFile = File.createTempFile(fn[0], fn[1]);
-			tempFile.deleteOnExit();
+			File tmpFileContent = File.createTempFile(fn[0], fn[1]);
+			tmpFileContent.deleteOnExit();
 			String text = jEdtTest.getText();
-			Files.write(Paths.get(tempFile.getPath()), text.getBytes("UTF-8"));
-			Process p = Runtime.getRuntime().exec(new String[] {cmd, tempFile.getPath()} );
-			int res = p.waitFor();
-			if (res==0) {
+			Files.write(Paths.get(tmpFileContent.getPath()), text.getBytes("UTF-8"));
+
+			Process p = new ProcessBuilder(cmd, tmpFileContent.getPath()).redirectErrorStream(true).start();
+			String lin = new BufferedReader(new InputStreamReader(p.getInputStream(), "UTF-8")).readLine();
+			p.destroy();
+			if (lin == null) {
 				lblCaretPos.setText("File looks OK, you can save it");
-				return;
+				return true;
 			}
-			String[] err = new BufferedReader(new InputStreamReader(p.getErrorStream())).readLine().split(":", 3);
+			System.out.println(lin);
+			String[] err = lin.split(":", 3);
+			if (err.length < 3) {
+				lblCaretPos.setText("File looks OK, you can save it");
+				return true;
+			}
 			// tmpfile.dix:1: parser error : Start tag expected, '<' not found
-			int line = Integer.parseInt(err[1]);
+			int lineNo = Integer.parseInt(err[1]);
 			String msg = err[2];
 
 			Element root = jEdtTest.getDocument().getDefaultRootElement();
-			line = Math.min(line, root.getElementCount());
-			int startOfLineOffset = root.getElement( line - 1 ).getStartOffset();
+			lineNo = Math.min(lineNo, root.getElementCount());
+			int startOfLineOffset = root.getElement( lineNo - 1 ).getStartOffset();
 			jEdtTest.setCaretPosition( startOfLineOffset );
 
 			lblCaretPos.setText(msg);
@@ -218,7 +270,18 @@ public class SourceEditor extends javax.swing.JFrame {
 			e.printStackTrace();
 			lblCaretPos.setText(e.toString());
 		}
+		return false;
+	}
+
+
+  private void jButtonValidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonValidateActionPerformed
+    validateFile();
   }//GEN-LAST:event_jButtonValidateActionPerformed
+
+  private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+    // TODO add your handling code here:
+		owner.closeSourceEditor(loadedFilename);
+  }//GEN-LAST:event_formWindowClosing
 
 
   // Variables declaration - do not modify//GEN-BEGIN:variables

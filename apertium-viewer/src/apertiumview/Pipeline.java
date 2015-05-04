@@ -145,7 +145,7 @@ public class Pipeline {
                 osw.write(input,0,input.length());
                 osw.write('\n');
                 osw.close();
-                final StringBuffer outputsb = new StringBuffer(input.length()*2);
+                final StringBuilder outputsb = new StringBuilder(input.length()*2);
                 String lin;
                 while ( (lin=std.readLine())!=null) outputsb.append(lin).append('\n');
                 while ( (lin=err.readLine())!=null) if (!ignoreErrorMessages) outputsb.append("ERR:"+lin).append('\n');
