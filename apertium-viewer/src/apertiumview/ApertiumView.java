@@ -24,9 +24,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.PopupMenuEvent;
-import org.jdesktop.application.*;
-import org.jdesktop.application.SingleFrameApplication;
-import org.jdesktop.application.FrameView;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileInputStream;
@@ -594,12 +591,17 @@ public class ApertiumView extends javax.swing.JFrame {
 
 		// Update input text to match the current input language
 		try {
-			String language = m.toString().split("\\s")[0];
+			String language = new File(m.getFilename()).getName().split("-",2)[0];
+			System.out.println("language="+language);
 			String currentLanguage = currentMode==null?null:currentMode.toString().split("\\s")[0];
 			if (!language.equals(currentLanguage)) {
 				prefs.put("inputText "+currentLanguage, textWidget1.getText());
 				String txt = prefs.get("inputText "+language, null);
-				if (txt!=null) textWidget1.setText(txt);
+				if (txt==null) {
+					ResourceBundle samples = ResourceBundle.getBundle("apertiumview.resources.sample_phrases");
+					if (samples.containsKey(language)) txt = samples.getString(language);
+				}
+				if (txt!=null && txt.length()>0) textWidget1.setText(txt);
 			}
 		} catch (Exception e) { e.printStackTrace(); }
 
