@@ -13,8 +13,6 @@ import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.SwingUtilities;
-import org.jdesktop.application.Application;
-import org.jdesktop.application.SingleFrameApplication;
 
 /**
  * The main class of the application.

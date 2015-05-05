@@ -290,15 +290,14 @@ public class TextWidget extends javax.swing.JPanel {
         } catch (Exception e) {
             // For some reason this sometimes fails. Try again and then give up
             //e.printStackTrace();
-              System.err.println(this.getClass()+ ".setText(): " + e +" - trying again...");
+              System.err.println(this+ ".setText("+newTxt+"): " + e +" - trying again...");
             try {
                 Thread.sleep(50);
                 textEditor.setText(newTxt);
                 System.err.println(this.getClass()+ ".setText() 2nd try went good");
             } catch (Exception e2) {
-
-              System.err.println(this.getClass()+ ".setText(): e2: " + e2);
-               e2.printStackTrace();
+                System.err.println(this.getClass()+ ".setText() 2nd try failed");
+               //e2.printStackTrace();
             }
         }
         lastSetTxt = newTxt;
