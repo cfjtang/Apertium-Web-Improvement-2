@@ -83,6 +83,19 @@ public class ApertiumView extends FrameView {
 	boolean ignoreEvents = true;
 	private Mode currentMode;
 
+	private boolean local = true;
+	JFileChooser modeFileChooser;
+	public final static Preferences prefs = Preferences.userNodeForPackage(ApertiumView.class);
+
+	private JDialog aboutBox;
+
+	ArrayList<Mode> modes = new ArrayList<Mode>();
+	ArrayList<String> onlineModes;
+	HashMap<String, URLClassLoader> onlineModeToLoader;
+	HashMap<String, String> onlineModeToCode;
+
+	Font textWidgetFont = null;
+
 	HyperlinkListener hyperlinkListener = new HyperlinkListener() {
       @Override
       public void hyperlinkUpdate(HyperlinkEvent e) {
@@ -90,6 +103,82 @@ public class ApertiumView extends FrameView {
 				openSourceEditor(e.getURL());
 			}
     };
+
+
+	KeyListener switchFocus = new KeyAdapter() {
+		public void keyPressed(KeyEvent e) {
+			if (!e.isControlDown() && !e.isAltDown() && !e.isAltGraphDown()) return;
+			int keyCode = e.getKeyCode();
+
+			int nowFocus = -1;
+
+			if (keyCode >= e.VK_0 && keyCode <= e.VK_9) {
+				nowFocus = Math.max(0, keyCode - e.VK_1);  // Alt-0 and Alt-1 gives first widget
+				nowFocus = Math.min(nowFocus, textWidgets.size() - 1); // Alt-9 gives last widget
+
+			} else if (keyCode == e.VK_PAGE_UP || keyCode == e.VK_PAGE_DOWN) {
+
+				for (int i = 0; i < textWidgets.size(); i++) { // find widget which has the focus
+					TextWidget tw = textWidgets.get(i);
+					if (SwingUtilities.findFocusOwner(tw) != null) nowFocus = i;
+				}
+
+				if (nowFocus != -1) {
+					if (keyCode == e.VK_PAGE_UP) {
+						do
+							nowFocus = (nowFocus - 1 + textWidgets.size()) % textWidgets.size(); // cycle upwards
+						while (textWidgets.get(nowFocus).getVisibleRect().isEmpty());
+					} else {
+						do
+							nowFocus = (nowFocus + 1) % textWidgets.size(); // cycle downwards
+						while (textWidgets.get(nowFocus).getVisibleRect().isEmpty());
+					}
+				} else {
+					System.err.println("Hm! No widget has focus!");
+					if (keyCode == e.VK_PAGE_UP) {
+						nowFocus = 0; // cycle upwards
+					} else {
+						nowFocus = textWidgets.size() - 1; // cycle downwards
+					}
+				}
+			} else return;
+
+			menuBar.requestFocusInWindow(); // crude way to force focus notify
+			textWidgets.get(nowFocus).textEditor.requestFocusInWindow();
+		}
+	};
+
+	FocusListener scrollToVisibleFocusListener = new FocusAdapter() {
+		@Override
+		public void focusGained(FocusEvent e) {
+			JComponent comp = (JComponent) e.getSource();
+			// Ugly hack to get the enclosing TextWidget
+			final TextWidget tw = (TextWidget) ((JComponent) e.getSource()).getParent().getParent().getParent();
+			// Scroll so that the TextWidget's scoll pane (containing the text area) is fully visible
+			Rectangle b = tw.jScrollPane1.getBounds();
+			Rectangle b2 = tw.getBounds();
+			//System.out.println("b = " + b);
+			//System.out.println("b2 = " + b2);
+			b.x += b2.x;
+			b.y += b2.y;
+			tw.scrollRectToVisible(b);
+
+			// Make it blink for a short while
+			Graphics2D g = (Graphics2D) tw.getGraphics();
+			g.setColor(Color.RED);
+			g.drawRect(1, 1, tw.getWidth() - 2, tw.getHeight() - 2);
+
+			new Thread() {
+				public void run() {
+					try {
+						Thread.sleep(300);
+						tw.repaint();
+					} catch (InterruptedException ex) {
+					}
+				}
+			}.start();
+		}
+	};
 
 	private HashMap <String, SourceEditor> openSourceEditors = new HashMap<>();
 	public void openSourceEditor(URL url) {
@@ -278,7 +367,7 @@ public class ApertiumView extends FrameView {
 
 
 		try {
-			showSelectedMode();
+			updateSelectedMode();
 		} catch (Exception e) {
 			e.printStackTrace();
 			warnUser("An error occured during startup:\n\n" + e);
@@ -313,37 +402,6 @@ public class ApertiumView extends FrameView {
 		Pipeline.getPipeline().shutdown();
 	}
 
-	FocusListener scrollToVisibleFocusListener = new FocusAdapter() {
-		@Override
-		public void focusGained(FocusEvent e) {
-			JComponent comp = (JComponent) e.getSource();
-			// Ugly hack to get the enclosing TextWidget
-			final TextWidget tw = (TextWidget) ((JComponent) e.getSource()).getParent().getParent().getParent();
-			// Scroll so that the TextWidget's scoll pane (containing the text area) is fully visible
-			Rectangle b = tw.jScrollPane1.getBounds();
-			Rectangle b2 = tw.getBounds();
-			//System.out.println("b = " + b);
-			//System.out.println("b2 = " + b2);
-			b.x += b2.x;
-			b.y += b2.y;
-			tw.scrollRectToVisible(b);
-
-			// Make it blink for a short while
-			Graphics2D g = (Graphics2D) tw.getGraphics();
-			g.setColor(Color.RED);
-			g.drawRect(1, 1, tw.getWidth() - 2, tw.getHeight() - 2);
-
-			new Thread() {
-				public void run() {
-					try {
-						Thread.sleep(300);
-						tw.repaint();
-					} catch (InterruptedException ex) {
-					}
-				}
-			}.start();
-		}
-	};
 
 	private void addStoredText(final String s) {
 		String menT = s.length() < 4000 ? s : s.substring(0, 40) + "...";
@@ -362,49 +420,6 @@ public class ApertiumView extends FrameView {
 		if (text == null) return "";
 		return text;
 	}
-
-	KeyListener switchFocus = new KeyAdapter() {
-		public void keyPressed(KeyEvent e) {
-			if (!e.isControlDown() && !e.isAltDown() && !e.isAltGraphDown()) return;
-			int keyCode = e.getKeyCode();
-
-			int nowFocus = -1;
-
-			if (keyCode >= e.VK_0 && keyCode <= e.VK_9) {
-				nowFocus = Math.max(0, keyCode - e.VK_1);  // Alt-0 and Alt-1 gives first widget
-				nowFocus = Math.min(nowFocus, textWidgets.size() - 1); // Alt-9 gives last widget
-
-			} else if (keyCode == e.VK_PAGE_UP || keyCode == e.VK_PAGE_DOWN) {
-
-				for (int i = 0; i < textWidgets.size(); i++) { // find widget which has the focus
-					TextWidget tw = textWidgets.get(i);
-					if (SwingUtilities.findFocusOwner(tw) != null) nowFocus = i;
-				}
-
-				if (nowFocus != -1) {
-					if (keyCode == e.VK_PAGE_UP) {
-						do
-							nowFocus = (nowFocus - 1 + textWidgets.size()) % textWidgets.size(); // cycle upwards
-						while (textWidgets.get(nowFocus).getVisibleRect().isEmpty());
-					} else {
-						do
-							nowFocus = (nowFocus + 1) % textWidgets.size(); // cycle downwards
-						while (textWidgets.get(nowFocus).getVisibleRect().isEmpty());
-					}
-				} else {
-					System.err.println("Hm! No widget has focus!");
-					if (keyCode == e.VK_PAGE_UP) {
-						nowFocus = 0; // cycle upwards
-					} else {
-						nowFocus = textWidgets.size() - 1; // cycle downwards
-					}
-				}
-			} else return;
-
-			menuBar.requestFocusInWindow(); // crude way to force focus notify
-			textWidgets.get(nowFocus).textEditor.requestFocusInWindow();
-		}
-	};
 
 	private void ajustSplitPaneHeights(int toth) {
 		for (JSplitPane s : splitPanes) {
@@ -435,12 +450,12 @@ public class ApertiumView extends FrameView {
 		}
 	}
 
-	private void showSelectedMode() {
+	private void updateSelectedMode() {
 		final Object item = modesComboBox.getSelectedItem();
 
 		if (item instanceof Mode) { // local
 			IOUtils.setClassLoader(null);
-			showMode((Mode) item);
+			setMode((Mode) item);
 		} else { // online
 			if (item==null || item.equals("SELECT A MODE")) return;
 
@@ -457,7 +472,7 @@ public class ApertiumView extends FrameView {
 							@Override
 							public void run() {
 								dialog.setVisible(false);
-								showMode(m);
+								setMode(m);
 							}
 						});
 					} catch (final Exception e) {
@@ -475,7 +490,7 @@ public class ApertiumView extends FrameView {
 		}
 	}
 
-	private void showMode(Mode m) {
+	private void setMode(Mode m) {
 		if (m.getPipelineLength() + 1 != textWidgets.size()) {
 			// Number of text widgets are different, dispose all and regenerate
 			lastSplitPane = jSplitPane1;
@@ -591,6 +606,100 @@ public class ApertiumView extends FrameView {
 		textWidget1.textChg(true);
 
 	}
+
+
+
+	private void downloadOnlineModes() throws IOException {
+		final String REPO_URL = "https://apertium.svn.sourceforge.net/svnroot/apertium/builds/language-pairs";
+		StringBuilder sb = new StringBuilder();
+		InputStreamReader isr = new InputStreamReader(new URL(REPO_URL).openStream());
+		int ch = isr.read();
+		while (ch != -1) { sb.append((char)ch); ch = isr.read(); }
+		isr.close();
+		prefs.put("onlineModes", sb.toString());
+	}
+
+	private void initOnlineModes() {
+		onlineModes = new ArrayList<String>();
+		onlineModeToLoader = new HashMap<String, URLClassLoader>();
+		onlineModeToCode = new HashMap<String, String>();
+		for (String line : prefs.get("onlineModes","").split("\n")) try {
+			String[] columns = line.split("\t");
+			if (columns.length > 3) {
+				URLClassLoader cl = new URLClassLoader(new URL[] { new URL(columns[1]) }, this.getClass().getClassLoader());
+				String pairs[] = columns[3].split(",");
+				for (int i = 0; i < pairs.length; i++) {
+					final String pair = pairs[i].trim();
+					if (!pair.contains("-")) continue;
+					String title = Translator.getTitle(pair);
+					onlineModes.add(title);
+					onlineModeToCode.put(title, pair);
+					onlineModeToLoader.put(title, cl);
+				}
+			}
+		} catch (Exception e) { e.printStackTrace(); }
+		// Collections.sort(onlineModes); // don't sort; better to keep original order intact as related modes are near to each other
+	}
+
+	private void loadMode(String filename) {
+		try {
+			Mode m = new Mode(filename);
+			modes.add(m);
+			modesComboBox.addItem(m);
+		} catch (IOException ex) {
+			Logger.getLogger(ApertiumView.class.getName()).log(Level.INFO, null, ex);
+			warnUser("Loading of mode " + filename + " failed:\n\n" + ex.toString() + "\n\nContinuing without this mode.");
+		}
+	}
+
+	public void warnUser(String txt) {
+		System.out.println("warnUser(" + txt);
+		JOptionPane.showMessageDialog(mainPanel, txt, "Warning", JOptionPane.WARNING_MESSAGE);
+		//JOptionPane.showMessageDialog(null,txt,"Warning", JOptionPane.WARNING_MESSAGE);
+	}
+
+
+	private int insetHeight(JComponent c) {
+		Insets i = c.getInsets();
+		return i.top + i.bottom;
+	}
+
+	private void updateModesComboBox() {
+		ignoreEvents = true;
+		modesComboBox.removeAllItems();
+		int index;
+		if (local) {
+			for (Mode m : modes) modesComboBox.addItem(m);
+			index = prefs.getInt("modesComboBoxLocal", 0);
+		} else {
+			modesComboBox.addItem("SELECT A MODE");
+			for (String s : onlineModes) modesComboBox.addItem(s);
+			index = prefs.getInt("modesComboBoxOnline", 0);
+		}
+		modesComboBox.setSelectedIndex(index < modesComboBox.getModel().getSize() ? index : -1);
+		// Ugly hack - see http://stackoverflow.com/questions/29841044/jcombobox-popup-cell-height-wrong-after-call-to-setselecteditem
+		ComboBoxModel model = modesComboBox.getModel();
+		modesComboBox.setModel(new DefaultComboBoxModel());
+		modesComboBox.setModel(model);
+
+		ignoreEvents = false;
+		modesComboBoxActionPerformed(null);
+	}
+
+	private JDialog createDialog(String message) {
+		final JDialog dialog = new JDialog(getFrame(), "Downloading, please wait...", false);
+		dialog.setContentPane(new JOptionPane(message,
+				JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[] {}, null));
+		dialog.pack();
+		dialog.setLocationRelativeTo(getFrame());
+		dialog.setVisible(true);
+		return dialog;
+	}
+
+	void fitToText() {
+		fitToText(null);
+	}
+
 
 	/** This method is called from within the constructor to
 	 * initialize the form.
@@ -906,7 +1015,7 @@ private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 		modesComboBox.setToolTipText(tooltip);
 	}
 	Translator.clearCache();
-	showSelectedMode();
+	updateSelectedMode();
 }//GEN-LAST:event_modesComboBoxActionPerformed
 
 private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editModesMenuItemActionPerformed
@@ -938,7 +1047,7 @@ private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
 }//GEN-LAST:event_editModesMenuItemActionPerformed
 
 private void markUnknownWordsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markUnknownWordsCheckBoxActionPerformed
-	showSelectedMode();
+	updateSelectedMode();
 }//GEN-LAST:event_markUnknownWordsCheckBoxActionPerformed
 
 private void showCommandsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCommandsCheckBoxActionPerformed
@@ -1073,10 +1182,7 @@ private void copyText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyTex
 	JOptionPane.showMessageDialog(mainPanel, new JTextArea(tottxt), "Contents of clipboard", JOptionPane.INFORMATION_MESSAGE);
 }//GEN-LAST:event_copyText
 
-	private int insetHeight(JComponent c) {
-		Insets i = c.getInsets();
-		return i.top + i.bottom;
-	}
+
 
 private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToText
 	//System.out.println();
@@ -1103,29 +1209,6 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 	ajustSplitPaneHeights(toth);
 }//GEN-LAST:event_fitToText
 
-	private void updateModesComboBox() {
-		ignoreEvents = true;
-		modesComboBox.removeAllItems();
-		int index;
-		if (local) {
-			for (Mode m : modes) modesComboBox.addItem(m);
-			index = prefs.getInt("modesComboBoxLocal", 0);
-		} else {
-			modesComboBox.addItem("SELECT A MODE");
-			for (String s : onlineModes) modesComboBox.addItem(s);
-			index = prefs.getInt("modesComboBoxOnline", 0);
-		}
-		modesComboBox.setSelectedIndex(index < modesComboBox.getModel().getSize() ? index : -1);
-		// Ugly hack - see http://stackoverflow.com/questions/29841044/jcombobox-popup-cell-height-wrong-after-call-to-setselecteditem
-		ComboBoxModel model = modesComboBox.getModel();
-		modesComboBox.setModel(new DefaultComboBoxModel());
-		modesComboBox.setModel(model);
-
-		ignoreEvents = false;
-		modesComboBoxActionPerformed(null);
-	}
-
-	private boolean local = true;
 
     private void rdbtnLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbtnLocalActionPerformed
 			local = true;
@@ -1186,21 +1269,6 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 		ApertiumViewMain.getApplication().show(aboutBox);
   }//GEN-LAST:event_showAboutBox
 
-	private JDialog createDialog(String message) {
-		final JDialog dialog = new JDialog(getFrame(), "Downloading, please wait...", false);
-		dialog.setContentPane(new JOptionPane(message,
-				JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[] {}, null));
-		dialog.pack();
-		dialog.setLocationRelativeTo(getFrame());
-		dialog.setVisible(true);
-		return dialog;
-	}
-
-	void fitToText() {
-		fitToText(null);
-	}
-
-	JFileChooser modeFileChooser;
 
   private void loadMode(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMode
 		if (modeFileChooser == null) {
@@ -1258,8 +1326,6 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 		JOptionPane.showMessageDialog(mainPanel, new JTextArea(tottxt.trim()), "Paste into a Wiki test page", JOptionPane.INFORMATION_MESSAGE);
   }//GEN-LAST:event_makeTestCase
 
-	public final static Preferences prefs = Preferences.userNodeForPackage(ApertiumView.class);
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.ButtonGroup buttonGroup1;
@@ -1290,72 +1356,5 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
     javax.swing.JPanel textWidgetsPanel;
     javax.swing.JMenu toolsMenu;
     // End of variables declaration//GEN-END:variables
-
-	private JDialog aboutBox;
-
-	ArrayList<Mode> modes = new ArrayList<Mode>();
-	ArrayList<String> onlineModes;
-	HashMap<String, URLClassLoader> onlineModeToLoader;
-	HashMap<String, String> onlineModeToCode;
-
-
-	private void downloadOnlineModes() throws IOException {
-		final String REPO_URL = "https://apertium.svn.sourceforge.net/svnroot/apertium/builds/language-pairs";
-		StringBuilder sb = new StringBuilder();
-		InputStreamReader isr = new InputStreamReader(new URL(REPO_URL).openStream());
-		int ch = isr.read();
-		while (ch != -1) { sb.append((char)ch); ch = isr.read(); }
-		isr.close();
-		prefs.put("onlineModes", sb.toString());
-	}
-
-	private void initOnlineModes() {
-		onlineModes = new ArrayList<String>();
-		onlineModeToLoader = new HashMap<String, URLClassLoader>();
-		onlineModeToCode = new HashMap<String, String>();
-		for (String line : prefs.get("onlineModes","").split("\n")) try {
-			String[] columns = line.split("\t");
-			if (columns.length > 3) {
-				URLClassLoader cl = new URLClassLoader(new URL[] { new URL(columns[1]) }, this.getClass().getClassLoader());
-				String pairs[] = columns[3].split(",");
-				for (int i = 0; i < pairs.length; i++) {
-					final String pair = pairs[i].trim();
-					if (!pair.contains("-")) continue;
-					String title = Translator.getTitle(pair);
-					onlineModes.add(title);
-					onlineModeToCode.put(title, pair);
-					onlineModeToLoader.put(title, cl);
-				}
-			}
-		} catch (Exception e) { e.printStackTrace(); }
-		// Collections.sort(onlineModes); // don't sort; better to keep original order intact as related modes are near to each other
-	}
-
-	public static String legu(File fil) throws IOException {
-		FileChannel fc = new FileInputStream(fil).getChannel();
-		MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fil.length());
-		//CharBuffer cb = Charset.forName("ISO-8859-1").decode(bb);
-		CharBuffer cb = Charset.forName("UTF-8").decode(bb);
-		return new String(cb.array());
-	}
-
-	private void loadMode(String filename) {
-		try {
-			Mode m = new Mode(filename);
-			modes.add(m);
-			modesComboBox.addItem(m);
-		} catch (IOException ex) {
-			Logger.getLogger(ApertiumView.class.getName()).log(Level.INFO, null, ex);
-			warnUser("Loading of mode " + filename + " failed:\n\n" + ex.toString() + "\n\nContinuing without this mode.");
-		}
-	}
-
-	public void warnUser(String txt) {
-		System.out.println("warnUser(" + txt);
-		JOptionPane.showMessageDialog(mainPanel, txt, "Warning", JOptionPane.WARNING_MESSAGE);
-		//JOptionPane.showMessageDialog(null,txt,"Warning", JOptionPane.WARNING_MESSAGE);
-	}
-
-	Font textWidgetFont = null;
 
 }
