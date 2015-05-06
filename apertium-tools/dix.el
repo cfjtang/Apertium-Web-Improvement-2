@@ -99,7 +99,7 @@
 
 ;;; Code:
 
-(defconst dix-version "0.1.3")
+(defconst dix-version "0.1.4")
 
 (require 'nxml-mode)
 (require 'cl)
@@ -1906,6 +1906,15 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
     'dix-pb-align "^<.*\\(\\s-*\\)\\(<p>.*\\)$" dix-pb-align-column)
    (dix-add-align-rule
     'dix-pp-align "^[^<].*\\S-*\\(\\s-*\\)\\(<p>.*\\)$" dix-pp-align-column)))
+
+;;; Evil integration ---------------------------------------------------------
+(eval-after-load 'evil
+  '(progn
+     (evil-declare-motion #'dix-next)
+     (evil-declare-motion #'dix-previous)
+     (evil-declare-motion #'dix-move-to-top)
+     (evil-declare-motion #'dix-backward-up-element)
+     (evil-declare-motion #'dix-goto-pardef)))
 
 ;;; Keybindings --------------------------------------------------------------
 (define-key dix-mode-map (kbd "C-c L") 'dix-LR-restriction-copy)
