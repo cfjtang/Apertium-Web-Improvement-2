@@ -177,9 +177,9 @@ public class TextWidget extends javax.swing.JPanel {
     commandScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     commandScrollPane.setAlignmentY(1.0F);
 
+    commandTextPane.setEditable(false);
     commandTextPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
     commandTextPane.setContentType("text/html"); // NOI18N
-    commandTextPane.setEditable(false);
     commandTextPane.setText("<html>hej <b>verden");
     commandTextPane.setAlignmentY(1.0F);
     commandScrollPane.setViewportView(commandTextPane);
@@ -222,13 +222,13 @@ public class TextWidget extends javax.swing.JPanel {
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(commandScrollPane)
+          .addComponent(commandScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
             .addComponent(zoomButton, 0, 0, Short.MAX_VALUE)
             .addComponent(jButtonEditSource, 0, 0, Short.MAX_VALUE)
             .addComponent(freezeCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         .addGap(0, 0, 0)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
+        .addComponent(jScrollPane1))
     );
   }// </editor-fold>//GEN-END:initComponents
 
