@@ -1153,24 +1153,14 @@ private void importTestCase(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_i
 }//GEN-LAST:event_importTestCase
 
 private void hideIntermediate(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hideIntermediate
-	int toth = 0;
-	for (TextWidget w : textWidgets) {
-		Dimension d = w.textEditor.getPreferredSize();
-		d.height += insetHeight(w.textEditor) + insetHeight(w) + insetHeight(w.jScrollPane1) + 6;
-
-		if (w == textWidget1 || w == textWidgets.get(textWidgets.size() - 1)) {
-			d.height += w.commandScrollPane.getPreferredSize().height;
-			d.height += insetHeight(w.commandScrollPane);
-		} else {
-			d.height = 0;
-		}
-
-		w.setMinimumSize(d);
-		w.setPreferredSize(d);
-		toth += d.height;
+	textWidgets.get(0).setMinimumSize(null);
+	textWidgets.get(0).setPreferredSize(null);
+	splitPanes.get(0).setDividerLocation(-1);
+	for (int i=1; i<splitPanes.size(); i++) {
+		textWidgets.get(i).setMinimumSize(new Dimension());
+		textWidgets.get(i).setPreferredSize(new Dimension());
+		splitPanes.get(i).setDividerLocation(-1);
 	}
-
-	ajustSplitPaneHeights(toth);
 }//GEN-LAST:event_hideIntermediate
 
 private void copyText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyText
@@ -1194,28 +1184,29 @@ private void copyText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyTex
 
 
 private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToText
-	//System.out.println();
-	//System.out.println("============fitToText()");
 	int toth = 0;
-	for (TextWidget w : textWidgets) {
-
-		Dimension d = w.textEditor.getPreferredSize();
-		d.height += insetHeight(w.textEditor) + insetHeight(w) + insetHeight(w.jScrollPane1) + 6;
-
-		if (w.commandScrollPane.isVisible()) {
-			d.height += w.commandScrollPane.getPreferredSize().height;
-			d.height += insetHeight(w.commandScrollPane);
+	for (int i=0; i<splitPanes.size(); i++) {
+		TextWidget w = textWidgets.get(i);
+		JSplitPane s = splitPanes.get(i);
+		if (w.getStatus() == w.STATUS_EQUAL) {
+			w.setPreferredSize(new Dimension());
+			w.setMinimumSize(new Dimension());
+			s.setDividerLocation(-1);
+		} else {
+			w.setPreferredSize(null);
+			w.setMinimumSize(null);
+			//if (i==0 || i==splitPanes.size()-1) w.setMinimumSize(w.getPreferredSize());
+			toth += w.getPreferredSize().height + 6;
+			System.out.println("insetHeight(w)="+insetHeight(s));
+			s.setDividerLocation(-1);
 		}
-
-		//System.out.println("d="+d.height);
-		if (w.getStatus() == w.STATUS_EQUAL) d.height = 0;
-
-		w.setMinimumSize(d);
-		w.setPreferredSize(d);
-		toth += d.height;
+		toth += s.getDividerSize() + insetHeight(w);
 	}
-
-	ajustSplitPaneHeights(toth);
+	System.out.println("toth="+toth);
+	//toth *= 2;
+	textWidgetsPanel.setMinimumSize(new Dimension(0, toth));
+	textWidgetsPanel.setPreferredSize(new Dimension(0, toth));
+	mainPanel.validate();
 }//GEN-LAST:event_fitToText
 
 
