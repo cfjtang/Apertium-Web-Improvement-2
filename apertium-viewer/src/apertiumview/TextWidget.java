@@ -9,7 +9,7 @@
 package apertiumview;
 
 import apertiumview.highlight.HighlightTextEditor;
-import apertiumview.source.SourcecodeFinder;
+import apertiumview.sourceeditor.SourcecodeFinder;
 import java.awt.Color;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
