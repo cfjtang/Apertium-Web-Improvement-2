@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.PopupMenuEvent;
 import java.awt.event.*;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -60,6 +61,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import org.apertium.Translator;
 import org.apertium.pipeline.Mode;
@@ -231,6 +233,7 @@ public class ApertiumView extends javax.swing.JFrame {
 		initComponents();
 		textWidget1.commandTextPane.addHyperlinkListener(hyperlinkListener);
 		textWidget1.owner = this;
+		try { ((BasicSplitPaneUI) jSplitPane1.getUI()).getDivider().addMouseListener(turnAutofitOff); } catch (Exception e) { e.printStackTrace(); }
 
 		modesComboBox.setRenderer(new DefaultListCellRenderer() {
 			public Component getListCellRendererComponent(JList list, Object value, int index,
@@ -468,6 +471,14 @@ public class ApertiumView extends javax.swing.JFrame {
 		}
 	}
 
+	MouseListener turnAutofitOff = new MouseAdapter() {
+		@Override
+		public void mousePressed(MouseEvent e) {
+			fitToTextButton.setSelected(false);
+			hideIntermediateButton.setSelected(false);
+		}
+	};
+
 	private void setMode(Mode m) {
 		if (m.getPipelineLength() + 1 != textWidgets.size()) {
 			// Number of text widgets are different, dispose all and regenerate
@@ -512,6 +523,7 @@ public class ApertiumView extends javax.swing.JFrame {
 					sp.setOneTouchExpandable(true);
 					sp.setContinuousLayout(true);
 					sp.setTopComponent(tw);
+					try { ((BasicSplitPaneUI) sp.getUI()).getDivider().addMouseListener(turnAutofitOff); } catch (Exception e) { e.printStackTrace(); }
 					lastSplitPane.setBottomComponent(sp);
 					splitPanes.add(sp);
 					lastSplitPane = sp;
@@ -1126,7 +1138,7 @@ private void importTestCase(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_i
 }//GEN-LAST:event_importTestCase
 
 private void hideIntermediate(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hideIntermediate
-	if (hideIntermediateButton.isSelected()) textChanged(); // invokes hideIntermediate();
+	textChanged(); // invokes hideIntermediate();
 }//GEN-LAST:event_hideIntermediate
 
 private void copyText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyText
@@ -1199,10 +1211,9 @@ private void fitToText() {
 
 
 	void textChanged() {
-//	textWidget1.scrollRectToVisible(new Rectangle());
-		if (!fitToTextButton.isSelected()) return;
-		if (hideIntermediateButton.isSelected()) hideIntermediate();
-		else fitToText(); 
+	textWidget1.scrollRectToVisible(new Rectangle());
+		if (hideIntermediateButton.isSelected()) { hideIntermediate(); return; }
+		if (fitToTextButton.isSelected()) { fitToText(); return; }
 	}
 
 
