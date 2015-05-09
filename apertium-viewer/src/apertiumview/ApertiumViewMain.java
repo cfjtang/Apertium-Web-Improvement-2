@@ -47,18 +47,17 @@ public class ApertiumViewMain {
             root.pack();
 
         if (mainFrame.prefs.get("dividerLocation", null)==null) {
-            mainFrame.fitToText();
+            //mainFrame.fitToText();
         }
         // Seems like closing window doesent exit the app - so force exit
         root.addWindowListener(new WindowAdapter() {
         @Override
-          public void windowClosing(WindowEvent e) {shutdown();}
+          public void windowClosing(WindowEvent e) {mainFrame.shutdown();}
         });
         
     }
 
      protected void shutdown() {
-         mainFrame.shutdown();
          java.awt.Window root= mainFrame;
         Point location = root.getLocation();
 
