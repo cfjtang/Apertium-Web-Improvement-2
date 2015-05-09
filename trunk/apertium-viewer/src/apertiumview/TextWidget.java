@@ -281,7 +281,9 @@ public class TextWidget extends javax.swing.JPanel {
         //new Exception("setText"+priority + newTxt).printStackTrace();
         if (next != null && !next.freezeCheckBox.isSelected()) {
             Pipeline.getPipeline().queueAsyncProcessing(this, this.priority, newTxt, next);
-        }
+        } else {
+						owner.textChanged(); // this is the last widget that gets its text updated - notify so splitpanes can be fittet
+				}
         changing = true;
         try {
 
@@ -318,6 +320,8 @@ public class TextWidget extends javax.swing.JPanel {
 
         if (next != null && !next.freezeCheckBox.isSelected()) {
             Pipeline.getPipeline().queueAsyncProcessing(this, this.priority, textEditor.getText(), next);
+        } else {
+						owner.textChanged(); // this is the last widget that gets its text updated - notify so splitpanes can be fittet
         }
     }
 

@@ -230,6 +230,7 @@ public class ApertiumView extends javax.swing.JFrame {
 		this.app = app;
 		initComponents();
 		textWidget1.commandTextPane.addHyperlinkListener(hyperlinkListener);
+		textWidget1.owner = this;
 
 		modesComboBox.setRenderer(new DefaultListCellRenderer() {
 			public Component getListCellRendererComponent(JList list, Object value, int index,
@@ -349,6 +350,8 @@ public class ApertiumView extends javax.swing.JFrame {
 					addStoredText(s);
 				}
 			}
+			fitToTextButton.setSelected(prefs.getBoolean("fitToText", false));
+			hideIntermediateButton.setSelected(prefs.getBoolean("hideIntermediate", false));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -389,6 +392,8 @@ public class ApertiumView extends javax.swing.JFrame {
 	}
 
 	public void shutdown() {
+		prefs.putBoolean("fitToText", fitToTextButton.isSelected());
+		prefs.putBoolean("hideIntermediate", hideIntermediateButton.isSelected());
 		prefs.putBoolean("showCommands", showCommandsCheckBox.isSelected());
 		prefs.putBoolean("local", local);
 		String divLoc = "";
@@ -401,6 +406,7 @@ public class ApertiumView extends javax.swing.JFrame {
 		prefs.put("inputText "+currentLanguage, textWidget1.getText());
 
 		Pipeline.getPipeline().shutdown();
+		app.shutdown();
 	}
 
 
@@ -420,35 +426,6 @@ public class ApertiumView extends javax.swing.JFrame {
 	public static String notNull(String text) {
 		if (text == null) return "";
 		return text;
-	}
-
-	private void ajustSplitPaneHeights(int toth) {
-		for (JSplitPane s : splitPanes) {
-			if (s.getDividerLocation() > 2) {
-				//System.out.println("getDividerLocation()"+s.getDividerLocation());
-				Dimension d = s.getTopComponent().getMinimumSize();
-				s.setDividerLocation(d.height);
-				//System.out.println("dp="+d);
-				toth += s.getDividerSize() + 2;
-				//System.out.println("getDividerLocation()"+s.getDividerLocation());
-			}
-		}
-		Dimension d = textWidgetsPanel.getSize();
-		d.height = toth; //Math.max(toth, d.height);
-		textWidgetsPanel.setSize(d);
-		d = textWidgetsPanel.getPreferredSize();
-		d.height = toth;
-		textWidgetsPanel.setMinimumSize(d);
-		textWidgetsPanel.setPreferredSize(d);
-		mainPanel.validate();
-		for (TextWidget w : textWidgets) {
-			w.jScrollPane1.setMinimumSize(null);
-			w.textEditor.setMinimumSize(null);
-			w.setMinimumSize(new Dimension(5, 5));
-			w.jScrollPane1.setPreferredSize(null);
-			w.textEditor.setPreferredSize(null);
-			w.setPreferredSize(null);
-		}
 	}
 
 	private void updateSelectedMode() {
@@ -702,9 +679,6 @@ public class ApertiumView extends javax.swing.JFrame {
 		return dialog;
 	}
 
-	void fitToText() {
-		fitToText(null);
-	}
 
 
 	/** This method is called from within the constructor to
@@ -718,7 +692,7 @@ public class ApertiumView extends javax.swing.JFrame {
 
     buttonGroup1 = new javax.swing.ButtonGroup();
     modesComboBox = new javax.swing.JComboBox();
-    fitToTextButton = new javax.swing.JButton();
+    fitToTextButton = new javax.swing.JToggleButton();
     jScrollPane1 = new javax.swing.JScrollPane();
     textWidgetsPanel = new javax.swing.JPanel();
     jSplitPane1 = new javax.swing.JSplitPane();
@@ -727,8 +701,8 @@ public class ApertiumView extends javax.swing.JFrame {
     showCommandsCheckBox = new javax.swing.JCheckBox();
     markUnknownWordsCheckBox = new javax.swing.JCheckBox();
     storeTextButton = new javax.swing.JButton();
-    jLabel1 = new javax.swing.JLabel();
-    jButton1 = new javax.swing.JButton();
+    jLabelMode = new javax.swing.JLabel();
+    hideIntermediateButton = new javax.swing.JToggleButton();
     rdbtnLocal = new javax.swing.JRadioButton();
     rdbtnOnline = new javax.swing.JRadioButton();
     menuBar = new javax.swing.JMenuBar();
@@ -766,7 +740,6 @@ public class ApertiumView extends javax.swing.JFrame {
     textWidgetsPanel.setPreferredSize(new java.awt.Dimension(200, 93));
 
     jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-    jSplitPane1.setContinuousLayout(true);
     jSplitPane1.setOneTouchExpandable(true);
 
     textWidget1.setPreferredSize(new java.awt.Dimension(200, 93));
@@ -827,16 +800,16 @@ public class ApertiumView extends javax.swing.JFrame {
       }
     });
 
-    jLabel1.setDisplayedMnemonic('M');
-    jLabel1.setLabelFor(modesComboBox);
-    jLabel1.setText("Mode:");
-    jLabel1.setToolTipText("Change mode (language pair)");
+    jLabelMode.setDisplayedMnemonic('M');
+    jLabelMode.setLabelFor(modesComboBox);
+    jLabelMode.setText("Mode:");
+    jLabelMode.setToolTipText("Change mode (language pair)");
 
-    jButton1.setMnemonic('D');
-    jButton1.setText("Hide intermediate");
-    jButton1.setToolTipText("Hides all but input and output");
-    jButton1.setMargin(new java.awt.Insets(0, 4, 0, 4));
-    jButton1.addActionListener(new java.awt.event.ActionListener() {
+    hideIntermediateButton.setMnemonic('D');
+    hideIntermediateButton.setText("Hide intermediate");
+    hideIntermediateButton.setToolTipText("Hides all but input and output");
+    hideIntermediateButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
+    hideIntermediateButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         hideIntermediate(evt);
       }
@@ -970,13 +943,13 @@ public class ApertiumView extends javax.swing.JFrame {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(fitToTextButton)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jButton1)
+        .addComponent(hideIntermediateButton)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(copyTextButton)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(storeTextButton)
         .addGap(18, 18, 18)
-        .addComponent(jLabel1)
+        .addComponent(jLabelMode)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(modesComboBox, 0, 107, Short.MAX_VALUE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -996,10 +969,10 @@ public class ApertiumView extends javax.swing.JFrame {
           .addComponent(fitToTextButton)
           .addComponent(copyTextButton)
           .addComponent(storeTextButton)
-          .addComponent(jButton1)
+          .addComponent(hideIntermediateButton)
           .addComponent(rdbtnLocal)
           .addComponent(rdbtnOnline)
-          .addComponent(jLabel1))
+          .addComponent(jLabelMode))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
     );
@@ -1153,6 +1126,8 @@ private void importTestCase(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_i
 }//GEN-LAST:event_importTestCase
 
 private void hideIntermediate(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hideIntermediate
+	textWidget1.scrollRectToVisible(new Rectangle());
+	if (!hideIntermediateButton.isSelected()) { fitToText(null); return; }
 	textWidgets.get(0).setMinimumSize(null);
 	textWidgets.get(0).setPreferredSize(null);
 	splitPanes.get(0).setDividerLocation(-1);
@@ -1185,29 +1160,42 @@ private void copyText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyTex
 
 private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToText
 	int toth = 0;
-	for (int i=0; i<splitPanes.size(); i++) {
+	for (int i=0; i<=splitPanes.size(); i++) {
 		TextWidget w = textWidgets.get(i);
-		JSplitPane s = splitPanes.get(i);
 		if (w.getStatus() == w.STATUS_EQUAL) {
 			w.setPreferredSize(new Dimension());
 			w.setMinimumSize(new Dimension());
-			s.setDividerLocation(-1);
 		} else {
 			w.setPreferredSize(null);
 			w.setMinimumSize(null);
 			//if (i==0 || i==splitPanes.size()-1) w.setMinimumSize(w.getPreferredSize());
-			toth += w.getPreferredSize().height + 6;
-			System.out.println("insetHeight(w)="+insetHeight(s));
-			s.setDividerLocation(-1);
 		}
-		toth += s.getDividerSize() + insetHeight(w);
+		toth += w.getPreferredSize().height + 12;
+		toth += insetHeight(w);
+		if (i<splitPanes.size()) {
+			JSplitPane s = splitPanes.get(i);
+			s.setDividerLocation(-1);
+			System.out.println("insetHeight(w)="+insetHeight(s));
+			toth += s.getDividerSize() + insetHeight(s);
+		}
 	}
-	System.out.println("toth="+toth);
-	//toth *= 2;
 	textWidgetsPanel.setMinimumSize(new Dimension(0, toth));
 	textWidgetsPanel.setPreferredSize(new Dimension(0, toth));
 	mainPanel.validate();
+	int extraSpace = (jScrollPane1.getHeight() - toth) / 2;
+	if (extraSpace>0) {
+			JSplitPane s = splitPanes.get(0);
+			System.out.println("setDividerLocation( "+s.getDividerLocation());
+			s.setDividerLocation(s.getDividerLocation() + extraSpace);
+			System.out.println("setDividerLocation2( "+s.getDividerLocation());
+	}
 }//GEN-LAST:event_fitToText
+
+	void textChanged() {
+		if (!fitToTextButton.isSelected()) return;
+		if (hideIntermediateButton.isSelected()) hideIntermediate(null);
+		else fitToText(null);
+	}
 
 
     private void rdbtnLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbtnLocalActionPerformed
@@ -1331,7 +1319,7 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
   }//GEN-LAST:event_makeTestCase
 
   private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-		app.shutdown();
+		shutdown();
   }//GEN-LAST:event_exitMenuItemActionPerformed
 
 
@@ -1340,11 +1328,11 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
   javax.swing.JMenuItem changeFontMenuItem;
   javax.swing.JButton copyTextButton;
   javax.swing.JMenuItem editModesMenuItem;
-  javax.swing.JButton fitToTextButton;
+  javax.swing.JToggleButton fitToTextButton;
   javax.swing.JMenuItem helpMenuItem;
+  javax.swing.JToggleButton hideIntermediateButton;
   javax.swing.JMenuItem importTestCaseMenuItem;
-  javax.swing.JButton jButton1;
-  javax.swing.JLabel jLabel1;
+  javax.swing.JLabel jLabelMode;
   javax.swing.JScrollPane jScrollPane1;
   javax.swing.JSeparator jSeparator1;
   javax.swing.JSplitPane jSplitPane1;
