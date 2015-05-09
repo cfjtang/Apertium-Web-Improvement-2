@@ -402,7 +402,7 @@ public class ApertiumView extends javax.swing.JFrame {
 		prefs.put("inputText", textWidget1.getText());
 
 		// Store current text under current language
-		String currentLanguage = currentMode==null?null:currentMode.toString().split("\\s")[0];
+		String currentLanguage = currentMode==null?null:getSourceLanguageCode(currentMode);
 		prefs.put("inputText "+currentLanguage, textWidget1.getText());
 
 		Pipeline.getPipeline().shutdown();
@@ -568,9 +568,9 @@ public class ApertiumView extends javax.swing.JFrame {
 
 		// Update input text to match the current input language
 		try {
-			String language = new File(m.getFilename()).getName().split("-",2)[0];
+			String language = getSourceLanguageCode(m);
 			System.out.println("language="+language);
-			String currentLanguage = currentMode==null?null:currentMode.toString().split("\\s")[0];
+			String currentLanguage = currentMode==null?null:getSourceLanguageCode(currentMode);
 			if (!language.equals(currentLanguage)) {
 				prefs.put("inputText "+currentLanguage, textWidget1.getText());
 				String txt = prefs.get("inputText "+language, null);
@@ -1126,16 +1126,7 @@ private void importTestCase(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_i
 }//GEN-LAST:event_importTestCase
 
 private void hideIntermediate(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hideIntermediate
-	textWidget1.scrollRectToVisible(new Rectangle());
-	if (!hideIntermediateButton.isSelected()) { fitToText(null); return; }
-	textWidgets.get(0).setMinimumSize(null);
-	textWidgets.get(0).setPreferredSize(null);
-	splitPanes.get(0).setDividerLocation(-1);
-	for (int i=1; i<splitPanes.size(); i++) {
-		textWidgets.get(i).setMinimumSize(new Dimension());
-		textWidgets.get(i).setPreferredSize(new Dimension());
-		splitPanes.get(i).setDividerLocation(-1);
-	}
+	if (hideIntermediateButton.isSelected()) textChanged(); // invokes hideIntermediate();
 }//GEN-LAST:event_hideIntermediate
 
 private void copyText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyText
@@ -1159,6 +1150,10 @@ private void copyText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyTex
 
 
 private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToText
+	if (fitToTextButton.isSelected()) textChanged(); // invokes fitToText();
+}//GEN-LAST:event_fitToText
+
+private void fitToText() {
 	int toth = 0;
 	for (int i=0; i<=splitPanes.size(); i++) {
 		TextWidget w = textWidgets.get(i);
@@ -1189,12 +1184,25 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 			s.setDividerLocation(s.getDividerLocation() + extraSpace);
 			System.out.println("setDividerLocation2( "+s.getDividerLocation());
 	}
-}//GEN-LAST:event_fitToText
+}
+
+	public void hideIntermediate() {
+		textWidgets.get(0).setMinimumSize(null);
+		textWidgets.get(0).setPreferredSize(null);
+		splitPanes.get(0).setDividerLocation(-1);
+		for (int i=1; i<splitPanes.size(); i++) {
+			textWidgets.get(i).setMinimumSize(new Dimension());
+			textWidgets.get(i).setPreferredSize(new Dimension());
+			splitPanes.get(i).setDividerLocation(-1);
+		}
+	}
+
 
 	void textChanged() {
+//	textWidget1.scrollRectToVisible(new Rectangle());
 		if (!fitToTextButton.isSelected()) return;
-		if (hideIntermediateButton.isSelected()) hideIntermediate(null);
-		else fitToText(null);
+		if (hideIntermediateButton.isSelected()) hideIntermediate();
+		else fitToText(); 
 	}
 
 
@@ -1293,6 +1301,11 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 		System.out.println("f = " + textWidgetFont);
   }//GEN-LAST:event_changeFont
 
+  public static String getSourceLanguageCode(Mode m) {
+		return new File(m.getFilename()).getName().split("-",2)[0];
+  }
+
+
   private void makeTestCase(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeTestCase
 		String[] firstTxt = null;
 		String[] lastTxt = null;
@@ -1307,7 +1320,7 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 			return;
 		}
 		Mode mode = (Mode) modesComboBox.getSelectedItem();
-		String sourceLanguage = mode.toString().split("-")[0];
+		String sourceLanguage = getSourceLanguageCode(mode);
 
 		String tottxt = "";
 		for (int i = 0; i < firstTxt.length; i++) {
