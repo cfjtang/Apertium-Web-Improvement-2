@@ -171,7 +171,7 @@ public class Pipeline {
           } catch (Throwable ex) {
 						System.err.println("Error for "+program+" on input '"+input+"'");
 						ex.printStackTrace();
-						recieverWidget.setText(ex.getLocalizedMessage());
+						recieverWidget.setText(ex.toString());
           } finally {
 						task = null;
           }

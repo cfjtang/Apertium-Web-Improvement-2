@@ -322,9 +322,8 @@ public class ApertiumView extends javax.swing.JFrame {
 							+ "\nI have searched in standard places for 'modes' (language translation pairs)"
 							+ "\nI will let you revise the list now (you can always re-edit the list by choosing File | Edit modes)");
 					editModesMenuItemActionPerformed(null);
-					warnUser("If some modes (language pairs) were missing you can choose File | Load mode"
-							+ "\nand select a mode to add it to the list (you'll have to download and compile the pair first)."
-							+ "\n(for example, Esperanto-English pair is called eo-en.mode)"
+					warnUser("Please use File | Load mode to add modes/language pairs that were missing "
+							+ "\n(you'll have to download and compile the pair first). For example, Esperanto-English pair is called eo-en.mode."
 							+ "\nYou can also download some pre-compiled pairs - choose 'Online' in upper right corner."
 					);
 				} else {
@@ -440,15 +439,20 @@ public class ApertiumView extends javax.swing.JFrame {
 		} else { // online
 			if (item==null || item.equals("SELECT A MODE")) return;
 
-			final JDialog dialog = createDialog("Please wait while downloading "+item);
+			final JDialog dialog = showDialog("Please wait while downloading "+item+"..."
+					+ "\n(this need to be done again each time you start the program and will take some time\nconsider installing the language pair locally)");
 
 			new Thread() {
 				@Override
 				public void run() {
 					try {
 						SwingUtilities.invokeAndWait(new Runnable() { public void run() {}}); // Let the UI thread settle
-						IOUtils.setClassLoader(onlineModeToLoader.get((String) item));
-						final Mode m = new Mode("data/modes/" + onlineModeToCode.get((String) item) + ".mode");
+						URLClassLoader classLoader = onlineModeToLoader.get((String) item);
+						IOUtils.setClassLoader(classLoader);
+						String filename = "data/modes/" + onlineModeToCode.get((String) item) + ".mode";
+						System.out.println("Loading "+filename+" from "+Arrays.toString(classLoader.getURLs()));
+						final Mode m = new Mode(filename);
+						System.out.println("Loaded "+filename+" - "+m.toString());
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
@@ -681,7 +685,7 @@ public class ApertiumView extends javax.swing.JFrame {
 		modesComboBoxActionPerformed(null);
 	}
 
-	private JDialog createDialog(String message) {
+	private JDialog showDialog(String message) {
 		final JDialog dialog = new JDialog(this, "Downloading, please wait...", false);
 		dialog.setContentPane(new JOptionPane(message,
 				JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[] {}, null));
@@ -1050,6 +1054,7 @@ private void showCommandsCheckBoxActionPerformed(java.awt.event.ActionEvent evt)
 	//System.out.println("show = " + show);
 	for (TextWidget w : textWidgets) w.setShowCommands(show);
 	textWidget1.setShowCommands(false);
+	textChanged();
 	mainPanel.validate();
 }//GEN-LAST:event_showCommandsCheckBoxActionPerformed
 
@@ -1071,7 +1076,7 @@ private void storeTextButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
 		warnUser("Your text is stored for future use. \nRetrieve it in the menu View | Stored text.\nNote: On restart only the last 10 stored texts will be remenbered.");
 
 	} catch (Exception e) {
-		warnUser(e.getLocalizedMessage());
+		warnUser(e.toString());
 	}
 }//GEN-LAST:event_storeTextButtonActionPerformed
 
@@ -1182,7 +1187,6 @@ private void fitToText() {
 		if (i<splitPanes.size()) {
 			JSplitPane s = splitPanes.get(i);
 			s.setDividerLocation(-1);
-			System.out.println("insetHeight(w)="+insetHeight(s));
 			toth += s.getDividerSize() + insetHeight(s);
 		}
 	}
@@ -1240,7 +1244,7 @@ private void fitToText() {
 					}
 				}.start();
 			} else {
-				final JDialog dialog = createDialog("Please wait while downloading the list of pairs");
+				final JDialog dialog = showDialog("Please wait while downloading the list of pairs");
 
 				new Thread() {
 					@Override
@@ -1269,9 +1273,9 @@ private void fitToText() {
 
   private void showAboutBox(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAboutBox
 		if (aboutBox == null) {
-			JFrame mainFrame = this;
-			aboutBox = new ApertiumViewAboutBox(mainFrame);
-			aboutBox.setLocationRelativeTo(mainFrame);
+			aboutBox = new ApertiumViewAboutBox(this);
+			aboutBox.setLocation(this.getLocation());
+			aboutBox.pack();
 		}
 		aboutBox.setVisible(true);
   }//GEN-LAST:event_showAboutBox
@@ -1291,9 +1295,12 @@ private void fitToText() {
 			prefs.put("lastModePath", modeFileChooser.getSelectedFile().getParent());
 			File fs[] = modeFileChooser.getSelectedFiles();
 			//System.out.println("txt=" + fs.length);
+			rdbtnLocal.setSelected(true);
 			for (File f : fs) {
 				loadMode(f.getPath());
 			}
+			prefs.putInt("modesComboBoxLocal", modesComboBox.getItemCount()-1);
+
 			updateModesComboBox();
 			String mpref = "";
 			for (Mode mo : modes) mpref = mpref + mo.getFilename() + "\n";
@@ -1304,6 +1311,7 @@ private void fitToText() {
   private void changeFont(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeFont
 		FontDialog fd = new FontDialog((Frame) SwingUtilities.getWindowAncestor(mainPanel));
 		fd.setInitialFont(textWidget1.textEditor.getFont());
+		fd.setLocationRelativeTo(this);
 		fd.setVisible(true);
 		textWidgetFont = fd.getFont();
 		for (TextWidget t : textWidgets) {
@@ -1313,6 +1321,7 @@ private void fitToText() {
   }//GEN-LAST:event_changeFont
 
   public static String getSourceLanguageCode(Mode m) {
+		// TODO: use m.getSourceLanguageCode()
 		return new File(m.getFilename()).getName().split("-",2)[0];
   }
 
