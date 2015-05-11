@@ -45,6 +45,9 @@ public class SourcecodeFinder {
 								// its a binary file....
 								link = findSourcefileFromBinaryFile(paramFile, sourcedirs);
 								if (link != null) sourceFiles.append(link).append('\n');
+							} else if (param.endsWith(".hfst")) {
+								link = findSourcefileFromBinaryFile(paramFile, sourcedirs);
+								if (link != null) sourceFiles.append(link).append('\n');
 							} else if (param.endsWith(".prob")) {
 								// no link
 							} else { // t1x, antaux_t2x, t2x, t3x,
@@ -84,6 +87,11 @@ public class SourcecodeFinder {
 	}
 
 
+	private static boolean match(ArrayList<Path> sourcedirs, String string) {
+		for (Path p : sourcedirs) if (match(p, string)) return true;
+		return false;
+	}
+
 	private static String findSourcefileFromBinaryFile(File bin, ArrayList<Path> sourcedirs) {
 		try {
 			// /home/j/esperanto/apertium/trunk/apertium-eo-en/en-eo.automorf.bin
@@ -91,50 +99,55 @@ public class SourcecodeFinder {
 			String[] parts = bin.getName().split("\\."); // "en-eo", "automorf", "bin"
 			String dirname = bin.getParentFile().getName(); // "apertium-eo-en"
 
-
 			if ("automorf".equals(parts[1])) { // source language .dix
 				// en-eo.automorf.bin -> apertium-eo-en.en.dix
 				String sl = parts[0].split("-")[0]; // "en"
-				for (Path p : sourcedirs) if (match(p, dirname+"."+sl+".dix")) return match;
-				 // eng-sco.automorf.bin -> apertium-eng.eng.dix
-				for (Path p : sourcedirs) if (match(p, "apertium-"+sl+"."+sl+".dix")) return match;
+				if (match(sourcedirs, dirname+"."+sl+".dix")) return match;
+				// eng-sco.automorf.bin -> apertium-eng.eng.dix
+				if (match(sourcedirs, "apertium-"+sl+"."+sl+".dix")) return match;
+				// hfst files:
+				// apertium-$lang.$lang.lexc – the lexicon and pardefs
+				// apertium-$lang.$lang.twol – morphophonological rules (like "turn -y into -ie before -s")
+				if (match(sourcedirs, "apertium-"+sl+"."+sl+".lexc")) return match;
+				// also return this? if (match(sourcedirs, "apertium-"+sl+"."+sl+".twol")) return match;
+
 				// No match - try some more desperate options
-				for (Path p : sourcedirs) if (match(p, dirname+"."+sl+".dix*")) return match;
-				for (Path p : sourcedirs) if (match(p, "apertium-"+sl+"."+sl+".dix*")) return match;
-				for (Path p : sourcedirs) if (match(p, dirname+"."+sl+".*dix*")) return match;
-				for (Path p : sourcedirs) if (match(p, "apertium-"+sl+"."+sl+".*dix*")) return match;
+				if (match(sourcedirs, dirname+"."+sl+".dix*")) return match;
+				if (match(sourcedirs, "apertium-"+sl+"."+sl+".dix*")) return match;
+				if (match(sourcedirs, dirname+"."+sl+".*dix*")) return match;
+				if (match(sourcedirs, "apertium-"+sl+"."+sl+".*dix*")) return match;
 			}
-			if ("rlx".equals(parts[1])) { // source language .rlx (constraint grammar)
+			else if ("rlx".equals(parts[1])) { // source language .rlx (constraint grammar)
 				// en-eo.automorf.bin -> apertium-eo-en.en.dix
 				String sl = parts[0].split("-")[0]; // "en"
-				for (Path p : sourcedirs) if (match(p, dirname+"."+sl+".rlx")) return match;
+				if (match(sourcedirs, dirname+"."+sl+".rlx")) return match;
 				 // eng-sco.automorf.bin -> apertium-eng.eng.dix
-				for (Path p : sourcedirs) if (match(p, "apertium-"+sl+"."+sl+".rlx")) return match;
+				if (match(sourcedirs, "apertium-"+sl+"."+sl+".rlx")) return match;
 			}
-			if ("autobil".equals(parts[1])) { // bilingual .dix
+			else if ("autobil".equals(parts[1])) { // bilingual .dix
 				// eng-sco.autobil.bin, sco-eng.autobil.bin -> apertium-eng-sco.eng-sco.dix
 				String sl_tl = parts[0]; // "eng-sco"
-				for (Path p : sourcedirs) if (match(p, dirname+"."+sl_tl+".dix")) return match;
+				if (match(sourcedirs, dirname+"."+sl_tl+".dix")) return match;
 				String[] sltla = sl_tl.split("-"); // "eng-sco"
 				String tl_sl = sltla[1]+"-"+sltla[0]; // "sco-eng"
-				for (Path p : sourcedirs) if (match(p, dirname+"."+tl_sl+".dix")) return match;
+				if (match(sourcedirs, dirname+"."+tl_sl+".dix")) return match;
 				// No match - try some more desperate options
-				for (Path p : sourcedirs) if (match(p, dirname+"."+sl_tl+".dix*")) return match;
-				for (Path p : sourcedirs) if (match(p, dirname+"."+tl_sl+".dix*")) return match;
-				for (Path p : sourcedirs) if (match(p, dirname+"."+sl_tl+".*dix*")) return match;
-				for (Path p : sourcedirs) if (match(p, dirname+"."+tl_sl+".*dix*")) return match;
+				if (match(sourcedirs, dirname+"."+sl_tl+".dix*")) return match;
+				if (match(sourcedirs, dirname+"."+tl_sl+".dix*")) return match;
+				if (match(sourcedirs, dirname+"."+sl_tl+".*dix*")) return match;
+				if (match(sourcedirs, dirname+"."+tl_sl+".*dix*")) return match;
 			}
-			if ("autogen".equals(parts[1])) { // target language .dix
+			else if ("autogen".equals(parts[1])) { // target language .dix
 				// en-eo.autogen.bin -> apertium-eo-en.eo.dix
 				String tl = parts[0].split("-")[1]; // "eo"
-				for (Path p : sourcedirs) if (match(p, dirname+"."+tl+".dix")) return match;
+				if (match(sourcedirs, dirname+"."+tl+".dix")) return match;
 				 // eng-sco.automorf.bin -> apertium-sco.sco.dix
-				for (Path p : sourcedirs) if (match(p, "apertium-"+tl+"."+tl+".dix")) return match;
+				if (match(sourcedirs, "apertium-"+tl+"."+tl+".dix")) return match;
 				// No match - try some more desperate options
-				for (Path p : sourcedirs) if (match(p, dirname+"."+tl+".dix*")) return match;
-				for (Path p : sourcedirs) if (match(p, "apertium-"+tl+"."+tl+".dix*")) return match;
-				for (Path p : sourcedirs) if (match(p, dirname+"."+tl+".*dix*")) return match;
-				for (Path p : sourcedirs) if (match(p, "apertium-"+tl+"."+tl+".*dix*")) return match;
+				if (match(sourcedirs, dirname+"."+tl+".dix*")) return match;
+				if (match(sourcedirs, "apertium-"+tl+"."+tl+".dix*")) return match;
+				if (match(sourcedirs, dirname+"."+tl+".*dix*")) return match;
+				if (match(sourcedirs, "apertium-"+tl+"."+tl+".*dix*")) return match;
 			}
 
 
