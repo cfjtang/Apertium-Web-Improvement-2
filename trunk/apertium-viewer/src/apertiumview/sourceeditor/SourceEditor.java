@@ -81,13 +81,14 @@ public class SourceEditor extends javax.swing.JFrame {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
+    jToolBar1 = new javax.swing.JToolBar();
+    jButtonValidate = new javax.swing.JButton();
+    jButtonSave = new javax.swing.JButton();
+    jPanel1 = new javax.swing.JPanel();
     lblCaretPos = new javax.swing.JLabel();
     jScrollPane1 = new javax.swing.JScrollPane();
     jEditorPane = new javax.swing.JEditorPane();
     jCmbLangs = new javax.swing.JComboBox();
-    jToolBar1 = new javax.swing.JToolBar();
-    jButtonValidate = new javax.swing.JButton();
-    jButtonSave = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
     java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("apertiumview/sourceeditor/Bundle"); // NOI18N
@@ -95,21 +96,6 @@ public class SourceEditor extends javax.swing.JFrame {
     addWindowListener(new java.awt.event.WindowAdapter() {
       public void windowClosing(java.awt.event.WindowEvent evt) {
         formWindowClosing(evt);
-      }
-    });
-
-    lblCaretPos.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-    lblCaretPos.setText(bundle.getString("SourceEditor.lblCaretPos.text")); // NOI18N
-    lblCaretPos.setToolTipText(bundle.getString("SourceEditor.lblCaretPos.toolTipText")); // NOI18N
-
-    jEditorPane.setContentType("text/java"); // NOI18N
-    jScrollPane1.setViewportView(jEditorPane);
-
-    jCmbLangs.setMaximumRowCount(20);
-    jCmbLangs.setFocusable(false);
-    jCmbLangs.addItemListener(new java.awt.event.ItemListener() {
-      public void itemStateChanged(java.awt.event.ItemEvent evt) {
-        jCmbLangsItemStateChanged(evt);
       }
     });
 
@@ -138,31 +124,54 @@ public class SourceEditor extends javax.swing.JFrame {
     });
     jToolBar1.add(jButtonSave);
 
-    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-    getContentPane().setLayout(layout);
-    layout.setHorizontalGroup(
-      layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-      .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
-      .addGroup(layout.createSequentialGroup()
-        .addContainerGap()
-        .addComponent(jCmbLangs, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(18, 18, 18)
-        .addComponent(lblCaretPos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        .addContainerGap())
+    getContentPane().add(jToolBar1, java.awt.BorderLayout.NORTH);
+
+    lblCaretPos.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+    lblCaretPos.setText(bundle.getString("SourceEditor.lblCaretPos.text")); // NOI18N
+    lblCaretPos.setToolTipText(bundle.getString("SourceEditor.lblCaretPos.toolTipText")); // NOI18N
+
+    jEditorPane.setContentType("text/java"); // NOI18N
+    jScrollPane1.setViewportView(jEditorPane);
+
+    jCmbLangs.setMaximumRowCount(20);
+    jCmbLangs.setFocusable(false);
+    jCmbLangs.addItemListener(new java.awt.event.ItemListener() {
+      public void itemStateChanged(java.awt.event.ItemEvent evt) {
+        jCmbLangsItemStateChanged(evt);
+      }
+    });
+
+    javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+    jPanel1.setLayout(jPanel1Layout);
+    jPanel1Layout.setHorizontalGroup(
+      jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGap(0, 629, Short.MAX_VALUE)
+      .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel1Layout.createSequentialGroup()
+          .addGap(0, 0, 0)
+          .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+              .addComponent(jCmbLangs, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+              .addGap(0, 0, 0)
+              .addComponent(lblCaretPos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+          .addGap(0, 0, 0)))
     );
-    layout.setVerticalGroup(
-      layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(0, 0, 0)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
-        .addGap(0, 0, 0)
-        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(lblCaretPos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-          .addComponent(jCmbLangs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addGap(0, 0, 0))
+    jPanel1Layout.setVerticalGroup(
+      jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGap(0, 324, Short.MAX_VALUE)
+      .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel1Layout.createSequentialGroup()
+          .addGap(0, 0, 0)
+          .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+          .addGap(0, 0, 0)
+          .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addComponent(lblCaretPos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCmbLangs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addGap(0, 0, 0)))
     );
+
+    getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
@@ -328,6 +337,7 @@ public class SourceEditor extends javax.swing.JFrame {
   private javax.swing.JButton jButtonValidate;
   private javax.swing.JComboBox jCmbLangs;
   private javax.swing.JEditorPane jEditorPane;
+  private javax.swing.JPanel jPanel1;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JToolBar jToolBar1;
   private javax.swing.JLabel lblCaretPos;
