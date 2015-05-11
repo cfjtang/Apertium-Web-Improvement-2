@@ -73,8 +73,10 @@ public class SourcecodeFinder {
 	private static boolean match(Path dir, String glob) {
 		try {
 			Iterator<Path> i = Files.newDirectoryStream(dir, glob).iterator();
-			if (i.hasNext()) {
+			while (i.hasNext()) {
 				match = i.next().toString();
+				// avoid files with names like _tmp or ~ in them
+				if (match.contains("~") || match.contains("tmp")) continue;
 				return true;
 			}
 		} catch (Exception e) { e.printStackTrace(); }
@@ -96,6 +98,9 @@ public class SourcecodeFinder {
 				for (Path p : sourcedirs) if (match(p, dirname+"."+sl+".dix")) return match;
 				 // eng-sco.automorf.bin -> apertium-eng.eng.dix
 				for (Path p : sourcedirs) if (match(p, "apertium-"+sl+"."+sl+".dix")) return match;
+				// No match - try some more desperate options
+				for (Path p : sourcedirs) if (match(p, dirname+"."+sl+".*dix*")) return match;
+				for (Path p : sourcedirs) if (match(p, "apertium-"+sl+"."+sl+".*dix*")) return match;
 			}
 			if ("rlx".equals(parts[1])) { // source language .rlx (constraint grammar)
 				// en-eo.automorf.bin -> apertium-eo-en.en.dix
@@ -107,16 +112,22 @@ public class SourcecodeFinder {
 			if ("autobil".equals(parts[1])) { // bilingual .dix
 				// eng-sco.autobil.bin, sco-eng.autobil.bin -> apertium-eng-sco.eng-sco.dix
 				String sl_tl = parts[0]; // "eng-sco"
-				for (Path p : sourcedirs) if (match(p, dirname+"."+sl_tl+".*dix*")) return match;
+				for (Path p : sourcedirs) if (match(p, dirname+"."+sl_tl+".dix")) return match;
 				String[] sltla = sl_tl.split("-"); // "eng-sco"
 				String tl_sl = sltla[1]+"-"+sltla[0]; // "sco-eng"
+				for (Path p : sourcedirs) if (match(p, dirname+"."+tl_sl+".dix")) return match;
+				// No match - try some more desperate options
+				for (Path p : sourcedirs) if (match(p, dirname+"."+sl_tl+".*dix*")) return match;
 				for (Path p : sourcedirs) if (match(p, dirname+"."+tl_sl+".*dix*")) return match;
 			}
 			if ("autogen".equals(parts[1])) { // target language .dix
 				// en-eo.autogen.bin -> apertium-eo-en.eo.dix
 				String tl = parts[0].split("-")[1]; // "eo"
-				for (Path p : sourcedirs) if (match(p, dirname+"."+tl+".*dix*")) return match;
+				for (Path p : sourcedirs) if (match(p, dirname+"."+tl+".dix")) return match;
 				 // eng-sco.automorf.bin -> apertium-sco.sco.dix
+				for (Path p : sourcedirs) if (match(p, "apertium-"+tl+"."+tl+".dix")) return match;
+				// No match - try some more desperate options
+				for (Path p : sourcedirs) if (match(p, dirname+"."+tl+".*dix*")) return match;
 				for (Path p : sourcedirs) if (match(p, "apertium-"+tl+"."+tl+".*dix*")) return match;
 			}
 
