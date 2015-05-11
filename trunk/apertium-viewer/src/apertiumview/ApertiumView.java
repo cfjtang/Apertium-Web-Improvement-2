@@ -352,7 +352,7 @@ public class ApertiumView extends javax.swing.JFrame {
 					addStoredText(s);
 				}
 			}
-			fitToTextButton.setSelected(prefs.getBoolean("fitToText", false));
+			fitToTextButton.setSelected(prefs.getBoolean("fitToText", true));
 			hideIntermediateButton.setSelected(prefs.getBoolean("hideIntermediate", false));
 
 		} catch (Exception e) {
@@ -394,6 +394,11 @@ public class ApertiumView extends javax.swing.JFrame {
 	}
 
 	public void shutdown() {
+		for (SourceEditor se : new ArrayList<SourceEditor>(openSourceEditors.values())) {
+			if (!se.okToClose()) return;
+			se.close();
+		}
+
 		prefs.putBoolean("fitToText", fitToTextButton.isSelected());
 		prefs.putBoolean("hideIntermediate", hideIntermediateButton.isSelected());
 		prefs.putBoolean("showCommands", showCommandsCheckBox.isSelected());
@@ -736,6 +741,8 @@ public class ApertiumView extends javax.swing.JFrame {
     optionsMenuItem = new javax.swing.JMenuItem();
     helpMenuItem = new javax.swing.JMenuItem();
     javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
+
+    setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
     modesComboBox.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {

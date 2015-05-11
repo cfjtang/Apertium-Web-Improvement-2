@@ -33,11 +33,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.Element;
 import jsyntaxpane.DefaultSyntaxKit;
+import jsyntaxpane.SyntaxDocument;
 import jsyntaxpane.actions.CaretMonitor;
 import org.apertium.pipeline.Program;
 import static org.apertium.pipeline.Program.ProgEnum.*;
@@ -47,6 +49,7 @@ public class SourceEditor extends javax.swing.JFrame {
 	private HashMap<String,String> loadedFileProperties;
 	private Program.ProgEnum loadedFileProgram;
 	private ApertiumView owner;
+	private int hashCodeForDocumentOnDisk;
 
 	public SourceEditor(ApertiumView aThis, String path, String properties) throws IOException {
 		owner = aThis;
@@ -86,7 +89,7 @@ public class SourceEditor extends javax.swing.JFrame {
     jButtonValidate = new javax.swing.JButton();
     jButtonSave = new javax.swing.JButton();
 
-    setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
     java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("apertiumview/sourceeditor/Bundle"); // NOI18N
     setTitle(bundle.getString("SourceEditor.title")); // NOI18N
     addWindowListener(new java.awt.event.WindowAdapter() {
@@ -207,6 +210,10 @@ public class SourceEditor extends javax.swing.JFrame {
 			String text = jEditorPane.getText();
 			Path filePath = Paths.get(loadedPath);
 			Files.write(filePath, text.getBytes("UTF-8"));
+
+			Document doc = jEditorPane.getDocument();
+			hashCodeForDocumentOnDisk = doc.getText(0, doc.getLength()).hashCode();
+
 			LinkedHashSet<Path> compileDirs = new LinkedHashSet<>();
 			compileDirs.add(filePath.getParent()); // Directory of the source file
 			compileDirs.add(Paths.get(loadedFileProperties.get("dir"))); // Directory of the binary file
@@ -229,6 +236,7 @@ public class SourceEditor extends javax.swing.JFrame {
 			owner.compiledSourceEditor(loadedPath);
 
 		} catch (Exception ex) {
+			owner.warnUser("Error saving "+loadedPath+"\n"+ex);
 			Logger.getLogger(SourceEditor.class.getName()).log(Level.SEVERE, null, ex);
 		}
   }//GEN-LAST:event_jButtonSaveActionPerformed
@@ -292,12 +300,26 @@ public class SourceEditor extends javax.swing.JFrame {
     validateFile();
   }//GEN-LAST:event_jButtonValidateActionPerformed
 
-  private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-    // TODO add your handling code here:
+	public boolean okToClose() {
+		if (!jButtonSave.isEnabled()) return true;
+		int ret = JOptionPane.showConfirmDialog(getContentPane(), "You have unsaved changes in\n"+loadedPath+"\nClose anyway?", "Discard changes?", JOptionPane.OK_CANCEL_OPTION);
+		return (ret == JOptionPane.OK_OPTION);
+	}
+
+
+	public void close() {
 		setState(JFrame.NORMAL);
 		Rectangle r = getBounds();
 		prefs.put(getBoundsKey(loadedPath), r.x+","+r.y+","+r.width+","+r.height+","+jEditorPane.getCaretPosition());
 		owner.closeSourceEditor(loadedPath);
+		setVisible(false);
+		dispose();
+	}
+
+  private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+    // TODO add your handling code here:
+		if (!okToClose()) return;
+		close();
   }//GEN-LAST:event_formWindowClosing
 
 
@@ -328,13 +350,34 @@ public class SourceEditor extends javax.swing.JFrame {
 			jEditorPane.setContentType("text/plain");
 		}
 		jCmbLangs.setSelectedItem(jEditorPane.getContentType());
-		Document doc = jEditorPane.getEditorKit().createDefaultDocument();
+		final Document doc = jEditorPane.getEditorKit().createDefaultDocument();
 		String str = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
 		try {
 			doc.insertString(0,str,null);
+			hashCodeForDocumentOnDisk = doc.getText(0, doc.getLength()).hashCode();
 		} catch (BadLocationException ex) {
 			throw new IOException(ex);
 		}
+		if (doc instanceof SyntaxDocument) {
+			SyntaxDocument sdoc = (SyntaxDocument) doc;
+			sdoc.clearUndos();
+		} else { System.out.println("doc isnt instanceof SyntaxDocument, cant clear undo history"); }
+
+		jButtonValidate.setEnabled(false);
+		jButtonSave.setEnabled(false);
+		doc.addDocumentListener(new AbstactDocumentListener() {
+			@Override
+			public void changed(DocumentEvent e) {
+				boolean saveEnabled = true;
+				try {
+					saveEnabled = hashCodeForDocumentOnDisk!=doc.getText(0, doc.getLength()).hashCode();
+				} catch (BadLocationException ex) {
+					Logger.getLogger(SourceEditor.class.getName()).log(Level.SEVERE, null, ex);
+				}
+				jButtonValidate.setEnabled(saveEnabled);
+				jButtonSave.setEnabled(saveEnabled);
+			}
+		});
 		jEditorPane.setDocument(doc);
 	}
 
