@@ -99,6 +99,8 @@ public class SourcecodeFinder {
 				 // eng-sco.automorf.bin -> apertium-eng.eng.dix
 				for (Path p : sourcedirs) if (match(p, "apertium-"+sl+"."+sl+".dix")) return match;
 				// No match - try some more desperate options
+				for (Path p : sourcedirs) if (match(p, dirname+"."+sl+".dix*")) return match;
+				for (Path p : sourcedirs) if (match(p, "apertium-"+sl+"."+sl+".dix*")) return match;
 				for (Path p : sourcedirs) if (match(p, dirname+"."+sl+".*dix*")) return match;
 				for (Path p : sourcedirs) if (match(p, "apertium-"+sl+"."+sl+".*dix*")) return match;
 			}
@@ -117,6 +119,8 @@ public class SourcecodeFinder {
 				String tl_sl = sltla[1]+"-"+sltla[0]; // "sco-eng"
 				for (Path p : sourcedirs) if (match(p, dirname+"."+tl_sl+".dix")) return match;
 				// No match - try some more desperate options
+				for (Path p : sourcedirs) if (match(p, dirname+"."+sl_tl+".dix*")) return match;
+				for (Path p : sourcedirs) if (match(p, dirname+"."+tl_sl+".dix*")) return match;
 				for (Path p : sourcedirs) if (match(p, dirname+"."+sl_tl+".*dix*")) return match;
 				for (Path p : sourcedirs) if (match(p, dirname+"."+tl_sl+".*dix*")) return match;
 			}
@@ -127,6 +131,8 @@ public class SourcecodeFinder {
 				 // eng-sco.automorf.bin -> apertium-sco.sco.dix
 				for (Path p : sourcedirs) if (match(p, "apertium-"+tl+"."+tl+".dix")) return match;
 				// No match - try some more desperate options
+				for (Path p : sourcedirs) if (match(p, dirname+"."+tl+".dix*")) return match;
+				for (Path p : sourcedirs) if (match(p, "apertium-"+tl+"."+tl+".dix*")) return match;
 				for (Path p : sourcedirs) if (match(p, dirname+"."+tl+".*dix*")) return match;
 				for (Path p : sourcedirs) if (match(p, "apertium-"+tl+"."+tl+".*dix*")) return match;
 			}
