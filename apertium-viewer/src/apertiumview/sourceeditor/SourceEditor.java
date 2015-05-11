@@ -228,7 +228,7 @@ public class SourceEditor extends javax.swing.JFrame {
 			compileDirs.add(Paths.get(loadedFileProperties.get("dir"))); // Directory of the binary file
 
 			for (Path dir : compileDirs) {
-				Process p = new ProcessBuilder("make").directory(dir.toFile()).redirectErrorStream(true).start();
+				Process p = new ProcessBuilder("make", "-j", "3").directory(dir.toFile()).redirectErrorStream(true).start();
 				BufferedReader std = new BufferedReader(new InputStreamReader(p.getInputStream(),"UTF-8"));
 				final StringBuilder outputsb = new StringBuilder();
 				String lin;
