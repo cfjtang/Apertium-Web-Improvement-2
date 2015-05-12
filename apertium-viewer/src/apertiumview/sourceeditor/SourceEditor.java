@@ -292,9 +292,11 @@ public class SourceEditor extends javax.swing.JFrame {
 
 			Element root = jEditorPane.getDocument().getDefaultRootElement();
 			lineNo = Math.min(lineNo, root.getElementCount());
-			int startOfLineOffset = root.getElement( lineNo - 1 ).getStartOffset();
-			jEditorPane.setCaretPosition( startOfLineOffset );
-			centerLineInScrollPane();
+			if (lineNo != 65535) { // workaround for xmllint bug - see https://bugzilla.gnome.org/show_bug.cgi?id=325533
+				int startOfLineOffset = root.getElement( lineNo - 1 ).getStartOffset();
+				jEditorPane.setCaretPosition( startOfLineOffset );
+				centerLineInScrollPane();
+			}
 
 			lblCaretPos.setText(msg);
 		} catch (Exception e) {
