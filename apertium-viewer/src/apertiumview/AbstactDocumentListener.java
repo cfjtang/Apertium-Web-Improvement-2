@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package apertiumview.sourceeditor;
+package apertiumview;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -24,7 +24,7 @@ import javax.swing.event.DocumentListener;
  *
  * @author j
  */
-abstract class AbstactDocumentListener implements DocumentListener {
+public abstract class AbstactDocumentListener implements DocumentListener {
 
 	public AbstactDocumentListener() {
 	}

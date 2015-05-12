@@ -97,14 +97,6 @@ public class ApertiumView extends javax.swing.JFrame {
 
 	Font textWidgetFont = null;
 
-	HyperlinkListener hyperlinkListener = new HyperlinkListener() {
-      @Override
-      public void hyperlinkUpdate(HyperlinkEvent e) {
-        if (e.getEventType() != HyperlinkEvent.EventType.ACTIVATED) return;
-				openSourceEditor(e.getURL());
-			}
-    };
-
 
 	KeyListener switchFocus = new KeyAdapter() {
 		public void keyPressed(KeyEvent e) {
@@ -149,37 +141,6 @@ public class ApertiumView extends javax.swing.JFrame {
 		}
 	};
 
-	FocusListener scrollToVisibleFocusListener = new FocusAdapter() {
-		@Override
-		public void focusGained(FocusEvent e) {
-			JComponent comp = (JComponent) e.getSource();
-			// Ugly hack to get the enclosing TextWidget
-			final TextWidget tw = (TextWidget) ((JComponent) e.getSource()).getParent().getParent().getParent();
-			// Scroll so that the TextWidget's scoll pane (containing the text area) is fully visible
-			Rectangle b = tw.jScrollPane1.getBounds();
-			Rectangle b2 = tw.getBounds();
-			//System.out.println("b = " + b);
-			//System.out.println("b2 = " + b2);
-			b.x += b2.x;
-			b.y += b2.y;
-			tw.scrollRectToVisible(b);
-
-			// Make it blink for a short while
-			Graphics2D g = (Graphics2D) tw.getGraphics();
-			g.setColor(Color.RED);
-			g.drawRect(1, 1, tw.getWidth() - 2, tw.getHeight() - 2);
-
-			new Thread() {
-				public void run() {
-					try {
-						Thread.sleep(300);
-						tw.repaint();
-					} catch (InterruptedException ex) {
-					}
-				}
-			}.start();
-		}
-	};
 
 	private HashMap <String, SourceEditor> openSourceEditors = new HashMap<>();
 	private final ApertiumViewMain app;
@@ -231,8 +192,7 @@ public class ApertiumView extends javax.swing.JFrame {
 		mainPanel = getContentPane();
 		this.app = app;
 		initComponents();
-		textWidget1.commandTextPane.addHyperlinkListener(hyperlinkListener);
-		textWidget1.owner = this;
+		textWidget1.setup(this, 0, textWidget1);
 		try { ((BasicSplitPaneUI) jSplitPane1.getUI()).getDivider().addMouseListener(turnAutofitOff); } catch (Exception e) { e.printStackTrace(); }
 
 		modesComboBox.setRenderer(new DefaultListCellRenderer() {
@@ -380,8 +340,6 @@ public class ApertiumView extends javax.swing.JFrame {
 		}
 
 		textWidget1.commandTextPane.requestFocusInWindow();
-		textWidget1.textEditor.addFocusListener(scrollToVisibleFocusListener); // done here to avoid multiple adds
-		textWidget1.textEditor.addKeyListener(switchFocus);
 
 		menuBar.addKeyListener(switchFocus);
 		markUnknownWordsCheckBox.addKeyListener(switchFocus);
@@ -495,9 +453,6 @@ public class ApertiumView extends javax.swing.JFrame {
 			jSplitPane1.setBottomComponent(null);
 
 			TextWidget lastTextWidget = textWidget1;
-			//lastTextWidget.textEditor.setFocusAccelerator('1');
-			//textWidget1.setCommand("");
-			textWidget1.priority = 0;
 
 			// should dispose old GUI components here...
 			//for (TextWidget tw : textWidgets) tw.removeKeyListener(switchFocus);
@@ -515,15 +470,16 @@ public class ApertiumView extends javax.swing.JFrame {
 
 			for (int i = 0; i < m.getPipelineLength(); i++) {
 				TextWidget tw = new TextWidget();
-				tw.textEditor.addKeyListener(switchFocus);
+				/*
         tw.owner = this;
-				tw.commandTextPane.addHyperlinkListener(hyperlinkListener);
-				textWidgets.add(tw);
 				tw.priority = i + 1;
 				lastTextWidget.next = tw;
+				*/
+				tw.setup(this, i + 1, lastTextWidget);
+
+				textWidgets.add(tw);
 				lastTextWidget = tw;
 				//lastTextWidget.textEditor.setFocusAccelerator((char)('0'+i+2));
-				lastTextWidget.textEditor.addFocusListener(scrollToVisibleFocusListener);
 
 				if (i < m.getPipelineLength() - 1) {
 					JSplitPane sp = new JSplitPane();
@@ -1222,7 +1178,7 @@ private void fitToText() {
 
 
 	void textChanged() {
-	textWidget1.scrollRectToVisible(new Rectangle());
+		textWidget1.scrollRectToVisible(new Rectangle());
 		if (hideIntermediateButton.isSelected()) { hideIntermediate(); return; }
 		if (fitToTextButton.isSelected()) { fitToText(); return; }
 	}
