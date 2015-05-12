@@ -8,6 +8,7 @@
  */
 package apertiumview.sourceeditor;
 
+import apertiumview.AbstactDocumentListener;
 import apertiumview.ApertiumView;
 import static apertiumview.ApertiumView.prefs;
 import java.awt.Point;
