@@ -528,12 +528,12 @@ public class ApertiumView extends javax.swing.JFrame {
 				else
 					Pipeline.getPipeline().execPath = parentFile;
 			}
-			System.err.println("Pipeline.getPipeline().execPath = " + Pipeline.getPipeline().execPath);
+			//System.err.println("Pipeline.getPipeline().execPath = " + Pipeline.getPipeline().execPath);
 			//new Exception().printStackTrace();
 
 			String envVars = prefs.get("envVars", "").trim();
 			Pipeline.getPipeline().envp = envVars.isEmpty() ? null : envVars.split("\n");
-			System.err.println("Pipeline.getPipeline().envp = " + envVars);
+			//System.err.println("Pipeline.getPipeline().envp = " + envVars);
 
 			Pipeline.getPipeline().ignoreErrorMessages = Boolean.parseBoolean(prefs.get("ignoreErrorMessages", "false"));
 		}
