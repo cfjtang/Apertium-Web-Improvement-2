@@ -11,6 +11,7 @@ package apertiumview;
 import apertiumview.highlight.HighlightTextEditor;
 import apertiumview.sourceeditor.SourcecodeFinder;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Window;
@@ -182,6 +183,7 @@ public class TextWidget extends javax.swing.JPanel {
 		commandTextPane.addHyperlinkListener(hyperlinkListener);
 		textEditor.addFocusListener(scrollToVisibleFocusListener);
 		textEditor.addKeyListener(owner.switchFocus);
+		setError("");
 		lastTextWidget.next = this;
 	}
 
@@ -246,6 +248,12 @@ public class TextWidget extends javax.swing.JPanel {
 	}
 
 
+	void setError(String err) {
+			jTextPaneError.setText(err);
+//		jTextPaneError.setPreferredSize(err.isEmpty() ? new Dimension() : new Dimension(100,20));
+//		this.validate();//jTextPaneError.invalidate();
+	}
+
 	public Program getProgram() {
 		return program;
 	}
@@ -288,6 +296,8 @@ public class TextWidget extends javax.swing.JPanel {
     jScrollPane1 = new javax.swing.JScrollPane();
     textEditor = new apertiumview.highlight.HighlightTextEditor();
     jButtonEditSource = new javax.swing.JButton();
+    jScrollPane2 = new javax.swing.JScrollPane();
+    jTextPaneError = new javax.swing.JTextPane();
 
     zoomButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apertiumview/resources/zoom-in.png"))); // NOI18N
     zoomButton.setToolTipText("Opens a separate window with the text");
@@ -331,6 +341,15 @@ public class TextWidget extends javax.swing.JPanel {
       }
     });
 
+    jScrollPane2.setBorder(null);
+
+    jTextPaneError.setEditable(false);
+    jTextPaneError.setBackground(new java.awt.Color(255, 204, 204));
+    jTextPaneError.setBorder(null);
+    jTextPaneError.setForeground(new java.awt.Color(102, 0, 0));
+    jTextPaneError.setText("Error message\nLine 2");
+    jScrollPane2.setViewportView(jTextPaneError);
+
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
     this.setLayout(layout);
     layout.setHorizontalGroup(
@@ -344,6 +363,7 @@ public class TextWidget extends javax.swing.JPanel {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(zoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
       .addComponent(jScrollPane1)
+      .addComponent(jScrollPane2)
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,8 +374,10 @@ public class TextWidget extends javax.swing.JPanel {
             .addComponent(zoomButton, 0, 0, Short.MAX_VALUE)
             .addComponent(jButtonEditSource, 0, 0, Short.MAX_VALUE)
             .addComponent(freezeCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(0, 0, 0)
-        .addComponent(jScrollPane1))
+        .addComponent(jScrollPane1)
+        .addGap(0, 0, 0))
     );
   }// </editor-fold>//GEN-END:initComponents
 
@@ -393,6 +415,8 @@ public class TextWidget extends javax.swing.JPanel {
   private javax.swing.JCheckBox freezeCheckBox;
   private javax.swing.JButton jButtonEditSource;
   javax.swing.JScrollPane jScrollPane1;
+  private javax.swing.JScrollPane jScrollPane2;
+  private javax.swing.JTextPane jTextPaneError;
   apertiumview.highlight.HighlightTextEditor textEditor;
   private javax.swing.JButton zoomButton;
   // End of variables declaration//GEN-END:variables
