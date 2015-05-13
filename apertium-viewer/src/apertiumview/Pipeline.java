@@ -13,12 +13,15 @@ import javax.swing.SwingUtilities;
 
 import org.apertium.pipeline.Dispatcher;
 import org.apertium.pipeline.Program;
+import static org.apertium.pipeline.Program.ProgEnum.INTERCHUNK;
+import static org.apertium.pipeline.Program.ProgEnum.TRANSFER;
 
 public class Pipeline {
     private static Pipeline instance = new Pipeline();
 
     public boolean externalProcessing;
     public boolean markUnknownWords;
+    public boolean traceTransferInterchunk = true;
     public File execPath=null;
     public String[] envp=null;
     public boolean ignoreErrorMessages;
@@ -106,7 +109,6 @@ public class Pipeline {
         private OutputStreamWriter osw;
         private Process proces;
         public long startTime = System.currentTimeMillis();
-		public boolean NEWFEATURE = false;
 
         public void run() {
           try {
@@ -117,14 +119,23 @@ public class Pipeline {
             int retval_;
             if (!externalProcessing && program.getProgram() != Program.ProgEnum.UNKNOWN) {
                 try {
+										// redirect System.err
+										PrintStream System_err = System.err;
+										ByteArrayOutputStream tmperr = new ByteArrayOutputStream();
+										System.setErr(new PrintStream(tmperr, true));
+
                     StringWriter sw = new StringWriter();
-                    Dispatcher.dispatch(program, new StringReader(input), sw, false, markUnknownWords);
+                    Dispatcher.dispatch(program, new StringReader(input), sw, false, markUnknownWords, traceTransferInterchunk);
                     retval_ = 0;
                     output_ = sw.toString();
+
+										// restore System.err
+										System.setErr(System_err);
+										err_ = tmperr.toString().trim();
                 } catch (Exception e) {
                     retval_ = -1;
                     err_ = e.toString();
-										//e.printStackTrace();
+										e.printStackTrace();
                 }
             }
             else {
@@ -133,7 +144,9 @@ public class Pipeline {
                 cmd = cmd.replaceAll("\\$2", ""); // What is this $2 ??!??
                 cmd = cmd.replaceAll("\\$3", ""); // What is this $3 ??!??
 
-								if (NEWFEATURE && program.getProgram() == Program.ProgEnum.TRANSFER) {
+								// add -t for transfer and interchunk
+								if (traceTransferInterchunk &&
+										program.getProgram() == INTERCHUNK || program.getProgram() == TRANSFER) {
 									String[] x = cmd.split(" ",2);
 									cmd = x[0] + " -t " + x[1];
 								}

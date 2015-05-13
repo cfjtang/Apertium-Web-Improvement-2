@@ -249,9 +249,8 @@ public class TextWidget extends javax.swing.JPanel {
 
 
 	void setError(String err) {
-			jTextPaneError.setText(err);
-//		jTextPaneError.setPreferredSize(err.isEmpty() ? new Dimension() : new Dimension(100,20));
-//		this.validate();//jTextPaneError.invalidate();
+		jTextPaneError.setText(err);
+		jScrollPane2.setPreferredSize(err.isEmpty() ? new Dimension() : null); // make it fit
 	}
 
 	public Program getProgram() {
@@ -297,7 +296,7 @@ public class TextWidget extends javax.swing.JPanel {
     textEditor = new apertiumview.highlight.HighlightTextEditor();
     jButtonEditSource = new javax.swing.JButton();
     jScrollPane2 = new javax.swing.JScrollPane();
-    jTextPaneError = new javax.swing.JTextPane();
+    jTextPaneError = new javax.swing.JTextArea();
 
     zoomButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apertiumview/resources/zoom-in.png"))); // NOI18N
     zoomButton.setToolTipText("Opens a separate window with the text");
@@ -345,9 +344,10 @@ public class TextWidget extends javax.swing.JPanel {
 
     jTextPaneError.setEditable(false);
     jTextPaneError.setBackground(new java.awt.Color(255, 204, 204));
-    jTextPaneError.setBorder(null);
     jTextPaneError.setForeground(new java.awt.Color(102, 0, 0));
+    jTextPaneError.setTabSize(4);
     jTextPaneError.setText("Error message\nLine 2");
+    jTextPaneError.setBorder(null);
     jScrollPane2.setViewportView(jTextPaneError);
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -416,7 +416,7 @@ public class TextWidget extends javax.swing.JPanel {
   private javax.swing.JButton jButtonEditSource;
   javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JScrollPane jScrollPane2;
-  private javax.swing.JTextPane jTextPaneError;
+  private javax.swing.JTextArea jTextPaneError;
   apertiumview.highlight.HighlightTextEditor textEditor;
   private javax.swing.JButton zoomButton;
   // End of variables declaration//GEN-END:variables
