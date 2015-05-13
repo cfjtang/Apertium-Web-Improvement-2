@@ -106,12 +106,14 @@ public class Pipeline {
         private OutputStreamWriter osw;
         private Process proces;
         public long startTime = System.currentTimeMillis();
+		public boolean NEWFEATURE = false;
 
         public void run() {
           try {
             PipelineTask t = this;
             
-            String output_;
+            String output_= "";
+            String err_ = "";
             int retval_;
             if (!externalProcessing && program.getProgram() != Program.ProgEnum.UNKNOWN) {
                 try {
@@ -121,7 +123,7 @@ public class Pipeline {
                     output_ = sw.toString();
                 } catch (Exception e) {
                     retval_ = -1;
-                    output_ = e.toString();
+                    err_ = e.toString();
 										//e.printStackTrace();
                 }
             }
@@ -130,7 +132,11 @@ public class Pipeline {
                 cmd = cmd.replaceAll("\\$1", markUnknownWords ? "-g" : "-n");
                 cmd = cmd.replaceAll("\\$2", ""); // What is this $2 ??!??
                 cmd = cmd.replaceAll("\\$3", ""); // What is this $3 ??!??
-                
+
+								if (NEWFEATURE && program.getProgram() == Program.ProgEnum.TRANSFER) {
+									String[] x = cmd.split(" ",2);
+									cmd = x[0] + " -t " + x[1];
+								}
                 t.proces = Runtime.getRuntime().exec(cmd, envp, execPath);
 
                 // For mac users UTF-8 is needed.
@@ -141,10 +147,11 @@ public class Pipeline {
                 osw.write(input,0,input.length());
                 osw.write('\n');
                 osw.close();
-                final StringBuilder outputsb = new StringBuilder(input.length()*2);
+                StringBuilder outputsb = new StringBuilder(input.length()*2);
+                StringBuilder errsb = new StringBuilder();
                 String lin;
                 while ( (lin=std.readLine())!=null) outputsb.append(lin).append('\n');
-                while ( (lin=err.readLine())!=null) if (!ignoreErrorMessages) outputsb.append("ERR:"+lin).append('\n');
+                while ( (lin=err.readLine())!=null) if (lin.length()>0) errsb.append(lin).append('\n');
                 while ( (lin=std.readLine())!=null) outputsb.append(lin).append('\n');
 
                 retval_ = proces.waitFor();
@@ -153,14 +160,17 @@ public class Pipeline {
                 std.close();
                 task = null;
                 output_ = outputsb.toString().trim();
+                err_ = errsb.toString().trim();
             }
             
             final String output = output_;
+            final String err = err_;
             final int retval = retval_;
             
             Runnable runnable = new Runnable() {
                 public void run() {
                     recieverWidget.setText(output);
+                    recieverWidget.setError(ignoreErrorMessages?"":err);
                     if (retval!=0) recieverWidget.setStatus(TextWidget.STATUS_ERROR);
                     else if (output.equals(input)) recieverWidget.setStatus(TextWidget.STATUS_EQUAL);
                     else recieverWidget.setStatus(TextWidget.STATUS_OK);
