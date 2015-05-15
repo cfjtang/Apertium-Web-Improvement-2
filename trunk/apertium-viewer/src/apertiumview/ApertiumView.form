@@ -7,6 +7,15 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
       </AuxValues>
     </Component>
+    <Component class="javax.swing.JCheckBoxMenuItem" name="jCheckBoxMenuItem1">
+      <Properties>
+        <Property name="mnemonic" type="int" value="79"/>
+        <Property name="selected" type="boolean" value="true"/>
+        <Property name="text" type="java.lang.String" value="jCheckBoxMenuItem1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="buttonGroup2">
+    </Component>
     <Menu class="javax.swing.JMenuBar" name="menuBar">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
@@ -103,15 +112,65 @@
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
               </AuxValues>
             </MenuItem>
-            <Menu class="javax.swing.JMenu" name="storedTextsMenu">
+            <MenuItem class="javax.swing.JMenuItem" name="storeMenuItem">
               <Properties>
                 <Property name="mnemonic" type="int" value="83"/>
+                <Property name="text" type="java.lang.String" value="Store text"/>
+                <Property name="toolTipText" type="java.lang.String" value="Stores input text for later use"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="storeMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <Menu class="javax.swing.JMenu" name="storedTextsMenu">
+              <Properties>
+                <Property name="mnemonic" type="int" value="68"/>
                 <Property name="text" type="java.lang.String" value="Stored texts"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
               </AuxValues>
             </Menu>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="showMenu">
+          <Properties>
+            <Property name="mnemonic" type="int" value="83"/>
+            <Property name="text" type="java.lang.String" value="Show"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="markUnknownWordsMenuItem">
+              <Properties>
+                <Property name="mnemonic" type="int" value="117"/>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Mark unknown words with a *"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="markUnknownWordsMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showCommandsMenuItem">
+              <Properties>
+                <Property name="mnemonic" type="int" value="67"/>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Show commands (and buttons to edit source)"/>
+                <Property name="toolTipText" type="java.lang.String" value="Shiow what shell commands are actually invoked, and buttons to edit source code files, freeze text, ..."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showCommandsMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="transferRuleTracingMenuItem">
+              <Properties>
+                <Property name="mnemonic" type="int" value="84"/>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Trace transfer &amp; interchunk rules"/>
+                <Property name="toolTipText" type="java.lang.String" value="Shows which rules are matched"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transferRuleTracingMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="helpMenu">
@@ -198,29 +257,29 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="markUnknownWordsCheckBox" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="showCommandsCheckBox" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <Component id="jLabelUse" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+              <Component id="useJavaVersion" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="useCppVersion" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="fitToTextButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="hideIntermediateButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="copyTextButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="storeTextButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="copyTextButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jLabelMode" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="modesComboBox" pref="107" max="32767" attributes="0"/>
+              <Component id="modesComboBox" pref="65" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="rdbtnLocal" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="rdbtnOnline" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
-          <Component id="jScrollPane1" alignment="0" pref="986" max="32767" attributes="0"/>
+          <Component id="jScrollPane1" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -228,18 +287,18 @@
           <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="modesComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="markUnknownWordsCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="showCommandsCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="fitToTextButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="copyTextButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="storeTextButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="hideIntermediateButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="rdbtnLocal" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="rdbtnOnline" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabelMode" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelUse" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="useJavaVersion" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="useCppVersion" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="171" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="241" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -294,17 +353,17 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="984" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="743" max="32767" attributes="0"/>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Component id="jSplitPane1" alignment="0" pref="984" max="32767" attributes="0"/>
+                      <Component id="jSplitPane1" alignment="0" pref="743" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="169" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="238" max="32767" attributes="0"/>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Component id="jSplitPane1" alignment="0" pref="169" max="32767" attributes="0"/>
+                      <Component id="jSplitPane1" alignment="0" pref="238" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -353,48 +412,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="copyText"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="showCommandsCheckBox">
-      <Properties>
-        <Property name="mnemonic" type="int" value="72"/>
-        <Property name="selected" type="boolean" value="true"/>
-        <Property name="text" type="java.lang.String" value="Show commands"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showCommandsCheckBoxActionPerformed"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="markUnknownWordsCheckBox">
-      <Properties>
-        <Property name="mnemonic" type="int" value="85"/>
-        <Property name="selected" type="boolean" value="true"/>
-        <Property name="text" type="java.lang.String" value="Mark unknown words"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="markUnknownWordsCheckBoxActionPerformed"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JButton" name="storeTextButton">
-      <Properties>
-        <Property name="mnemonic" type="int" value="83"/>
-        <Property name="text" type="java.lang.String" value="Store"/>
-        <Property name="toolTipText" type="java.lang.String" value="Stores input text for later use"/>
-        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-          <Insets value="[0, 4, 0, 4]"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="storeTextButtonActionPerformed"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
@@ -457,6 +474,34 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelUse">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Use"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="useJavaVersion">
+      <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="buttonGroup2"/>
+        </Property>
+        <Property name="selected" type="boolean" value="true"/>
+        <Property name="text" type="java.lang.String" value="Java"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useJavaVersionActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="useCppVersion">
+      <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="buttonGroup2"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="C++ version"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useCppVersionActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
