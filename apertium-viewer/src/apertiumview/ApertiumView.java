@@ -303,8 +303,10 @@ public class ApertiumView extends javax.swing.JFrame {
 				rdbtnOnline.setSelected(true);
 				rdbtnOnlineActionPerformed(null);
 			}
-			showCommandsCheckBox.setSelected(prefs.getBoolean("showCommands", true));
-			showCommandsCheckBoxActionPerformed(null); // is this necesary?
+			markUnknownWordsMenuItem.setSelected(prefs.getBoolean("markUnknownWords", true));
+			showCommandsMenuItem.setSelected(prefs.getBoolean("showCommands", true));
+			showCommandsMenuItemActionPerformed(null); // this is necesary, i.a. to hide 1st panels commands
+			transferRuleTracingMenuItem.setSelected(prefs.getBoolean("transferRuleTracing", true));
 
 			for (int i = 0; i < 10; i++) {
 				final String s = prefs.get("storedTexts." + i, "");
@@ -342,9 +344,6 @@ public class ApertiumView extends javax.swing.JFrame {
 		textWidget1.commandTextPane.requestFocusInWindow();
 
 		menuBar.addKeyListener(switchFocus);
-		markUnknownWordsCheckBox.addKeyListener(switchFocus);
-		showCommandsCheckBox.addKeyListener(switchFocus);
-		storeTextButton.addKeyListener(switchFocus);
 		copyTextButton.addKeyListener(switchFocus);
 		fitToTextButton.addKeyListener(switchFocus);
 
@@ -359,7 +358,9 @@ public class ApertiumView extends javax.swing.JFrame {
 
 		prefs.putBoolean("fitToText", fitToTextButton.isSelected());
 		prefs.putBoolean("hideIntermediate", hideIntermediateButton.isSelected());
-		prefs.putBoolean("showCommands", showCommandsCheckBox.isSelected());
+		prefs.putBoolean("showCommands", showCommandsMenuItem.isSelected());
+		prefs.putBoolean("markUnknownWords", markUnknownWordsMenuItem.isSelected());
+		prefs.putBoolean("transferRuleTracing", transferRuleTracingMenuItem.isSelected());
 		prefs.putBoolean("local", local);
 		String divLoc = "";
 		for (JSplitPane p : splitPanes) divLoc += "," + p.getDividerLocation();
@@ -514,7 +515,7 @@ public class ApertiumView extends javax.swing.JFrame {
 			tw.setProgram(p);
 		}
 
-		Pipeline.getPipeline().externalProcessing = local && Boolean.parseBoolean(prefs.get("externalProcessing", "false"));
+		Pipeline.getPipeline().externalProcessing = local && useCppVersion.isSelected();
 		if (Pipeline.getPipeline().externalProcessing) {
 			// Set the working directory of the mode. This is necesary in case the mode contains relative paths
 			// to (development) files
@@ -538,7 +539,8 @@ public class ApertiumView extends javax.swing.JFrame {
 			Pipeline.getPipeline().ignoreErrorMessages = Boolean.parseBoolean(prefs.get("ignoreErrorMessages", "false"));
 		}
 
-		Pipeline.getPipeline().markUnknownWords = markUnknownWordsCheckBox.isSelected();
+		Pipeline.getPipeline().markUnknownWords = markUnknownWordsMenuItem.isSelected();
+		Pipeline.getPipeline().traceTransferInterchunk = transferRuleTracingMenuItem.isSelected();
 
 		// Set title to mode - easens window tabbing
 		setTitle("Apertium-viewer (" + m + ")");
@@ -668,6 +670,8 @@ public class ApertiumView extends javax.swing.JFrame {
   private void initComponents() {
 
     buttonGroup1 = new javax.swing.ButtonGroup();
+    jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+    buttonGroup2 = new javax.swing.ButtonGroup();
     modesComboBox = new javax.swing.JComboBox();
     fitToTextButton = new javax.swing.JToggleButton();
     jScrollPane1 = new javax.swing.JScrollPane();
@@ -675,13 +679,13 @@ public class ApertiumView extends javax.swing.JFrame {
     jSplitPane1 = new javax.swing.JSplitPane();
     textWidget1 = new apertiumview.TextWidget();
     copyTextButton = new javax.swing.JButton();
-    showCommandsCheckBox = new javax.swing.JCheckBox();
-    markUnknownWordsCheckBox = new javax.swing.JCheckBox();
-    storeTextButton = new javax.swing.JButton();
     jLabelMode = new javax.swing.JLabel();
     hideIntermediateButton = new javax.swing.JToggleButton();
     rdbtnLocal = new javax.swing.JRadioButton();
     rdbtnOnline = new javax.swing.JRadioButton();
+    jLabelUse = new javax.swing.JLabel();
+    useJavaVersion = new javax.swing.JRadioButton();
+    useCppVersion = new javax.swing.JRadioButton();
     menuBar = new javax.swing.JMenuBar();
     javax.swing.JMenu fileMenu = new javax.swing.JMenu();
     loadModeMenuItem = new javax.swing.JMenuItem();
@@ -691,12 +695,21 @@ public class ApertiumView extends javax.swing.JFrame {
     toolsMenu = new javax.swing.JMenu();
     makeTestCaseMenuItem = new javax.swing.JMenuItem();
     importTestCaseMenuItem = new javax.swing.JMenuItem();
+    storeMenuItem = new javax.swing.JMenuItem();
     storedTextsMenu = new javax.swing.JMenu();
+    showMenu = new javax.swing.JMenu();
+    markUnknownWordsMenuItem = new javax.swing.JCheckBoxMenuItem();
+    showCommandsMenuItem = new javax.swing.JCheckBoxMenuItem();
+    transferRuleTracingMenuItem = new javax.swing.JCheckBoxMenuItem();
     javax.swing.JMenu helpMenu = new javax.swing.JMenu();
     changeFontMenuItem = new javax.swing.JMenuItem();
     optionsMenuItem = new javax.swing.JMenuItem();
     helpMenuItem = new javax.swing.JMenuItem();
     javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
+
+    jCheckBoxMenuItem1.setMnemonic('O');
+    jCheckBoxMenuItem1.setSelected(true);
+    jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -728,15 +741,15 @@ public class ApertiumView extends javax.swing.JFrame {
     textWidgetsPanel.setLayout(textWidgetsPanelLayout);
     textWidgetsPanelLayout.setHorizontalGroup(
       textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 984, Short.MAX_VALUE)
+      .addGap(0, 743, Short.MAX_VALUE)
       .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 984, Short.MAX_VALUE))
+        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 743, Short.MAX_VALUE))
     );
     textWidgetsPanelLayout.setVerticalGroup(
       textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 169, Short.MAX_VALUE)
+      .addGap(0, 238, Short.MAX_VALUE)
       .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE))
+        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
     );
 
     jScrollPane1.setViewportView(textWidgetsPanel);
@@ -748,34 +761,6 @@ public class ApertiumView extends javax.swing.JFrame {
     copyTextButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         copyText(evt);
-      }
-    });
-
-    showCommandsCheckBox.setMnemonic('H');
-    showCommandsCheckBox.setSelected(true);
-    showCommandsCheckBox.setText("Show commands");
-    showCommandsCheckBox.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        showCommandsCheckBoxActionPerformed(evt);
-      }
-    });
-
-    markUnknownWordsCheckBox.setMnemonic('U');
-    markUnknownWordsCheckBox.setSelected(true);
-    markUnknownWordsCheckBox.setText("Mark unknown words");
-    markUnknownWordsCheckBox.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        markUnknownWordsCheckBoxActionPerformed(evt);
-      }
-    });
-
-    storeTextButton.setMnemonic('S');
-    storeTextButton.setText("Store");
-    storeTextButton.setToolTipText("Stores input text for later use");
-    storeTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
-    storeTextButton.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        storeTextButtonActionPerformed(evt);
       }
     });
 
@@ -808,6 +793,25 @@ public class ApertiumView extends javax.swing.JFrame {
     rdbtnOnline.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         rdbtnOnlineActionPerformed(evt);
+      }
+    });
+
+    jLabelUse.setText("Use");
+
+    buttonGroup2.add(useJavaVersion);
+    useJavaVersion.setSelected(true);
+    useJavaVersion.setText("Java");
+    useJavaVersion.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        useJavaVersionActionPerformed(evt);
+      }
+    });
+
+    buttonGroup2.add(useCppVersion);
+    useCppVersion.setText("C++ version");
+    useCppVersion.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        useCppVersionActionPerformed(evt);
       }
     });
 
@@ -865,11 +869,58 @@ public class ApertiumView extends javax.swing.JFrame {
     });
     toolsMenu.add(importTestCaseMenuItem);
 
-    storedTextsMenu.setMnemonic('S');
+    storeMenuItem.setMnemonic('S');
+    storeMenuItem.setText("Store text");
+    storeMenuItem.setToolTipText("Stores input text for later use");
+    storeMenuItem.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        storeMenuItemActionPerformed(evt);
+      }
+    });
+    toolsMenu.add(storeMenuItem);
+
+    storedTextsMenu.setMnemonic('D');
     storedTextsMenu.setText("Stored texts");
     toolsMenu.add(storedTextsMenu);
 
     menuBar.add(toolsMenu);
+
+    showMenu.setMnemonic('S');
+    showMenu.setText("Show");
+
+    markUnknownWordsMenuItem.setMnemonic('u');
+    markUnknownWordsMenuItem.setSelected(true);
+    markUnknownWordsMenuItem.setText("Mark unknown words with a *");
+    markUnknownWordsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        markUnknownWordsMenuItemActionPerformed(evt);
+      }
+    });
+    showMenu.add(markUnknownWordsMenuItem);
+
+    showCommandsMenuItem.setMnemonic('C');
+    showCommandsMenuItem.setSelected(true);
+    showCommandsMenuItem.setText("Show commands (and buttons to edit source)");
+    showCommandsMenuItem.setToolTipText("Shiow what shell commands are actually invoked, and buttons to edit source code files, freeze text, ...");
+    showCommandsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        showCommandsMenuItemActionPerformed(evt);
+      }
+    });
+    showMenu.add(showCommandsMenuItem);
+
+    transferRuleTracingMenuItem.setMnemonic('T');
+    transferRuleTracingMenuItem.setSelected(true);
+    transferRuleTracingMenuItem.setText("Trace transfer & interchunk rules");
+    transferRuleTracingMenuItem.setToolTipText("Shows which rules are matched");
+    transferRuleTracingMenuItem.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        transferRuleTracingMenuItemActionPerformed(evt);
+      }
+    });
+    showMenu.add(transferRuleTracingMenuItem);
+
+    menuBar.add(showMenu);
 
     helpMenu.setMnemonic('V');
     helpMenu.setText("View");
@@ -916,44 +967,44 @@ public class ApertiumView extends javax.swing.JFrame {
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
-        .addComponent(markUnknownWordsCheckBox)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(showCommandsCheckBox)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(jLabelUse)
+        .addGap(4, 4, 4)
+        .addComponent(useJavaVersion)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addComponent(useCppVersion)
+        .addGap(18, 18, 18)
         .addComponent(fitToTextButton)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(hideIntermediateButton)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(copyTextButton)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(storeTextButton)
         .addGap(18, 18, 18)
+        .addComponent(copyTextButton)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(jLabelMode)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(modesComboBox, 0, 107, Short.MAX_VALUE)
+        .addComponent(modesComboBox, 0, 65, Short.MAX_VALUE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(rdbtnLocal)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(rdbtnOnline)
         .addContainerGap())
-      .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 986, Short.MAX_VALUE)
+      .addComponent(jScrollPane1)
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(modesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(markUnknownWordsCheckBox)
-          .addComponent(showCommandsCheckBox)
           .addComponent(fitToTextButton)
           .addComponent(copyTextButton)
-          .addComponent(storeTextButton)
           .addComponent(hideIntermediateButton)
           .addComponent(rdbtnLocal)
           .addComponent(rdbtnOnline)
-          .addComponent(jLabelMode))
+          .addComponent(jLabelMode)
+          .addComponent(jLabelUse)
+          .addComponent(useJavaVersion)
+          .addComponent(useCppVersion))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE))
     );
 
     pack();
@@ -1007,42 +1058,6 @@ private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
 	}
 }//GEN-LAST:event_editModesMenuItemActionPerformed
 
-private void markUnknownWordsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markUnknownWordsCheckBoxActionPerformed
-	setMode(currentMode);
-}//GEN-LAST:event_markUnknownWordsCheckBoxActionPerformed
-
-private void showCommandsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCommandsCheckBoxActionPerformed
-
-	boolean show = showCommandsCheckBox.isSelected();
-	//System.out.println("show = " + show);
-	for (TextWidget w : textWidgets) w.setShowCommands(show);
-	textWidget1.setShowCommands(false);
-	textChanged();
-	mainPanel.validate();
-}//GEN-LAST:event_showCommandsCheckBoxActionPerformed
-
-private void storeTextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_storeTextButtonActionPerformed
-
-	try {
-		addStoredText(textWidget1.getText());
-
-		// Store last 10 in prefs
-		for (int i = 0; i < 10; i++) {
-			int n = storedTextsMenu.getMenuComponentCount() - 10 + i;
-			String s = "";
-			if (n >= 0) {
-				s = ((JMenuItem) storedTextsMenu.getMenuComponent(n)).getText();
-			}
-
-			prefs.put("storedTexts." + i, s);
-		}
-		warnUser("Your text is stored for future use. \nRetrieve it in the menu View | Stored text.\nNote: On restart only the last 10 stored texts will be remenbered.");
-
-	} catch (Exception e) {
-		warnUser(e.toString());
-	}
-}//GEN-LAST:event_storeTextButtonActionPerformed
-
 private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
 	try {
 		// TODO add your handling code here:
@@ -1057,18 +1072,14 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 
 private void editOptions(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOptions
 	OptionsPanel op = new OptionsPanel();
-	boolean externalProcessing = Boolean.parseBoolean(prefs.get("externalProcessing", "false"));
-	op.externalProcessing.setSelected(externalProcessing);
-	op.setExternalProcessingOptionsEnabled(externalProcessing);
 	op.workingDirTextField.setText(prefs.get("workingDir", ""));
 	op.envVarsTextArea.setText(prefs.get("envVars", ""));
-	op.ignoreErrorMessages.setSelected(Boolean.parseBoolean(prefs.get("ignoreErrorMessages", "false")));
+	op.ignoreStdErr.setSelected(Boolean.parseBoolean(prefs.get("ignoreStdErr", "false")));
 	int ret = JOptionPane.showConfirmDialog(mainPanel, op, "Edit Options", JOptionPane.OK_CANCEL_OPTION);
 	if (ret == JOptionPane.OK_OPTION) {
-		prefs.put("externalProcessing", Boolean.toString(op.externalProcessing.isSelected()));
 		prefs.put("workingDir", op.workingDirTextField.getText());
 		prefs.put("envVars", op.envVarsTextArea.getText());
-		prefs.put("ignoreErrorMessages", Boolean.toString(op.ignoreErrorMessages.isSelected()));
+		prefs.put("ignoreStdErr", Boolean.toString(op.ignoreStdErr.isSelected()));
 		modesComboBoxActionPerformed(null); // reload the current mode
 	}
 }//GEN-LAST:event_editOptions
@@ -1318,9 +1329,56 @@ private void fitToText() {
 		shutdown();
   }//GEN-LAST:event_exitMenuItemActionPerformed
 
+  private void storeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_storeMenuItemActionPerformed
+		try {
+			addStoredText(textWidget1.getText());
+
+			// Store last 10 in prefs
+			for (int i = 0; i < 10; i++) {
+				int n = storedTextsMenu.getMenuComponentCount() - 10 + i;
+				String s = "";
+				if (n >= 0) {
+					s = ((JMenuItem) storedTextsMenu.getMenuComponent(n)).getText();
+				}
+
+				prefs.put("storedTexts." + i, s);
+			}
+			warnUser("Your text is stored for future use. \nRetrieve it in the menu View | Stored text.\nNote: On restart only the last 10 stored texts will be remenbered.");
+
+		} catch (Exception e) {
+			warnUser(e.toString());
+		}
+  }//GEN-LAST:event_storeMenuItemActionPerformed
+
+  private void markUnknownWordsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markUnknownWordsMenuItemActionPerformed
+		setMode(currentMode); // Makes the pipeline update itself
+  }//GEN-LAST:event_markUnknownWordsMenuItemActionPerformed
+
+  private void showCommandsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCommandsMenuItemActionPerformed
+		boolean show = showCommandsMenuItem.isSelected();
+		//System.out.println("show = " + show);
+		for (TextWidget w : textWidgets) w.setShowCommands(show);
+		textWidget1.setShowCommands(false);
+		textChanged();
+		mainPanel.validate();
+  }//GEN-LAST:event_showCommandsMenuItemActionPerformed
+
+  private void transferRuleTracingMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferRuleTracingMenuItemActionPerformed
+		setMode(currentMode); // Makes the pipeline update itself
+  }//GEN-LAST:event_transferRuleTracingMenuItemActionPerformed
+
+  private void useJavaVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useJavaVersionActionPerformed
+		setMode(currentMode); // Makes the pipeline update itself
+  }//GEN-LAST:event_useJavaVersionActionPerformed
+
+  private void useCppVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useCppVersionActionPerformed
+		setMode(currentMode); // Makes the pipeline update itself
+  }//GEN-LAST:event_useCppVersionActionPerformed
+
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   javax.swing.ButtonGroup buttonGroup1;
+  private javax.swing.ButtonGroup buttonGroup2;
   javax.swing.JMenuItem changeFontMenuItem;
   javax.swing.JButton copyTextButton;
   javax.swing.JMenuItem editModesMenuItem;
@@ -1328,24 +1386,30 @@ private void fitToText() {
   javax.swing.JMenuItem helpMenuItem;
   javax.swing.JToggleButton hideIntermediateButton;
   javax.swing.JMenuItem importTestCaseMenuItem;
+  private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
   javax.swing.JLabel jLabelMode;
+  private javax.swing.JLabel jLabelUse;
   javax.swing.JScrollPane jScrollPane1;
   javax.swing.JSeparator jSeparator1;
   javax.swing.JSplitPane jSplitPane1;
   javax.swing.JMenuItem loadModeMenuItem;
   javax.swing.JMenuItem makeTestCaseMenuItem;
-  javax.swing.JCheckBox markUnknownWordsCheckBox;
+  private javax.swing.JCheckBoxMenuItem markUnknownWordsMenuItem;
   javax.swing.JMenuBar menuBar;
   javax.swing.JComboBox modesComboBox;
   javax.swing.JMenuItem optionsMenuItem;
   javax.swing.JRadioButton rdbtnLocal;
   javax.swing.JRadioButton rdbtnOnline;
-  javax.swing.JCheckBox showCommandsCheckBox;
-  javax.swing.JButton storeTextButton;
+  private javax.swing.JCheckBoxMenuItem showCommandsMenuItem;
+  private javax.swing.JMenu showMenu;
+  private javax.swing.JMenuItem storeMenuItem;
   javax.swing.JMenu storedTextsMenu;
   apertiumview.TextWidget textWidget1;
   javax.swing.JPanel textWidgetsPanel;
   javax.swing.JMenu toolsMenu;
+  private javax.swing.JCheckBoxMenuItem transferRuleTracingMenuItem;
+  private javax.swing.JRadioButton useCppVersion;
+  private javax.swing.JRadioButton useJavaVersion;
   // End of variables declaration//GEN-END:variables
 
 }

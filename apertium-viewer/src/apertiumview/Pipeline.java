@@ -146,7 +146,7 @@ public class Pipeline {
 
 								// add -t for transfer and interchunk
 								if (traceTransferInterchunk &&
-										program.getProgram() == INTERCHUNK || program.getProgram() == TRANSFER) {
+										(program.getProgram() == INTERCHUNK || program.getProgram() == TRANSFER)) {
 									String[] x = cmd.split(" ",2);
 									cmd = x[0] + " -t " + x[1];
 								}
