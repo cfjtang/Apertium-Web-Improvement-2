@@ -143,7 +143,7 @@ public class TextWidget extends javax.swing.JPanel {
 			// Ugly hack to get the enclosing TextWidget
 			final TextWidget tw = (TextWidget) ((JComponent) e.getSource()).getParent().getParent().getParent();
 			// Scroll so that the TextWidget's scoll pane (containing the text area) is fully visible
-			Rectangle b = tw.jScrollPane1.getBounds();
+			Rectangle b = tw.textScrollPane.getBounds();
 			Rectangle b2 = tw.getBounds();
 			//System.out.println("b = " + b);
 			//System.out.println("b2 = " + b2);
@@ -249,8 +249,8 @@ public class TextWidget extends javax.swing.JPanel {
 
 
 	void setError(String err) {
-		jTextPaneError.setText(err);
-		jScrollPane2.setPreferredSize(err.isEmpty() ? new Dimension() : null); // make it fit
+		errorTextPane.setText(err);
+		errorScrollPane.setPreferredSize(err.isEmpty() ? new Dimension() : null); // make it fit
 	}
 
 	public Program getProgram() {
@@ -292,11 +292,11 @@ public class TextWidget extends javax.swing.JPanel {
     commandScrollPane = new javax.swing.JScrollPane();
     commandTextPane = new javax.swing.JTextPane();
     freezeCheckBox = new javax.swing.JCheckBox();
-    jScrollPane1 = new javax.swing.JScrollPane();
+    textScrollPane = new javax.swing.JScrollPane();
     textEditor = new apertiumview.highlight.HighlightTextEditor();
     jButtonEditSource = new javax.swing.JButton();
-    jScrollPane2 = new javax.swing.JScrollPane();
-    jTextPaneError = new javax.swing.JTextArea();
+    errorScrollPane = new javax.swing.JScrollPane();
+    errorTextPane = new javax.swing.JTextArea();
 
     zoomButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apertiumview/resources/zoom-in.png"))); // NOI18N
     zoomButton.setToolTipText("Opens a separate window with the text");
@@ -314,6 +314,7 @@ public class TextWidget extends javax.swing.JPanel {
     commandScrollPane.setAlignmentY(1.0F);
 
     commandTextPane.setEditable(false);
+    commandTextPane.setBackground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
     commandTextPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
     commandTextPane.setContentType("text/html"); // NOI18N
     commandTextPane.setText("<html>hej <b>verden");
@@ -324,14 +325,14 @@ public class TextWidget extends javax.swing.JPanel {
     freezeCheckBox.setText("Freeze");
     freezeCheckBox.setToolTipText("Freeze the view so that changes are not propagated further");
 
-    jScrollPane1.setBorder(null);
-    jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    textScrollPane.setBorder(null);
+    textScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
     textEditor.setBorder(null);
     textEditor.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
     textEditor.setText("Sample text");
     textEditor.setMargin(new java.awt.Insets(0, 3, 0, 3));
-    jScrollPane1.setViewportView(textEditor);
+    textScrollPane.setViewportView(textEditor);
 
     jButtonEditSource.setText("Edit source");
     jButtonEditSource.addActionListener(new java.awt.event.ActionListener() {
@@ -340,15 +341,17 @@ public class TextWidget extends javax.swing.JPanel {
       }
     });
 
-    jScrollPane2.setBorder(null);
+    errorScrollPane.setBorder(null);
+    errorScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    errorScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-    jTextPaneError.setEditable(false);
-    jTextPaneError.setBackground(new java.awt.Color(255, 204, 204));
-    jTextPaneError.setForeground(new java.awt.Color(102, 0, 0));
-    jTextPaneError.setTabSize(4);
-    jTextPaneError.setText("Error message\nLine 2");
-    jTextPaneError.setBorder(null);
-    jScrollPane2.setViewportView(jTextPaneError);
+    errorTextPane.setEditable(false);
+    errorTextPane.setBackground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
+    errorTextPane.setForeground(new java.awt.Color(153, 0, 0));
+    errorTextPane.setTabSize(4);
+    errorTextPane.setText("Error message\nLine 2");
+    errorTextPane.setBorder(null);
+    errorScrollPane.setViewportView(errorTextPane);
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
     this.setLayout(layout);
@@ -362,8 +365,8 @@ public class TextWidget extends javax.swing.JPanel {
         .addComponent(freezeCheckBox)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(zoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-      .addComponent(jScrollPane1)
-      .addComponent(jScrollPane2)
+      .addComponent(textScrollPane)
+      .addComponent(errorScrollPane)
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,9 +377,9 @@ public class TextWidget extends javax.swing.JPanel {
             .addComponent(zoomButton, 0, 0, Short.MAX_VALUE)
             .addComponent(jButtonEditSource, 0, 0, Short.MAX_VALUE)
             .addComponent(freezeCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(errorScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(0, 0, 0)
-        .addComponent(jScrollPane1)
+        .addComponent(textScrollPane)
         .addGap(0, 0, 0))
     );
   }// </editor-fold>//GEN-END:initComponents
@@ -412,12 +415,12 @@ public class TextWidget extends javax.swing.JPanel {
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JScrollPane commandScrollPane;
   javax.swing.JTextPane commandTextPane;
+  private javax.swing.JScrollPane errorScrollPane;
+  private javax.swing.JTextArea errorTextPane;
   private javax.swing.JCheckBox freezeCheckBox;
   private javax.swing.JButton jButtonEditSource;
-  javax.swing.JScrollPane jScrollPane1;
-  private javax.swing.JScrollPane jScrollPane2;
-  private javax.swing.JTextArea jTextPaneError;
   apertiumview.highlight.HighlightTextEditor textEditor;
+  javax.swing.JScrollPane textScrollPane;
   private javax.swing.JButton zoomButton;
   // End of variables declaration//GEN-END:variables
 }
