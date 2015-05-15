@@ -143,6 +143,11 @@ public class SourcecodeFinder {
 				if (match(sourcedirs, dirname+"."+tl+".dix")) return match;
 				 // eng-sco.automorf.bin -> apertium-sco.sco.dix
 				if (match(sourcedirs, "apertium-"+tl+"."+tl+".dix")) return match;
+				// hfst files:
+				// apertium-$lang.$lang.lexc – the lexicon and pardefs
+				// apertium-$lang.$lang.twol – morphophonological rules (like "turn -y into -ie before -s")
+				if (match(sourcedirs, "apertium-"+tl+"."+tl+".lexc")) return match;
+
 				// No match - try some more desperate options
 				if (match(sourcedirs, dirname+"."+tl+".dix*")) return match;
 				if (match(sourcedirs, "apertium-"+tl+"."+tl+".dix*")) return match;
