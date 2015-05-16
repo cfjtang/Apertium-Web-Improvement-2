@@ -35,6 +35,8 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
 import org.apertium.pipeline.Program;
+import static org.apertium.pipeline.Program.ProgEnum.INTERCHUNK;
+import static org.apertium.pipeline.Program.ProgEnum.TRANSFER;
 
 /**
  *
@@ -249,7 +251,12 @@ public class TextWidget extends javax.swing.JPanel {
 
 
 	void setError(String err) {
-		errorTextPane.setText(err);
+		if (err.length()>0 && (program.getProgram() == TRANSFER || program.getProgram()==INTERCHUNK)) {
+			errorTextPane.setText(err); // XXX TODO HTML!!
+
+		} else {
+			errorTextPane.setText(err);
+		}
 		errorScrollPane.setPreferredSize(err.isEmpty() ? new Dimension() : null); // make it fit
 	}
 
