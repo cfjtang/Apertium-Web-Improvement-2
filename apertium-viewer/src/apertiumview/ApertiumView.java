@@ -1360,6 +1360,7 @@ private void fitToText() {
 
   private void markUnknownWordsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markUnknownWordsMenuItemActionPerformed
 		setMode(currentMode); // Makes the pipeline update itself
+		showMenu.doClick(); // open the menu again
   }//GEN-LAST:event_markUnknownWordsMenuItemActionPerformed
 
   private void showCommandsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCommandsMenuItemActionPerformed
@@ -1369,10 +1370,12 @@ private void fitToText() {
 		textWidget1.setShowCommands(false);
 		textChanged();
 		mainPanel.validate();
+		showMenu.doClick(); // open the menu again
   }//GEN-LAST:event_showCommandsMenuItemActionPerformed
 
   private void transferRuleTracingMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferRuleTracingMenuItemActionPerformed
 		setMode(currentMode); // Makes the pipeline update itself
+		showMenu.doClick(); // open the menu again
   }//GEN-LAST:event_transferRuleTracingMenuItemActionPerformed
 
   private void useJavaVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useJavaVersionActionPerformed
