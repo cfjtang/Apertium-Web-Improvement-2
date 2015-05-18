@@ -253,9 +253,7 @@ public class TextWidget extends javax.swing.JPanel {
 
 	void setError(String err) {
 		String html = SourcecodeFinder.createHtmlErr(program, err);
-			System.out.println("\n\nHTML\n"+html+"\n");
-			errorTextPane.setText(html);
-//		errorTextPane.setContentType("text/html");
+		errorTextPane.setText(html);
 		errorScrollPane.setPreferredSize(err.isEmpty() ? new Dimension(1,1) : null); // make it fit
 	}
 

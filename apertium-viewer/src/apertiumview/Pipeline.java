@@ -172,7 +172,7 @@ public class Pipeline {
                 err.close();
                 std.close();
                 task = null;
-                output_ = outputsb.toString().trim();
+                output_ = outputsb.substring(0, outputsb.length()-1);//.trim();
                 err_ = errsb.toString().trim();
             }
             
