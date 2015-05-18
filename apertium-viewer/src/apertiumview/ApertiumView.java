@@ -1178,9 +1178,7 @@ private void fitToText() {
 	int extraSpace = (jScrollPane1.getHeight() - toth) / 2;
 	if (extraSpace>0) {
 			JSplitPane s = splitPanes.get(0);
-			System.out.println("setDividerLocation( "+s.getDividerLocation());
 			s.setDividerLocation(s.getDividerLocation() + extraSpace);
-			System.out.println("setDividerLocation2( "+s.getDividerLocation());
 	}
 }
 
