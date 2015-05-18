@@ -44,6 +44,7 @@ import jsyntaxpane.SyntaxDocument;
 import jsyntaxpane.actions.CaretMonitor;
 import org.apertium.pipeline.Program;
 import static org.apertium.pipeline.Program.ProgEnum.*;
+import org.apertium.utils.IOUtils;
 
 public class SourceEditor extends javax.swing.JFrame {
 	private String loadedPath;
@@ -378,7 +379,7 @@ public class SourceEditor extends javax.swing.JFrame {
 		}
 		jCmbLangs.setSelectedItem(jEditorPane.getContentType());
 		final Document doc = jEditorPane.getEditorKit().createDefaultDocument();
-		String loadedFileContentsAsString = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
+		String loadedFileContentsAsString = IOUtils.readFile(path);// new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
 		try {
 			doc.insertString(0,loadedFileContentsAsString,null);
 			hashCodeForDocumentOnDisk = loadedFileContentsAsString.hashCode();

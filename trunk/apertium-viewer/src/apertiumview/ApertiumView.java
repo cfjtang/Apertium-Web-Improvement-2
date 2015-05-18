@@ -147,8 +147,7 @@ public class ApertiumView extends javax.swing.JFrame {
 	private final ApertiumViewMain app;
 	public void linkWasClicked(URL url) {
 		String path = url.getPath();
-		System.out.println("linkWasClicked "+url);
-		System.out.println("linkWasClicked "+path);
+		System.out.println("linkWasClicked "+url + "  path="+path);
 		if (DISABLE_traceTransferInterchunk.equals(path)) {
 			transferRuleTracingMenuItem.setSelected(false);
 			transferRuleTracingMenuItemActionPerformed(null);
@@ -158,12 +157,9 @@ public class ApertiumView extends javax.swing.JFrame {
 		SourceEditor se0 = openSourceEditors.get(path);
 		//System.out.println("openSourceEditor("+path+" ->"+se0);
 		if (se0 != null) {
-//			se0.setVisible(false);
-//			se0.setVisible(true);
 			se0.setState(java.awt.Frame.NORMAL);
 			se0.toFront();
-			se0.updatePosition(SourceEditor.parseProperties(url.getQuery()));
-//			se0.repaint();
+			se0.positionUpdate(SourceEditor.parseProperties(url.getQuery()));
 			return;
 		}
 		try {
@@ -413,7 +409,7 @@ public class ApertiumView extends javax.swing.JFrame {
 			if (item==null || item.equals("SELECT A MODE")) return;
 
 			final JDialog dialog = showDialog("Please wait while downloading "+item+"..."
-					+ "\n(this need to be done again each time you start the program and will take some time\nconsider installing the language pair locally)");
+					+ "\n(this need to be done again each time you start the program and will take some time\n - consider installing the language pair locally)");
 
 			new Thread() {
 				@Override
@@ -557,7 +553,7 @@ public class ApertiumView extends javax.swing.JFrame {
 		// Update input text to match the current input language
 		try {
 			String language = getSourceLanguageCode(m);
-			System.out.println("language="+language);
+			//System.out.println("language="+language);
 			String currentLanguage = currentMode==null?null:getSourceLanguageCode(currentMode);
 			if (!language.equals(currentLanguage)) {
 				prefs.put("inputText "+currentLanguage, textWidget1.getText());
@@ -642,10 +638,13 @@ public class ApertiumView extends javax.swing.JFrame {
 		if (local) {
 			for (Mode m : modes) modesComboBox.addItem(m);
 			index = prefs.getInt("modesComboBoxLocal", 0);
+			useCppVersion.setEnabled(true);
 		} else {
 			modesComboBox.addItem("SELECT A MODE");
 			for (String s : onlineModes) modesComboBox.addItem(s);
 			index = prefs.getInt("modesComboBoxOnline", 0);
+			useCppVersion.setEnabled(false);
+			useJavaVersion.setSelected(true);
 		}
 		modesComboBox.setSelectedIndex(index < modesComboBox.getModel().getSize() ? index : -1);
 		// Ugly hack - see http://stackoverflow.com/questions/29841044/jcombobox-popup-cell-height-wrong-after-call-to-setselecteditem

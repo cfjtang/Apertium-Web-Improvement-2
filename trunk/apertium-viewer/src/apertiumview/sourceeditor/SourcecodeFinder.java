@@ -23,6 +23,7 @@ import org.apertium.pipeline.Mode;
 import org.apertium.pipeline.Program;
 import static org.apertium.pipeline.Program.ProgEnum.INTERCHUNK;
 import static org.apertium.pipeline.Program.ProgEnum.TRANSFER;
+import org.apertium.utils.IOUtils;
 
 /**
  *
@@ -30,44 +31,53 @@ import static org.apertium.pipeline.Program.ProgEnum.TRANSFER;
  */
 public class SourcecodeFinder {
 
-	private static final Pattern rulePattern = Pattern.compile(": Rule ([0-9]+) ");
+
+	public static String findTransferInterchunkFile(Program program) {
+		if (program.getProgram() == TRANSFER || program.getProgram()==INTERCHUNK) {
+			for (String param : program.getParameters().split(" ")) {
+				if (param.length()<10) continue; // strip parameters
+				if (param.endsWith(".bin")) continue;
+				if (param.endsWith(".class")) continue; // only t1x, antaux_t2x, t2x, t3x
+				if (new File(param).exists()) {
+					return param;
+				}
+				try {
+					IOUtils.openInFileStream(param);
+					return param;
+				} catch (Exception e) {}
+			}
+		}
+		return null;
+	}
+
+	private static final Pattern rulePatternTransferInterchunk = Pattern.compile(": Rule ([0-9]+) ");
 
 	public static String createHtmlErr(Program program, String err) {
 		if (err.length()==0) return err;
-		String link = null;
-		File paramFile = null;
-		if (program.getProgram() == TRANSFER || program.getProgram()==INTERCHUNK) {
-			for (String param : program.getParameters().split(" ")) {
-				paramFile = new File(param);
-				if (paramFile.exists()) { // strip parameters and skip nonexistant files
-					if (!param.endsWith(".bin")) {  // t1x, antaux_t2x, t2x, t3x,
-						link = paramFile.getPath();
-						break;
-					}
-				}
-			}
-		}
+		String link = findTransferInterchunkFile(program);
 		StringBuffer text = new StringBuffer(err.length()*3);
+		text.append("<html><div style='white-space:nowrap;font-size:12pt;color:#990000'>");
 		err = err.replaceAll("\n", "<br>\n");
 		if (link == null) {
 			text.append(err);
 		} else {
 			// We found an t1x, antaux_t2x, t2x, t3x file :-)
 			// Make links in texts like: apertium-transfer: Rule 24 bruna vosto
-			Matcher m = rulePattern.matcher(err);
+			Matcher m = rulePatternTransferInterchunk.matcher(err);
 			while (m.find()) {
 				int ruleNo = Integer.parseInt(m.group(1));
 				m.appendReplacement(text, "");
-				text.append(": <a href='file://").append(link)
+				text.append(": <a href='file:///").append(link)
 						.append("?program=").append(program.getProgram())
-						.append("&dir=").append(paramFile.getParent())
+						.append("&dir=").append(new File(link).getParent())
 						.append("&findTag=rule&findTagNo=").append(ruleNo-1)
 						.append("'>Rule ").append(ruleNo).append("</a> ");
 			}
 			m.appendTail(text);
-			text.append(" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='float:right'><a href='file://"+ApertiumView.DISABLE_traceTransferInterchunk+"'>hide</a></span>");
+			text.append(" &nbsp;&nbsp;&nbsp;<a  style='color:#a0a0a0;text-decoration:none' href='file://"+ApertiumView.DISABLE_traceTransferInterchunk+"'>[X]</a></span>");
 		}
-		return "<html><div style='white-space:nowrap;font-size:12pt;color:#990000'>" + text + "</div>";
+		text.append("</div>");
+		return text.toString();
 	}
 
 	public static String createHtmlLinkText(Program program, StringBuilder sourceFiles) {
@@ -102,7 +112,7 @@ public class SourcecodeFinder {
 						}
 						//System.out.println(program.getProgram() + " " + param + " -> " + link);
 						text.append(" <font color='#aaaaaa'>").append(paramFile.getParent()).append("/</font>"); // grey path
-						if (link!=null) text.append("<a href='file://").append(link)
+						if (link!=null) text.append("<a href='file:///").append(link)
 								.append("?program=").append(program.getProgram())
 								.append("&dir=").append(paramFile.getParent())
 								.append("'>").append(paramFile.getName()).append("</a>");
