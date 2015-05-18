@@ -142,18 +142,27 @@ public class ApertiumView extends javax.swing.JFrame {
 	};
 
 
+	public static final String DISABLE_traceTransferInterchunk = "/disable_traceTransferInterchunk";
 	private HashMap <String, SourceEditor> openSourceEditors = new HashMap<>();
 	private final ApertiumViewMain app;
-	public void openSourceEditor(URL url) {
+	public void linkWasClicked(URL url) {
 		String path = url.getPath();
+		System.out.println("linkWasClicked "+url);
+		System.out.println("linkWasClicked "+path);
+		if (DISABLE_traceTransferInterchunk.equals(path)) {
+			transferRuleTracingMenuItem.setSelected(false);
+			transferRuleTracingMenuItemActionPerformed(null);
+			return;
+		}
 
 		SourceEditor se0 = openSourceEditors.get(path);
-		System.out.println("openSourceEditor("+path+" ->"+se0);
+		//System.out.println("openSourceEditor("+path+" ->"+se0);
 		if (se0 != null) {
 //			se0.setVisible(false);
 //			se0.setVisible(true);
 			se0.setState(java.awt.Frame.NORMAL);
 			se0.toFront();
+			se0.updatePosition(SourceEditor.parseProperties(url.getQuery()));
 //			se0.repaint();
 			return;
 		}

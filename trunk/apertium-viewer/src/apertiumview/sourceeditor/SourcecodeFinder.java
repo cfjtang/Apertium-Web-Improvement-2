@@ -8,6 +8,7 @@
  */
 package apertiumview.sourceeditor;
 
+import apertiumview.ApertiumView;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -16,14 +17,58 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apertium.pipeline.Mode;
 import org.apertium.pipeline.Program;
+import static org.apertium.pipeline.Program.ProgEnum.INTERCHUNK;
+import static org.apertium.pipeline.Program.ProgEnum.TRANSFER;
 
 /**
  *
  * @author j
  */
 public class SourcecodeFinder {
+
+	private static final Pattern rulePattern = Pattern.compile(": Rule ([0-9]+) ");
+
+	public static String createHtmlErr(Program program, String err) {
+		if (err.length()==0) return err;
+		String link = null;
+		File paramFile = null;
+		if (program.getProgram() == TRANSFER || program.getProgram()==INTERCHUNK) {
+			for (String param : program.getParameters().split(" ")) {
+				paramFile = new File(param);
+				if (paramFile.exists()) { // strip parameters and skip nonexistant files
+					if (!param.endsWith(".bin")) {  // t1x, antaux_t2x, t2x, t3x,
+						link = paramFile.getPath();
+						break;
+					}
+				}
+			}
+		}
+		StringBuffer text = new StringBuffer(err.length()*3);
+		err = err.replaceAll("\n", "<br>\n");
+		if (link == null) {
+			text.append(err);
+		} else {
+			// We found an t1x, antaux_t2x, t2x, t3x file :-)
+			// Make links in texts like: apertium-transfer: Rule 24 bruna vosto
+			Matcher m = rulePattern.matcher(err);
+			while (m.find()) {
+				int ruleNo = Integer.parseInt(m.group(1));
+				m.appendReplacement(text, "");
+				text.append(": <a href='file://").append(link)
+						.append("?program=").append(program.getProgram())
+						.append("&dir=").append(paramFile.getParent())
+						.append("&findTag=rule&findTagNo=").append(ruleNo-1)
+						.append("'>Rule ").append(ruleNo).append("</a> ");
+			}
+			m.appendTail(text);
+			text.append(" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='float:right'><a href='file://"+ApertiumView.DISABLE_traceTransferInterchunk+"'>hide</a></span>");
+		}
+		return "<html><div style='white-space:nowrap;font-size:12pt;color:#990000'>" + text + "</div>";
+	}
 
 	public static String createHtmlLinkText(Program program, StringBuilder sourceFiles) {
 		StringBuilder text = new StringBuilder();

@@ -52,8 +52,8 @@ public class SourceEditor extends javax.swing.JFrame {
 	private ApertiumView owner;
 	private int hashCodeForDocumentOnDisk;
 
-	public SourceEditor(ApertiumView aThis, String path, String properties) throws IOException {
-		owner = aThis;
+	public SourceEditor(ApertiumView owner, String path, String properties) throws IOException {
+		this.owner = owner;
 		initComponents();
 		jCmbLangs.setModel(new DefaultComboBoxModel(DefaultSyntaxKit.getContentTypes()));
 		jCmbLangs.setSelectedItem("text/xml");
@@ -63,8 +63,13 @@ public class SourceEditor extends javax.swing.JFrame {
 		if (d.length==5) setBounds(parseInt(d[0]), parseInt(d[1]), parseInt(d[2]), parseInt(d[3]));
 		else setLocationByPlatform(true);
 		setVisible(true);
-		loadFile(path, properties);
-		if (d.length==5) jEditorPane.setCaretPosition(parseInt(d[4]));
+		loadedFileProperties = parseProperties(properties);
+		System.out.println(loadedFileProgram+ " "+properties);
+		loadFile(path);
+
+		if (!positionUpdate(loadedFileProperties) && d.length==5) {
+			jEditorPane.setCaretPosition(parseInt(d[4]));
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -291,13 +296,8 @@ public class SourceEditor extends javax.swing.JFrame {
 			int lineNo = Integer.parseInt(err[1]);
 			String msg = err[2];
 
-			Element root = jEditorPane.getDocument().getDefaultRootElement();
-			lineNo = Math.min(lineNo, root.getElementCount());
-			if (lineNo != 65535) { // workaround for xmllint bug - see https://bugzilla.gnome.org/show_bug.cgi?id=325533
-				int startOfLineOffset = root.getElement( lineNo - 1 ).getStartOffset();
-				jEditorPane.setCaretPosition( startOfLineOffset );
-				centerLineInScrollPane();
-			}
+			// workaround for xmllint bug - see https://bugzilla.gnome.org/show_bug.cgi?id=325533
+			if (lineNo != 65535) gotoLineNo(lineNo);
 
 			lblCaretPos.setText(msg);
 		} catch (Exception e) {
@@ -307,6 +307,26 @@ public class SourceEditor extends javax.swing.JFrame {
 		return false;
 	}
 
+	public void gotoLineNo(int lineNo) {
+		Element root = jEditorPane.getDocument().getDefaultRootElement();
+		lineNo = Math.min(lineNo, root.getElementCount());
+		int startOfLineOffset = root.getElement( lineNo - 1 ).getStartOffset();
+		jEditorPane.setCaretPosition( startOfLineOffset );
+		centerLineInScrollPane();
+	}
+
+
+	public boolean positionUpdate(HashMap<String, String> loadedFileProperties) {
+		String findTag = loadedFileProperties.get("findTag");
+		if (findTag!=null) try {
+			int findTagNo = Integer.parseInt(loadedFileProperties.get("findTagNo"));
+			Document doc = jEditorPane.getDocument();
+			int lineNo = PositionalXMLReader.findLinenumberOfTag(new StringReader(doc.getText(0, doc.getLength())), findTag, findTagNo);
+			gotoLineNo(lineNo);
+			return true;
+		} catch (Exception e) { e.printStackTrace(); }
+		return false;
+	}
 
   private void jButtonValidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonValidateActionPerformed
     validateFile();
@@ -346,17 +366,11 @@ public class SourceEditor extends javax.swing.JFrame {
   private javax.swing.JLabel lblCaretPos;
   // End of variables declaration//GEN-END:variables
 
-	public void loadFile(String path, String properties) throws IOException {
+	private EnumSet<Program.ProgEnum> xmlFiles = EnumSet.of(LT_PROC, TAGGER, PRETRANSFER, TRANSFER, INTERCHUNK, POSTCHUNK);
+	public void loadFile(String path) throws IOException {
 		setTitle(new File(path).getName());
 		loadedPath = path;
-		loadedFileProperties = new HashMap<>();
-		for (String pair : properties.split("&")) {
-			String[] vv = pair.split("=");
-			loadedFileProperties.put(vv[0], vv[1]);
-		}
 		loadedFileProgram = Program.ProgEnum.valueOf(loadedFileProperties.get("program"));
-		System.out.println(loadedFileProgram+ " "+properties);
-		EnumSet<Program.ProgEnum> xmlFiles = EnumSet.of(LT_PROC, TAGGER, PRETRANSFER, TRANSFER, INTERCHUNK, POSTCHUNK);
 		if (xmlFiles.contains(loadedFileProgram)) {
 			jEditorPane.setContentType("text/xml");
 		} else {
@@ -364,10 +378,11 @@ public class SourceEditor extends javax.swing.JFrame {
 		}
 		jCmbLangs.setSelectedItem(jEditorPane.getContentType());
 		final Document doc = jEditorPane.getEditorKit().createDefaultDocument();
-		String str = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
+		String loadedFileContentsAsString = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
 		try {
-			doc.insertString(0,str,null);
-			hashCodeForDocumentOnDisk = doc.getText(0, doc.getLength()).hashCode();
+			doc.insertString(0,loadedFileContentsAsString,null);
+			hashCodeForDocumentOnDisk = loadedFileContentsAsString.hashCode();
+			if (hashCodeForDocumentOnDisk != doc.getText(0, doc.getLength()).hashCode()) throw new InternalError("misassumption");
 		} catch (BadLocationException ex) {
 			throw new IOException(ex);
 		}
@@ -394,6 +409,14 @@ public class SourceEditor extends javax.swing.JFrame {
 		jEditorPane.setDocument(doc);
 	}
 
+	public static HashMap<String, String> parseProperties(String properties) {
+		HashMap<String, String> loadedFileProperties = new HashMap<>();
+		for (String pair : properties.split("&")) {
+			String[] vv = pair.split("=");
+			loadedFileProperties.put(vv[0], vv[1]);
+		}
+		return loadedFileProperties;
+	}
 
 	private static SourceEditor jFrame;
 	/**

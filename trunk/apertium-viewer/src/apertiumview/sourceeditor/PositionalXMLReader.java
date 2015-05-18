@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 j
+ * Copyright (C) 2015 Jacob Nordfalk
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,10 +17,9 @@
  */
 package apertiumview.sourceeditor;
 
-// Stripped PositionalXMLReader.java from http://stackoverflow.com/questions/4915422/get-line-number-from-xml-node-java
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.Stack;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -33,14 +32,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+* Stripped PositionalXMLReader.java from http://stackoverflow.com/questions/4915422/get-line-number-from-xml-node-java
+*/
 public class PositionalXMLReader {
 	final static String LINE_NUMBER_KEY_NAME = "lineNumber";
 
-	private static Document readXML(final InputStream is) throws IOException, SAXException, ParserConfigurationException {
+	public static Document createDocumentWithLineNumbers(Reader reader) throws IOException, SAXException, ParserConfigurationException {
 		SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
 		final Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 
@@ -72,14 +75,14 @@ public class PositionalXMLReader {
 				}
 			}
 		};
-		parser.parse(is, handler);
+		parser.parse(new InputSource(reader), handler);
 
 		return doc;
 	}
 
 	/**
 	Parses an input stream as XML and finds a specific tag
-	@param is
+	@param reader input
 	@param tagName name of tag
 	@param tagNumber how many of tagName should be skipped
 	@return line number of the the tagNumer-th instance of tagName.
@@ -87,9 +90,9 @@ public class PositionalXMLReader {
 	@throws ParserConfigurationException
 	@throws SAXException
 	*/
-	public static int findLinenumberOfTag(InputStream is, String tagName, int tagNumber) throws IOException, ParserConfigurationException, SAXException {
-		Document doc = PositionalXMLReader.readXML(is);
-		is.close();
+	public static int findLinenumberOfTag(Reader reader, String tagName, int tagNumber) throws IOException, ParserConfigurationException, SAXException {
+		Document doc = PositionalXMLReader.createDocumentWithLineNumbers(reader);
+		reader.close();
 		Node node = doc.getElementsByTagName(tagName).item(tagNumber);
 		int lineNumber = (Integer) node.getUserData("lineNumber");
 		return lineNumber;
@@ -105,11 +108,8 @@ public class PositionalXMLReader {
 				+ "        <moo>Hello World!</moo>\n"
 				+ "    </bar>\n"
 				+ "</foo>";
-		String tagName = "bar";
-		int tagNumber = 1;
 
-		InputStream is = new ByteArrayInputStream(xmlString.getBytes());
-		int lineNumber = findLinenumberOfTag(is, tagName, tagNumber);
+		int lineNumber = findLinenumberOfTag(new StringReader(xmlString), "bar", 1);
 
 		System.out.println("Line number: " + lineNumber);
 	}

@@ -174,7 +174,7 @@ public class TextWidget extends javax.swing.JPanel {
       @Override
       public void hyperlinkUpdate(HyperlinkEvent e) {
         if (e.getEventType() != HyperlinkEvent.EventType.ACTIVATED) return;
-				owner.openSourceEditor(e.getURL());
+				owner.linkWasClicked(e.getURL());
 			}
     };
 
@@ -183,6 +183,7 @@ public class TextWidget extends javax.swing.JPanel {
 		this.owner = owner;
 		this.priority = priority;
 		commandTextPane.addHyperlinkListener(hyperlinkListener);
+		errorTextPane.addHyperlinkListener(hyperlinkListener);
 		textEditor.addFocusListener(scrollToVisibleFocusListener);
 		textEditor.addKeyListener(owner.switchFocus);
 		setError("");
@@ -251,13 +252,11 @@ public class TextWidget extends javax.swing.JPanel {
 
 
 	void setError(String err) {
-		if (err.length()>0 && (program.getProgram() == TRANSFER || program.getProgram()==INTERCHUNK)) {
-			errorTextPane.setText(err); // XXX TODO HTML!!
-
-		} else {
-			errorTextPane.setText(err);
-		}
-		errorScrollPane.setPreferredSize(err.isEmpty() ? new Dimension() : null); // make it fit
+		String html = SourcecodeFinder.createHtmlErr(program, err);
+			System.out.println("\n\nHTML\n"+html+"\n");
+			errorTextPane.setText(html);
+//		errorTextPane.setContentType("text/html");
+		errorScrollPane.setPreferredSize(err.isEmpty() ? new Dimension(1,1) : null); // make it fit
 	}
 
 	public Program getProgram() {
@@ -303,7 +302,7 @@ public class TextWidget extends javax.swing.JPanel {
     textEditor = new apertiumview.highlight.HighlightTextEditor();
     jButtonEditSource = new javax.swing.JButton();
     errorScrollPane = new javax.swing.JScrollPane();
-    errorTextPane = new javax.swing.JTextArea();
+    errorTextPane = new javax.swing.JTextPane();
 
     zoomButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apertiumview/resources/zoom-in.png"))); // NOI18N
     zoomButton.setToolTipText("Opens a separate window with the text");
@@ -354,10 +353,11 @@ public class TextWidget extends javax.swing.JPanel {
 
     errorTextPane.setEditable(false);
     errorTextPane.setBackground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
-    errorTextPane.setForeground(new java.awt.Color(153, 0, 0));
-    errorTextPane.setTabSize(4);
-    errorTextPane.setText("Error message\nLine 2");
     errorTextPane.setBorder(null);
+    errorTextPane.setContentType("text/html"); // NOI18N
+    errorTextPane.setForeground(new java.awt.Color(153, 0, 0));
+    errorTextPane.setText("<html>\n  <head>\n\n  </head>\n  <body>\n    <p style=\"margin-top: 0\">\n      error\n    </p>\n  </body>\n</html>\n"); // NOI18N
+    errorTextPane.setToolTipText("");
     errorScrollPane.setViewportView(errorTextPane);
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -413,7 +413,7 @@ public class TextWidget extends javax.swing.JPanel {
 		while (matcher.find()) try {
 			String url = matcher.group(1);
 			//System.out.println(url);
-			owner.openSourceEditor(new URL(url));
+			owner.linkWasClicked(new URL(url));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -423,7 +423,7 @@ public class TextWidget extends javax.swing.JPanel {
   private javax.swing.JScrollPane commandScrollPane;
   javax.swing.JTextPane commandTextPane;
   private javax.swing.JScrollPane errorScrollPane;
-  private javax.swing.JTextArea errorTextPane;
+  private javax.swing.JTextPane errorTextPane;
   private javax.swing.JCheckBox freezeCheckBox;
   private javax.swing.JButton jButtonEditSource;
   apertiumview.highlight.HighlightTextEditor textEditor;
