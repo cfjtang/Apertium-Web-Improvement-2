@@ -259,11 +259,7 @@ public class ApertiumView extends javax.swing.JFrame {
 		try {
 			String mpref = prefs.get("modeFiles", null);
 			if (mpref != null) {
-				for (String fn : mpref.split("\n")) {
-					if (fn.trim().isEmpty()) continue;
-					loadMode(fn);
-				}
-				updateModesComboBox();
+				loadModes(mpref);
 			} else {
 				LinkedHashSet<File> fal = new LinkedHashSet<File>();
 				try {
@@ -276,13 +272,14 @@ public class ApertiumView extends javax.swing.JFrame {
 					fal.addAll(Arrays.asList(new File(".").listFiles()));
 				} catch (Exception e) {}
 
-				if (!fal.isEmpty()) {
-					for (File f : fal) {
-						if (f.getName().endsWith(".mode")) {
-							loadMode(f.getPath());
-						}
+				mpref = "# Apertium language pair mode files. ";
+				for (File f : fal) {
+					if (f.getName().endsWith(".mode")) {
+						mpref = mpref + f.getPath() + "\n";
 					}
-					updateModesComboBox();
+				}
+				prefs.put("modeFiles", mpref);
+				if (!fal.isEmpty()) {
 					warnUser("Welcome to Apertium-viewer.\nIt seems this is the first time you run this program."
 							+ "\nI have searched in standard places for 'modes' (language translation pairs)"
 							+ "\nI will let you revise the list now (you can always re-edit the list by choosing File | Edit modes)");
@@ -297,8 +294,7 @@ public class ApertiumView extends javax.swing.JFrame {
 							+ "\nI will now get download a list of 'online' modes, which are downloaded on the fly."
 							+ "\nIf you DO have Apertium language pairs installed, please use File | Load mode to load them,"
 							+ "\nand switch to 'Local' in the top right");
-					prefs.putBoolean("local", false);
-					prefs.put("modeFiles", "");
+					prefs.putBoolean("local", false); // Nødvendig?
 				}
 			}
 
@@ -353,6 +349,17 @@ public class ApertiumView extends javax.swing.JFrame {
 		fitToTextButton.addKeyListener(switchFocus);
 
 		//app.getMainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	public void loadModes(String mpref) {
+		modes.clear();
+		System.out.println("loadModes("+mpref);
+		for (String fn : mpref.split("\n")) {
+			fn = fn.trim();
+			if (fn.isEmpty() || fn.startsWith("#")) continue;
+			loadMode(fn);
+		}
+		updateModesComboBox();
 	}
 
 	public void shutdown() {
@@ -614,7 +621,7 @@ public class ApertiumView extends javax.swing.JFrame {
 			modes.add(m);
 			modesComboBox.addItem(m);
 		} catch (IOException ex) {
-			Logger.getLogger(ApertiumView.class.getName()).log(Level.INFO, null, ex);
+			ex.printStackTrace();
 			warnUser("Loading of mode " + filename + " failed:\n\n" + ex.toString() + "\n\nContinuing without this mode.");
 		}
 	}
@@ -637,16 +644,16 @@ public class ApertiumView extends javax.swing.JFrame {
 		int index;
 		if (local) {
 			for (Mode m : modes) modesComboBox.addItem(m);
-			index = prefs.getInt("modesComboBoxLocal", 0);
+			index = prefs.getInt("modesComboBoxLocal", -1);
 			useCppVersion.setEnabled(true);
 		} else {
 			modesComboBox.addItem("SELECT A MODE");
 			for (String s : onlineModes) modesComboBox.addItem(s);
-			index = prefs.getInt("modesComboBoxOnline", 0);
+			index = prefs.getInt("modesComboBoxOnline", -1);
 			useCppVersion.setEnabled(false);
 			useJavaVersion.setSelected(true);
 		}
-		modesComboBox.setSelectedIndex(index < modesComboBox.getModel().getSize() ? index : -1);
+		modesComboBox.setSelectedIndex(Math.min(index, modesComboBox.getModel().getSize()-1));
 		// Ugly hack - see http://stackoverflow.com/questions/29841044/jcombobox-popup-cell-height-wrong-after-call-to-setselecteditem
 		ComboBoxModel model = modesComboBox.getModel();
 		modesComboBox.setModel(new DefaultComboBoxModel());
@@ -697,9 +704,11 @@ public class ApertiumView extends javax.swing.JFrame {
     menuBar = new javax.swing.JMenuBar();
     javax.swing.JMenu fileMenu = new javax.swing.JMenu();
     loadModeMenuItem = new javax.swing.JMenuItem();
+    searchForModesMenuItem = new javax.swing.JMenuItem();
     editModesMenuItem = new javax.swing.JMenuItem();
     jSeparator1 = new javax.swing.JSeparator();
     javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
+    downloadMenu = new javax.swing.JMenu();
     toolsMenu = new javax.swing.JMenu();
     makeTestCaseMenuItem = new javax.swing.JMenuItem();
     importTestCaseMenuItem = new javax.swing.JMenuItem();
@@ -749,15 +758,15 @@ public class ApertiumView extends javax.swing.JFrame {
     textWidgetsPanel.setLayout(textWidgetsPanelLayout);
     textWidgetsPanelLayout.setHorizontalGroup(
       textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 743, Short.MAX_VALUE)
+      .addGap(0, 710, Short.MAX_VALUE)
       .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 743, Short.MAX_VALUE))
+        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
     );
     textWidgetsPanelLayout.setVerticalGroup(
       textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 238, Short.MAX_VALUE)
+      .addGap(0, 170, Short.MAX_VALUE)
       .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
+        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE))
     );
 
     jScrollPane1.setViewportView(textWidgetsPanel);
@@ -828,7 +837,7 @@ public class ApertiumView extends javax.swing.JFrame {
 
     loadModeMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
     loadModeMenuItem.setMnemonic('L');
-    loadModeMenuItem.setText("Load mode");
+    loadModeMenuItem.setText("Load a language pair");
     loadModeMenuItem.setToolTipText("<html>Load an Apertium .mode file");
     loadModeMenuItem.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -837,8 +846,16 @@ public class ApertiumView extends javax.swing.JFrame {
     });
     fileMenu.add(loadModeMenuItem);
 
+    searchForModesMenuItem.setText("Search for language pairs");
+    searchForModesMenuItem.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        searchForModesMenuItemActionPerformed(evt);
+      }
+    });
+    fileMenu.add(searchForModesMenuItem);
+
     editModesMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-    editModesMenuItem.setText("Edit modes");
+    editModesMenuItem.setText("Edit language pair modes");
     editModesMenuItem.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         editModesMenuItemActionPerformed(evt);
@@ -856,6 +873,9 @@ public class ApertiumView extends javax.swing.JFrame {
     fileMenu.add(exitMenuItem);
 
     menuBar.add(fileMenu);
+
+    downloadMenu.setText("Download");
+    menuBar.add(downloadMenu);
 
     toolsMenu.setMnemonic('T');
     toolsMenu.setText("Tools");
@@ -989,7 +1009,7 @@ public class ApertiumView extends javax.swing.JFrame {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(jLabelMode)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(modesComboBox, 0, 65, Short.MAX_VALUE)
+        .addComponent(modesComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(rdbtnLocal)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1012,7 +1032,7 @@ public class ApertiumView extends javax.swing.JFrame {
           .addComponent(useJavaVersion)
           .addComponent(useCppVersion))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE))
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))
     );
 
     pack();
@@ -1039,8 +1059,7 @@ private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 }//GEN-LAST:event_modesComboBoxActionPerformed
 
 private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editModesMenuItemActionPerformed
-	String mpref = "";
-	for (Mode mo : modes) mpref = mpref + mo.getFilename() + "\n";
+	String mpref = prefs.get("modeFiles", null);
 	JTextArea ta = new JTextArea(mpref);
 	// Fix for Jimmy: On my system, in the 'edit list of modes' part, the list of modes is
 	// longer than can be displayed on screen. I know I'm not the typical
@@ -1053,15 +1072,12 @@ private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
 		ps.width += 50; // some space
 		sp.setPreferredSize(ps);
 	}
+	ta.requestFocusInWindow();
 	int ret = JOptionPane.showConfirmDialog(mainPanel, sp,
-			"Edit the list of modes", JOptionPane.OK_CANCEL_OPTION);
+			"Edit the list of language pairs (modes)", JOptionPane.OK_CANCEL_OPTION);
 	if (ret == JOptionPane.OK_OPTION) {
-		modes.clear();
 		mpref = ta.getText();
-		for (String fn : mpref.split("\n")) {
-			loadMode(fn);
-		}
-		updateModesComboBox();
+		loadModes(mpref);
 		prefs.put("modeFiles", mpref);
 	}
 }//GEN-LAST:event_editModesMenuItemActionPerformed
@@ -1274,16 +1290,14 @@ private void fitToText() {
 					+ modeFileChooser.getSelectedFile().getName());
 			prefs.put("lastModePath", modeFileChooser.getSelectedFile().getParent());
 			File fs[] = modeFileChooser.getSelectedFiles();
-			//System.out.println("txt=" + fs.length);
-			rdbtnLocal.setSelected(true);
-			for (File f : fs) {
-				loadMode(f.getPath());
-			}
-			prefs.putInt("modesComboBoxLocal", modesComboBox.getItemCount()-1);
 
-			updateModesComboBox();
-			String mpref = "";
-			for (Mode mo : modes) mpref = mpref + mo.getFilename() + "\n";
+			String mpref = prefs.get("modeFiles", "");
+			mpref += "\n# Modes added "+new Date();
+			rdbtnLocal.setSelected(true);
+			for (File f : fs) mpref += "\n"+f.getPath();
+			System.out.println("modes=" + mpref);
+			prefs.putInt("modesComboBoxLocal", 999999); // last mode
+			loadModes(mpref);
 			prefs.put("modeFiles", mpref);
 		}
   }//GEN-LAST:event_loadMode
@@ -1384,12 +1398,17 @@ private void fitToText() {
 		setMode(currentMode); // Makes the pipeline update itself
   }//GEN-LAST:event_useCppVersionActionPerformed
 
+  private void searchForModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchForModesMenuItemActionPerformed
+		PairLocator.searchForModes();
+  }//GEN-LAST:event_searchForModesMenuItemActionPerformed
+
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   javax.swing.ButtonGroup buttonGroup1;
   private javax.swing.ButtonGroup buttonGroup2;
   javax.swing.JMenuItem changeFontMenuItem;
   javax.swing.JButton copyTextButton;
+  private javax.swing.JMenu downloadMenu;
   javax.swing.JMenuItem editModesMenuItem;
   javax.swing.JToggleButton fitToTextButton;
   javax.swing.JMenuItem helpMenuItem;
@@ -1409,6 +1428,7 @@ private void fitToText() {
   javax.swing.JMenuItem optionsMenuItem;
   javax.swing.JRadioButton rdbtnLocal;
   javax.swing.JRadioButton rdbtnOnline;
+  private javax.swing.JMenuItem searchForModesMenuItem;
   private javax.swing.JCheckBoxMenuItem showCommandsMenuItem;
   private javax.swing.JMenu showMenu;
   private javax.swing.JMenuItem storeMenuItem;
