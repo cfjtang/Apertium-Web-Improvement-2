@@ -37,6 +37,7 @@ import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.prefs.Preferences;
 import javax.swing.BorderFactory;
@@ -145,6 +146,7 @@ public class ApertiumView extends javax.swing.JFrame {
 	public static final String DISABLE_traceTransferInterchunk = "/disable_traceTransferInterchunk";
 	private HashMap <String, SourceEditor> openSourceEditors = new HashMap<>();
 	private final ApertiumViewMain app;
+	private String modeFiles;
 	public void linkWasClicked(URL url) {
 		String path = url.getPath();
 		System.out.println("linkWasClicked "+url + "  path="+path);
@@ -257,9 +259,16 @@ public class ApertiumView extends javax.swing.JFrame {
 		});
 
 		try {
-			String mpref = prefs.get("modeFiles", null);
-			if (mpref != null) {
-				loadModes(mpref);
+			modeFiles = prefs.get("modeFiles", null);
+			int n = 1; // Preferences can't contain more than 8096 chars in a value, so collect
+			while (true) {
+				String append = prefs.get("modeFiles."+n, null);
+				if (append==null || append.isEmpty()) break;
+				modeFiles = modeFiles + append;
+				n++;
+			}
+			if (modeFiles != null) {
+				loadModes(modeFiles);
 			} else {
 				LinkedHashSet<File> fal = new LinkedHashSet<File>();
 				try {
@@ -272,13 +281,12 @@ public class ApertiumView extends javax.swing.JFrame {
 					fal.addAll(Arrays.asList(new File(".").listFiles()));
 				} catch (Exception e) {}
 
-				mpref = "# Apertium language pair mode files. ";
+				modeFiles = "# Apertium language pair mode files. ";
 				for (File f : fal) {
 					if (f.getName().endsWith(".mode")) {
-						mpref = mpref + f.getPath() + "\n";
+						modeFiles = modeFiles + f.getPath() + "\n";
 					}
 				}
-				prefs.put("modeFiles", mpref);
 				if (!fal.isEmpty()) {
 					warnUser("Welcome to Apertium-viewer.\nIt seems this is the first time you run this program."
 							+ "\nI have searched in standard places for 'modes' (language translation pairs)"
@@ -304,6 +312,7 @@ public class ApertiumView extends javax.swing.JFrame {
 				rdbtnOnline.setSelected(true);
 				rdbtnOnlineActionPerformed(null);
 			}
+			ignoreEvents = true;
 			markUnknownWordsMenuItem.setSelected(prefs.getBoolean("markUnknownWords", true));
 			showCommandsMenuItem.setSelected(prefs.getBoolean("showCommands", true));
 			showCommandsMenuItemActionPerformed(null); // this is necesary, i.a. to hide 1st panels commands
@@ -347,19 +356,29 @@ public class ApertiumView extends javax.swing.JFrame {
 		menuBar.addKeyListener(switchFocus);
 		copyTextButton.addKeyListener(switchFocus);
 		fitToTextButton.addKeyListener(switchFocus);
+		jScrollPane1.getVerticalScrollBar().setUnitIncrement(16);
 
 		//app.getMainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	public void loadModes(String mpref) {
+	public String loadModes(String modeFiles) {
 		modes.clear();
-		System.out.println("loadModes("+mpref);
-		for (String fn : mpref.split("\n")) {
+		StringBuilder sb = new StringBuilder();
+		for (String fn : modeFiles.split("\n")) {
 			fn = fn.trim();
-			if (fn.isEmpty() || fn.startsWith("#")) continue;
-			loadMode(fn);
+			if (fn.isEmpty() || fn.startsWith("#")) {
+				;
+			} else {
+				int i = fn.indexOf('#');
+				String fn2 = i<=0 ? fn : fn.substring(0, i-1).trim();
+				if (!loadMode(fn2)) {
+					fn = "# " + fn;
+				}
+			}
+			sb.append(fn).append('\n');
 		}
 		updateModesComboBox();
+		return sb.toString();
 	}
 
 	public void shutdown() {
@@ -374,6 +393,16 @@ public class ApertiumView extends javax.swing.JFrame {
 		prefs.putBoolean("markUnknownWords", markUnknownWordsMenuItem.isSelected());
 		prefs.putBoolean("transferRuleTracing", transferRuleTracingMenuItem.isSelected());
 		prefs.putBoolean("local", local);
+
+		String remains = modeFiles;
+		int n = 0;
+		while (true) {
+			int chopPos = Math.min(remains.length(), Preferences.MAX_VALUE_LENGTH);
+			prefs.put(n==0?"modeFiles": "modeFiles."+n, remains.substring(0, chopPos));
+			if (remains.isEmpty()) break;
+			remains = remains.substring(chopPos);
+			n++;
+		}
 		String divLoc = "";
 		for (JSplitPane p : splitPanes) divLoc += "," + p.getDividerLocation();
 		prefs.put("dividerLocation", divLoc);
@@ -615,14 +644,16 @@ public class ApertiumView extends javax.swing.JFrame {
 		// Collections.sort(onlineModes); // don't sort; better to keep original order intact as related modes are near to each other
 	}
 
-	private void loadMode(String filename) {
+	private boolean loadMode(String filename) {
 		try {
 			Mode m = new Mode(filename);
 			modes.add(m);
 			modesComboBox.addItem(m);
+			return true;
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			warnUser("Loading of mode " + filename + " failed:\n\n" + ex.toString() + "\n\nContinuing without this mode.");
+			warnUser("Loading of mode " + filename + " failed:\n\n" + ex.toString() + "\n\nDisabling this mode.");
+			return false;
 		}
 	}
 
@@ -1059,8 +1090,7 @@ private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 }//GEN-LAST:event_modesComboBoxActionPerformed
 
 private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editModesMenuItemActionPerformed
-	String mpref = prefs.get("modeFiles", null);
-	JTextArea ta = new JTextArea(mpref);
+	JTextArea ta = new JTextArea(modeFiles);
 	// Fix for Jimmy: On my system, in the 'edit list of modes' part, the list of modes is
 	// longer than can be displayed on screen. I know I'm not the typical
 	// user, but do you think you could fit a scroll bar in there?
@@ -1073,12 +1103,12 @@ private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
 		sp.setPreferredSize(ps);
 	}
 	ta.requestFocusInWindow();
+	if (!modeFiles.isEmpty()) ta.setCaretPosition(modeFiles.length()-1);
 	int ret = JOptionPane.showConfirmDialog(mainPanel, sp,
 			"Edit the list of language pairs (modes)", JOptionPane.OK_CANCEL_OPTION);
 	if (ret == JOptionPane.OK_OPTION) {
-		mpref = ta.getText();
-		loadModes(mpref);
-		prefs.put("modeFiles", mpref);
+		modeFiles = ta.getText();
+		modeFiles = loadModes(modeFiles);
 	}
 }//GEN-LAST:event_editModesMenuItemActionPerformed
 
@@ -1291,14 +1321,12 @@ private void fitToText() {
 			prefs.put("lastModePath", modeFileChooser.getSelectedFile().getParent());
 			File fs[] = modeFileChooser.getSelectedFiles();
 
-			String mpref = prefs.get("modeFiles", "");
-			mpref += "\n# Modes added "+new Date();
 			rdbtnLocal.setSelected(true);
-			for (File f : fs) mpref += "\n"+f.getPath();
-			System.out.println("modes=" + mpref);
+			modeFiles += "\n# Added "+new Date();
+			for (File f : fs) modeFiles += "\n"+f.getPath();
+			System.out.println("modes=" + modeFiles);
 			prefs.putInt("modesComboBoxLocal", 999999); // last mode
-			loadModes(mpref);
-			prefs.put("modeFiles", mpref);
+			modeFiles = loadModes(modeFiles);
 		}
   }//GEN-LAST:event_loadMode
 
@@ -1371,11 +1399,13 @@ private void fitToText() {
   }//GEN-LAST:event_storeMenuItemActionPerformed
 
   private void markUnknownWordsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markUnknownWordsMenuItemActionPerformed
+		if (ignoreEvents) return;
 		setMode(currentMode); // Makes the pipeline update itself
 		showMenu.doClick(); // open the menu again
   }//GEN-LAST:event_markUnknownWordsMenuItemActionPerformed
 
   private void showCommandsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCommandsMenuItemActionPerformed
+		if (ignoreEvents) return;
 		boolean show = showCommandsMenuItem.isSelected();
 		//System.out.println("show = " + show);
 		for (TextWidget w : textWidgets) w.setShowCommands(show);
@@ -1386,20 +1416,36 @@ private void fitToText() {
   }//GEN-LAST:event_showCommandsMenuItemActionPerformed
 
   private void transferRuleTracingMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferRuleTracingMenuItemActionPerformed
+		if (ignoreEvents) return;
 		setMode(currentMode); // Makes the pipeline update itself
 		showMenu.doClick(); // open the menu again
   }//GEN-LAST:event_transferRuleTracingMenuItemActionPerformed
 
   private void useJavaVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useJavaVersionActionPerformed
+		if (ignoreEvents) return;
 		setMode(currentMode); // Makes the pipeline update itself
   }//GEN-LAST:event_useJavaVersionActionPerformed
 
   private void useCppVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useCppVersionActionPerformed
+		if (ignoreEvents) return;
 		setMode(currentMode); // Makes the pipeline update itself
   }//GEN-LAST:event_useCppVersionActionPerformed
 
   private void searchForModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchForModesMenuItemActionPerformed
-		PairLocator.searchForModes();
+		ArrayList<String> newModes = new ArrayList<>();
+		JDialog diag = showDialog("Searching file system for modes, please wait...");
+		ArrayList<Path> foundModes = PairLocator.searchForDevPairs();
+		diag.setVisible(false);
+		for (Path m : foundModes) if (!modeFiles.contains(m.getParent().toString())) newModes.add(m.toString());
+		if (newModes.isEmpty()) {
+			warnUser("No new modes found");
+			return;
+		}
+		modeFiles = modeFiles + "\n\n# Modes added "+new Date()+"\n";
+		for (String l : newModes) {
+			modeFiles = modeFiles + l + "\n";
+		}
+		editModesMenuItemActionPerformed(evt);
   }//GEN-LAST:event_searchForModesMenuItemActionPerformed
 
 

@@ -118,25 +118,26 @@ public class Pipeline {
             String err_ = "";
             int retval_;
             if (!externalProcessing && program.getProgram() != Program.ProgEnum.UNKNOWN) {
+								StringWriter sw = new StringWriter();
+
+								// redirect System.err
+								ByteArrayOutputStream tmperr = new ByteArrayOutputStream();
+								PrintStream System_err = System.err;
                 try {
-										// redirect System.err
-										PrintStream System_err = System.err;
-										ByteArrayOutputStream tmperr = new ByteArrayOutputStream();
 										System.setErr(new PrintStream(tmperr, true));
 
-                    StringWriter sw = new StringWriter();
                     Dispatcher.dispatch(program, new StringReader(input), sw, false, markUnknownWords, traceTransferInterchunk);
-                    retval_ = 0;
-                    output_ = sw.toString();
-
+										retval_ = 0;
+                } catch (Exception e) {
+										e.printStackTrace();
+                    retval_ = -1;
+                } finally {
 										// restore System.err
 										System.setErr(System_err);
-										err_ = tmperr.toString().trim();
-                } catch (Exception e) {
-                    retval_ = -1;
-                    err_ = e.toString();
-										e.printStackTrace();
-                }
+								}
+								err_ = tmperr.toString().trim();
+								output_ = sw.toString();
+								if (output_.isEmpty()) output_ = err_;
             }
             else {
                 String cmd = t.program.toString();
@@ -168,12 +169,12 @@ public class Pipeline {
                 while ( (lin=std.readLine())!=null) outputsb.append(lin).append('\n');
 
                 retval_ = proces.waitFor();
-                if (retval_ != 0) outputsb.append("Return value: "+retval_);
                 err.close();
                 std.close();
                 task = null;
-                output_ = outputsb.substring(0, outputsb.length()-1);//.trim();
                 err_ = errsb.toString().trim();
+                if (retval_ != 0) outputsb.append("Return value: "+retval_+"\n"+err_+"\n");
+                output_ = outputsb.substring(0, outputsb.length()-1);//.trim();
             }
             
             final String output = output_;
