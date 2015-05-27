@@ -11,6 +11,7 @@ package apertiumview.sourceeditor;
 import apertiumview.ApertiumView;
 import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -129,8 +130,8 @@ public class SourcecodeFinder {
 
 	private static String match;
 	private static boolean match(Path dir, String glob) {
-		try {
-			Iterator<Path> i = Files.newDirectoryStream(dir, glob).iterator();
+		try (DirectoryStream<Path> ds = Files.newDirectoryStream(dir, glob)) {
+			Iterator<Path> i = ds.iterator();
 			while (i.hasNext()) {
 				match = i.next().toString();
 				// avoid files with names like _tmp or ~ in them
