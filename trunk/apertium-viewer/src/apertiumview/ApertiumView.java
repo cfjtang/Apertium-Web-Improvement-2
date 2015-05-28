@@ -8,14 +8,14 @@
  */
 package apertiumview;
 
+import apertiumview.downloadsrc.DownloadablePairs;
 import apertiumview.sourceeditor.SourceEditor;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -37,7 +37,9 @@ import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.prefs.Preferences;
 import javax.swing.BorderFactory;
@@ -50,6 +52,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
@@ -97,7 +100,7 @@ public class ApertiumView extends javax.swing.JFrame {
 	HashMap<String, String> onlineModeToCode;
 
 	Font textWidgetFont = null;
-
+	DownloadablePairs downloadablePairs = new DownloadablePairs();
 
 	KeyListener switchFocus = new KeyAdapter() {
 		public void keyPressed(KeyEvent e) {
@@ -341,6 +344,24 @@ public class ApertiumView extends javax.swing.JFrame {
 
 		Translator.setCacheEnabled(true);
 
+		ActionListener downloadActionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				downloadPairFromSvn(e.getActionCommand());
+			}
+		};
+		downloadMenu.remove(downloadRefreshMenuItem);
+		for (String module : DownloadablePairs.pairmodules) {
+			JMenu menu = new JMenu(module);
+			for (String pair :downloadablePairs.getPairs(module).split(" ")) {
+				JMenuItem item = new JMenuItem(pair);
+				item.addActionListener(downloadActionListener);
+				menu.add(item);
+			}
+			downloadMenu.add(menu);
+		}
+		downloadMenu.add(downloadRefreshMenuItem);
+
 		ignoreEvents = false;
 
 
@@ -370,8 +391,13 @@ public class ApertiumView extends javax.swing.JFrame {
 				;
 			} else {
 				int i = fn.indexOf('#');
-				String fn2 = i<=0 ? fn : fn.substring(0, i-1).trim();
-				if (!loadMode(fn2)) {
+				String filename = i<=0 ? fn : fn.substring(0, i-1).trim();
+				try {
+					Mode m = new Mode(filename);
+					modes.add(m);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+					warnUser("Loading of mode " + filename + " failed:\n\n" + ex.toString() + "\n\nDisabling this mode.");
 					fn = "# " + fn;
 				}
 			}
@@ -644,19 +670,6 @@ public class ApertiumView extends javax.swing.JFrame {
 		// Collections.sort(onlineModes); // don't sort; better to keep original order intact as related modes are near to each other
 	}
 
-	private boolean loadMode(String filename) {
-		try {
-			Mode m = new Mode(filename);
-			modes.add(m);
-			modesComboBox.addItem(m);
-			return true;
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			warnUser("Loading of mode " + filename + " failed:\n\n" + ex.toString() + "\n\nDisabling this mode.");
-			return false;
-		}
-	}
-
 	public void warnUser(String txt) {
 		System.out.println("warnUser(" + txt);
 		JOptionPane.showMessageDialog(mainPanel, txt, "Warning", JOptionPane.WARNING_MESSAGE);
@@ -704,7 +717,89 @@ public class ApertiumView extends javax.swing.JFrame {
 		return dialog;
 	}
 
+	// Fix for Jimmy: On my system, in the 'edit list of modes' part, the list of modes is
+	// longer than can be displayed on screen. I know I'm not the typical
+	// user, but do you think you could fit a scroll bar in there?
+	private JScrollPane wrapInScrollPane(JTextArea ta) {
+		JScrollPane sp = new JScrollPane(ta);
+		Dimension sp_ps = sp.getPreferredSize();
+		Dimension sceen = Toolkit.getDefaultToolkit().getScreenSize();
+		if (sp_ps.height > sceen.height - 150) {
+			sp_ps.height = sceen.height - 150;
+			sp_ps.width += 50; // some space
+		}
+		sp_ps.width += 20; // some extra space, for readability
+		sp.setPreferredSize(sp_ps);
+		ta.requestFocusInWindow();
+		return sp;
+	}
 
+	private void downloadPairFromSvn(String pair) {
+		Path apertiumDir = Paths.get(System.getProperty("user.home"),"apertium");
+		if (!Files.exists(apertiumDir)) try { Files.createDirectory(apertiumDir); } catch (IOException ex) { ex.printStackTrace(); }
+
+		Tools.openTerminalWindow(apertiumDir);
+
+		try {
+			Runtime.getRuntime().exec("lt-comp");
+		} catch (IOException ex) {
+			try {
+				Desktop.getDesktop().browse(new URI("http://wiki.apertium.org/wiki/Installation"));
+			} catch (Exception ex1) {
+				ex.printStackTrace();
+			}
+			warnUser("<html>You first need to install Apertium development tools.<br>See <a href='http://wiki.apertium.org/wiki/Installation'>http://wiki.apertium.org/wiki/Installation</a><br>for info how to do it.");
+			return;
+		}
+		Path pairDir = apertiumDir.resolve("apertium-"+pair);
+
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("#\n# This will download files to "+apertiumDir+"\n#");
+		sb.append("\n# Go to a terminal window and copy the following commands into the terminal:\n#");
+		sb.append("\ncd "+apertiumDir);
+		if (!Files.exists( apertiumDir.resolve("apertium-get") )) {
+			sb.append("\nwget https://raw.githubusercontent.com/unhammer/apertium-get/master/apertium-get"
+					+ "\nchmod +x apertium-get");
+		}
+		sb.append("\n./apertium-get "+pair);
+		sb.append("\ncd "+pairDir);
+		sb.append("\nmake\n");
+		sb.append("\n# You might need to install additional tools - see http://wiki.apertium.org/wiki/Installation");
+		JTextArea ta = new JTextArea(sb.toString());
+		int ret = JOptionPane.showConfirmDialog(mainPanel, wrapInScrollPane(ta),
+				"Press OK when you have executed the commands", JOptionPane.OK_CANCEL_OPTION);
+		if (ret == JOptionPane.OK_OPTION) try {
+			// Search for new modes in the directory
+			if (!Files.exists(pairDir)) {
+				warnUser("Directory "+pairDir+" should have appeared, but didn't.\nDid you download the pair??");
+				return;
+			}
+			ArrayList<Path> foundModes = PairLocator.scanDirectoryForModes(pairDir);
+			if (foundModes.isEmpty()) {
+				warnUser("No pairs were found in "+pairDir+"\nDid you compile the pair?");
+				return;
+			}
+
+			ArrayList<String> newModes = new ArrayList<>();
+			for (Path m : foundModes) if (!modeFiles.contains(m.getParent().toString())) newModes.add(m.toString());
+			if (newModes.isEmpty()) {
+				Mode selectedMode = (Mode) modesComboBox.getSelectedItem();
+				if (!selectedMode.getFilename().contains(pairDir.toString())) return; // Already selected
+				warnUser("I found some modes in "+pairDir+",\n but they were already in the list.\nPlease select them in the list to reload them");
+				return;
+			}
+
+			String txt = "Modes downloaded "+new Date()+":\n\n";
+			for (String l : newModes) {
+				txt = txt + l + "\n";
+			}
+			warnUser(txt);
+			modeFiles = modeFiles + "\n\n#"+txt;
+			prefs.putInt("modesComboBoxLocal", 999999); // Select last mode
+			modeFiles = loadModes(modeFiles);
+		} catch (Exception e) { warnUser("Sorry, something went wrong:\n"+e); };
+	}
 
 	/** This method is called from within the constructor to
 	 * initialize the form.
@@ -740,6 +835,7 @@ public class ApertiumView extends javax.swing.JFrame {
     jSeparator1 = new javax.swing.JSeparator();
     javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
     downloadMenu = new javax.swing.JMenu();
+    downloadRefreshMenuItem = new javax.swing.JMenuItem();
     toolsMenu = new javax.swing.JMenu();
     makeTestCaseMenuItem = new javax.swing.JMenuItem();
     importTestCaseMenuItem = new javax.swing.JMenuItem();
@@ -817,7 +913,7 @@ public class ApertiumView extends javax.swing.JFrame {
     jLabelMode.setText("Mode:");
     jLabelMode.setToolTipText("Change mode (language pair)");
 
-    hideIntermediateButton.setMnemonic('D');
+    hideIntermediateButton.setMnemonic('N');
     hideIntermediateButton.setText("Hide intermediate");
     hideIntermediateButton.setToolTipText("Hides all but input and output");
     hideIntermediateButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
@@ -905,7 +1001,18 @@ public class ApertiumView extends javax.swing.JFrame {
 
     menuBar.add(fileMenu);
 
+    downloadMenu.setMnemonic('D');
     downloadMenu.setText("Download");
+
+    downloadRefreshMenuItem.setText("<html>Download pairs from SVN<br>(press here to refresh the list)");
+    downloadRefreshMenuItem.setActionCommand("<html>Download pairs from SVN to ~/apertium/ in your home directory<br>\n(press here to refresh the list of available pairs)");
+    downloadRefreshMenuItem.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        downloadRefreshMenuItemActionPerformed(evt);
+      }
+    });
+    downloadMenu.add(downloadRefreshMenuItem);
+
     menuBar.add(downloadMenu);
 
     toolsMenu.setMnemonic('T');
@@ -1091,18 +1198,7 @@ private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 
 private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editModesMenuItemActionPerformed
 	JTextArea ta = new JTextArea(modeFiles);
-	// Fix for Jimmy: On my system, in the 'edit list of modes' part, the list of modes is
-	// longer than can be displayed on screen. I know I'm not the typical
-	// user, but do you think you could fit a scroll bar in there?
-	JScrollPane sp = new JScrollPane(ta);
-	Dimension ps = sp.getPreferredSize();
-	Dimension sceen = Toolkit.getDefaultToolkit().getScreenSize();
-	if (ps.height > sceen.height - 150) {
-		ps.height = sceen.height - 150;
-		ps.width += 50; // some space
-		sp.setPreferredSize(ps);
-	}
-	ta.requestFocusInWindow();
+	JScrollPane sp = wrapInScrollPane(ta);
 	if (!modeFiles.isEmpty()) ta.setCaretPosition(modeFiles.length()-1);
 	int ret = JOptionPane.showConfirmDialog(mainPanel, sp,
 			"Edit the list of language pairs (modes)", JOptionPane.OK_CANCEL_OPTION);
@@ -1325,7 +1421,7 @@ private void fitToText() {
 			modeFiles += "\n# Added "+new Date();
 			for (File f : fs) modeFiles += "\n"+f.getPath();
 			System.out.println("modes=" + modeFiles);
-			prefs.putInt("modesComboBoxLocal", 999999); // last mode
+			prefs.putInt("modesComboBoxLocal", 999999); // Select last mode
 			modeFiles = loadModes(modeFiles);
 		}
   }//GEN-LAST:event_loadMode
@@ -1432,10 +1528,10 @@ private void fitToText() {
   }//GEN-LAST:event_useCppVersionActionPerformed
 
   private void searchForModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchForModesMenuItemActionPerformed
-		ArrayList<String> newModes = new ArrayList<>();
 		JDialog diag = showDialog("Searching file system for modes, please wait...");
 		ArrayList<Path> foundModes = PairLocator.searchForDevPairs();
 		diag.setVisible(false);
+		ArrayList<String> newModes = new ArrayList<>();
 		for (Path m : foundModes) if (!modeFiles.contains(m.getParent().toString())) newModes.add(m.toString());
 		if (newModes.isEmpty()) {
 			warnUser("No new modes found");
@@ -1448,6 +1544,16 @@ private void fitToText() {
 		editModesMenuItemActionPerformed(evt);
   }//GEN-LAST:event_searchForModesMenuItemActionPerformed
 
+  private void downloadRefreshMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadRefreshMenuItemActionPerformed
+		try {
+			downloadablePairs.refreshList();
+			warnUser("Please restart the application to see the fresh list");
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			warnUser(ex.toString());
+		}
+  }//GEN-LAST:event_downloadRefreshMenuItemActionPerformed
+
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   javax.swing.ButtonGroup buttonGroup1;
@@ -1455,6 +1561,7 @@ private void fitToText() {
   javax.swing.JMenuItem changeFontMenuItem;
   javax.swing.JButton copyTextButton;
   private javax.swing.JMenu downloadMenu;
+  private javax.swing.JMenuItem downloadRefreshMenuItem;
   javax.swing.JMenuItem editModesMenuItem;
   javax.swing.JToggleButton fitToTextButton;
   javax.swing.JMenuItem helpMenuItem;

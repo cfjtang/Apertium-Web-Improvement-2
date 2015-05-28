@@ -41,6 +41,28 @@ import java.util.logging.Logger;
  */
 public class PairLocator {
 
+
+	public static ArrayList<Path> scanDirectoryForModes(Path dir) throws IOException {
+		ArrayList<Path> modes = new ArrayList<>();
+		DirectoryStream<Path> ds;
+		for (Path m: ds = Files.newDirectoryStream(dir, "??-??.mode")) modes.add(m);
+		ds.close();
+		for (Path m: ds = Files.newDirectoryStream(dir, "???-???.mode")) modes.add(m);
+		ds.close();
+		System.out.println("01modes_xml="+dir+" gave:"+modes);
+		if (modes.isEmpty()) for (Path m: ds = Files.newDirectoryStream(dir , "*.mode")) modes.add(m);
+		ds.close();
+		System.out.println("02modes_xml="+dir+" gave:"+modes);
+		if (Files.exists(dir = dir.resolve("modes")) && modes.isEmpty()) { // none yet, see in modes/ subdir
+			for (Path m: ds = Files.newDirectoryStream(dir, "??-??.mode")) modes.add(m); ds.close();
+			for (Path m: ds = Files.newDirectoryStream(dir, "???-???.mode")) modes.add(m); ds.close();
+			System.out.println("11modes_xml="+dir+" gave:"+modes);
+			if (modes.isEmpty()) for (Path m: ds = Files.newDirectoryStream(dir , "*.mode")) modes.add(m); ds.close();
+			System.out.println("12modes_xml="+dir+" gave:"+modes);
+		}
+		return modes;
+	}
+
 	private static void execAndCollect(String[] cmd, ArrayList<Path> allmodes) {
 		try {
 			File modes_xmll = File.createTempFile("apertium-viewer-modes", "out");
@@ -67,22 +89,7 @@ public class PairLocator {
 
 				Path dir = Paths.get(line).getParent();
 				if (!Files.exists(dir)) continue;
-				ArrayList<Path> modes = new ArrayList<>();
-				DirectoryStream<Path> ds;
-				for (Path m: ds = Files.newDirectoryStream(dir, "??-??.mode")) modes.add(m); ds.close();
-				for (Path m: ds = Files.newDirectoryStream(dir, "???-???.mode")) modes.add(m); ds.close();
-				System.out.println("01modes_xml="+modes_xml+" gave:"+modes);
-				if (modes.isEmpty()) for (Path m: ds = Files.newDirectoryStream(dir , "*.mode")) modes.add(m); ds.close();
-				System.out.println("02modes_xml="+modes_xml+" gave:"+modes);
-
-				
-				if (Files.exists(dir = dir.resolve("modes")) && modes.isEmpty()) { // none yet, see in modes/ subdir
-					for (Path m: ds = Files.newDirectoryStream(dir, "??-??.mode")) modes.add(m); ds.close();
-					for (Path m: ds = Files.newDirectoryStream(dir, "???-???.mode")) modes.add(m); ds.close();
-					System.out.println("11modes_xml="+modes_xml+" gave:"+modes);
-					if (modes.isEmpty()) for (Path m: ds = Files.newDirectoryStream(dir , "*.mode")) modes.add(m); ds.close();
-					System.out.println("12modes_xml="+modes_xml+" gave:"+modes);
-				}
+				ArrayList<Path> modes = scanDirectoryForModes(dir);
 				allmodes.addAll(modes);
 			}
 		} catch (Exception ex) {
@@ -90,7 +97,7 @@ public class PairLocator {
 		}
 	}
 
-	static ArrayList<Path> searchForDevPairs() {
+	public static ArrayList<Path> searchForDevPairs() {
 		ArrayList<Path> allmodes = new ArrayList<>();
 		String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
 		if (os.contains("mac") || os.contains("darwin")) {
