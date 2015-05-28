@@ -64,6 +64,10 @@ public class TextWidget extends javax.swing.JPanel {
 		initComponents();
 
 		commandTextPane.setBackground(this.getBackground());
+// This will make mouse wheel scroll outer pane - not sure if its an improvement
+//		commandScrollPane.removeMouseWheelListener(commandScrollPane.getMouseWheelListeners()[0]);
+//		errorScrollPane.removeMouseWheelListener(errorScrollPane.getMouseWheelListeners()[0]);
+//		textScrollPane.removeMouseWheelListener(textScrollPane.getMouseWheelListeners()[0]);
 
 		// Observing text changes
 		textEditor.getDocument().addDocumentListener(new AbstactDocumentListener() {
