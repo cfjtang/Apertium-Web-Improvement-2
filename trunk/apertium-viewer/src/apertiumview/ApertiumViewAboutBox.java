@@ -63,7 +63,7 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
 
     imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apertiumview/resources/apertium.png"))); // NOI18N
 
-    appVersionLabel.setText("2.4");
+    appVersionLabel.setText("2.5");
 
     appTitleLabel.setFont(appTitleLabel.getFont().deriveFont(appTitleLabel.getFont().getStyle() | java.awt.Font.BOLD, appTitleLabel.getFont().getSize()+4));
     appTitleLabel.setText("Apertium-viewer");

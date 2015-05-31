@@ -138,7 +138,7 @@ public class SourcecodeFinder {
 				if (match.contains("~") || match.contains("tmp")) continue;
 				return true;
 			}
-		} catch (Exception e) { e.printStackTrace(); }
+		} catch (Exception e) { System.err.println("Error for "+dir+" with "+glob); e.printStackTrace(); }
 		return false;
 	}
 
@@ -265,7 +265,7 @@ public class SourcecodeFinder {
 						for (String dd : line.split("=")[1].split(" +")) {
 							if (dd.isEmpty()) continue;
 							//System.out.println("sourcedir " + dd + " -> "+ Paths.get(binDir, dd).normalize().toString());
-							sourcedirs.add(Paths.get(binDir, dd).normalize());
+							sourcedirs.add(Paths.get(binDir).resolve(dd).normalize());
 						}
 					}
 				}
