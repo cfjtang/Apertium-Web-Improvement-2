@@ -29,22 +29,21 @@ public class ApertiumViewMain {
         mainFrame.setVisible(true);
 
         java.awt.Window root= mainFrame;
-        String geom = mainFrame.prefs.get("geometry",null);
         //System.out.println("geom = " + geom);
-        if (geom!= null)  try {
+        try {
             root.pack();
-            String[] g = geom.split(",");
-            root.setLocation( Integer.parseInt(g[0]), Integer.parseInt(g[1]));
-            root.setSize(Integer.parseInt(g[2]), Integer.parseInt(g[3]));
-            //System.out.println("geom = " + root);
-
-            //root.setLocation( 0,0);
-            //root.setSize(300,400);
-            root.validate();
+		        String geom = mainFrame.prefs.get("geometry",null);
+						if (geom!= null) {
+							String[] g = geom.split(",");
+							root.setLocation( Integer.parseInt(g[0]), Integer.parseInt(g[1]));
+							root.setSize(Integer.parseInt(g[2]), Integer.parseInt(g[3]));
+							root.validate();
+						} else {
+							root.setSize(900, 600);
+						}
         } catch (Exception e) {
             e.printStackTrace();
-        } else
-            root.pack();
+        }
 
         if (mainFrame.prefs.get("dividerLocation", null)==null) {
             //mainFrame.fitToText();

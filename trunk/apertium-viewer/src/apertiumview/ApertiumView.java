@@ -273,6 +273,8 @@ public class ApertiumView extends javax.swing.JFrame {
 			if (modeFiles != null) {
 				loadModes(modeFiles);
 			} else {
+				warnUser("Welcome to Apertium-viewer\n\nIt seems this is the first time you run this program."
+						+ "\nI will now try to see if you have language translation pairs ('modes') installed");
 				LinkedHashSet<File> fal = new LinkedHashSet<File>();
 				try {
 					fal.addAll(Arrays.asList(new File("/usr/share/apertium/modes/").listFiles()));
@@ -290,19 +292,21 @@ public class ApertiumView extends javax.swing.JFrame {
 						modeFiles = modeFiles + f.getPath() + "\n";
 					}
 				}
-				if (!fal.isEmpty()) {
-					warnUser("Welcome to Apertium-viewer.\nIt seems this is the first time you run this program."
-							+ "\nI have searched in standard places for 'modes' (language translation pairs)"
-							+ "\nI will let you revise the list now (you can always re-edit the list by choosing File | Edit modes)");
-					editModesMenuItemActionPerformed(null);
-					warnUser("Please use File | Load mode to add modes/language pairs that were missing "
+				searchForModesMenuItemActionPerformed(null);
+				prefs.putInt("modesComboBoxLocal", 999999); // Select last mode
+				modeFiles = loadModes(modeFiles);
+
+				if (!modes.isEmpty()) {
+					warnUser("I've found "+modes.size()+" modes/language pairs.\n"
+							+ "\nUse File | Edit modes   - to edit the list"
+							+ "\nUse File | Search modes - to search for modes again"
+							+ "\nUse File | Load mode    - to add modes/language pairs that were missing "
 							+ "\n(you'll have to download and compile the pair first). For example, Esperanto-English pair is called eo-en.mode."
 							+ "\nYou can also download some pre-compiled pairs - choose 'Online' in upper right corner."
 					);
 				} else {
-					warnUser("Welcome to Apertium-viewer.\nIt seems this is the first time you run this program."
-							+ "\nI have searched in standard places for language translation pairs ('modes'), but I didn't find any."
-							+ "\nI will now get download a list of 'online' modes, which are downloaded on the fly."
+					warnUser("I didn't find any language pairs.\n"
+							+ "\nI will now download a list of 'online' modes, which are downloaded on the fly."
 							+ "\nIf you DO have Apertium language pairs installed, please use File | Load mode to load them,"
 							+ "\nand switch to 'Local' in the top right");
 					prefs.putBoolean("local", false); // Nødvendig?
@@ -708,7 +712,7 @@ public class ApertiumView extends javax.swing.JFrame {
 	}
 
 	private JDialog showDialog(String message) {
-		final JDialog dialog = new JDialog(this, "Downloading, please wait...", false);
+		final JDialog dialog = new JDialog(this, "Working, please wait...", false);
 		dialog.setContentPane(new JOptionPane(message,
 				JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[] {}, null));
 		dialog.pack();
@@ -1299,7 +1303,7 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 
 private void fitToText() {
 	int toth = 0;
-	for (int i=0; i<=splitPanes.size(); i++) {
+	for (int i=0; i<textWidgets.size(); i++) {
 		TextWidget w = textWidgets.get(i);
 		if (w.getStatus() == w.STATUS_EQUAL) {
 			w.setPreferredSize(new Dimension());
@@ -1321,7 +1325,7 @@ private void fitToText() {
 	textWidgetsPanel.setPreferredSize(new Dimension(0, toth));
 	mainPanel.validate();
 	int extraSpace = (jScrollPane1.getHeight() - toth) / 2;
-	if (extraSpace>0) {
+	if (extraSpace>0 && splitPanes.size()>0) {
 			JSplitPane s = splitPanes.get(0);
 			s.setDividerLocation(s.getDividerLocation() + extraSpace);
 	}
@@ -1537,14 +1541,17 @@ private void fitToText() {
 		ArrayList<String> newModes = new ArrayList<>();
 		for (Path m : foundModes) if (!modeFiles.contains(m.getParent().toString())) newModes.add(m.toString());
 		if (newModes.isEmpty()) {
-			warnUser("No new modes found");
+			if (evt!=null) warnUser("No new modes found");
 			return;
 		}
-		modeFiles = modeFiles + "\n\n# Modes added "+new Date()+"\n";
+		modeFiles = modeFiles + "\n\n# Developer modes added "+new Date()+"\n";
+		String msg = "";
 		for (String l : newModes) {
 			modeFiles = modeFiles + l + "\n";
+			msg = msg + l + "\n";
 		}
-		editModesMenuItemActionPerformed(evt);
+		if (evt!=null) warnUser("These modes have been added:\n"+msg+"\n(you can edit the list by choosing File | Edit modes)");
+		if (evt!=null) modeFiles = loadModes(modeFiles);
   }//GEN-LAST:event_searchForModesMenuItemActionPerformed
 
   private void downloadRefreshMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadRefreshMenuItemActionPerformed
