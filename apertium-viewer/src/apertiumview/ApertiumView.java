@@ -318,7 +318,6 @@ public class ApertiumView extends javax.swing.JFrame {
 			ignoreEvents = true;
 			markUnknownWordsMenuItem.setSelected(prefs.getBoolean("markUnknownWords", true));
 			showCommandsMenuItem.setSelected(prefs.getBoolean("showCommands", true));
-			showCommandsMenuItemActionPerformed(null); // this is necesary, i.a. to hide 1st panels commands
 			transferRuleTracingMenuItem.setSelected(prefs.getBoolean("transferRuleTracing", true));
 
 			for (int i = 0; i < 10; i++) {
@@ -366,6 +365,7 @@ public class ApertiumView extends javax.swing.JFrame {
 
 
 		try {
+			showCommandsMenuItemActionPerformed(null); // this is necesary, i.a. to hide 1st panels commands
 			updateSelectedMode();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -722,14 +722,17 @@ public class ApertiumView extends javax.swing.JFrame {
 	// user, but do you think you could fit a scroll bar in there?
 	private JScrollPane wrapInScrollPane(JTextArea ta) {
 		JScrollPane sp = new JScrollPane(ta);
-		Dimension sp_ps = sp.getPreferredSize();
+		Dimension prefsize = sp.getPreferredSize();
 		Dimension sceen = Toolkit.getDefaultToolkit().getScreenSize();
-		if (sp_ps.height > sceen.height - 150) {
-			sp_ps.height = sceen.height - 150;
-			sp_ps.width += 50; // some space
+		if (prefsize.height > sceen.height - 150) {
+			prefsize.height = sceen.height - 150;
+			prefsize.width += 50; // some space
 		}
-		sp_ps.width += 20; // some extra space, for readability
-		sp.setPreferredSize(sp_ps);
+		prefsize.width += 20; // some extra space, for readability
+		if (prefsize.width > sceen.width - 150) {
+			prefsize.width = sceen.width - 150;
+		}
+		sp.setPreferredSize(prefsize);
 		ta.requestFocusInWindow();
 		return sp;
 	}
@@ -1285,7 +1288,7 @@ private void copyText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyTex
 
 	System.out.println(tottxt);
 	Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(tottxt), null);
-	JOptionPane.showMessageDialog(mainPanel, new JTextArea(tottxt), "Contents of clipboard", JOptionPane.INFORMATION_MESSAGE);
+	JOptionPane.showMessageDialog(mainPanel, wrapInScrollPane(new JTextArea(tottxt)), "Contents of clipboard", JOptionPane.INFORMATION_MESSAGE);
 }//GEN-LAST:event_copyText
 
 
@@ -1508,7 +1511,7 @@ private void fitToText() {
 		textWidget1.setShowCommands(false);
 		textChanged();
 		mainPanel.validate();
-		showMenu.doClick(); // open the menu again
+		if (evt!=null) showMenu.doClick(); // open the menu again, if it was a user click
   }//GEN-LAST:event_showCommandsMenuItemActionPerformed
 
   private void transferRuleTracingMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferRuleTracingMenuItemActionPerformed

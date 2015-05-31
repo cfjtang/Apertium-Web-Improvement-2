@@ -26,9 +26,10 @@ import java.nio.file.Path;
 public class Tools {
 	public static void openTerminalWindow(Path apertiumDir) {
 		String[] terminals = {
-			"gnome-terminal --working-directory='DIR'",
+			"gnome-terminal --working-directory=DIR",
 			"/usr/bin/open -a Terminal /bin/bash", // Mac
 			"konsole",
+			"xfce4-terminal --working-directory=DIR",
 			"xterm",
 			"cmd c/start cmd.exe", // Windows (!)
 		};
