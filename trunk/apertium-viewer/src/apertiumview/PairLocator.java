@@ -67,6 +67,7 @@ public class PairLocator {
 		try {
 			File modes_xmll = File.createTempFile("apertium-viewer-modes", "out");
 			File modes_xmle = File.createTempFile("apertium-viewer.modes", "err");
+			System.out.println("Executing: "+Arrays.toString(cmd));
 			final Process p = new ProcessBuilder(cmd).redirectOutput(modes_xmll).redirectError(modes_xmle).start();
 			// Wait for up to 10 secs before destroying the process
 			new Thread() {
@@ -105,7 +106,8 @@ public class PairLocator {
 		} else {
 			execAndCollect(new String[] {"/bin/sh","-c","locate -eLb 'modes.xml'"}, allmodes);
 		}
-		execAndCollect(new String[] {"/bin/sh","-c","find ~ -maxdepth 5 -type d -name 'apertium-*-*' -print0 | xargs -0 -I{} ls '{}/modes.xml' 2>/dev/null"}, allmodes);
+		// follow symlinks (-L) but exclude hidden directories/files (-name '.[^.]*' -prune)
+		execAndCollect(new String[] {"/bin/sh","-c","find -L ~ -maxdepth 5 -name '.[^.]*' -prune -o -type d -name 'apertium-*-*' -print0 | xargs -0 -I{} ls '{}/modes.xml' 2>/dev/null"}, allmodes);
 
 		TreeMap<Path,ArrayList<Path>> alldirs = new TreeMap<>();
 		ArrayList<Path> allmodes2 = new ArrayList<Path>(new TreeSet<Path>(allmodes)); // sort + uniq;
@@ -138,13 +140,7 @@ public class PairLocator {
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-//System.getProperties().list(System.out);
-		while (true) {
-			execAndCollect(new String[] {"/bin/sh","-c","locate -eLb 'modes.xml'"}, new ArrayList<Path>());
-			System.gc();
-			Thread.sleep(10);
 			for (Path s : searchForDevPairs()) System.out.println("res : "+s);
-	
-		}
+//System.getProperties().list(System.out);
 	}
 }

@@ -273,7 +273,7 @@ public class ApertiumView extends javax.swing.JFrame {
 			if (modeFiles != null) {
 				loadModes(modeFiles);
 			} else {
-				warnUser("Welcome to Apertium-viewer\n\nIt seems this is the first time you run this program."
+				infoUser("Welcome to Apertium-viewer\n\nIt seems this is the first time you run this program."
 						+ "\nI will now try to see if you have language translation pairs ('modes') installed");
 				LinkedHashSet<File> fal = new LinkedHashSet<File>();
 				try {
@@ -286,7 +286,7 @@ public class ApertiumView extends javax.swing.JFrame {
 					fal.addAll(Arrays.asList(new File(".").listFiles()));
 				} catch (Exception e) {}
 
-				modeFiles = "# Apertium language pair mode files. ";
+				modeFiles = "# Apertium language pair mode files.\n";
 				for (File f : fal) {
 					if (f.getName().endsWith(".mode")) {
 						modeFiles = modeFiles + f.getPath() + "\n";
@@ -297,7 +297,7 @@ public class ApertiumView extends javax.swing.JFrame {
 				modeFiles = loadModes(modeFiles);
 
 				if (!modes.isEmpty()) {
-					warnUser("I've found "+modes.size()+" modes/language pairs.\n"
+					infoUser("I've found "+modes.size()+" modes/language pairs.\n"
 							+ "\nUse File | Edit modes   - to edit the list"
 							+ "\nUse File | Search modes - to search for modes again"
 							+ "\nUse File | Load mode    - to add modes/language pairs that were missing "
@@ -305,7 +305,7 @@ public class ApertiumView extends javax.swing.JFrame {
 							+ "\nYou can also download some pre-compiled pairs - choose 'Online' in upper right corner."
 					);
 				} else {
-					warnUser("I didn't find any language pairs.\n"
+					infoUser("I didn't find any language pairs.\n"
 							+ "\nI will now download a list of 'online' modes, which are downloaded on the fly."
 							+ "\nIf you DO have Apertium language pairs installed, please use File | Load mode to load them,"
 							+ "\nand switch to 'Local' in the top right");
@@ -360,6 +360,11 @@ public class ApertiumView extends javax.swing.JFrame {
 				JMenuItem item = new JMenuItem(pair);
 				item.addActionListener(downloadActionListener);
 				menu.add(item);
+				if (menu.getItemCount()>50) {
+					menu.setText(module+" … - "+pair);
+					downloadMenu.add(menu);
+					menu = new JMenu(module+" … - (end)");
+				}
 			}
 			downloadMenu.add(menu);
 		}
@@ -674,10 +679,28 @@ public class ApertiumView extends javax.swing.JFrame {
 		// Collections.sort(onlineModes); // don't sort; better to keep original order intact as related modes are near to each other
 	}
 
-	public void warnUser(String txt) {
-		System.out.println("warnUser(" + txt);
-		JOptionPane.showMessageDialog(mainPanel, txt, "Warning", JOptionPane.WARNING_MESSAGE);
+	private void showDialog(String txt, String title, int messageType) {
+		System.out.println("showDialog(" + txt);
+		if (txt.split("\n").length>40) {
+			// Too long to show, put in scrollable text
+			JTextArea ta = new JTextArea(txt);
+			ta.setEditable(false);
+			JOptionPane.showMessageDialog(mainPanel, wrapInScrollPane(ta), title, messageType);
+		} else {
+			JOptionPane.showMessageDialog(mainPanel, txt, title, messageType);
+		}
+
 		//JOptionPane.showMessageDialog(null,txt,"Warning", JOptionPane.WARNING_MESSAGE);
+	}
+
+
+	public void infoUser(String txt) {
+		showDialog(txt, "Info", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+
+	public void warnUser(String txt) {
+		showDialog(txt, "Warning", JOptionPane.WARNING_MESSAGE);
 	}
 
 
@@ -724,7 +747,7 @@ public class ApertiumView extends javax.swing.JFrame {
 	// Fix for Jimmy: On my system, in the 'edit list of modes' part, the list of modes is
 	// longer than can be displayed on screen. I know I'm not the typical
 	// user, but do you think you could fit a scroll bar in there?
-	private JScrollPane wrapInScrollPane(JTextArea ta) {
+	private JScrollPane wrapInScrollPane(JComponent ta) {
 		JScrollPane sp = new JScrollPane(ta);
 		Dimension prefsize = sp.getPreferredSize();
 		Dimension sceen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -793,7 +816,7 @@ public class ApertiumView extends javax.swing.JFrame {
 			if (newModes.isEmpty()) {
 				Mode selectedMode = (Mode) modesComboBox.getSelectedItem();
 				if (!selectedMode.getFilename().contains(pairDir.toString())) return; // Already selected
-				warnUser("I found some modes in "+pairDir+",\n but they were already in the list.\nPlease select them in the list to reload them");
+				infoUser("I found some modes in "+pairDir+",\n but they were already in the list.\nPlease select them in the list to reload them");
 				return;
 			}
 
@@ -801,7 +824,7 @@ public class ApertiumView extends javax.swing.JFrame {
 			for (String l : newModes) {
 				txt = txt + l + "\n";
 			}
-			warnUser(txt);
+			infoUser(txt);
 			modeFiles = modeFiles + "\n\n#"+txt;
 			prefs.putInt("modesComboBoxLocal", 999999); // Select last mode
 			modeFiles = loadModes(modeFiles);
@@ -1494,7 +1517,7 @@ private void fitToText() {
 
 				prefs.put("storedTexts." + i, s);
 			}
-			warnUser("Your text is stored for future use. \nRetrieve it in the menu View | Stored text.\nNote: On restart only the last 10 stored texts will be remenbered.");
+			infoUser("Your text is stored for future use. \nRetrieve it in the menu View | Stored text.\nNote: On restart only the last 10 stored texts will be remenbered.");
 
 		} catch (Exception e) {
 			warnUser(e.toString());
@@ -1541,7 +1564,7 @@ private void fitToText() {
 		ArrayList<String> newModes = new ArrayList<>();
 		for (Path m : foundModes) if (!modeFiles.contains(m.getParent().toString())) newModes.add(m.toString());
 		if (newModes.isEmpty()) {
-			if (evt!=null) warnUser("No new modes found");
+			if (evt!=null) infoUser("No new modes found");
 			return;
 		}
 		modeFiles = modeFiles + "\n\n# Developer modes added "+new Date()+"\n";
@@ -1550,14 +1573,14 @@ private void fitToText() {
 			modeFiles = modeFiles + l + "\n";
 			msg = msg + l + "\n";
 		}
-		if (evt!=null) warnUser("These modes have been added:\n"+msg+"\n(you can edit the list by choosing File | Edit modes)");
+		if (evt!=null) infoUser("These modes have been added:\n"+msg+"\n(you can edit the list by choosing File | Edit modes)");
 		if (evt!=null) modeFiles = loadModes(modeFiles);
   }//GEN-LAST:event_searchForModesMenuItemActionPerformed
 
   private void downloadRefreshMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadRefreshMenuItemActionPerformed
 		try {
 			downloadablePairs.refreshList();
-			warnUser("Please restart the application to see the fresh list");
+			infoUser("Please restart the application to see the fresh list");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			warnUser(ex.toString());
