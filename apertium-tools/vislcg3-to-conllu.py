@@ -30,7 +30,7 @@ rfunc = re.compile('@(.+) #');
 def trykk(buffer, tokcount): #{
 	llong = buffer.count('\n') - 2;
 	tokcount = tokcount + 1; 
-	print('!!!',tokcount,'!!!', buffer,file=sys.stderr);
+	print('!!!',tokcount,'!!!', buffer,'=====',file=sys.stderr);
 	index = '';
 	if llong > 0: #{
 		index = str(tokcount) + '-' + str(tokcount+llong);
@@ -83,10 +83,9 @@ def trykk(buffer, tokcount): #{
 			nindex = nindex + 1;
 		#}
 	#}
-	return tokcount;
+	return tokcount+llong;
 #}
 
-incohort = False;
 buffer = '';
 sentcount = 0;
 tokcount = 0;
@@ -98,9 +97,9 @@ for line in sys.stdin.readlines(): #{
 	#}
 
 	if line.strip() == '': #{
+		#tokcount = tokcount + 1; 
 		tokcount = trykk(buffer, tokcount);
 		buffer = '';
-		incohort = False;	
 		tokcount = 0;
 		sentcount = sentcount + 1;
 		print('');
@@ -111,7 +110,6 @@ for line in sys.stdin.readlines(): #{
 	if line[0] == '"' and line[1] == '<' and buffer != '': #{
 		tokcount = trykk(buffer, tokcount);
 		buffer = '';
-		incohort = True;
 		buffer = buffer + line;
 		continue;
 	#}
@@ -119,7 +117,9 @@ for line in sys.stdin.readlines(): #{
 	if line.strip()[0] == '"': #{
 		buffer = buffer + line;	
 	#}
-
+#}
+if buffer != '': #{
+	tokcount = trykk(buffer, tokcount);
 #}
 
-print(sentcount);
+print(sentcount,file=sys.stderr);
