@@ -6,6 +6,7 @@ rcateg = re.compile(' ([_A-Za-z0-9]+)');
 rnode = re.compile('#([0-9]+)->');
 rparent = re.compile('->([0-9]+)');
 rfunc = re.compile('@(.+) #');
+rdep = re.compile('#[0-9]+->[0-9]+');
 
 # Input:
 #	"<Қала>"
@@ -28,9 +29,12 @@ rfunc = re.compile('@(.+) #');
 #	5	.	.	_	sent	_	3	punct
 
 def trykk(buffer, tokcount): #{
+	if buffer.strip() == '': #{
+		return tokcount;
+	#}
 	llong = buffer.count('\n') - 2;
 	tokcount = tokcount + 1; 
-	print('!!!',tokcount,'!!!', buffer,'=====',file=sys.stderr);
+	#print('!!!',tokcount,'!!!', buffer,'=====',file=sys.stderr);
 	index = '';
 	if llong > 0: #{
 		index = str(tokcount) + '-' + str(tokcount+llong);
@@ -86,40 +90,67 @@ def trykk(buffer, tokcount): #{
 	return tokcount+llong;
 #}
 
-buffer = '';
+def kasitella(blokk): #{
+	buffer = ''
+	tokcount = 0;
+	for line in blokk.split('\n'): #{
+		#print('X', line, file=sys.stderr)
+	
+		if line and line[0] == ';': #{
+			continue;
+		#}
+	
+		if line.strip() == '': #{
+			#tokcount = tokcount + 1; 
+			tokcount = trykk(buffer, tokcount);
+			buffer = '';
+			#tokcount = 0;
+			#print('');
+			continue;
+		#}	
+	
+		if line[0] == '"' and line[1] == '<' and buffer != '': #{
+			tokcount = trykk(buffer, tokcount);
+			buffer = '';
+			buffer = buffer + line + '\n';
+			continue;
+		#}
+	
+		if line.strip()[0] == '"': #{
+			buffer = buffer + line + '\n';	
+		#}
+	#}
+	if buffer != '': #{
+		tokcount = trykk(buffer, tokcount);
+	#}
+#}
+
+blokk = '';
 sentcount = 0;
-tokcount = 0;
+complete = 0;
 for line in sys.stdin.readlines(): #{
-	#print('X', line)
-
-	if line[0] == ';': #{
-		continue;
-	#}
-
-	if line.strip() == '': #{
-		#tokcount = tokcount + 1; 
-		tokcount = trykk(buffer, tokcount);
-		buffer = '';
-		tokcount = 0;
+		
+	if line.strip() == '' and blokk != '': #{
+		print('# %d %d/%d' % (sentcount, len(rdep.findall(blokk)), blokk.count('\t"')));
+		if blokk.count('\t"') == len(rdep.findall(blokk)): #{
+			complete = complete + 1;
+			blokk = blokk + line;
+			kasitella(blokk);	
+			print('');
+		#}
+		#print(sentcount,file=sys.stderr);
+		blokk = '';
 		sentcount = sentcount + 1;
+	#}
+	
+	blokk = blokk + line;
+#}
+if blokk != '': #{
+	print('# %d %d/%d' % (sentcount, len(rdep.findall(blokk)), blokk.count('\t"')));
+	if blokk.count('\t"') == len(rdep.findall(blokk)): #{
+		blokk = blokk + line;
+		kasitella(blokk);	
 		print('');
-		continue;
-	#}	
-
-
-	if line[0] == '"' and line[1] == '<' and buffer != '': #{
-		tokcount = trykk(buffer, tokcount);
-		buffer = '';
-		buffer = buffer + line;
-		continue;
-	#}
-
-	if line.strip()[0] == '"': #{
-		buffer = buffer + line;	
 	#}
 #}
-if buffer != '': #{
-	tokcount = trykk(buffer, tokcount);
-#}
-
-print(sentcount,file=sys.stderr);
+print(complete,'/',sentcount,file=sys.stderr);
