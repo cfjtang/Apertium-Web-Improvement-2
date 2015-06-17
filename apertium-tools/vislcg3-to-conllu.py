@@ -123,11 +123,13 @@ def kasitella(blokk): #{
 	if buffer != '': #{
 		tokcount = trykk(buffer, tokcount);
 	#}
+	return tokcount;
 #}
 
 blokk = '';
 sentcount = 0;
 complete = 0;
+cleantokens = 0;
 for line in sys.stdin.readlines(): #{
 		
 	if line.strip() == '' and blokk != '': #{
@@ -135,7 +137,7 @@ for line in sys.stdin.readlines(): #{
 		if blokk.count('\t"') == len(rdep.findall(blokk)): #{
 			complete = complete + 1;
 			blokk = blokk + line;
-			kasitella(blokk);	
+			cleantokens = cleantokens + kasitella(blokk);	
 			print('');
 		#}
 		#print(sentcount,file=sys.stderr);
@@ -149,8 +151,10 @@ if blokk != '': #{
 	print('# %d %d/%d' % (sentcount, len(rdep.findall(blokk)), blokk.count('\t"')));
 	if blokk.count('\t"') == len(rdep.findall(blokk)): #{
 		blokk = blokk + line;
-		kasitella(blokk);	
+		cleantokens = cleantokens + kasitella(blokk);	
 		print('');
 	#}
 #}
+print('')
 print(complete,'/',sentcount,file=sys.stderr);
+print(cleantokens, file=sys.stderr);
