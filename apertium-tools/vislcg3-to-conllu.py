@@ -62,7 +62,7 @@ def trykk(buffer, tokcount): #{
 		#}
 		print('%s\t%s\t%s\t_\t%s\t%s\t%s\t%s' % (index,ord,lem, pos, msd, mor, etiqueta));	
 	else: #{
-		print('%s\t%s\t_\t_\t_\t_' % (index,ord));	
+		print('%s\t%s\t_\t_\t_\t_\t_\t_' % (index,ord));	
 		nindex = tokcount;
 		for llinia in buffer[1:]: #{
 			if llinia == '': continue;
