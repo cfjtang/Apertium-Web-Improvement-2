@@ -102,7 +102,16 @@ for line in sys.stdin.readlines(): #{
 	#}
 	if line.count('\t') > 4: #{
 		row = line.split('\t');
-		words[pos] = (row[1], row[2], row[4], (row[0], row[6], row[7].strip()));
-		pos = pos + 1;
+		if '-' in row[0]:
+			multiword = row[1]
+		else:
+			if row[1]=="_":
+				if multiword:
+					row[1] = multiword
+					multiword = False
+				else:
+					row[1] = "\\_"
+			words[pos] = (row[1], row[2], row[4], (row[0], row[6], row[7].strip()));
+			pos = pos + 1;
 	#}
 #}
