@@ -50,7 +50,7 @@ def trykk(s, f): #{
 			if not last: #{
 				print(' \& ', end='', file=f);
 			else: #{
-				print(" \\\\", end='',file=f);
+				print(" \\\\", file=f);
 			#}
 		#}
 	#}
@@ -89,6 +89,7 @@ for line in sys.stdin.readlines(): #{
 		continue;
 	#}
 	if line.strip() == '': #{
+		print(sno, file=sys.stderr);
 		sno = sno + 1;
 		fitxer = prefiks + str(sno).zfill(4) + '.tex';
 		fil = open(fitxer, 'w+');
