@@ -30,7 +30,7 @@
 ;;   "dix-mode is a minor mode for editing Apertium XML dictionary files."  t)
 ;; (add-hook 'nxml-mode-hook
 ;; 	  (lambda () (and buffer-file-name
-;; 			  (string-match "\\.\\(dix\\|metadix\\|t[0-9s]x\\)$"
+;; 			  (string-match "^modes\\.xml$\\|\\.\\(dix\\|metadix\\|t[0-9s]x\\|lrx\\)$"
 ;;                                      buffer-file-name)
 ;; 			  (dix-mode 1))))
 
@@ -460,6 +460,14 @@ list `ATTRIBUTES' of the same format as
     ("var" "n")
     ("lit" "v")
     ("lit-tag" "v")
+    ;; modes:
+    ("pipeline")
+    ("mode" "name" "install")
+    ("program" "name")
+    ("file" "name")
+    ;; lrx:
+    ("match" "lemma" "tags")
+    ("select" "lemma" "tags")
     ;; tsx:
     ("def-label" "name" "closed")
     ("def-mult" "name")
