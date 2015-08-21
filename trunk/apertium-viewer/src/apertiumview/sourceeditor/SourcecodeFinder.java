@@ -154,6 +154,9 @@ public class SourcecodeFinder {
 			// -> apertium-eo-en.en.dix
 			String[] parts = bin.getName().split("\\."); // "en-eo", "automorf", "bin"
 			String dirname = bin.getParentFile().getName(); // "apertium-eo-en"
+ 			if (dirname.equals(".deps")) { // apertium-eng-sco/.deps/sco.automorf.bin
+				dirname = bin.getParentFile().getParentFile().getName();
+			}
 
 			if ("automorf".equals(parts[1])) { // source language .dix
 				// en-eo.automorf.bin -> apertium-eo-en.en.dix
