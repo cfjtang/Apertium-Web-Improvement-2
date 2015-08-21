@@ -8,11 +8,24 @@
  */
 package apertiumview;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import org.apertium.utils.IOUtils;
+
 public class ApertiumViewAboutBox extends javax.swing.JDialog {
 
     public ApertiumViewAboutBox(java.awt.Frame parent) {
 		super(parent);
 		initComponents();
+		StringWriter sw = new StringWriter();
+		sw.append("Apertium Java cahce dir: "+IOUtils.cacheDir);
+		sw.append("\n\nJava dir: "+System.getProperty("java.home"));
+		sw.append("\n\nPath for external commands:\n"+System.getenv("PATH"));
+		sw.append("\n\nJava properties:\n");
+		System.getProperties().list(new PrintWriter(sw));
+		String envs = System.getenv().toString().replace(", ", "\n").substring(1);
+		sw.append("\n\nEnvironment variables:\n"+envs.substring(0, envs.length()-1));
+		jTextAreaSystemInfo.setText(sw.toString());
 	}
 
 	/** This method is called from within the constructor to
@@ -34,12 +47,13 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
     javax.swing.JLabel appVersionLabel = new javax.swing.JLabel();
     javax.swing.JLabel appTitleLabel = new javax.swing.JLabel();
     javax.swing.JLabel versionLabel = new javax.swing.JLabel();
+    jScrollPane1 = new javax.swing.JScrollPane();
+    jTextAreaSystemInfo = new javax.swing.JTextArea();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     setTitle("Apertium-viewer");
     setModal(true);
     setName("aboutBox"); // NOI18N
-    setResizable(false);
 
     homepageLabel.setFont(homepageLabel.getFont().deriveFont(homepageLabel.getFont().getStyle() | java.awt.Font.BOLD));
     homepageLabel.setText("Homepage:");
@@ -47,7 +61,7 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
     appHomepageLabel.setText("http://wiki.apertium.org/wiki/Apertium-viewer");
 
     vendorLabel.setFont(vendorLabel.getFont().deriveFont(vendorLabel.getFont().getStyle() | java.awt.Font.BOLD));
-    vendorLabel.setText("Vendor:");
+    vendorLabel.setText("Author:");
 
     appVendorLabel.setText("Jacob Nordfalk");
 
@@ -63,13 +77,17 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
 
     imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apertiumview/resources/apertium.png"))); // NOI18N
 
-    appVersionLabel.setText("2.5");
+    appVersionLabel.setText("2.5.1");
 
     appTitleLabel.setFont(appTitleLabel.getFont().deriveFont(appTitleLabel.getFont().getStyle() | java.awt.Font.BOLD, appTitleLabel.getFont().getSize()+4));
     appTitleLabel.setText("Apertium-viewer");
 
     versionLabel.setFont(versionLabel.getFont().deriveFont(versionLabel.getFont().getStyle() | java.awt.Font.BOLD));
     versionLabel.setText("Product Version:");
+
+    jTextAreaSystemInfo.setColumns(20);
+    jTextAreaSystemInfo.setRows(5);
+    jScrollPane1.setViewportView(jTextAreaSystemInfo);
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
@@ -80,9 +98,12 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
         .addGap(18, 18, 18)
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(appDescLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(closeButton))
           .addGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-              .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                   .addComponent(versionLabel)
                   .addComponent(vendorLabel)
@@ -92,16 +113,14 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
                   .addComponent(appVersionLabel)
                   .addComponent(appVendorLabel)
                   .addComponent(appHomepageLabel)))
-              .addComponent(appTitleLabel, javax.swing.GroupLayout.Alignment.LEADING))
+              .addComponent(appTitleLabel))
             .addGap(0, 0, Short.MAX_VALUE))
-          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-            .addGap(0, 0, Short.MAX_VALUE)
-            .addComponent(closeButton)))
+          .addComponent(jScrollPane1))
         .addContainerGap())
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 273, Short.MAX_VALUE)
+      .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 350, Short.MAX_VALUE)
       .addGroup(layout.createSequentialGroup()
         .addContainerGap()
         .addComponent(appTitleLabel)
@@ -119,7 +138,9 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(homepageLabel)
           .addComponent(appHomepageLabel))
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(jScrollPane1)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(closeButton)
         .addContainerGap())
     );
@@ -133,5 +154,7 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton closeButton;
+  private javax.swing.JScrollPane jScrollPane1;
+  private javax.swing.JTextArea jTextAreaSystemInfo;
   // End of variables declaration//GEN-END:variables
 }

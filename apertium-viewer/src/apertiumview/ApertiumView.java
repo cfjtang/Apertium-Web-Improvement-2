@@ -167,22 +167,25 @@ public class ApertiumView extends javax.swing.JFrame {
 			se0.positionUpdate(SourceEditor.parseProperties(url.getQuery()));
 			return;
 		}
-		try {
-			SourceEditor se = new SourceEditor(this, path, url.getQuery());
-			openSourceEditors.put(path, se);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		if (!prefs.getBoolean("perferExternalEditor", false)) {
 			try {
-				java.awt.Desktop.getDesktop().edit(new File(path));
-			} catch (Exception ex0) {
-				try {
-					java.awt.Desktop.getDesktop().open(new File(path));
-				} catch (Exception ex1) {
-					warnUser("Error opening "+path+ ":\n"+ex);
-					ex.printStackTrace();
-				}
+				SourceEditor se = new SourceEditor(this, path, url.getQuery());
+				openSourceEditors.put(path, se);
+				return;
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				warnUser("Error opening "+path+ ":\n"+ex+"\n\nTrying external editor");
 			}
-
+		}
+		try {
+			java.awt.Desktop.getDesktop().edit(new File(path));
+		} catch (Exception ex0) {
+			try {
+				java.awt.Desktop.getDesktop().open(new File(path));
+			} catch (Exception ex1) {
+				warnUser("Error opening "+path+ ":\n"+ex1);
+				ex0.printStackTrace();
+			}
 		}
 	}
 
@@ -1255,11 +1258,13 @@ private void editOptions(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit
 	op.workingDirTextField.setText(prefs.get("workingDir", ""));
 	op.envVarsTextArea.setText(prefs.get("envVars", ""));
 	op.ignoreStdErr.setSelected(Boolean.parseBoolean(prefs.get("ignoreStdErr", "false")));
+	op.perferExternalEditor.setSelected(prefs.getBoolean("perferExternalEditor", false));
 	int ret = JOptionPane.showConfirmDialog(mainPanel, op, "Edit Options", JOptionPane.OK_CANCEL_OPTION);
 	if (ret == JOptionPane.OK_OPTION) {
 		prefs.put("workingDir", op.workingDirTextField.getText());
 		prefs.put("envVars", op.envVarsTextArea.getText());
 		prefs.put("ignoreStdErr", Boolean.toString(op.ignoreStdErr.isSelected()));
+		prefs.putBoolean("perferExternalEditor", op.perferExternalEditor.isSelected());
 		modesComboBoxActionPerformed(null); // reload the current mode
 	}
 }//GEN-LAST:event_editOptions

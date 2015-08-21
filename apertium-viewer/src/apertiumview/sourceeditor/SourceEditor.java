@@ -68,9 +68,9 @@ public class SourceEditor extends javax.swing.JFrame {
 		System.out.println(loadedFileProgram+ " "+properties);
 		loadFile(path);
 
-		if (!positionUpdate(loadedFileProperties) && d.length==5) {
+		if (!positionUpdate(loadedFileProperties) && d.length==5) try {
 			jEditorPane.setCaretPosition(parseInt(d[4]));
-		}
+		} catch (Exception e) {} // ignore problems
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
