@@ -226,6 +226,7 @@ public class SourceEditor extends javax.swing.JFrame {
 			String text = jEditorPane.getText();
 			Path filePath = Paths.get(loadedPath);
 			Files.write(filePath, text.getBytes("UTF-8"));
+			jButtonSave.setEnabled(false);
 
 			Document doc = jEditorPane.getDocument();
 			hashCodeForDocumentOnDisk = doc.getText(0, doc.getLength()).hashCode();
