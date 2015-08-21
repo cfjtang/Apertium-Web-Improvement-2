@@ -10,6 +10,7 @@ package apertiumview;
 
 import apertiumview.downloadsrc.DownloadablePairs;
 import apertiumview.sourceeditor.SourceEditor;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Desktop;
@@ -57,6 +58,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -350,26 +352,46 @@ public class ApertiumView extends javax.swing.JFrame {
 
 		Translator.setCacheEnabled(true);
 
+		final String ARROW = "↪"; // U+21aa	Rightwards Arrow With Hook
 		ActionListener downloadActionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				downloadPairFromSvn(e.getActionCommand());
+				String pair = e.getActionCommand();
+				if (pair.contains(ARROW)) {
+					pair = pair.split(ARROW)[1].trim(); // "nor-dan ↪ dan-nor"
+				}
+				downloadPairFromSvn(pair);
 			}
 		};
 		downloadMenu.remove(downloadRefreshMenuItem);
 		for (String module : DownloadablePairs.pairmodules) {
 			JMenu menu = new JMenu(module);
-			for (String pair :downloadablePairs.getPairs(module).split(" ")) {
-				JMenuItem item = new JMenuItem(pair);
-				item.addActionListener(downloadActionListener);
-				menu.add(item);
-				if (menu.getItemCount()>50) {
-					menu.setText(module+" … - "+pair);
+			String[] pairs = downloadablePairs.getPairs(module).split(" ");
+			TreeSet<String> sortedBothWaysPairs = new TreeSet<>(Arrays.asList(pairs));
+			// Reverse dan-nor to nor-dan.
+			for (String pair : pairs) {
+				String[] p = pair.split("-");
+				String revPair = p[1] + "-" +p[0] + " "+ARROW+" "+pair+"";
+				sortedBothWaysPairs.add(revPair);
+			}
+			char currentLetter = 'a', startLetter = 'a';
+			for (String pair : sortedBothWaysPairs) {
+				char l = pair.charAt(0);
+				if (l!=currentLetter && menu.getItemCount()>30 || menu.getItemCount()>45) {
+					menu.setText(module+ "  "+startLetter+" - "+currentLetter);
 					downloadMenu.add(menu);
-					menu = new JMenu(module+" … - (end)");
+					menu = new JMenu(module+"  "+l+" - z");
+					startLetter = l;
 				}
+				currentLetter = l;
+
+				JMenuItem menuItem = new JMenuItem(pair);
+				menuItem.addActionListener(downloadActionListener);
+				menu.add(menuItem);
+				if (pair.contains(ARROW)) menuItem.setForeground(Color.GRAY);
 			}
 			downloadMenu.add(menu);
+			downloadMenu.add(new JSeparator());
 		}
 		downloadMenu.add(downloadRefreshMenuItem);
 
@@ -798,7 +820,8 @@ public class ApertiumView extends javax.swing.JFrame {
 		sb.append("\n./apertium-get "+pair);
 		sb.append("\ncd "+pairDir);
 		sb.append("\nmake\n");
-		sb.append("\n# You might need to install additional tools - see http://wiki.apertium.org/wiki/Installation");
+		sb.append("\n# Press OK when all the commands have finished execution\n");
+		sb.append("\n# You might need to install additional tools - see http://wiki.apertium.org/wiki/Installation\n");
 		JTextArea ta = new JTextArea(sb.toString());
 		int ret = JOptionPane.showConfirmDialog(mainPanel, wrapInScrollPane(ta),
 				"Press OK when you have executed the commands", JOptionPane.OK_CANCEL_OPTION);
@@ -827,7 +850,7 @@ public class ApertiumView extends javax.swing.JFrame {
 			for (String l : newModes) {
 				txt = txt + l + "\n";
 			}
-			infoUser(txt);
+			infoUser(txt+"\n\nUse 'File | Edit' or 'File | Load' if you want to modify the list");
 			modeFiles = modeFiles + "\n\n#"+txt;
 			prefs.putInt("modesComboBoxLocal", 999999); // Select last mode
 			modeFiles = loadModes(modeFiles);
