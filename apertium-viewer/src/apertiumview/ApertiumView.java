@@ -413,7 +413,19 @@ public class ApertiumView extends javax.swing.JFrame {
 		fitToTextButton.addKeyListener(switchFocus);
 		jScrollPane1.getVerticalScrollBar().setUnitIncrement(16);
 
-		//app.getMainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// Download a fresh version of the online modes for next time the program is started
+		new Thread() {
+			public void run() {
+				try {
+					Thread.sleep(2000);
+					String newVersion = Version.checkForNewVersion();
+					if (newVersion==null) return;
+					textWidgets.get(textWidgets.size()-1).setText(newVersion);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
 	}
 
 	public String loadModes(String modeFiles) {

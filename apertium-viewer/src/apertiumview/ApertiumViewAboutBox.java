@@ -26,6 +26,7 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
 		String envs = System.getenv().toString().replace(", ", "\n").substring(1);
 		sw.append("\n\nEnvironment variables:\n"+envs.substring(0, envs.length()-1));
 		jTextAreaSystemInfo.setText(sw.toString());
+		appVersionLabel.setText(Version.APERTIUM_VIEWER_VERSION);
 	}
 
 	/** This method is called from within the constructor to
@@ -44,7 +45,7 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
     closeButton = new javax.swing.JButton();
     javax.swing.JLabel appDescLabel = new javax.swing.JLabel();
     javax.swing.JLabel imageLabel = new javax.swing.JLabel();
-    javax.swing.JLabel appVersionLabel = new javax.swing.JLabel();
+    appVersionLabel = new javax.swing.JLabel();
     javax.swing.JLabel appTitleLabel = new javax.swing.JLabel();
     javax.swing.JLabel versionLabel = new javax.swing.JLabel();
     jScrollPane1 = new javax.swing.JScrollPane();
@@ -77,7 +78,7 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
 
     imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apertiumview/resources/apertium.png"))); // NOI18N
 
-    appVersionLabel.setText("2.5.1");
+    appVersionLabel.setText("APERTIUM_VIEWER_VERSION");
 
     appTitleLabel.setFont(appTitleLabel.getFont().deriveFont(appTitleLabel.getFont().getStyle() | java.awt.Font.BOLD, appTitleLabel.getFont().getSize()+4));
     appTitleLabel.setText("Apertium-viewer");
@@ -153,6 +154,7 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
 
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JLabel appVersionLabel;
   private javax.swing.JButton closeButton;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JTextArea jTextAreaSystemInfo;
