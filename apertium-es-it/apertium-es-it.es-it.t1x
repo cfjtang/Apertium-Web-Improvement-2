@@ -459,6 +459,7 @@
       <list-item v="bastare"/>
       <list-item v="diventare"/>
       <list-item v="divenire"/>
+      <list-item v="divertire"/>
       <list-item v="morire"/>
       <list-item v="piacere"/>
       <list-item v="tornare"/>
@@ -765,7 +766,7 @@
       </choose>
     </def-macro>
 
-   <!-- <def-macro n="temps_verb" npar="1">
+   <def-macro n="check_ifi" npar="1">
       <let>
 	<var n="verb"/>
 	<lit v=""/>
@@ -778,28 +779,69 @@
 	      <lit-tag v="ifi"/>
 	    </equal>
 	  </test>
+	<choose>
+	  <when>
+	     <test>
+	       <in caseless="yes">
+		 <clip pos="1" side="tl" part="lem"/>
+		 <list n="auxser"/>
+	       </in>
+	    </test>
+	    <let>
+	      <var n="lemachunk"/>
+	      <lit v="essere_pp"/>
+	    </let>
 	  <append n="verb">
-	    <lit v="anar"/>
-	    <lit-tag v="vaux"/>
+          <get-case-from pos="1">
+	    <lit v="essere"/>          
+	   </get-case-from>
+	    <lit-tag v="vbser"/>	    
+            <lit-tag v="pri"/>
 	    <clip pos="1" side="tl" part="pers"/>
 	    <clip pos="1" side="tl" part="nbr"/>
 	    <lit v="$ ^"/>
 	    <clip pos="1" side="tl" part="lemh"/>
 	    <clip pos="1" side="tl" part="a_verb"/>
-	    <lit-tag v="inf"/>
+	    <lit-tag v="pp.m.sg"/>
 	  </append>
+	    <let>
+	      <var n="lemachunk"/>
+	      <lit v="avere_pp"/>
+	    </let>
 	</when>
 	<otherwise>
+	    <let>
+	      <var n="lemachunk"/>
+	      <lit v="avere_pp"/>
+	    </let>
 	  <append n="verb">
-	    <clip pos="1" side="tl" part="lemh"/>
-	    <clip pos="1" side="tl" part="a_verb"/>
-	    <clip pos="1" side="tl" part="temps"/>
+          <get-case-from pos="1">
+	    <lit v="avere"/>
+          </get-case-from>
+	    <lit-tag v="vbhaver"/>	    
+            <lit-tag v="pri"/>
 	    <clip pos="1" side="tl" part="pers"/>
 	    <clip pos="1" side="tl" part="nbr"/>
+	    <lit v="$ ^"/>
+	    <clip pos="1" side="tl" part="lemh"/>
+	    <clip pos="1" side="tl" part="a_verb"/>
+	    <lit-tag v="pp.m.sg"/>
 	  </append>
 	</otherwise>
       </choose>
-    </def-macro> -->
+     </when>
+     <otherwise>
+       <let>
+	  <var n="lemachunk"/>
+          <lit v="verb"/>
+       </let>
+       <let>
+	  <var n="verb"/>
+          <clip pos="1" side="tl" part="whole"/>
+       </let>
+     </otherwise>
+    </choose>
+    </def-macro>
 
     <def-macro n="tipus_verb" npar="1">
       <choose>
@@ -5191,6 +5233,27 @@
       </action>
     </rule>
 
+<rule comment="REGLA: ADV ">
+      <pattern>
+	<pattern-item n="adv_preadv"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="adv" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="ADV"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="whole"/> 
+	    </lu> 
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: DET(quan no acompanya res o va amb desconeguda)">
       <pattern>
@@ -5292,8 +5355,8 @@
 	</call-macro>
 	<call-macro n="canvia_fts">
 	  <with-param pos="1"/>
-	</call-macro>	
-	<choose>
+	</call-macro>
+        <choose>
 	  <when>
 	    <test>
 	      <and>
@@ -5325,15 +5388,7 @@
 	      <var n="lemachunk"/>
 	      <lit v="hay"/>
 	    </let>
-	  </when>
-	  <otherwise>
-	    <let>
-	      <var n="lemachunk"/>
-	      <lit v="verb"/>
-	    </let>
-	  </otherwise>
-	</choose> 	      
-	<out>
+          <out>
 	  <chunk namefrom="lemachunk" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
@@ -5353,6 +5408,23 @@
 	    </lu> 
 	  </chunk>
 	</out>
+	  </when>
+	  <otherwise>
+	  <call-macro n="check_ifi">
+	  <with-param pos="1"/>
+	  </call-macro>	
+        <out>
+            <chunk namefrom="lemachunk" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>	      
+	    </tags> 
+	    <lu>
+              <var n="verb"/>
+	    </lu>
+	  </chunk>
+        </out> 
+        </otherwise>
+	</choose>
       </action>
     </rule>
 
