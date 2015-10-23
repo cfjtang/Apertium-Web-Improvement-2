@@ -86,7 +86,8 @@ $(PREFIX2).autotra.bin: $(BASENAME).translit.dix
 EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).$(LANG2).dix $(BASENAME).post-$(LANG2).dix \
 	   $(BASENAME).post-$(LANG1).dix \
-           $(PREFIX1).prob \
+	   $(BASENAME).translit.dix \
+	   $(PREFIX1).prob \
 	   $(BASENAME).$(PREFIX1).rlx \
 	   $(BASENAME).$(PREFIX1).t1x \
 	   $(BASENAME).$(PREFIX1).t2x \
