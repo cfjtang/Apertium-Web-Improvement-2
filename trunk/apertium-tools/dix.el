@@ -354,7 +354,7 @@ Optional argument CLEAN removes trailing __n and such."
 
 
 (defun dix-pardef-suggest-at-point ()
-  "Return a list of pardef names for suggestions. 
+  "Return a list of pardef names for suggestions.
 
 First we look in the context around point (up to
 `dix-parse-bound' in both directions), then append the full list
@@ -651,7 +651,7 @@ and `dix-get-pardefs'."
       (setq dix-yas-key-rex-tables tables)
       (setq dix-yas-key-rex
 	    (let (keys) (mapc
-			 (lambda (table) 
+			 (lambda (table)
 			   (let* ((keyhash (yas--table-hash table)))
 			     (when keyhash
 			       (maphash (lambda (k v) (push k keys)) keyhash))))
@@ -659,7 +659,7 @@ and `dix-get-pardefs'."
 		 (concat (regexp-opt keys) "$"))))))
 
 (defun dix-yas-skip-backwards-to-key ()
-  "Skip backwards to the first possible yasnippet key. 
+  "Skip backwards to the first possible yasnippet key.
 
 This is meant to be used in `yas-key-syntaxes', since the
 defaults don't let you expand e.g. \"<s>\" without having
@@ -775,6 +775,60 @@ Returns the list of pardef names."
 	(add-to-list 'dix-suffix-maps (cons partype suffmap) 'append))
       (message (prin1-to-string pardefs))
       pardefs)))
+
+(defvar dix-vr-langs nil "List of language codes (strings) allowed in the vr attribute of this dictionary.")
+(defvar dix-vl-langs nil "List of language codes (strings) allowed in the vl attribute of this dictionary.")
+(put 'dix-vr-langs 'safe-local-variable 'listp)
+(put 'dix-vl-langs 'safe-local-variable 'listp)
+
+(defun dix-v-cycle ()
+  "Cycle through possible values of the `vr' or `vl' attributes of the <e>
+element at point.
+
+Doesn't yet deal with elements that specify both vr and vl.
+
+For this to be useful, put something like this at the end of your file:
+
+<!--
+Local Variables:
+dix-vr-langs: (\"nno\" \"nob\")
+End:
+-->
+"
+  (interactive)
+  (save-excursion
+    (dix-up-to "e" "pardef")
+    (let* ((def-dir (if dix-vr-langs "r" "l"))
+           (langs (list (cons "r" dix-vr-langs)
+                        (cons "l" dix-vr-langs)))
+           (old		     ; find what, if any, restriction we have:
+	    (save-excursion
+	      (if (re-search-forward " v\\([rl]\\)=\"\\([^\"]+\\)\"" (nxml-token-after) 'noerror 1)
+		  (cons (match-string 1) (match-string 2)))))
+           (dir (if old (car old) def-dir))
+           (old-lang (when old (cdr old)))
+           (dir-langs (cdr (assoc dir langs)))
+           (next (car-safe (if old-lang
+                               (cdr (member old-lang dir-langs))
+                             dir-langs)))
+           (new (if next
+                    (format " v%s=\"%s\"" dir next)
+                  "")))
+      ;; restrict:
+      (forward-word)
+      (if old (delete-region (match-beginning 0)
+			     (match-end 0)))
+      (insert new)
+      (unless (looking-at ">") (just-one-space))
+      ;; formatting, remove whitespace:
+      (goto-char (nxml-token-after))
+      (unless (looking-at "<")
+	(goto-char (nxml-token-after)))
+      (delete-horizontal-space)
+      (cond  ((looking-at "<i") (indent-to dix-i-align-column))
+	     ((save-excursion (search-forward "</pardef>" nil 'noerror 1))
+	      (indent-to dix-pp-align-column))
+	     ((looking-at "<p") (indent-to dix-pb-align-column))))))
 
 (defun dix-restriction-cycle (&optional dir)
   "Cycle through possible values of the `r' attribute of the <e>
@@ -1931,11 +1985,12 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "C-c s") 'dix-sense-prefix)
 (define-key dix-mode-map (kbd "C-c s l") 'dix-slr-copy)
 (define-key dix-mode-map (kbd "C-c s r") 'dix-srl-copy)
+(define-key dix-mode-map (kbd "C-c s <tab>") 'dix-sense-swap)
 (define-key dix-mode-map (kbd "C-c C") 'dix-copy)
 (define-key dix-mode-map (kbd "C-c C-y") 'dix-copy-yank)
 (define-key dix-mode-map (kbd "<C-tab>") 'dix-restriction-cycle)
-(define-key dix-mode-map (kbd "<C-S-tab>") 'dix-sense-swap)
-(define-key dix-mode-map (kbd "<C-S-iso-lefttab>") 'dix-sense-swap)
+(define-key dix-mode-map (kbd "<C-S-tab>") 'dix-v-cycle)
+(define-key dix-mode-map (kbd "<C-S-iso-lefttab>") 'dix-v-cycle)
 (define-key dix-mode-map (kbd "M-n") 'dix-next)
 (define-key dix-mode-map (kbd "M-p") 'dix-previous)
 (define-key dix-mode-map (kbd "C-c S") 'dix-sort-pardef)
