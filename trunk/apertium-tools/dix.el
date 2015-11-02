@@ -1953,21 +1953,29 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 		 (regexp . ,regexp)
 		 (tab-stop . nil)
 		 (spacing . 0)
+		 (group . 1)
 		 (modes . '(nxml-mode))
 		 (column . ,column))))
 (add-hook
  'align-load-hook
  (lambda ()
+  (add-to-list 'align-rules-list
+               '(dix-l-align-rule
+                 (regexp . "<p>\\(\\s-*\\)<l>")
+                 (tab-stop . nil)
+                 (spacing . 0)
+                 (group . 1)
+                 (modes . '(nxml-mode))))
+  (dix-add-align-rule
+    'dix-rp-align "\\s-+\\(\\s-*\\)<r>" 'dix-rp-align-column)
+   (dix-add-align-rule                  ;
+    'dix-rb-align "\\(\\s-*\\)<r>" 'dix-rb-align-column)
    (dix-add-align-rule
-    'dix-rp-align "^[^<].*\\S-\\(\\s-*\\)\\(<r>.*\\)$" dix-rp-align-column)
+    'dix-i-align "\\(\\s-*\\)<i" 'dix-i-align-column)
    (dix-add-align-rule
-    'dix-rb-align "^<.*\\(\\s-*\\)\\(<r>.*\\)$" dix-rb-align-column)
+    'dix-pb-align "^\\S-*\\(\\s-*\\)<p>" 'dix-pb-align-column)
    (dix-add-align-rule
-    'dix-i-align "\\(\\s-*\\)\\(<i.*\\)$" dix-i-align-column)
-   (dix-add-align-rule
-    'dix-pb-align "^<.*\\(\\s-*\\)\\(<p>.*\\)$" dix-pb-align-column)
-   (dix-add-align-rule
-    'dix-pp-align "^[^<].*\\S-*\\(\\s-*\\)\\(<p>.*\\)$" dix-pp-align-column)))
+    'dix-pp-align "^\\s-+\\S-*\\(\\s-*\\)<p>" 'dix-pp-align-column)))
 
 ;;; Evil integration ---------------------------------------------------------
 (eval-after-load 'evil
@@ -1990,7 +1998,7 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "C-c C-y") 'dix-copy-yank)
 (define-key dix-mode-map (kbd "<C-tab>") 'dix-restriction-cycle)
 (define-key dix-mode-map (kbd "<C-S-tab>") 'dix-v-cycle)
-(define-key dix-mode-map (kbd "<C-S-iso-lefttab>") 'dix-v-cycle)
+(define-key dix-mode-map (kbd "<S-iso-lefttab>") 'dix-v-cycle)
 (define-key dix-mode-map (kbd "M-n") 'dix-next)
 (define-key dix-mode-map (kbd "M-p") 'dix-previous)
 (define-key dix-mode-map (kbd "C-c S") 'dix-sort-pardef)
