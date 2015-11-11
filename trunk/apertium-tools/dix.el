@@ -1237,37 +1237,41 @@ if you so wish."
 (defvar dix-search-substring nil
   "Set by `dix-word-search-forward'.")
 
-(defun dix-word-search-forward (&optional substring)
+(defun dix-word-search-forward (&optional whole-word)
   "Incremental word-search for dix files. In monodix, searches
 only within lm attributes, in bidix, searches only between > and
-< symbols. Optional prefix argument `substring' lets you search
-for parts of words, otherwise you have to type the whole word in
-to get a (correct) hit.
+< symbols. If optional prefix argument `whole-word' is given, you
+have to type the whole word in to get a (correct) hit, otherwise
+you can search for partial words.
 
-Todo:
-- make some way of searching for prefixes or suffixes (ie. so
-  that the .* is only put at the end or beginning)
-- on failing search, don't mark anything (currently, it marks
-  until end-of-buffer...)
-- unless we're doing a substring search, we should probably not
+TODO:
+- Check if this can be rewritten as a isearch-filter-predicate
+- Figure out why two backspaces are needed (seems to 'temporarily
+  fail' when searching)
+- Unless we're doing a substring search, we should probably not
   do an incremental search (that is, not search until user
   presses enter), but word-search-forward isn't good
-  enough (doesn't highlight, no way to C-s to the next hit...)
-- turn spaces into <b/> (or space|<b/> in monodix)"
+  enough (doesn't highlight, no way to C-s to the next hit...)"
   (interactive "P")
-  (setq dix-search-substring substring)
+  (setq dix-search-substring (not whole-word))
   (isearch-mode
    'forward 'regexp
    (lambda ()
      (let* ((bidix (string-match "\\...*-..*\\.dix" (buffer-file-name)))
 	    (l (if bidix ">" "lm=\""))
 	    (r (if bidix "<" "\""))
-	    (affix (if dix-search-substring (concat "[^" r "]*"))))
+	    (affix (when dix-search-substring
+                     "[^<\"]*")))
        (setq isearch-string
-	     (concat l affix isearch-message affix r))
+	     (concat l affix
+                     (replace-regexp-in-string " "
+                                               "\\\\( \\\\|<b/>\\\\)"
+                                               isearch-message)
+                     affix r))
        (goto-char isearch-opoint)
        (setq isearch-forward t)	; o/w the first C-s goes backward, for some reason
        (isearch-search)
+       (isearch-push-state)
        (isearch-update)))))
 
 
@@ -1574,6 +1578,22 @@ ending in __n"
 ending in __vblex_adj"
   (interactive)
   (dix-guess-pardef "__vblex_adj"))
+
+(defun dix-add-par ()
+  "Just add a <par>-element, guessing a name from nearest above par."
+  (interactive)
+  (let ((par-guess
+         (save-excursion
+           (when (re-search-backward
+                  (concat "<par\\(?:def\\)? n=\"\\([^\"]*\\)") nil 'noerror 1)
+             (match-string-no-properties 1)))))
+    (dix-up-to "e")
+    (nxml-forward-element)
+    (nxml-backward-down-element)
+    (let ((p (+ (point) 8)))
+      (insert (format "<par n=\"%s\"/>" par-guess))
+      (goto-char p))))
+
 
 (defun dix-point-after-> ()
   (equal (buffer-substring-no-properties (1- (point)) (point))
@@ -2055,6 +2075,7 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "C-c W") 'dix-word-search-forward)
 (define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
 (define-key dix-mode-map (kbd "C-c D") 'dix-find-duplicate-pardefs)
+(define-key dix-mode-map (kbd "C-c p") 'dix-add-par)
 (define-key dix-mode-map (kbd "C-c C-c") 'dix-analyse)
 (define-prefix-command 'dix-replace-prefix)
 (define-key dix-mode-map (kbd "C-c %") 'dix-replace-prefix)
