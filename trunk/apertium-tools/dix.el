@@ -89,8 +89,7 @@
 ;;   we "paste" side-by-side.
 ;; - `dix-LR-restriction-copy' (and the other copy functions) could
 ;;   add a="author"
-;; - `dix-dixfiles' should be a list of strings instead (could also
-;;   optionally auto-add all files from modes.xml?)
+;; - `dix-dixfiles' could auto-add files from Makefile?
 ;; - `dix-sort-e-by-r' doesn't work if there's an <re> element after
 ;;   the <r>; and doesn't sort correctly by <l>-element, possibly to
 ;;   do with spaces
@@ -345,6 +344,11 @@ Optional argument CLEAN removes trailing __n and such."
       (dix-up-to "e" "section")
       (re-search-forward "lm=\"\\([^\"]*\\)" nil t)
       (match-string-no-properties 1))))
+
+(defun dix-i-at-point ()
+  ;; TODO less roundabout
+  (let ((rs (dix-split-root-suffix)))
+    (concat (car rs) (cdr rs))))
 
 (defun dix-par-at-point ()
   (save-excursion
@@ -1916,15 +1920,63 @@ on a previously narrowed buffer (the default behaviour for
       (insert region)))
   (re-search-forward "\\S "))
 
-(defcustom dix-dixfiles "*.dix dev/*dix" "String of dictionary files to grep with `dix-grep-all'."
-  :type 'string
+(defcustom dix-dixfiles '("*.dix" "dev/*dix") "String list of dictionary files to grep with `dix-grep-all'."
+  :type '(list string)
   :group 'dix)
+
+(defvar dix-greppable
+  '(;; dix:
+    ("e" "lm" "l" "r" "i")
+    ("par" "n")
+    ("pardef" "n"))
+  "Association list of elements and which attributes are considered interesting for grepping,
+used by `dix-grep-all'.")
+
+(defvar dix-grep-fns
+  '(;; dix:
+    ("e" . dix-lemma-at-point)
+    ("l" . word-at-point)
+    ("r" . word-at-point)
+    ("i" . dix-i-at-point)
+    ("par" . dix-par-at-point)
+    ("pardef" . dix-pardef-at-point))
+  "Association list of elements and which functions to find the greppable symbol at point,
+used by `dix-grep-all'.")
+
+
+(defun dix-nearest-greppable ()
+  (let* ((token-end (nxml-token-before))
+         (greppable (save-excursion
+                      (let ((dix-interesting dix-greppable))
+                        (dix-next)
+                        (dix-previous)
+                        (let ((g (assoc (xmltok-start-tag-qname) dix-grep-fns)))
+                          (when g
+                            (cons (car g) (funcall (cdr g)))))))))
+    (if greppable
+        greppable
+      (message "Nothing greppable found here (see variables dix-greppable and dix-grep-fns).")
+      nil)))
 
 (defun dix-grep-all ()
   "Show all usages of this pardef in the dictionaries represented
 by the (customizable) string `dix-dixfiles'"
   (interactive)
-  (grep (concat "grep -nH -e 'par n=\"" (dix-pardef-at-point) "\"' " dix-dixfiles)))
+  (let* ((greppable (dix-nearest-greppable))
+         ;; TODO: if par/pardef, want to search only par/pardef, and so on
+         (found-in (car greppable))
+         (needle (if (and transient-mark-mode mark-active)
+                     (buffer-substring (region-beginning)
+                                       (region-end))
+                   (cdr greppable)))
+         (needle-attrib (replace-regexp-in-string "<b/>" " " needle))
+         (needle-cdata (replace-regexp-in-string " " "<b/>" needle))
+         ;; TODO: exclude current file?
+         (files (mapconcat #'identity dix-dixfiles " ")))
+    (grep (format "grep -nH -e '=\"%s\"' -e '>%s<' %s"
+                  needle-attrib
+                  needle-cdata
+                  files))))
 
 ;;; Alignment ----------------------------------------------------------------
 (defcustom dix-rp-align-column 28 "Column to align pardef <r> elements to with `align'."
@@ -1959,13 +2011,6 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (add-hook
  'align-load-hook
  (lambda ()
-  (add-to-list 'align-rules-list
-               '(dix-l-align-rule
-                 (regexp . "<p>\\(\\s-*\\)<l>")
-                 (tab-stop . nil)
-                 (spacing . 0)
-                 (group . 1)
-                 (modes . '(nxml-mode))))
   (dix-add-align-rule
     'dix-rp-align "\\s-+\\(\\s-*\\)<r>" 'dix-rp-align-column)
    (dix-add-align-rule                  ;
