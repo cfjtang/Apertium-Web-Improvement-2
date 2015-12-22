@@ -3,12 +3,15 @@ var srcLangs = [], dstLangs = [];
 var curSrcLang, curDstLang;
 var recentSrcLangs = [], recentDstLangs = [];
 var droppedFile;
+var textTranslateRequest;
 
 if(modeEnabled('translation')) {
     $(document).ready(function () {
         $('#srcLanguages').on('click', '.languageName:not(.text-muted)', function () {
             curSrcLang = $(this).attr('data-code');
             handleNewCurrentLang(curSrcLang, recentSrcLangs, 'srcLang');
+
+            autoSelectDstLang();
         });
 
         $('#dstLanguages').on('click', '.languageName:not(.text-muted)', function () {
@@ -25,6 +28,8 @@ if(modeEnabled('translation')) {
             muteLanguages();
             localizeInterface();
             translateText();
+
+            autoSelectDstLang();
         });
 
         $('.dstLang').click(function () {
@@ -405,10 +410,16 @@ function translateText() {
     if($('div#translateText').is(":visible")) {
         if(pairs[curSrcLang] && pairs[curSrcLang].indexOf(curDstLang) !== -1) {
             sendEvent('translator', 'translate', curSrcLang + '-' + curDstLang, $('#originalText').val().length);
-            $.jsonp({
+            if(textTranslateRequest) {
+                textTranslateRequest.abort();
+            }
+            textTranslateRequest = $.jsonp({
                 url: config.APY_URL + '/translate',
                 beforeSend: ajaxSend,
-                complete: ajaxComplete,
+                complete: function() {
+                    ajaxComplete();
+                    textTranslateRequest = undefined;
+                },
                 data: {
                     'langpair': curSrcLang + '|' + curDstLang,
                     'q': $('#originalText').val()
@@ -416,7 +427,7 @@ function translateText() {
                 success: function (data) {
                     if(data.responseStatus === 200) {
                         $('#translatedText').html(data.responseData.translatedText);
-                        $('#translatedText').removeClass('notAvailable');
+                        $('#translatedText').removeClass('notAvailable text-danger');
                     }
                     else
                         translationNotAvailable();
@@ -522,10 +533,16 @@ function translateDoc() {
 }
 
 function detectLanguage() {
-    $.jsonp({
+    if(textTranslateRequest) {
+        textTranslateRequest.abort();
+    }
+    textTranslateRequest = $.jsonp({
         url: config.APY_URL + '/identifyLang',
         beforeSend: ajaxSend,
-        complete: ajaxComplete,
+        complete: function() {
+            ajaxComplete();
+            textTranslateRequest = undefined;
+        },
         data: {
             'q': $('#originalText').val()
         },
@@ -563,7 +580,7 @@ function detectLanguage() {
 
 function translationNotAvailable() {
     $('#translatedText').text(dynamicLocalizations['Not_Available']);
-    $('#translatedText').addClass('notAvailable');
+    $('#translatedText').addClass('notAvailable text-danger');
 }
 
 function muteLanguages() {
@@ -582,5 +599,33 @@ function muteLanguages() {
     $.each($('#dstLangSelect option'), function(i, element) {
         $(element).prop('disabled', !pairs[curSrcLang] || pairs[curSrcLang].indexOf($(element).val()) === -1);
     });
+}
+
+function autoSelectDstLang() {
+    if (pairs[curSrcLang] && pairs[curSrcLang].indexOf(curDstLang) === -1) {
+        var newDstLang = undefined;
+        for (var i = 0; i < recentDstLangs.length; i++) {
+            if (pairs[curSrcLang].indexOf(recentDstLangs[i]) !== -1) {
+                newDstLang = recentDstLangs[i];
+                break;
+            }
+        };
+        if(!newDstLang) {
+            newDstLang = pairs[curSrcLang][0];
+        }
+
+        if(recentDstLangs.indexOf(newDstLang) === -1) {
+            handleNewCurrentLang(newDstLang, recentDstLangs, 'dstLang');
+        }
+        else {
+            curDstLang = newDstLang;
+            $('.dstLang').removeClass('active');
+            refreshLangList();
+            $('.dstLang[data-code=' + curDstLang + ']').addClass('active');
+            muteLanguages();
+            localizeInterface();
+            translateText();
+        }
+    }
 }
 
