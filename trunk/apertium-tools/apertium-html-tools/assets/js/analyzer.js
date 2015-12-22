@@ -1,4 +1,5 @@
 var analyzers = {}, analyzerData = {};
+var currentAnalyzerRequest;
 
 if(modeEnabled('analyzation')) {
     $(document).ready(function () {
@@ -129,11 +130,18 @@ function analyze() {
     sendEvent('analyzer', 'analyze', analyzerMode, $('#morphAnalyzerInput').val().length);
 
     $('#morphAnalyzerOutput').addClass('blurred');
-    $.jsonp({
+
+    if(currentAnalyzerRequest) {
+        currentAnalyzerRequest.abort();
+    }
+    currentAnalyzerRequest = $.jsonp({
         url: config.APY_URL + '/analyze',
         pageCache: true,
         beforeSend: ajaxSend,
-        complete: ajaxComplete,
+        complete: function() {
+            ajaxComplete();
+            currentAnalyzerRequest = undefined;
+        },
         data: {
             'lang': analyzerMode,
             'q': $('#morphAnalyzerInput').val()
@@ -151,7 +159,7 @@ function analyze() {
                 var splitUnit = data[i][0].split('/');
 
                 if(splitUnit[1][0] === '*')
-                    rightTD.addClass('noAnalysis');
+                    rightTD.addClass('text-danger');
 
                 var tr = $('<tr></tr>').append(leftTD).append(rightTD);
                 $('#morphAnalyzerOutput').append(tr);
