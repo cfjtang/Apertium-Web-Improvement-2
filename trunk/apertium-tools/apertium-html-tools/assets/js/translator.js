@@ -146,13 +146,13 @@ if(modeEnabled('translation')) {
             $('div#translateText').fadeOut('fast', function () {
                 $('#fileInput').show();
                 $('div#fileName').hide();
-                $('div#translateDoc').fadeIn('fast');
+                $('div#docTranslation').fadeIn('fast');
             });
         });
 
         $('button#cancelDocTranslate').click(function () {
             droppedFile = undefined;
-            $('div#translateDoc').fadeOut('fast', function () {
+            $('div#docTranslation').fadeOut('fast', function () {
                 $('a#fileDownload').hide();
                 $('span#uploadError').hide();
                 $('div#translateText').fadeIn('fast');
@@ -181,10 +181,10 @@ if(modeEnabled('translation')) {
                     droppedFile = ev.originalEvent.dataTransfer.files[0];
 
                     $('#fileDropBackdrop').fadeOut();
-                    if(!$('div#translateDoc').is(":visible")) {
+                    if(!$('div#docTranslation').is(":visible")) {
                         $('div#translateText').fadeOut('fast', function () {
                             $('input#fileInput').hide();
-                            $('div#translateDoc').fadeIn('fast');
+                            $('div#docTranslation').fadeIn('fast');
 
                             if(droppedFile) {
                                 $('div#fileName').show().text(droppedFile.name);
@@ -388,7 +388,7 @@ function populateTranslationList() {
                 bPossible = pairs[curSrcLang] && pairs[curSrcLang].indexOf(b) !== -1;
 
             if((aPossible && bPossible) || (!aPossible && !bPossible)) {
-                return getLangByCode(a).localeCompare(getLangByCode(b), sortLocale); 
+                return getLangByCode(a).localeCompare(getLangByCode(b), sortLocale);
             }
             else if(aPossible && !bPossible) {
                 return -1;
@@ -444,12 +444,13 @@ function translateDoc() {
     var validPair = pairs[curSrcLang] && pairs[curSrcLang].indexOf(curDstLang) !== -1,
         validFile = droppedFile !== undefined || $('input#fileInput')[0].files.length === 1;
     if(validPair && validFile) {
+        var file;
         if(droppedFile === undefined) {
             if($('input#fileInput')[0].files.length !== 0 && $('input#fileInput')[0].files[0].length !== 0)
-                var file = $('input#fileInput')[0].files[0];
+                file = $('input#fileInput')[0].files[0];
         }
         else
-            var file = droppedFile;
+            file = droppedFile;
 
         if(file.size > 32E6)
             docTranslateError(dynamicLocalizations['File_Too_Large'], 'File_Too_Large');
@@ -603,13 +604,13 @@ function muteLanguages() {
 
 function autoSelectDstLang() {
     if (pairs[curSrcLang] && pairs[curSrcLang].indexOf(curDstLang) === -1) {
-        var newDstLang = undefined;
+        var newDstLang;
         for (var i = 0; i < recentDstLangs.length; i++) {
             if (pairs[curSrcLang].indexOf(recentDstLangs[i]) !== -1) {
                 newDstLang = recentDstLangs[i];
                 break;
             }
-        };
+        }
         if(!newDstLang) {
             newDstLang = pairs[curSrcLang][0];
         }
@@ -628,4 +629,3 @@ function autoSelectDstLang() {
         }
     }
 }
-
