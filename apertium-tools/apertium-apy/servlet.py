@@ -621,6 +621,46 @@ class GetLocaleHandler(BaseHandler):
         else:
             self.send_error(400, explanation='Accept-Language missing from request headers')
 
+
+class SuggestionHandler(BaseHandler):
+
+    @gen.coroutine
+    def get(self):
+        self.send_error(405, explanation='GET request not supported')
+
+    @gen.coroutine
+    def post(self):
+        context = self.get_argument('context', None)
+        word = self.get_argument('word', None)
+        newWord = self.get_argument('newWord', None)
+
+        if not all([context, word, newWord]):
+            self.send_error(400, explanation='Context, word and newWord required')
+
+        global wiki_edit_token
+        global wiki_session
+        global SUGGEST_URL
+        logging.info("Suggestion: Context is %s \n Word: %s ; New Word: %s ;" % (context, word, newWord))
+
+        from util import wikiGetPage, wikiEditPage
+        content = wikiGetPage(wiki_session, 'User:Svineet')
+        content += '\n* %s; %s; %s' % (context, word, newWord)
+        editResult = wikiEditPage(wiki_session, SUGGEST_URL, content, wiki_edit_token)
+
+        if editResult['edit']['result'] == 'Success':
+            logging.info('Update of page %s' % (SUGGEST_URL))
+            self.sendResponse({
+                'responseData': {
+                    'status': 'Success'
+                },
+                'responseDetails': None,
+                'responseStatus': 200
+            })
+        else:
+            logging.error('Update of page %s failed: %s' % (SUGGEST_URL, edit_result))
+            self.send_error(400, explanation='Page update failed')
+
+
 class PipeDebugHandler(BaseHandler):
 
     @gen.coroutine
@@ -722,6 +762,10 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbosity', help='logging verbosity', type=int, default=0)
     parser.add_argument('-S', '--scalemt-logs', help='generates ScaleMT-like logs; use with --log-path; disables', action='store_true')
     parser.add_argument('-M', '--unknown-memory-limit', help="keeps unknown words in memory until a limit is reached", type=int, default=0)
+    parser.add_argument('-wp', '--wiki-password', help="Apertium Wiki account password for SuggestionHandler", default=None)
+    parser.add_argument('-wu', '--wiki-username', help="Apertium Wiki account username for SuggestionHandler", default=None)
+    parser.add_argument('-wd', '--wiki-url', help="Apertium Wiki page to send data to for SuggestionHandler", default='User:Svineet')
+    # Change default for this ^
     args = parser.parse_args()
 
     if args.daemon:
@@ -765,8 +809,31 @@ if __name__ == '__main__':
         (r'/calcCoverage', CoverageHandler),
         (r'/identifyLang', IdentifyLangHandler),
         (r'/getLocale', GetLocaleHandler),
-        (r'/pipedebug', PipeDebugHandler)
+        (r'/pipedebug', PipeDebugHandler),
+        # (r'/suggest', SuggestionHandler)
     ])
+
+    global wiki_session
+    global wiki_edit_token
+    global SUGGEST_URL
+    wiki_session = None
+    wiki_edit_token = None
+    SUGGEST_URL = None
+    if all([args.wiki_username, args.wiki_password, args.wiki_url]):
+        logging.info('Logging into Apertium Wiki with username %s' % args.wiki_username)
+
+        try:
+            import requests
+        except ImportError:
+            logging.error('requests module is required for SuggestionHandler')
+
+        from util import wikiLogin, wikiGetToken
+        SUGGEST_URL = args.wiki_url
+        wiki_session = requests.Session()
+        auth_token = wikiLogin(wiki_session, args.wiki_username, args.wiki_password)
+        wiki_edit_token = wikiGetToken(wiki_session, 'edit', 'info|revisions')
+
+        logging.info('Logged into Apertium Wiki')
 
     global http_server
     if args.ssl_cert and args.ssl_key:
