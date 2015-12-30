@@ -24,14 +24,7 @@
 			}
 			function sendRequest(){
 				var pair = encodeURIComponent(document.form1.langpair.value);
-
-				// Do not escape \0s.
-				var q = document.form1.q.value;
-				if (q.indexOf('\\0') !== -1) {
-					q = q.split('\\0').map(encodeURIComponent).join('\\0');
-				}
-
-
+				var q = encodeURIComponent(document.form1.q.value);
 				var port = document.form1.port.value;
 				var xmlhttp = new XMLHttpRequest();
 				var url = "http://localhost:"+port+"/pipedebug?langpair="+pair+"&q=" + q; //"http://localhost:"+port+"/pipedebug?pair="+pair+"&q=" + q;
