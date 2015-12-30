@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""codeIn1.py: Scrapes bible.is to generate a list of Bible English chapters with corresponding chapters in a language of choice by the user"""
+"""bible.is_booknames.py: Scrapes bible.is to generate a list of Bible English chapters with corresponding chapters in a language of choice by the user"""
 
 __author__ = "Diana Chang"
 __email__ = "diana.chang.twn@gmail.com"
