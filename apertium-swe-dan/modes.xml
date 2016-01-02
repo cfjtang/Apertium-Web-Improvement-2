@@ -4,7 +4,7 @@
 
   <mode name="swe-dan-bytecode" install="yes">
     <pipeline>
-      <program name="lt-proc">
+      <program name="lt-proc -e">
         <file name="swe-dan.automorf.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
@@ -188,6 +188,29 @@
       </program>
     </pipeline>
   </mode>
+
+  <mode name="swe-dan-debug" install="no">
+    <pipeline>
+      <program name="lt-proc -e">
+        <file name="swe-dan.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="swe-dan.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="swe-dan.autobil.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-swe-dan.swe-dan.t1x"/>
+        <file name="swe-dan.t1x.bin"/>
+      </program>
+      <program name="lt-proc -d">
+        <file name="swe-dan.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
 
 
 <!-- Danish → Swedish -->
