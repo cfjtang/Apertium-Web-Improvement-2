@@ -125,7 +125,7 @@ CODES = {   'ADG'   :   'Adygei',
             'AGL'   :   'Agul',
             'AVR'   :   'Avar',
             'CHV'   :   'Chuvash',
-            'CTT'   :   'Crimean Tatar',
+            'CRT'   :   'Crimean Tatar',
             'KHK'   :   'Khakas',
             'XKS'   :   'Khakas',
             'KJV'   :   'English',
@@ -149,7 +149,11 @@ CODES = {   'ADG'   :   'Adygei',
             'UZIBT' :   'Uzbek Cyrillic',
             'LXX'   :   'Greek',
             'TR'    :   'Greek',
-            'OSMHB' :   'Hebrew'
+            'OSMHB' :   'Hebrew',
+            'KRK'   :   'Qaraqalpaq Latin',
+            'KRKL'  :   'Qaraqalpaq Cyrillic',
+            'SHR'   :   'Shor',
+            'BUR'   :   'Buryat',
 }
 if __name__ == '__main__':
     if args.a == 2:
