@@ -662,7 +662,7 @@ and `dix-get-pardefs'."
 			 dix-yas-key-rex-tables)
 		 (concat (regexp-opt keys) "$"))))))
 
-(defun dix-yas-skip-backwards-to-key ()
+(defun dix-yas-skip-backwards-to-key (&optional start-point)
   "Skip backwards to the first possible yasnippet key.
 
 This is meant to be used in `yas-key-syntaxes', since the
@@ -677,9 +677,12 @@ Only has an effect in `dix-mode' so the above shouldn't change
 how yasnippet expansion works in other modes."
   (when dix-mode
     (dix-yas-update-key-rex)
-    (let ((haystack (buffer-substring-no-properties (line-beginning-position) (point))))
+    (let* ((point (or start-point (point)))
+           (linebeg (save-excursion (goto-char point)
+                                    (line-beginning-position)))
+           (haystack (buffer-substring-no-properties linebeg point)))
       (when (string-match dix-yas-key-rex haystack)
-	(goto-char (+ (line-beginning-position) (match-beginning 0)))))))
+	(goto-char (+ linebeg (match-beginning 0)))))))
 
 
 
