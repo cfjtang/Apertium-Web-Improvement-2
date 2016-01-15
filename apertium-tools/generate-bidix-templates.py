@@ -74,6 +74,9 @@ def generate_entry_list(context, paradigms): #{
 	path = './/section[@id="main"]/e';
 	entries = {};
 	for entry in context.findall(path): #{
+		if 'lm' not in entry.attrib: #{
+			continue;
+		#}
 		lema = entry.attrib['lm'];
 		pars = entry.findall('.//par');
 		if len(pars) >= 1: #{
