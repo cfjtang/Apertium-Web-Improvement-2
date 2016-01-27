@@ -662,7 +662,7 @@ and `dix-get-pardefs'."
 			 dix-yas-key-rex-tables)
 		 (concat (regexp-opt keys) "$"))))))
 
-(defun dix-yas-skip-backwards-to-key (&optional start-point)
+(defun dix-yas-skip-backwards-to-key (start-point)
   "Skip backwards to the first possible yasnippet key.
 
 This is meant to be used in `yas-key-syntaxes', since the
@@ -677,10 +677,9 @@ Only has an effect in `dix-mode' so the above shouldn't change
 how yasnippet expansion works in other modes."
   (when dix-mode
     (dix-yas-update-key-rex)
-    (let* ((point (or start-point (point)))
-           (linebeg (save-excursion (goto-char point)
+    (let* ((linebeg (save-excursion (goto-char start-point)
                                     (line-beginning-position)))
-           (haystack (buffer-substring-no-properties linebeg point)))
+           (haystack (buffer-substring-no-properties linebeg start-point)))
       (when (string-match dix-yas-key-rex haystack)
 	(goto-char (+ linebeg (match-beginning 0)))))))
 
@@ -1995,11 +1994,21 @@ by the (customizable) string `dix-dixfiles'"
          (needle-attrib (replace-regexp-in-string "<b/>" " " needle))
          (needle-cdata (replace-regexp-in-string " " "<b/>" needle))
          ;; TODO: exclude current file?
-         (files (mapconcat #'identity dix-dixfiles " ")))
+         (files (mapconcat #'identity (dix-existing-dixfiles) " ")))
     (grep (format "grep -nH -e '=\"%s\"' -e '>%s<' %s"
                   needle-attrib
                   needle-cdata
                   files))))
+
+(defun dix-existing-dixfiles (&optional dir)
+  "Get a list of any existing files that match the dix-dixfiles
+patterns, uniq'd and turned relative according to `dir' (defaults
+to `default-directory')."
+  (let ((default-directory (or dir default-directory)))
+    (let* ((existing (apply #'append (mapcar #'file-expand-wildcards dix-dixfiles)))
+           (absolute (mapcar #'file-truename existing))
+           (uniq (cl-remove-duplicates absolute :test #'equal)))
+      (mapcar #'file-relative-name uniq))))
 
 ;;; Alignment ----------------------------------------------------------------
 (defcustom dix-rp-align-column 28 "Column to align pardef <r> elements to with `align'."
