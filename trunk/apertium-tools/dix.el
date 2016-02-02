@@ -101,7 +101,7 @@
 (defconst dix-version "0.1.4")
 
 (require 'nxml-mode)
-(require 'cl)
+(require 'cl-lib)
 (require 'easymenu)
 
 ;;;============================================================================
@@ -1937,7 +1937,7 @@ on a previously narrowed buffer (the default behaviour for
 	   (end (mark))
 	   (region (buffer-substring beg end)))
       (delete-region beg end)
-      (beginning-of-buffer)
+      (goto-char (point-min))
       (end-of-line)
       (insert region)))
   (re-search-forward "\\S "))
