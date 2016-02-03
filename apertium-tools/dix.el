@@ -1725,6 +1725,7 @@ lahka:slags
 <e><p><l>lahka<s n=\"Adv\"/></l><r>slags<s n=\"adv\"/></r></p></e>
 "
   ;; TODO: remove the ugly
+  ;; TODO: support for turning :<: and :>: into restrictions
   (interactive)
   (nxml-token-before)
   (when (eq xmltok-type 'data)
