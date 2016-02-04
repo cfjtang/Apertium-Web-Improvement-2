@@ -63,10 +63,9 @@ $(PREFIX2).automorf.bin: $(AP_SRC2)/$(LANG2).automorf.bin $(PREFIX2).autobil.bin
 # -------------------
 # Danish generation:
 # ---------------------
-# TODO: not merged with languages/apertium-dan yet
-$(PREFIX1).autogen.bin: $(BASENAME).$(LANG2).dix
-	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
-	lt-comp rl $(BASENAME).$(LANG2).dix $@
+$(PREFIX1).autogen.bin: $(AP_SRC2)/$(LANG2).autogen.bin
+	cp $< $@
+# TODO: not merged with languages/apertium-dan yet: $(BASENAME).$(LANG2).dix
 
 ###############################################################################
 ## Tagger models
