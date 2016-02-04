@@ -43,7 +43,7 @@
       <cat-item tags="vbmod.pp.*"/>
       <cat-item tags="vaux.pp.*"/>
     </def-cat>
-    
+
     <def-cat n="verb">
       <cat-item tags="vblex.*"/>
     </def-cat>
@@ -89,7 +89,7 @@
 
     <!-- Punctuation -->
 
-    <def-cat n="sent"> 
+    <def-cat n="sent">
       <cat-item tags="sent"/>
     </def-cat>
     <def-cat n="cm">
@@ -148,7 +148,7 @@
     </def-attr>
     <def-attr n="cas">
       <attr-item tags="nom"/>
-      <attr-item tags="gen"/>      
+      <attr-item tags="gen"/>
     </def-attr>
     <def-attr n="defnes">
       <attr-item tags="def"/>
@@ -167,6 +167,8 @@
       <attr-item tags="imp"/>
       <attr-item tags="pprs"/>
       <attr-item tags="pp"/>
+      <attr-item tags="prs"/>
+      <attr-item tags="pis"/>
     </def-attr>
     <def-attr n="voz">
       <attr-item tags="actv"/>
@@ -218,7 +220,7 @@
       <list-item v="begynde"/>
     </def-list>
 
-<!-- TODO 
+<!-- TODO
 Avoid these in <vblex><pres><pasv>  Make them blive<vblex><pres><actv> verb<pp>
 Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 -->
@@ -388,14 +390,12 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
       </choose>
     </def-macro>
 
-    <def-macro n="f_conj_supn1" npar="1">
+    <def-macro n="f_conj_supn1" npar="1" c="supine→pp (no voice); subjunctive→pp (keep voice)
+                                            TODO: bidix pardef, and should we do an aux for the subjunctives?">
       <choose>
-        <when> <!-- Change the supine in Swedish to the perfect participle in Danish -->
+        <when>
           <test>
-              <equal>
-                <clip pos="1" side="sl" part="temps"/>
-                <lit-tag v="supn"/>
-              </equal>
+              <equal><clip pos="1" side="sl" part="temps"/><lit-tag v="supn"/></equal>
           </test>
           <let>
             <clip pos="1" side="tl" part="voz"/>
@@ -404,6 +404,28 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
           <let>
             <clip pos="1" side="tl" part="temps"/>
             <lit-tag v="pp"/>
+          </let>
+        </when>
+      </choose>
+      <choose>
+        <when>
+          <test>
+            <equal><clip pos="1" side="sl" part="temps"/><lit-tag v="pis"/></equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="temps"/>
+            <lit-tag v="past"/>
+          </let>
+        </when>
+      </choose>
+      <choose>
+        <when>
+          <test>
+            <equal><clip pos="1" side="sl" part="temps"/><lit-tag v="prs"/></equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="temps"/>
+            <lit-tag v="pres"/>
           </let>
         </when>
       </choose>
@@ -417,7 +439,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
       <choose>
         <when>
           <test>
-            <and> 
+            <and>
               <in caseless="yes">
                 <clip pos="1" side="tl" part="lem"/>
                 <list n="no_pres_pasv"/>
@@ -489,9 +511,9 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 
     <def-macro n="f_concord1" npar="1">
       <choose>
-        <!--To determine value of variables of gender and
-                  number and propagate to other rules.  Variables are
-                  not used again in this rule -->
+        <!--To determine value of variables of gender and number and
+             propagate to other rules. Variables are not used again in
+             this rule -->
         <when>
           <test>
             <equal>
@@ -646,11 +668,11 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	  </test>
 	  <let><var n="concPrimero"/><lit v="true"/></let><!-- there is gender and number agreement-->
 	</when>
-	<otherwise> 
+	<otherwise>
 	  <let><var n="concPrimero"/><lit v="false"/></let><!-- there isn't gender and number agreement-->
 	</otherwise>
       </choose>
-      
+
       <choose>
 	<when>
 	  <test> <!-- Propagate the main parameter gender if it has been modified during the translation  -->
@@ -704,15 +726,15 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 		    <lit v="true"/>
 		  </equal>
 		</and>
-	      </test>		 	       
+	      </test>
 	      <let>
 		<clip pos="2" side="tl" part="gen"/>
-		<clip pos="1" side="tl" part="gen"/> 
+		<clip pos="1" side="tl" part="gen"/>
 	      </let>
 	    </when>
 	  </choose>
 	</when>
-      </choose>  
+      </choose>
       <choose>
 	<when>
 	  <test> <!-- Propagate the main parameter number if it has been modified during the translation  -->
@@ -769,13 +791,13 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	      </test>
 	      <let>
 		<clip pos="2" side="tl" part="nbr"/>
-		<clip pos="1" side="tl" part="nbr"/> 
+		<clip pos="1" side="tl" part="nbr"/>
 	      </let>
 	    </when>
 	  </choose>
 	</when>
       </choose>
-      
+
       <choose>
 	<when>
 	  <test> <!-- Which is the rule general gender? -->
@@ -842,7 +864,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	  </test>
 	  <let>
 	    <var n="genero"/>
-	    <clip pos="1" side="sl" part="gen"/> 
+	    <clip pos="1" side="sl" part="gen"/>
 	  </let>
 	</when>
 	<when>
@@ -862,7 +884,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	  </test>
 	  <let>
 	    <var n="genero"/>
-	    <clip pos="2" side="sl" part="gen"/> 
+	    <clip pos="2" side="sl" part="gen"/>
 	  </let>
 	</when>
 	<otherwise>
@@ -877,7 +899,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 
       <choose>
 	<when><!-- Which is the rule general number? -->
-	  <test> 
+	  <test>
 	    <equal>
 	      <clip pos="1" side="tl" part="nbr"/>
 	      <lit-tag v="sg"/>
@@ -941,7 +963,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	  </test>
 	  <let>
 	    <var n="numero"/>
-	    <clip pos="1" side="sl" part="nbr"/> 
+	    <clip pos="1" side="sl" part="nbr"/>
 	  </let>
 	</when>
 	<when>
@@ -961,7 +983,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	  </test>
 	  <let>
 	    <var n="numero"/>
-	    <clip pos="2" side="sl" part="nbr"/> 
+	    <clip pos="2" side="sl" part="nbr"/>
 	  </let>
 	</when>
 	<when>
@@ -1052,10 +1074,10 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
       </choose>
     </def-macro>
 
-    <def-macro n="f_concord3" npar="3"> 
+    <def-macro n="f_concord3" npar="3">
       <choose><!-- Look whether in source language there is concordance between first and second element -->
 	<when>
-	  <test> 
+	  <test>
 	    <and>
 	      <or>
 		<equal>
@@ -1089,13 +1111,13 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	  </test>
 	  <let><var n="concPrimero"/><lit v="true"/></let>
 	</when>
-	<otherwise> 
+	<otherwise>
 	  <let><var n="concPrimero"/><lit v="false"/></let>
 	</otherwise>
       </choose>
       <choose><!-- Look whether in source language there is concordance between second and third element -->
 	<when>
-	  <test> 
+	  <test>
 	    <and>
 	      <or>
 		<equal>
@@ -1128,8 +1150,8 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	    </and>
 	  </test>
 	  <let><var n="concSegundo"/><lit v="true"/></let>
-	</when>	 
-	<otherwise> 
+	</when>
+	<otherwise>
 	  <let><var n="concSegundo"/><lit v="false"/></let>
 	</otherwise>
       </choose>
@@ -1137,7 +1159,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 
       <choose><!-- Propagate the main parameter gender if it has been modified during the translation -->
 	<when>
-	  <test> 
+	  <test>
 	    <and>
 	      <not>
 		<equal>
@@ -1191,13 +1213,13 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	      </test>
 	      <let>
 		<clip pos="2" side="tl" part="gen"/>
-		<clip pos="1" side="tl" part="gen"/> 
+		<clip pos="1" side="tl" part="gen"/>
 	      </let>
-	    </when> 
-	  </choose>   
+	    </when>
+	  </choose>
 	  <choose>
 	    <when>
-	      <test> 
+	      <test>
 		<and>
 		  <not>
 		    <equal>
@@ -1227,16 +1249,16 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	      </test>
 	      <let>
 		<clip pos="3" side="tl" part="gen"/>
-		<clip pos="1" side="tl" part="gen"/> 
-	      </let> 
-	    </when> 
+		<clip pos="1" side="tl" part="gen"/>
+	      </let>
+	    </when>
 	  </choose>
 	</when>
       </choose>
 
       <choose><!-- Propagate the main parameter number if it has been modified during the translation -->
 	<when>
-	  <test> 
+	  <test>
 	    <and>
 	      <not>
 		<equal>
@@ -1290,7 +1312,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	      </test>
 	      <let>
 		<clip pos="2" side="tl" part="nbr"/>
-		<clip pos="1" side="tl" part="nbr"/> 
+		<clip pos="1" side="tl" part="nbr"/>
 	      </let>
 	    </when>
 	  </choose>
@@ -1326,7 +1348,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	      </test>
 	      <let>
 		<clip pos="3" side="tl" part="nbr"/>
-		<clip pos="1" side="tl" part="nbr"/> 
+		<clip pos="1" side="tl" part="nbr"/>
 	      </let>
 	    </when>
 	  </choose>
@@ -1337,7 +1359,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 
       <choose> <!-- Determine the rule general gender. Priority order: main, second and third element -->
 	<when>
-	  <test> 
+	  <test>
 	    <equal>
 	      <clip pos="1" side="tl" part="gen"/>
 	      <lit-tag v="ut"/>
@@ -1407,7 +1429,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	    <var n="genero"/>
 	    <lit-tag v="nt"/>
 	  </let>
-	</when> 
+	</when>
 	<when>
 	  <test>
 	    <and>
@@ -1425,7 +1447,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	  </test>
 	  <let>
 	    <var n="genero"/>
-	    <clip pos="1" side="sl" part="gen"/> 
+	    <clip pos="1" side="sl" part="gen"/>
 	  </let>
 	</when>
 	<when>
@@ -1445,7 +1467,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	  </test>
 	  <let>
 	    <var n="genero"/>
-	    <clip pos="2" side="sl" part="gen"/> 
+	    <clip pos="2" side="sl" part="gen"/>
 	  </let>
 	</when>
 	<when>
@@ -1465,9 +1487,9 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	  </test>
 	  <let>
 	    <var n="genero"/>
-	    <clip pos="3" side="sl" part="gen"/> 
+	    <clip pos="3" side="sl" part="gen"/>
 	  </let>
-	</when>               
+	</when>
 	<otherwise>
 	  <let>
 	    <var n="genero"/>
@@ -1475,10 +1497,10 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	  </let>
 	</otherwise>
       </choose>
-      
+
       <choose><!-- Determine the rule general number. Priority order: main, second and third element -->
 	<when>
-	  <test> 
+	  <test>
 	    <equal>
 	      <clip pos="1" side="tl" part="nbr"/>
 	      <lit-tag v="sg"/>
@@ -1548,7 +1570,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	    <var n="numero"/>
 	    <lit-tag v="pl"/>
 	  </let>
-	</when>     
+	</when>
 	<when>
 	  <test>
 	    <and>
@@ -1566,7 +1588,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	  </test>
 	  <let>
 	    <var n="numero"/>
-	    <clip pos="1" side="sl" part="nbr"/> 
+	    <clip pos="1" side="sl" part="nbr"/>
 	  </let>
 	</when>
 	<when>
@@ -1586,7 +1608,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	  </test>
 	  <let>
 	    <var n="numero"/>
-	    <clip pos="2" side="sl" part="nbr"/> 
+	    <clip pos="2" side="sl" part="nbr"/>
 	  </let>
 	</when>
 	<when>
@@ -1606,7 +1628,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	  </test>
 	  <let>
 	    <var n="numero"/>
-	    <clip pos="3" side="sl" part="nbr"/> 
+	    <clip pos="3" side="sl" part="nbr"/>
 	  </let>
 	</when>
 	<when>
@@ -1722,13 +1744,13 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	    <var n="numero"/>
 	  </let>
 	</when>
-      </choose>      
-    </def-macro>     
+      </choose>
+    </def-macro>
 
     <def-macro n="f_concord4" npar="4">
       <choose>
 	<when>
-	  <test> 
+	  <test>
 	    <and>
 	      <or>
 		<equal>
@@ -1762,14 +1784,14 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	  </test>
 	  <let><var n="concPrimero"/><lit v="true"/></let>
 	</when>
-	<otherwise> 
+	<otherwise>
 	  <let><var n="concPrimero"/><lit v="false"/></let>
 	</otherwise>
       </choose>
-      
+
       <choose>
 	<when>
-	  <test> 
+	  <test>
 	    <and>
 	      <or>
 		<equal>
@@ -1802,7 +1824,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	    </and>
 	  </test>
 	  <let><var n="concSegundo"/><lit v="true"/></let>
-	</when>	 
+	</when>
 	<otherwise>
 	  <let><var n="concSegundo"/><lit v="false"/></let>
 	</otherwise>
@@ -1810,7 +1832,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 
       <choose>
 	<when>
-	  <test> 
+	  <test>
 	    <and>
 	      <or>
 		<equal>
@@ -1843,16 +1865,16 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	    </and>
 	  </test>
 	  <let><var n="concTercero"/><lit v="true"/></let>
-	</when>	 
-	<otherwise> 
+	</when>
+	<otherwise>
 	  <let><var n="concTercero"/><lit v="false"/></let>
 	</otherwise>
       </choose>
-      
+
 
       <choose>
 	<when>
-	  <test> 
+	  <test>
 	    <and>
 	      <not>
 		<equal>
@@ -1906,9 +1928,9 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	      </test>
 	      <let>
 		<clip pos="2" side="tl" part="gen"/>
-		<clip pos="1" side="tl" part="gen"/> 
+		<clip pos="1" side="tl" part="gen"/>
 	      </let>
-	    </when> 
+	    </when>
 	  </choose>
 	  <choose>
 	    <when>
@@ -1942,13 +1964,13 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	      </test>
 	      <let>
 		<clip pos="3" side="tl" part="gen"/>
-		<clip pos="1" side="tl" part="gen"/> 
+		<clip pos="1" side="tl" part="gen"/>
 	      </let>
-	    </when> 
-	  </choose>  
+	    </when>
+	  </choose>
 	  <choose>
 	    <when>
-	      <test>  
+	      <test>
 		<and>
 		  <not>
 		    <equal>
@@ -1978,16 +2000,16 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	      </test>
 	      <let>
 		<clip pos="4" side="tl" part="gen"/>
-		<clip pos="1" side="tl" part="gen"/> 
-	      </let> 
-	    </when> 
+		<clip pos="1" side="tl" part="gen"/>
+	      </let>
+	    </when>
 	  </choose>
 	</when>
       </choose>
 
       <choose>
 	<when>
-	  <test> 
+	  <test>
 	    <and>
 	      <not>
 		<equal>
@@ -2041,7 +2063,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	      </test>
 	      <let>
 		<clip pos="2" side="tl" part="nbr"/>
-		<clip pos="1" side="tl" part="nbr"/> 
+		<clip pos="1" side="tl" part="nbr"/>
 	      </let>
 	    </when>
 	  </choose>
@@ -2077,7 +2099,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	      </test>
 	      <let>
 		<clip pos="3" side="tl" part="nbr"/>
-		<clip pos="1" side="tl" part="nbr"/> 
+		<clip pos="1" side="tl" part="nbr"/>
 	      </let>
 	    </when>
 	  </choose>
@@ -2113,16 +2135,16 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	      </test>
 	      <let>
 		<clip pos="4" side="tl" part="nbr"/>
-		<clip pos="1" side="tl" part="nbr"/> 
+		<clip pos="1" side="tl" part="nbr"/>
 	      </let>
 	    </when>
 	  </choose>
 	</when>
       </choose>
-      
+
       <choose>
 	<when>
-	  <test> 
+	  <test>
 	    <equal>
 	      <clip pos="1" side="tl" part="gen"/>
 	      <lit-tag v="ut"/>
@@ -2192,7 +2214,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	    <var n="genero"/>
 	    <lit-tag v="nt"/>
 	  </let>
-	</when> 
+	</when>
 	<when>
 	  <test>
 	    <equal>
@@ -2225,10 +2247,10 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	</otherwise>
 
       </choose>
-      
+
       <choose>
 	<when>
-	  <test> 
+	  <test>
 	    <equal>
 	      <clip pos="1" side="tl" part="nbr"/>
 	      <lit-tag v="sg"/>
@@ -2322,7 +2344,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	    <var n="numero"/>
 	    <lit-tag v="pl"/>
 	  </let>
-	</when> 
+	</when>
 	<otherwise>
 	  <let>
 	    <var n="numero"/>
@@ -2331,7 +2353,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	</otherwise>
       </choose>
 
-      <choose> 
+      <choose>
 	<when>
 	  <test>
 	    <equal>
@@ -2385,7 +2407,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	    <clip pos="4" side="tl" part="gen"/>
 	    <var n="genero"/>
 	  </let>
-	</when> 
+	</when>
       </choose>
       <choose>
 	<when>
@@ -2442,8 +2464,8 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	    <var n="numero"/>
 	  </let>
 	</when>
-      </choose>      
-    </def-macro>      
+      </choose>
+    </def-macro>
 
     <def-macro n="f_comparatiu1" npar="1"><!--per a afegir adverbi 'més' en adjs comparatius. -->
       <let>
@@ -2536,7 +2558,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
         <otherwise>
           <append n="adjectiu1">
             <lit v=""/>
-          </append> 
+          </append>
         </otherwise>
       </choose>
     </def-macro>
@@ -3036,7 +3058,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
     </rule>
 
 
- 
+
     <rule comment="REGLA: VERB">
       <pattern>
         <pattern-item n="verb"/>
@@ -3063,7 +3085,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
         </call-macro>
       </action>
     </rule>
- 
+
     <rule comment="REGLA: får inte VERB  -   må ikke VERB">
       <pattern>
         <pattern-item n="få"/>
@@ -3212,7 +3234,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
             <clip pos="3" side="tl" part="lemh"/>
             <clip pos="3" side="tl" part="a_verb"/>
             <clip pos="3" side="tl" part="temps"/>
-            <clip pos="3" side="tl" part="voz"/> 
+            <clip pos="3" side="tl" part="voz"/>
             <clip pos="3" side="tl" part="lemq"/>
           </lu>
         </out>
@@ -3236,7 +3258,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
       </action>
     </rule>
 
-    
-  
+
+
   </section-rules>
 </transfer>
