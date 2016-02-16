@@ -1,115 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <modes>
-<!-- Miscellaneous modes -->
-
-  <mode name="swe-dan-bytecode" install="yes">
-    <pipeline>
-      <program name="lt-proc -e">
-        <file name="swe-dan.automorf.bin"/>
-      </program>
-      <program name="apertium-tagger -g $2">
-        <file name="swe-dan.prob"/>
-      </program>
-      <program name="apertium-pretransfer"/>
-      <program name="apertium-transfer-j">
-        <file name="swe-dan.t1x.class"/>
-        <file name="swe-dan.t1x.bin"/>
-        <file name="swe-dan.autobil.bin"/>
-      </program>
-      <program name="lt-proc $1">
-        <file name="swe-dan.autogen.bin"/>
-      </program>
-    </pipeline>
-  </mode>
-
-  <mode name="swe-dan-withrules" install="yes">
-    <pipeline>
-      <program name="lt-proc">
-        <file name="swe-dan.automorf.bin"/>
-      </program>
-      <program name="cg-proc">
-        <file name="swe-dan.rlx.bin"/>
-      </program>
- 
-      <program name="apertium-tagger -g $2">
-        <file name="swe-dan.prob"/>
-      </program>
-      <program name="apertium-pretransfer"/>
-      <program name="apertium-transfer">
-        <file name="apertium-swe-dan.swe-dan.t1x"/>
-        <file name="swe-dan.t1x.bin"/>
-        <file name="swe-dan.autobil.bin"/>
-      </program>
-      <program name="lt-proc $1">
-        <file name="swe-dan.autogen.bin"/>
-      </program>
-    </pipeline>
-  </mode>
- 
-  <mode name="swe-dan-profile" install="no">
-    <pipeline>
-      <program name="lt-proc">
-        <file name="swe-dan.automorf.bin"/>
-      </program>
-      <program name="apertium-tagger -g $2">
-        <file name="swe-dan.prob"/>
-      </program>
-      <program name="apertium-pretransfer"/>
-      <program name="apertium-transfer">
-        <file name="apertium-swe-dan.swe-dan.t1x"/>
-        <file name="swe-dan.t1x.bin"/>
-        <file name="swe-dan.autobil.bin"/>
-      </program>
-      <program name="lt-proc $1">
-        <file name="profiler/swe-dan.autogen.bin"/>
-      </program>
-      <program name="apertium-dixtools profilecollect">
-        <file name="dixtools-profiledata.txt"/>
-      </program>
-    </pipeline>
-  </mode>
- 
-  <mode name="swe-dan-testword" install="no">
-    <pipeline>
-	<!-- <program prefix="./dev/" name="lt-expand-grep.sh"> -->
-      <program name="lt-expand-grep.sh"> 
-        <file name="apertium-swe-dan.swe.dix"/>
-      </program>
-      <program name="apertium-pretransfer"/>
-      <program name="apertium-transfer">
-        <file name="apertium-swe-dan.swe-dan.t1x"/>
-        <file name="swe-dan.t1x.bin"/>
-        <file name="swe-dan.autobil.bin"/>
-      </program>
-      <program name="lt-proc $1">
-        <file name="swe-dan.autogen.bin"/>
-      </program>
-    </pipeline>
-  </mode>
-
-  <mode name="dan-swe-bytecode" install="no">
-    <pipeline>
-      <program name="lt-proc">
-        <file name="dan-swe.automorf.bin"/>
-      </program>
-      <program name="apertium-tagger -g $2">
-        <file name="dan-swe.prob"/>
-      </program>
-      <program name="apertium-pretransfer"/>
-      <program name="apertium-transfer-j">
-        <file name="dan-swe.t1x.class"/>
-        <file name="dan-swe.t1x.bin"/>
-        <file name="dan-swe.autobil.bin"/>
-      </program>
-      <program name="lt-proc $1">
-        <file name="dan-swe.autogen.bin"/>
-      </program>
-      <program name="lt-proc -p">
-        <file name="dan-swe.autopgen.bin"/>
-      </program>
-    </pipeline>
-  </mode>
-
 <!-- Swedish → Danish -->
 
   <mode name="swe-dan-morph" install="no">
@@ -148,6 +38,25 @@
     </pipeline>
   </mode>
 
+  <mode name="swe-dan-lextor" install="no">
+    <pipeline>
+      <program name="lt-proc -e">
+        <file name="swe-dan.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="swe-dan.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="swe-dan.autobil.bin"/>
+      </program>
+      <program name="lrx-proc -m">
+        <file name="swe-dan.autolex.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
   <mode name="swe-dan-transfer" install="no">
     <pipeline>
       <program name="lt-proc -e">
@@ -159,6 +68,9 @@
       <program name="apertium-pretransfer"/>
       <program name="lt-proc -b">
         <file name="swe-dan.autobil.bin"/>
+      </program>
+      <program name="lrx-proc -m">
+        <file name="swe-dan.autolex.bin"/>
       </program>
       <program name="apertium-transfer -b -t">
         <file name="apertium-swe-dan.swe-dan.t1x"/>
@@ -178,6 +90,9 @@
       <program name="apertium-pretransfer"/>
       <program name="lt-proc -b">
         <file name="swe-dan.autobil.bin"/>
+      </program>
+      <program name="lrx-proc -m">
+        <file name="swe-dan.autolex.bin"/>
       </program>
       <program name="apertium-transfer -b">
         <file name="apertium-swe-dan.swe-dan.t1x"/>
