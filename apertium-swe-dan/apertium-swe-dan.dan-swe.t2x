@@ -15,10 +15,10 @@
       <cat-item tags="np.*"/>
     </def-cat>
     <def-cat n="nind">
-      <cat-item tags="n.*.ind"/>
+      <cat-item tags="n.*.ind.*"/>
     </def-cat>
     <def-cat n="ndef">
-      <cat-item tags="n.*.def"/>
+      <cat-item tags="n.*.def.*"/>
     </def-cat>
     <def-cat n="prep_gen">
       <cat-item lemma="gen-prep" tags="pr"/>
@@ -372,7 +372,7 @@
 
     <def-macro n="out_ndef" npar="2"
                c="arg.1: possessed noun, arg.2: gives typographic case
-                  Strip case, add definiteness.">
+                  add definiteness.">
       <call-macro n="get_case_from_detpos">
         <with-param pos="1"/>
         <with-param pos="2"/>
@@ -390,7 +390,7 @@
         <lit v="det"/>
         <var n="det_gender"/>
         <var n="number_no_sp"/>
-        <lit v="{^seg"/>
+        <lit v="{^sin"/>
         <lit-tag v="det.pos"/>
         <var n="det_gender"/>
         <var n="number_no_sp"/>
