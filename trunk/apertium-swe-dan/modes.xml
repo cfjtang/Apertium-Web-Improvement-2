@@ -377,6 +377,31 @@
     </pipeline>
   </mode>
 
+  <mode name="dan-swe-from-biltrans" install="yes"> <!-- -f none -->
+    <pipeline>
+      <program name="lt-proc -b">
+        <file name="dan-swe.autobil.bin"/>
+      </program>
+      <program name="lrx-proc -m">
+        <file name="dan-swe.autolex.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-swe-dan.dan-swe.t1x"/>
+        <file name="dan-swe.t1x.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-swe-dan.dan-swe.t2x"/>
+        <file name="dan-swe.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-swe-dan.dan-swe.t3x"/>
+        <file name="dan-swe.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="dan-swe.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
 
 
 </modes>
