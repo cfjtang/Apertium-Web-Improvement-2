@@ -373,11 +373,15 @@
     </def-list>
 
     <def-list n="adj-genders" c="possible swe adj genders">
+      <list-item v="&lt;fn&gt;"/>
       <list-item v="&lt;m&gt;"/>
-      <list-item v="&lt;mf&gt;"/>
-      <list-item v="&lt;f&gt;"/>
+      <list-item v="&lt;ut&gt;"/>
       <list-item v="&lt;nt&gt;"/>
       <list-item v="&lt;un&gt;"/>
+    </def-list>
+    <def-list n="adj-sg-ind-genders" c="possible swe adj genders for sg ind forms">
+      <list-item v="&lt;ut&gt;"/>
+      <list-item v="&lt;nt&gt;"/>
     </def-list>
   </section-def-lists>
 
@@ -434,33 +438,73 @@
     <def-macro n="set_gender1.adj" npar="1"
                c="arg.1: adj">
       <choose><when>
-        <test><or>
-          <equal><clip pos="1" side="tl" part="gen"/><lit-tag v="m"/></equal>
+        <test><and>
+          <equal><clip pos="1" side="tl" part="grad"/><lit-tag v="pst"/></equal>
+          <or>
+            <equal><clip pos="1" side="tl" part="nbr"/><lit-tag v="ND"/></equal>
+            <equal><clip pos="1" side="tl" part="gen"/><lit-tag v="GD"/></equal>
+          </or>
+        </and></test>
+        <let><clip pos="1" side="tl" part="nbr"/><lit-tag v="pl"/></let>
+        <let><clip pos="1" side="tl" part="gen"/><lit-tag v="un"/></let>
+      </when></choose>
+      <choose><when>
+        <test><and>
+          <equal><clip pos="1" side="tl" part="grad"/><lit-tag v="sup"/></equal>
           <equal><clip pos="1" side="tl" part="gen"/><lit-tag v="GD"/></equal>
-        </or></test>
-        <let><clip pos="1" side="tl" part="gen"/><lit-tag v="ut"/></let>
+        </and></test>
+        <let><clip pos="1" side="tl" part="gen"/><lit-tag v="m"/></let>
       </when></choose>
     </def-macro>
 
     <def-macro n="set_gender2.n.adj" npar="2"
                c="arg.1: noun, arg.2: adjective
-                  Only take noun gender if adj is GD (in which case we may have adj.f in nn.dix),
-                  or if noun has changed gender (if not GD, don't allow adj.f as target).
+                  Only take noun gender if adj is GD, or if noun has changed gender.
                   (We want to allow 'helt.nt svart.mf katt.m', no gender change nor GD on 'helt',
                    but o/w make sure adj corresponds: 'helt.nt forfatterskap => heil.mf forfattarskap')">
-      <choose><when>
+      <choose><when c="The 'un' gender is only on taggings that never have other possibilities.
+                       also, be conservative: only set gender if sl→tl changed gender, or we have a GD">
         <test><and>
-          <in><clip pos="1" side="tl" part="gen"/><list n="adj-genders"/></in>
+          <not><equal><clip pos="2" side="tl" part="gen"/><lit-tag v="un"/></equal></not>
           <or>
             <equal><clip pos="2" side="tl" part="gen"/><lit-tag v="GD"/></equal>
-            <and>
-              <not><equal><clip pos="1" side="sl" part="gen"/><clip pos="1" side="tl" part="gen"/></equal></not>
-              <not><equal><clip pos="1" side="tl" part="gen"/><lit-tag v="f"/></equal></not>
-            </and>
+            <not><equal><clip pos="1" side="sl" part="gen"/><clip pos="1" side="tl" part="gen"/></equal></not>
           </or>
         </and></test>
-        <let><clip pos="2" side="tl" part="gen"/><clip pos="1" side="tl" part="gen"/></let>
+
+        <choose>
+          <when>
+            <test><and>
+              <equal><clip pos="2" side="tl" part="nbr"/><lit-tag v="sg"/></equal>
+              <equal><clip pos="2" side="tl" part="art"/><lit-tag v="ind"/></equal>
+              <in><clip pos="1" side="tl" part="gen"/><list n="adj-sg-ind-genders"/></in>
+            </and></test>
+            <let><clip pos="2" side="tl" part="gen"/><clip pos="1" side="tl" part="gen"/></let>
+          </when>
+        </choose>
+
+        <choose>
+          <when>
+            <test><and>
+              <or>
+                <equal><clip pos="2" side="tl" part="nbr"/><lit-tag v="sg"/></equal>
+                <equal><clip pos="2" side="tl" part="nbr"/><lit-tag v="sp"/></equal>
+              </or>
+              <equal><clip pos="2" side="tl" part="art"/><lit-tag v="def"/></equal>
+            </and></test>
+            <choose><when>
+              <test><equal><clip pos="1" side="tl" part="gen"/><lit-tag v="ut"/></equal></test>
+              <let><clip pos="2" side="tl" part="gen"/><lit-tag v="m"/></let>
+            </when></choose>
+            <choose><when>
+              <test><equal><clip pos="1" side="tl" part="gen"/><lit-tag v="nt"/></equal></test>
+              <let><clip pos="2" side="tl" part="gen"/><lit-tag v="fn"/></let>
+            </when></choose>
+          </when>
+        </choose>
+
       </when></choose>
+      <!-- In case the above didn't help: -->
       <call-macro n="set_gender1.adj"><with-param pos="2"/></call-macro>
     </def-macro>
 
