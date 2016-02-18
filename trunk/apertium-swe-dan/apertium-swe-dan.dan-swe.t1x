@@ -527,19 +527,12 @@
           <let>
             <var n="grau_aux"/>
             <concat>
-              <lit v="^mykje"/>
-              <lit-tag v="adj"/>
-              <lit-tag v="sint"/>
+              <lit v="^mycket"/>
+              <lit-tag v="adv"/>
               <clip pos="1" side="tl" part="grau"/>
-              <lit-tag v="un"/>
-              <lit-tag v="sp"/>
+              <lit v="$ "/>
             </concat>
           </let>
-          <choose><when>
-            <test><equal><clip pos="1" side="tl" part="grau"/><lit-tag v="sup"/></equal></test>
-            <append n="grau_aux"><lit-tag v="ind"/></append>
-          </when></choose>
-          <append n="grau_aux"><lit v="$ "/></append>
 
           <let>
             <var n="c_name"/>
@@ -551,7 +544,7 @@
 
           <let>
             <clip pos="1" side="tl" part="tags"/>
-            <lit-tag v="adj.pst.un.pl.ind"/>
+            <lit-tag v="adj.pst.un.pl.ind.nom"/>
           </let>
         </when>
 
@@ -573,7 +566,7 @@
       <choose>
         <when>
           <test><and>
-            <equal><clip pos="1" side="tl" part="lemh"/><lit v="mykje"/></equal>
+            <equal><clip pos="1" side="tl" part="lemh"/><lit v="mycket"/></equal>
             <or>
               <equal><clip pos="1" side="tl" part="grau"/><lit-tag v="comp"/></equal>
               <equal><clip pos="1" side="tl" part="grau"/><lit-tag v="sup"/></equal>
@@ -581,8 +574,15 @@
             <not><begins-with><clip pos="2" side="sl" part="a_adj"/><lit-tag v="adj.sint"/></begins-with></not>
             <begins-with><clip pos="2" side="tl" part="a_adj"/><lit-tag v="adj.sint"/></begins-with>
           </and></test>
-          <!-- The second adj is synthetic, so copy tags from first adj: -->
-          <let><clip pos="2" side="tl" part="tags"/><clip pos="1" side="tl" part="tags"/></let>
+          <choose c="The second adj is synthetic, so copy tags from first adj">
+            <when>
+              <test><equal><clip pos="1" side="tl" part="grau"/><lit-tag v="comp"/></equal></test>
+              <let><clip pos="2" side="tl" part="tags"/><lit-tag v="adj.sint.comp.un.sp.nom"/></let>
+            </when>
+            <otherwise>
+              <let><clip pos="2" side="tl" part="tags"/><lit-tag v="adj.sint.sup.un.sp.ind.nom"/></let>
+            </otherwise>
+          </choose>
           <!-- And delete the first (meir/mest) adj: -->
           <let><clip pos="1" side="tl" part="whole"/><lit v=""/></let>
           <let><var n="grau_aux"/><lit v=""/></let>
@@ -603,7 +603,7 @@
             </and></test>
             <let>
               <clip pos="2" side="tl" part="tags"/>
-              <lit-tag v="adj.pst.un.pl.ind"/>
+              <lit-tag v="adj.pst.un.pl.ind.nom"/>
             </let>
           </when></choose>
         </otherwise>
