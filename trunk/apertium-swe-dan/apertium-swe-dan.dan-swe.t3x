@@ -160,47 +160,33 @@
                c="arg.1: noun, arg.2: adjective, arg.3: chunk.
                   Nouns typically get chunk defnes.
                   Allow adjectives to turn definite (from chunk defnes), but not indefinite.">
-      <choose><when>
-        <test><and>
-          <not><equal><clip pos="1" part="a_cmp"/><lit-tag v="cmp-split"/></equal></not>
-          <not><and>
-            <equal><clip pos="2" part="nbr"/><lit-tag v="sg"/></equal>
-            <equal><clip pos="1" part="art"/><lit v=""/></equal>
-          </and></not>
-        </and></test>
-        <let><clip pos="1" part="art"/><clip pos="3" part="art"/></let>
-      </when></choose>
+      <!-- <choose><when> -->
+      <!--   <test><and> -->
+      <!--     <not><equal><clip pos="1" part="a_cmp"/><lit-tag v="cmp-split"/></equal></not> -->
+      <!--     <not><and> -->
+      <!--       <equal><clip pos="2" part="nbr"/><lit-tag v="sg"/></equal> -->
+      <!--       <equal><clip pos="1" part="art"/><lit v=""/></equal> -->
+      <!--     </and></not> -->
+      <!--   </and></test> -->
+      <!--   <let><clip pos="1" part="art"/><clip pos="3" part="art"/></let> -->
+      <!-- </when></choose> -->
+
+      <!-- TODO: -->
+      <!-- <choose><when> -->
+      <!--   <test><and> -->
+      <!--     <equal><clip pos="2" part="art"/><lit-tag v="ind"/></equal> -->
+      <!--     <equal><clip pos="3" part="art"/><lit-tag v="def"/></equal> -->
+      <!--   </and></test> -->
+      <!--   <let><clip pos="2" part="art"/><clip pos="3" part="art"/></let> -->
+      <!-- </when></choose> -->
 
       <choose><when>
-        <test><and>
-          <equal><clip pos="2" part="art"/><lit-tag v="ind"/></equal>
-          <equal><clip pos="3" part="art"/><lit-tag v="def"/></equal>
-        </and></test>
-        <let><clip pos="2" part="art"/><clip pos="3" part="art"/></let>
+        <test><equal><clip pos="2" part="nbr"/><lit-tag v="pl"/></equal></test>
+        <let><clip pos="2" part="gen"/><lit-tag v="un"/></let>
       </when></choose>
 
-      <choose><when>
-        <test><and>
-          <equal><clip pos="2" part="nbr"/><lit-tag v="pl"/></equal>
-          <equal><clip pos="2" part="art"/><lit-tag v="def"/></equal>
-        </and></test>
-        <let><clip pos="2" part="nbr"/><lit-tag v="sp"/></let>
-      </when></choose>
-
-      <choose><when>
-        <test><equal><clip pos="2" part="art"/><lit-tag v="def"/></equal></test>
-        <choose>
-          <when c="pp: always sg and no gender when def">
-            <test><equal><clip pos="2" part="temps"/><lit-tag v="pp"/></equal></test>
-            <let><clip pos="2" part="gen"/><lit v=""/></let>
-            <let><clip pos="2" part="nbr"/><lit-tag v="sg"/></let>
-          </when>
-          <otherwise c="pst/sup: always sp and un when def">
-            <let><clip pos="2" part="gen"/><lit-tag v="un"/></let>
-            <let><clip pos="2" part="nbr"/><lit-tag v="sp"/></let>
-          </otherwise>
-        </choose>
-      </when></choose>
+      <!-- ind sg is always ut/un -->
+      <!-- pst/sup: always fn/m and sg/sp when def -->
     </def-macro>
   </section-def-macros>
 
