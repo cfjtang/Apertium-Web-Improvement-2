@@ -7,6 +7,8 @@ var textTranslateRequest;
 
 if(modeEnabled('translation')) {
     $(document).ready(function () {
+        synchronizeTextareaHeights();
+
         $('#srcLanguages').on('click', '.languageName:not(.text-muted)', function () {
             curSrcLang = $(this).attr('data-code');
             handleNewCurrentLang(curSrcLang, recentSrcLangs, 'srcLang');
@@ -75,6 +77,12 @@ if(modeEnabled('translation')) {
                 }
                 persistChoices('translator', true);
             }, timeout);
+
+            synchronizeTextareaHeights();
+        });
+
+        $(window).resize(function(event) {
+            synchronizeTextareaHeights();
         });
 
         $('#originalText').blur(function() {
@@ -83,6 +91,10 @@ if(modeEnabled('translation')) {
 
         $('#instantTranslation').change(function () {
             persistChoices('translator');
+        });
+
+        $('#markUnknown').change(function() {
+            translate();
         });
 
         $('#originalText').on('input propertychange', function () {
@@ -428,7 +440,8 @@ function translateText() {
                 },
                 data: {
                     'langpair': curSrcLang + '|' + curDstLang,
-                    'q': $('#originalText').val()
+                    'q': $('#originalText').val(),
+                    'markUnknown': $('#markUnknown').prop('checked') ? 'yes': 'no'
                 },
                 success: function (data) {
                     if(data.responseStatus === 200) {
@@ -635,4 +648,19 @@ function autoSelectDstLang() {
             translateText();
         }
     }
+}
+
+function synchronizeTextareaHeights() {
+    // Disables auto-resize on mobile devices (< 992px viewport)
+    if($(window).width() < 992) {
+        return;
+    }
+
+    $('#originalText').css({
+      'overflow-y': 'hidden',
+      'height': 'auto'
+    });
+    var originalTextScrollHeight = $('#originalText')[0].scrollHeight;
+    $('#originalText').css('height', originalTextScrollHeight + 'px');
+    $('#translatedText').css('height', (originalTextScrollHeight + 10) + 'px');
 }
