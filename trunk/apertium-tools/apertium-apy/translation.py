@@ -41,7 +41,7 @@ class Pipeline(object):
         return self.users < other.users
 
     @gen.coroutine
-    def translate(self, _):
+    def translate(self, toTranslate, nosplit):
         raise Exception("Not implemented, subclass me!")
 
 
@@ -59,12 +59,15 @@ class FlushingPipeline(Pipeline):
         # server – why?
 
     @gen.coroutine
-    def translate(self, toTranslate):
+    def translate(self, toTranslate, nosplit=False):
         with self.use():
-            all_split = splitForTranslation(toTranslate, n_users=self.users)
-            parts = yield [translateNULFlush(part, self) for part in all_split]
-            # Equivalent to "return foo" in 3.3, but also works under 3.2:
-            return "".join(parts)
+            if nosplit:
+                res = yield translateNULFlush(toTranslate, self)
+                return res
+            else:
+                all_split = splitForTranslation(toTranslate, n_users=self.users)
+                parts = yield [translateNULFlush(part, self) for part in all_split]
+                return "".join(parts)
 
 class SimplePipeline(Pipeline):
     def __init__(self, commands, *args, **kwargs):
@@ -72,7 +75,7 @@ class SimplePipeline(Pipeline):
         super().__init__(*args, **kwargs)
 
     @gen.coroutine
-    def translate(self, toTranslate):
+    def translate(self, toTranslate, nosplit="ignored"):
         with self.use():
             with (yield self.lock.acquire()):
                 res = yield translateSimple(toTranslate, self.commands)
@@ -289,8 +292,12 @@ def translateSimple(toTranslate, commands):
     return translated.decode('utf-8')
 
 
-def translateDoc(fileToTranslate, fmt, modeFile):
+def translateDoc(fileToTranslate, fmt, modeFile, unknownMarks = False):
     modesdir = os.path.dirname(os.path.dirname(modeFile))
     mode = os.path.splitext(os.path.basename(modeFile))[0]
-    return Popen(['apertium', '-f', fmt, '-d', modesdir, mode],
+    if unknownMarks:
+      return Popen(['apertium', '-f', fmt, '-d', modesdir, mode],
+                 stdin=fileToTranslate, stdout=PIPE).communicate()[0]
+    else:
+      return Popen(['apertium', '-f', fmt, '-u', '-d', modesdir, mode],
                  stdin=fileToTranslate, stdout=PIPE).communicate()[0]

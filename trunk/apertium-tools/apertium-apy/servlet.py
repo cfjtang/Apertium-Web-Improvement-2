@@ -8,11 +8,13 @@ from subprocess import Popen, PIPE
 from multiprocessing import Pool, TimeoutError
 from functools import wraps
 from threading import Thread
-from datetime import datetime
+from datetime import datetime, timedelta
 import heapq
 
 import tornado, tornado.web, tornado.httpserver, tornado.process, tornado.iostream
-from tornado import escape, gen
+from tornado import httpclient
+from tornado import gen
+from tornado import escape
 from tornado.escape import utf8
 try: # 3.1
     from tornado.log import enable_pretty_logging
@@ -21,6 +23,8 @@ except ImportError: # 2.1
 
 from modeSearch import searchPath
 from util import getLocalizedLanguages, stripTags, processPerWord, getCoverage, getCoverages, toAlpha3Code, toAlpha2Code, noteUnknownToken, scaleMtLog, TranslationInfo, closeDb, flushUnknownWords, inMemoryUnknownToken
+
+from urllib.parse import urlparse
 
 if sys.version_info.minor < 3:
     import translation_py32 as translation
@@ -35,6 +39,12 @@ try:
 except:
     cld2 = None
 
+try:
+    import chardet
+except:
+    chardet = None
+
+__version__ = "0.9.0"
 
 def run_async_thread(func):
     @wraps(func)
@@ -75,8 +85,10 @@ class BaseHandler(tornado.web.RequestHandler):
     verbosity = 0
 
     stats = {
+        'startdate': datetime.now(),
         'useCount': {},
         'vmsize': 0,
+        'timing': []
     }
 
     pipeline_cmds = {} # (l1, l2): translation.ParsedModes
@@ -187,14 +199,44 @@ class ListHandler(BaseHandler):
 class StatsHandler(BaseHandler):
     @tornado.web.asynchronous
     def get(self):
+        numRequests = self.get_argument('requests', 1000)
+        try:
+            numRequests = int(numRequests)
+        except ValueError:
+            numRequests = 1000
+
+        periodStats = self.stats['timing'][-numRequests:]
+        times = sum([x[1]-x[0] for x in periodStats],
+                    timedelta())
+        chars = sum(x[2] for x in periodStats)
+        if times.total_seconds() != 0:
+            charsPerSec = round(chars/times.total_seconds(), 2)
+        else:
+            charsPerSec = 0.0
+        nrequests = len(periodStats)
+        maxAge = (datetime.now()-periodStats[0][0]).total_seconds() if periodStats else 0
+
+        uptime = int((datetime.now()-self.stats['startdate']).total_seconds())
+        useCount = { '%s-%s' % pair: useCount
+                     for pair, useCount in self.stats['useCount'].items() }
+        runningPipes = { '%s-%s' % pair: len(pipes)
+                         for pair, pipes in self.pipelines.items()
+                         if pipes != [] }
+        holdingPipes = len(self.pipelines_holding)
+
         self.sendResponse({
             'responseData': {
-                'useCount': { '%s-%s' % pair: useCount
-                              for pair, useCount in self.stats['useCount'].items() },
-                'runningPipes': { '%s-%s' % pair: len(pipes)
-                                  for pair, pipes in self.pipelines.items()
-                                  if pipes != [] },
-                'holdingPipes': len(self.pipelines_holding),
+                'uptime': uptime,
+                'useCount': useCount,
+                'runningPipes': runningPipes,
+                'holdingPipes': holdingPipes,
+                'periodStats': {
+                    'charsPerSec': charsPerSec,
+                    'totChars': chars,
+                    'totTimeSpent': times.total_seconds(),
+                    'requests': nrequests,
+                    'ageFirstRequest': maxAge
+                }
             },
             'responseDetails': None,
             'responseStatus': 200
@@ -206,14 +248,13 @@ class RootHandler(BaseHandler):
     def get(self):
         self.redirect("http://wiki.apertium.org/wiki/Apertium-apy")
 
-
 class TranslateHandler(BaseHandler):
     def notePairUsage(self, pair):
         self.stats['useCount'][pair] = 1 + self.stats['useCount'].get(pair, 0)
 
     unknownMarkRE = re.compile(r'\*([^.,;:\t\* ]+)')
-    def maybeStripMarks(self, markUnknown, l1, l2, translated):
-        self.noteUnknownTokens("%s-%s" % (l1, l2), translated)
+    def maybeStripMarks(self, markUnknown, pair, translated):
+        self.noteUnknownTokens("%s-%s" % pair, translated)
         if markUnknown:
             return translated
         else:
@@ -279,8 +320,8 @@ class TranslateHandler(BaseHandler):
             else:
                 return False
 
-    def getPipeline(self, l1, l2):
-        pair = (l1, l2)
+    def getPipeline(self, pair):
+        (l1, l2) = pair
         if self.shouldStartPipe(l1, l2):
             logging.info("Starting up a new pipeline for %s-%s …", l1, l2)
             if pair not in self.pipelines:
@@ -290,56 +331,95 @@ class TranslateHandler(BaseHandler):
         return self.pipelines[pair][0]
 
     def logBeforeTranslation(self):
-        if self.scaleMtLogs:
-            return datetime.now()
-        return
+        return datetime.now()
 
-    def logAfterTranslation(self, before, toTranslate):
+    def logAfterTranslation(self, before, length):
+        after = datetime.now()
         if self.scaleMtLogs:
-            after = datetime.now()
             tInfo = TranslationInfo(self)
             key = getKey(tInfo.key)
-            scaleMtLog(self.get_status(), after-before, tInfo, key, len(toTranslate))
+            scaleMtLog(self.get_status(), after-before, tInfo, key, length)
+
+        if self.get_status() == 200:
+            oldest = self.stats['timing'][0][0] if self.stats['timing'] else datetime.now()
+            if datetime.now() - oldest > self.STAT_PERIOD_MAX_AGE:
+                self.stats['timing'].pop(0)
+            self.stats['timing'].append(
+                (before, after, length))
+
+    def getPairOrError(self, langpair, text_length):
+        try:
+            l1, l2 = map(toAlpha3Code, langpair.split('|'))
+        except ValueError:
+            self.send_error(400, explanation='That pair is invalid, use e.g. eng|spa')
+            self.logAfterTranslation(self.logBeforeTranslation(), text_length)
+            return False
+        if '%s-%s' % (l1, l2) not in self.pairs:
+            self.send_error(400, explanation='That pair is not installed')
+            self.logAfterTranslation(self.logBeforeTranslation(), text_length)
+            return False
+        else:
+            return (l1, l2)
+
+    @gen.coroutine
+    def translateAndRespond(self, pair, pipeline, toTranslate, markUnknown, nosplit=False):
+        markUnknown = markUnknown in ['yes', 'true', '1']
+        self.notePairUsage(pair)
+        before = self.logBeforeTranslation()
+        translated = yield pipeline.translate(toTranslate, nosplit)
+        self.logAfterTranslation(before, len(toTranslate))
+        self.sendResponse({
+            'responseData': {
+                'translatedText': self.maybeStripMarks(markUnknown, pair, translated)
+            },
+            'responseDetails': None,
+            'responseStatus': 200
+        })
+        self.cleanPairs()
 
     @gen.coroutine
     def get(self):
-        toTranslate = self.get_argument('q')
-        markUnknown = self.get_argument('markUnknown', default='yes') in ['yes', 'true', '1']
+        pair = self.getPairOrError(self.get_argument('langpair'),
+                                   len(self.get_argument('q')))
+        if pair is not None:
+            pipeline = self.getPipeline(pair)
+            yield self.translateAndRespond(pair,
+                                           pipeline,
+                                           self.get_argument('q'),
+                                           self.get_argument('markUnknown', default='yes'))
 
-        try:
-            l1, l2 = map(toAlpha3Code, self.get_argument('langpair').split('|'))
-        except ValueError:
-            self.send_error(400, explanation='That pair is invalid, use e.g. eng|spa')
-            if self.scaleMtLogs:
-                before = datetime.now()
-                tInfo = TranslationInfo(self)
-                key = getKey(tInfo.key)
-                after = datetime.now()
-                scaleMtLog(400, after-before, tInfo, key, len(toTranslate))
-            return
 
-        if '%s-%s' % (l1, l2) in self.pairs:
-            before = self.logBeforeTranslation()
-            pipeline = self.getPipeline(l1, l2)
-            self.notePairUsage((l1, l2))
-            translated = yield pipeline.translate(toTranslate)
-            self.logAfterTranslation(before, toTranslate)
-            self.sendResponse({
-                'responseData': {
-                    'translatedText': self.maybeStripMarks(markUnknown, l1, l2, translated)
-                },
-                'responseDetails': None,
-                'responseStatus': 200
-            })
-            self.cleanPairs()
+class TranslatePageHandler(TranslateHandler):
+    def htmlToText(self, html, url):
+        if chardet:
+            encoding = chardet.detect(html).get("encoding", "utf-8")
         else:
-            self.send_error(400, explanation='That pair is not installed')
-            if self.scaleMtLogs:
-                before = datetime.now()
-                tInfo = TranslationInfo(self)
-                key = getKey(tInfo.key)
-                after = datetime.now()
-                scaleMtLog(400, after-before, tInfo, key, len(toTranslate))
+            encoding = "utf-8"
+        text = html.decode(encoding)
+        text = text.replace('href="/',  'href="{uri.scheme}://{uri.netloc}/'.format(uri=urlparse(url)))
+        text = re.sub(r'a([^>]+)href=[\'"]?([^\'" >]+)', 'a \\1 href="#" onclick=\'window.parent.translateLink("\\2");\'', text)
+        return text
+
+    @gen.coroutine
+    def get(self):
+        pair = self.getPairOrError(self.get_argument('langpair'),
+                                   # Don't yet know the size of the text, and don't want to fetch it unnecessarily:
+                                   -1)
+        if pair is not None:
+            pipeline = self.getPipeline(pair)
+            http_client = httpclient.AsyncHTTPClient()
+            url = self.get_argument('url')
+            request = httpclient.HTTPRequest(url=url,
+                                            # TODO: tweak
+                                            connect_timeout=20.0,
+                                            request_timeout=20.0)
+            response = yield http_client.fetch(request)
+            toTranslate = self.htmlToText(response.body, url)
+            yield self.translateAndRespond(pair,
+                                           pipeline,
+                                           toTranslate,
+                                           self.get_argument('markUnknown', default='yes'),
+                                           nosplit=True)
 
 
 class TranslateDocHandler(TranslateHandler):
@@ -379,12 +459,18 @@ class TranslateDocHandler(TranslateHandler):
         else:
             return mimeType
 
+    # TODO: Some kind of locking. Although we can't easily re-use open
+    # pairs here (would have to reimplement lots of
+    # /usr/bin/apertium), we still want some limits on concurrent doc
+    # translation.
     @tornado.web.asynchronous
     def get(self):
         try:
             l1, l2 = map(toAlpha3Code, self.get_argument('langpair').split('|'))
         except ValueError:
             self.send_error(400, explanation='That pair is invalid, use e.g. eng|spa')
+
+        markUnknown = self.get_argument('markUnknown', default='yes') in ['yes', 'true', '1']
 
         allowedMimeTypes = {
             'text/plain': 'txt',
@@ -414,7 +500,10 @@ class TranslateDocHandler(TranslateHandler):
                         self.request.headers['Content-Type'] = 'application/octet-stream'
                         self.request.headers['Content-Disposition'] = 'attachment'
 
-                        self.write(translation.translateDoc(tempFile, allowedMimeTypes[mtype], self.pairs['%s-%s' % (l1, l2)]))
+                        if markUnknown:
+                          self.write(translation.translateDoc(tempFile, allowedMimeTypes[mtype], self.pairs['%s-%s' % (l1, l2)],True))
+                        else:
+                          self.write(translation.translateDoc(tempFile, allowedMimeTypes[mtype], self.pairs['%s-%s' % (l1, l2)],False))
                         self.finish()
                     else:
                         self.send_error(400, explanation='Invalid file type %s' % mtype)
@@ -725,7 +814,7 @@ def sanity_check():
 
 if __name__ == '__main__':
     sanity_check()
-    parser = argparse.ArgumentParser(description='Start Apertium APY')
+    parser = argparse.ArgumentParser(description='Apertium APY -- API server for machine translation and language analysis')
     parser.add_argument('pairs_path', help='path to Apertium installed pairs (all modes files in this path are included)')
     parser.add_argument('-s', '--nonpairs-path', help='path to Apertium SVN (only non-translator debug modes are included from this path)')
     parser.add_argument('-l', '--lang-names', help='path to localised language names sqlite database (default = langNames.db)', default='langNames.db')
@@ -743,8 +832,10 @@ if __name__ == '__main__':
     parser.add_argument('-m', '--max-idle-secs', help='if specified, shut down pipelines that have not been used in this many seconds', type=int, default=0)
     parser.add_argument('-r', '--restart-pipe-after', help='restart a pipeline if it has had this many requests (default = 1000)', type=int, default=1000)
     parser.add_argument('-v', '--verbosity', help='logging verbosity', type=int, default=0)
+    parser.add_argument('-V', '--version', help='show APY version', action='version', version="%(prog)s version " + __version__)
     parser.add_argument('-S', '--scalemt-logs', help='generates ScaleMT-like logs; use with --log-path; disables', action='store_true')
     parser.add_argument('-M', '--unknown-memory-limit', help="keeps unknown words in memory until a limit is reached", type=int, default=0)
+    parser.add_argument('-T', '--stat-period-max-age', help="How many seconds back to keep track request timing stats", type=int, default=3600)
     args = parser.parse_args()
 
     if args.daemon:
@@ -769,8 +860,13 @@ if __name__ == '__main__':
         if(args.daemon):
             logging.getLogger("tornado.access").propagate = False
 
+    if args.stat_period_max_age:
+        BaseHandler.STAT_PERIOD_MAX_AGE = timedelta(0, args.stat_period_max_age, 0)
+
     if not cld2:
-        logging.warning('Unable to import CLD2, continuing using naive method of language detection')
+        logging.warning("Unable to import CLD2, continuing using naive method of language detection")
+    if not chardet:
+        logging.warning("Unable to import chardet, assuming utf-8 encoding for all websites")
 
     setupHandler(args.port, args.pairs_path, args.nonpairs_path, args.lang_names, args.missing_freqs, args.timeout, args.max_pipes_per_pair, args.min_pipes_per_pair, args.max_users_per_pipe, args.max_idle_secs, args.restart_pipe_after, args.verbosity, args.scalemt_logs, args.unknown_memory_limit)
 
@@ -781,6 +877,7 @@ if __name__ == '__main__':
         (r'/stats', StatsHandler),
         (r'/translate', TranslateHandler),
         (r'/translateDoc', TranslateDocHandler),
+        (r'/translatePage', TranslatePageHandler),
         (r'/analy[sz]e', AnalyzeHandler),
         (r'/generate', GenerateHandler),
         (r'/listLanguageNames', ListLanguageNamesHandler),
