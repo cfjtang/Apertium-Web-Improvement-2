@@ -177,15 +177,34 @@ Pardef naming scheme:
     </pardef>
 
 
-
-    <pardef n="@sg_ind" c="only allow sg ind">
-<e>       <p><l><s n="sg"/><s n="ind"/></l><r><s n="sg"/><s n="ind"/></r></p></e>
+    <!-- Use trimming to restrict some entries, typically since
+         monodix only contains partial pardefs:
+    -->
+    <pardef n="@sg" c="only allow sg">
+<e>       <p><l><s n="sg"/></l><r><s n="sg"/></r></p></e>
     </pardef>
     <pardef n="@pl" c="only allow pl">
 <e>       <p><l><s n="pl"/></l><r><s n="pl"/></r></p></e>
     </pardef>
-    <pardef n="@sg" c="only allow sg">
-<e>       <p><l><s n="sg"/></l><r><s n="sg"/></r></p></e>
+    <pardef n="@ind" c="only allow ind">
+<e>       <p><l><s n="sg"/><s n="ind"/></l><r><s n="sg"/><s n="ind"/></r></p></e>
+<e>       <p><l><s n="pl"/><s n="ind"/></l><r><s n="pl"/><s n="ind"/></r></p></e>
+    </pardef>
+    <pardef n="@def" c="only allow def">
+<e>       <p><l><s n="sg"/><s n="def"/></l><r><s n="sg"/><s n="def"/></r></p></e>
+<e>       <p><l><s n="pl"/><s n="def"/></l><r><s n="pl"/><s n="def"/></r></p></e>
+    </pardef>
+    <pardef n="@sg_ind" c="only allow sg ind">
+<e>       <p><l><s n="sg"/><s n="ind"/></l><r><s n="sg"/><s n="ind"/></r></p></e>
+    </pardef>
+    <pardef n="@sg_def" c="only allow sg def">
+<e>       <p><l><s n="sg"/><s n="def"/></l><r><s n="sg"/><s n="def"/></r></p></e>
+    </pardef>
+    <pardef n="@pl_ind" c="only allow pl ind">
+<e>       <p><l><s n="pl"/><s n="ind"/></l><r><s n="pl"/><s n="ind"/></r></p></e>
+    </pardef>
+    <pardef n="@pl_def" c="only allow pl def">
+<e>       <p><l><s n="pl"/><s n="def"/></l><r><s n="pl"/><s n="def"/></r></p></e>
     </pardef>
 
 
@@ -623,7 +642,7 @@ Pardef naming scheme:
 
 <e>       <p><l>adverbial<s n="n"/><s n="nt"/></l>         <r>adverbial<s n="n"/><s n="nt"/></r></p></e>
 
-<e a="PT"><p><l>advent<s n="n"/><s n="ut"/></l>            <r>advent<s n="n"/><s n="ut"/></r></p></e>
+<e a="PT"><p><l>advent<s n="n"/><s n="nt"/></l>            <r>advent<s n="n"/><s n="ut"/></r></p></e>
 
 <e>       <p><l>advokat<s n="n"/><s n="ut"/></l>           <r>advokat<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>affix<s n="n"/><s n="nt"/></l>             <r>affiks<s n="n"/><s n="nt"/></r></p></e>
@@ -674,7 +693,7 @@ Pardef naming scheme:
 <e>       <p><l>altarskåp<s n="n"/><s n="nt"/></l>         <r>alterskab<s n="n"/><s n="nt"/></r></p></e>
 
 <e>       <p><l>alternativ<s n="n"/><s n="nt"/></l>        <r>alternativ<s n="n"/><s n="nt"/></r></p></e>
-<e>       <p><l>aluminium<s n="n"/><s n="ut"/></l>         <r>aluminium<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>aluminium<s n="n"/><s n="nt"/></l>         <r>aluminium<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>ambition<s n="n"/><s n="ut"/></l>          <r>ærgerrighed<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>ambition<s n="n"/><s n="ut"/></l>          <r>ambition<s n="n"/><s n="ut"/></r></p></e>
 
@@ -736,7 +755,7 @@ Pardef naming scheme:
 <e>       <p><l>anrop<s n="n"/><s n="nt"/></l>             <r>opkald<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>ansamling<s n="n"/><s n="ut"/></l>         <r>ansamling<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>ansats<s n="n"/><s n="ut"/></l>            <r>tilløb<s n="n"/><s n="nt"/></r></p><par n="sgpl:sp"/></e>
-<e>       <p><l>ansikte<s n="n"/><s n="ut"/></l>           <r>ansigt<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>ansikte<s n="n"/><s n="nt"/></l>           <r>ansigt<s n="n"/><s n="nt"/></r></p></e>
 
 <e>       <p><l>ansiktsuttryck<s n="n"/><s n="nt"/></l>    <r>ansigtsudtryk<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>ansjovis<s n="n"/><s n="ut"/></l>          <r>ansjos<s n="n"/><s n="ut"/></r></p></e>
@@ -1197,7 +1216,7 @@ Pardef naming scheme:
 <e>       <p><l>brudgum<s n="n"/><s n="ut"/></l>           <r>brudgom<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>brudklänning<s n="n"/><s n="ut"/></l>      <r>brudekjole<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>bruk<s n="n"/><s n="nt"/></l>              <r>brug<s n="n"/><s n="nt"/></r></p></e>
-<e>       <p><l>bruk<s n="n"/><s n="ut"/></l>              <r>brug<s n="n"/><s n="ut"/></r></p></e>
+<e>       <p><l>bruk<s n="n"/><s n="nt"/></l>              <r>brug<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>bruksanvisning<s n="n"/><s n="ut"/></l>    <r>brugsanvisning<s n="n"/><s n="ut"/></r></p></e>
 
 <e>       <p><l>bruksföremål<s n="n"/><s n="nt"/></l>      <r>brugsgenstand<s n="n"/><s n="ut"/></r></p></e>
@@ -2196,7 +2215,7 @@ Pardef naming scheme:
 <e>       <p><l>helgedom<s n="n"/><s n="ut"/></l>          <r>helligdom<s n="n"/><s n="ut"/></r></p></e>
 
 <e>       <p><l>helgon<s n="n"/><s n="nt"/></l>            <r>helgen<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>helium<s n="n"/><s n="ut"/></l>            <r>helium<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>helium<s n="n"/><s n="nt"/></l>            <r>helium<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>heltal<s n="n"/><s n="nt"/></l>            <r>heltal<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>helvete<s n="n"/><s n="nt"/></l>           <r>helvede<s n="n"/><s n="nt"/></r></p></e>
 
@@ -2373,7 +2392,7 @@ Pardef naming scheme:
 
 <e>       <p><l>incitament<s n="n"/><s n="nt"/></l>        <r>incitament<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>indian<s n="n"/><s n="ut"/></l>            <r>indianer<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>individ<s n="n"/><s n="ut"/></l>           <r>individ<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>individ<s n="n"/><s n="un"/></l>           <r>individ<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>indonesiska<s n="n"/><s n="ut"/></l>       <r>indonesisk<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>industri<s n="n"/><s n="ut"/></l>          <r>industri<s n="n"/><s n="ut"/></r></p></e>
 
@@ -2488,7 +2507,7 @@ Pardef naming scheme:
 <e>       <p><l>järv<s n="n"/><s n="ut"/></l>              <r>jærv<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>kabel<s n="n"/><s n="ut"/></l>             <r>kabel<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>kabinett<s n="n"/><s n="nt"/></l>          <r>kabinet<s n="n"/><s n="nt"/></r></p></e>
-<e>       <p><l>kadmium<s n="n"/><s n="ut"/></l>           <r>kadmium<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>kadmium<s n="n"/><s n="nt"/></l>           <r>kadmium<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>kaffe<s n="n"/><s n="nt"/></l>             <r>café<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>kaffe<s n="n"/><s n="nt"/></l>             <r>kaffe<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>kaka<s n="n"/><s n="ut"/></l>              <r>kage<s n="n"/><s n="ut"/></r></p></e>
@@ -2499,10 +2518,10 @@ Pardef naming scheme:
 <e>       <p><l>kaktus<s n="n"/><s n="ut"/></l>            <r>kaktus<s n="n"/><s n="ut"/></r></p></e>
 
 <e>       <p><l>kalas<s n="n"/><s n="nt"/></l>             <r>højtid<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>kalcium<s n="n"/><s n="ut"/></l>           <r>calcium<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>kalcium<s n="n"/><s n="nt"/></l>           <r>calcium<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>kalender<s n="n"/><s n="ut"/></l>          <r>kalender<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>kalenderår<s n="n"/><s n="nt"/></l>        <r>kalenderår<s n="n"/><s n="nt"/></r></p></e>
-<e>       <p><l>kalium<s n="n"/><s n="ut"/></l>            <r>kalium<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>kalium<s n="n"/><s n="nt"/></l>            <r>kalium<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>kalk<s n="n"/><s n="ut"/></l>              <r>kalk<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>kalkon<s n="n"/><s n="ut"/></l>            <r>kalkun<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>kalksten<s n="n"/><s n="ut"/></l>          <r>kalksten<s n="n"/><s n="ut"/></r></p><par n="sgpl:sp"/></e>
@@ -2592,7 +2611,7 @@ Pardef naming scheme:
 <e>       <p><l>klocka<s n="n"/><s n="ut"/></l>            <r>klokke<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>klockslag<s n="n"/><s n="nt"/></l>         <r>klokkeslæt<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>klockspel<s n="n"/><s n="nt"/></l>         <r>klokkespil<s n="n"/><s n="nt"/></r></p></e>
-<e>       <p><l>kloster<s n="n"/><s n="ut"/></l>           <r>kloster<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>kloster<s n="n"/><s n="nt"/></l>           <r>kloster<s n="n"/><s n="nt"/></r></p></e>
 
 <e>       <p><l>klot<s n="n"/><s n="nt"/></l>              <r>klode<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>klubb<s n="n"/><s n="ut"/></l>             <r>klub<s n="n"/><s n="ut"/></r></p></e>
@@ -2817,14 +2836,14 @@ Pardef naming scheme:
 <e>       <p><l>kvartal<s n="n"/><s n="nt"/></l>           <r>kvartal<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>kvarter<s n="n"/><s n="nt"/></l>           <r>kvarter<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>kvast<s n="n"/><s n="ut"/></l>             <r>kost<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>kvicksilver<s n="n"/><s n="ut"/></l>       <r>kviksølv<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>kvicksilver<s n="n"/><s n="nt"/></l>       <r>kviksølv<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>kvinna<s n="n"/><s n="ut"/></l>            <r>kvinde<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>kvinnfolk<s n="n"/><s n="nt"/></l>         <r>kvindfolk<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>kvist<s n="n"/><s n="ut"/></l>             <r>gren<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>kvitto<s n="n"/><s n="nt"/></l>            <r>kvittering<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>kvot<s n="n"/><s n="ut"/></l>              <r>kvotient<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>kväll<s n="n"/><s n="ut"/></l>             <r>aften<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>kväve<s n="n"/><s n="ut"/></l>             <r>kvælstof<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>kväve<s n="n"/><s n="nt"/></l>             <r>kvælstof<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>kyckling<s n="n"/><s n="ut"/></l>          <r>kylling<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>kyffe<s n="n"/><s n="nt"/></l>             <r>hul<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>kyla<s n="n"/><s n="ut"/></l>              <r>kulde<s n="n"/><s n="ut"/></r></p></e>
@@ -2960,7 +2979,7 @@ Pardef naming scheme:
 <e>       <p><l>lista<s n="n"/><s n="ut"/></l>             <r>liste<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>litauiska<s n="n"/><s n="ut"/></l>         <r>litauisk<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>liter<s n="n"/><s n="ut"/></l>             <r>liter<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>litium<s n="n"/><s n="ut"/></l>            <r>litium<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>litium<s n="n"/><s n="nt"/></l>            <r>litium<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>litteratur<s n="n"/><s n="ut"/></l>        <r>litteratur<s n="n"/><s n="ut"/></r></p></e>
 
 <e>       <p><l>liv<s n="n"/><s n="nt"/></l>               <r>liv<s n="n"/><s n="nt"/></r></p></e>
@@ -2982,7 +3001,7 @@ Pardef naming scheme:
 <e>       <p><l>lod<s n="n"/><s n="nt"/></l>               <r>lod<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>lodjur<s n="n"/><s n="nt"/></l>            <r>los<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>loft<s n="n"/><s n="nt"/></l>              <r>loft<s n="n"/><s n="nt"/></r></p></e>
-<e>       <p><l>logi<s n="n"/><s n="ut"/></l>              <r>logi<s n="n"/><s n="ut"/></r></p></e>
+<e>       <p><l>logi<s n="n"/><s n="nt"/></l>              <r>logi<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>lokalavdelning<s n="n"/><s n="ut"/></l>    <r>lokalafdeling<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>lokförare<s n="n"/><s n="ut"/></l>         <r>lokofører<s n="n"/><s n="ut"/></r></p></e>
 
@@ -3017,7 +3036,7 @@ Pardef naming scheme:
 
 <e>       <p><l>lysrör<s n="n"/><s n="nt"/></l>            <r>lysstofrør<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>läcka<s n="n"/><s n="ut"/></l>             <r>utæthed<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>läder<s n="n"/><s n="ut"/></l>             <r>læder<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>läder<s n="n"/><s n="nt"/></l>             <r>læder<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>lägenhet<s n="n"/><s n="ut"/></l>          <r>lejlighed<s n="n"/><s n="ut"/></r></p></e>
 
 <e>       <p><l>lägg<s n="n"/><s n="nt"/></l>              <r>lig<s n="n"/><s n="nt"/></r></p></e>
@@ -3079,7 +3098,7 @@ Pardef naming scheme:
 <e>       <p><l>magasin<s n="n"/><s n="nt"/></l>           <r>lager<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>mage<s n="n"/><s n="ut"/></l>              <r>mave<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>magknip<s n="n"/><s n="nt"/></l>           <r>mavekneb<s n="n"/><s n="nt"/></r></p></e>
-<e>       <p><l>magnesium<s n="n"/><s n="ut"/></l>         <r>magnesium<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>magnesium<s n="n"/><s n="nt"/></l>         <r>magnesium<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>magnet<s n="n"/><s n="ut"/></l>            <r>magnet<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>magsår<s n="n"/><s n="nt"/></l>            <r>mavesår<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>majoritet<s n="n"/><s n="ut"/></l>         <r>flertal<s n="n"/><s n="nt"/></r></p><par n="sgpl:sp"/></e>
@@ -3192,7 +3211,7 @@ Pardef naming scheme:
 <e>       <p><l>miljonär<s n="n"/><s n="ut"/></l>          <r>millionær<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>miljö<s n="n"/><s n="ut"/></l>             <r>miljø<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>million<s n="n"/><s n="ut"/></l>           <r>million<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>mineral<s n="n"/><s n="ut"/></l>           <r>mineral<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>mineral<s n="n"/><s n="nt"/></l>           <r>mineral<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>minfält<s n="n"/><s n="nt"/></l>           <r>minefelt<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>minimum<s n="n"/><s n="nt"/></l>           <r>minimum<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>minister<s n="n"/><s n="ut"/></l>          <r>minister<s n="n"/><s n="ut"/></r></p></e>
@@ -3219,7 +3238,7 @@ Pardef naming scheme:
 <e>       <p><l>mjöl<s n="n"/><s n="nt"/></l>              <r>mel<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>mjölk<s n="n"/><s n="ut"/></l>             <r>mælk<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>mobiltelefon<s n="n"/><s n="ut"/></l>      <r>mobiltelefon<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>mod<s n="n"/><s n="ut"/></l>               <r>mode<s n="n"/><s n="ut"/></r></p></e>
+<e>       <p><l>mod<s n="n"/><s n="nt"/></l>               <r>mode<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>mod<s n="n"/><s n="ut"/></l>               <r>mod<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>mod<s n="n"/><s n="ut"/></l>               <r>stemning<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>modell<s n="n"/><s n="ut"/></l>            <r>model<s n="n"/><s n="ut"/></r></p></e>
@@ -3320,7 +3339,7 @@ Pardef naming scheme:
 <e>       <p><l>möjlighet<s n="n"/><s n="ut"/></l>         <r>mulighed<s n="n"/><s n="ut"/></r></p></e>
 
 <e>       <p><l>mördare<s n="n"/><s n="ut"/></l>           <r>morder<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>mörker<s n="n"/><s n="ut"/></l>            <r>mørke<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>mörker<s n="n"/><s n="nt"/></l>            <r>mørke<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>mört<s n="n"/><s n="ut"/></l>              <r>skalle<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>mössa<s n="n"/><s n="ut"/></l>             <r>hue<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>möte<s n="n"/><s n="nt"/></l>              <r>møde<s n="n"/><s n="nt"/></r></p></e>
@@ -3335,7 +3354,7 @@ Pardef naming scheme:
 <e>       <p><l>nationaldag<s n="n"/><s n="ut"/></l>       <r>nationaldag<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>nationalisering<s n="n"/><s n="ut"/></l>   <r>nationalisering<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>nationalitet<s n="n"/><s n="ut"/></l>      <r>nationalitet<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>natrium<s n="n"/><s n="ut"/></l>           <r>natrium<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>natrium<s n="n"/><s n="nt"/></l>           <r>natrium<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>natt<s n="n"/><s n="ut"/></l>              <r>nat<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>nattklubb<s n="n"/><s n="ut"/></l>         <r>natklub<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>nattskift<s n="n"/><s n="nt"/></l>         <r>nattevagt<s n="n"/><s n="ut"/></r></p></e>
@@ -3391,7 +3410,7 @@ Pardef naming scheme:
 <e>       <p><l>nyval<s n="n"/><s n="nt"/></l>             <r>nyvalg<s n="n"/><s n="nt"/></r></p></e>
 
 <e>       <p><l>nyår<s n="n"/><s n="nt"/></l>              <r>nytår<s n="n"/><s n="nt"/></r></p></e>
-<e>       <p><l>näbb<s n="n"/><s n="ut"/></l>              <r>næb<s n="n"/><s n="nt"/></r></p><par n="sgpl:sp"/></e>
+<e>       <p><l>näbb<s n="n"/><s n="un"/></l>              <r>næb<s n="n"/><s n="nt"/></r></p><par n="sgpl:sp"/></e>
 <e>       <p><l>nämnd<s n="n"/><s n="ut"/></l>             <r>nævn<s n="n"/><s n="nt"/></r></p><par n="sgpl:sp"/></e>
 <e>       <p><l>närhet<s n="n"/><s n="ut"/></l>            <r>nærhed<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>näring<s n="n"/><s n="ut"/></l>            <r>ernæring<s n="n"/><s n="ut"/></r></p></e>
@@ -3943,7 +3962,7 @@ Pardef naming scheme:
 <e>       <p><l>salpetersyra<s n="n"/><s n="ut"/></l>      <r>salpetersyre<s n="n"/><s n="ut"/></r></p><par n="@sg"/></e>
 <e>       <p><l>salt<s n="n"/><s n="nt"/></l>              <r>salt<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>saltsyra<s n="n"/><s n="ut"/></l>          <r>saltsyre<s n="n"/><s n="ut"/></r></p><par n="@sg"/></e>
-<e>       <p><l>saltvatten<s n="n"/><s n="ut"/></l>        <r>saltvand<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>saltvatten<s n="n"/><s n="nt"/></l>        <r>saltvand<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>saltvatten<s n="n"/><s n="nt"/></l>        <r>saltvand<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>samband<s n="n"/><s n="nt"/></l>           <r>forbindelse<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>sambo<s n="n"/><s n="ut"/></l>             <r>samlever<s n="n"/><s n="ut"/></r></p></e>
@@ -4053,7 +4072,7 @@ Pardef naming scheme:
 <e>       <p><l>sil<s n="n"/><s n="ut"/></l>               <r>filt<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>silke<s n="n"/><s n="nt"/></l>             <r>silke<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>sill<s n="n"/><s n="ut"/></l>              <r>sild<s n="n"/><s n="ut"/></r></p><par n="sgpl:sp"/></e>
-<e>       <p><l>silver<s n="n"/><s n="ut"/></l>            <r>sølv<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>silver<s n="n"/><s n="nt"/></l>            <r>sølv<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>silverfisk<s n="n"/><s n="ut"/></l>        <r>sølvfisk<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>silvermedalj<s n="n"/><s n="ut"/></l>      <r>sølvmedalje<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>silvermynt<s n="n"/><s n="nt"/></l>        <r>sølvmønt<s n="n"/><s n="ut"/></r></p></e>
@@ -4281,7 +4300,7 @@ Pardef naming scheme:
 <e>       <p><l>snobb<s n="n"/><s n="ut"/></l>             <r>snob<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>snok<s n="n"/><s n="ut"/></l>              <r>snog<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>snowboard<s n="n"/><s n="ut"/></l>         <r>snowboard<s n="n"/><s n="nt"/></r></p></e>
-<e>       <p><l>snus<s n="n"/><s n="ut"/></l>              <r>snus<s n="n"/><s n="nt"/></r></p><par n="sgpl:sp"/></e>
+<e>       <p><l>snus<s n="n"/><s n="nt"/></l>              <r>snus<s n="n"/><s n="nt"/></r></p><par n="sgpl:sp"/></e>
 <e>       <p><l>snut<s n="n"/><s n="ut"/></l>              <r>betjent<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>snygging<s n="n"/><s n="ut"/></l>          <r>godte<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>snygging<s n="n"/><s n="ut"/></l>          <r>godt<s n="n"/><s n="ut"/></r></p></e>
@@ -4291,7 +4310,7 @@ Pardef naming scheme:
 <e>       <p><l>snö<s n="n"/><s n="ut"/></l>               <r>sne<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>snöre<s n="n"/><s n="nt"/></l>             <r>snor<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>snöstorm<s n="n"/><s n="ut"/></l>          <r>snestorm<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>socker<s n="n"/><s n="ut"/></l>            <r>sukker<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>socker<s n="n"/><s n="nt"/></l>            <r>sukker<s n="n"/><s n="nt"/></r></p></e>
 
 <e>       <p><l>sockerrör<s n="n"/><s n="nt"/></l>         <r>sukkerrør<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>sol<s n="n"/><s n="ut"/></l>               <r>sol<s n="n"/><s n="ut"/></r></p></e>
@@ -4362,9 +4381,9 @@ Pardef naming scheme:
 
     <!-- Nouns -->
 
-<e>       <p><l>A-vitamin<s n="n"/><s n="nt"/></l>         <r>a-vitamin<s n="n"/><s n="nt"/></r></p></e>
-<e>       <p><l>B-vitamin<s n="n"/><s n="nt"/></l>         <r>b-vitamin<s n="n"/><s n="nt"/></r></p></e>
-<e>       <p><l>C-vitamin<s n="n"/><s n="nt"/></l>         <r>c-vitamin<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>a-vitamin<s n="n"/><s n="nt"/></l>         <r>a-vitamin<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>b-vitamin<s n="n"/><s n="nt"/></l>         <r>b-vitamin<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>c-vitamin<s n="n"/><s n="nt"/></l>         <r>c-vitamin<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>aggression<s n="n"/><s n="ut"/></l>        <r>aggression<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>aggressivitet<s n="n"/><s n="ut"/></l>     <r>aggressivitet<s n="n"/><s n="ut"/></r></p></e>
 
@@ -4742,7 +4761,7 @@ Pardef naming scheme:
 <e>       <p><l>video<s n="n"/><s n="ut"/></l>             <r>video<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>violinist<s n="n"/><s n="ut"/></l>         <r>violinist<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>vision<s n="n"/><s n="ut"/></l>            <r>vision<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>vitamin<s n="n"/><s n="ut"/></l>           <r>vitamin<s n="n"/><s n="nt"/></r></p></e>
+<e>       <p><l>vitamin<s n="n"/><s n="un"/></l>           <r>vitamin<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>vodka<s n="n"/><s n="ut"/></l>             <r>vodka<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>zink<s n="n"/><s n="nt"/></l>              <r>zink<s n="n"/><s n="nt"/></r></p></e>
 
@@ -4963,7 +4982,7 @@ Pardef naming scheme:
 
 <e>       <p><l>syndrom<s n="n"/><s n="nt"/></l>           <r>syndrom<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>synsätt<s n="n"/><s n="nt"/></l>           <r>synsvinkel<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>syre<s n="n"/><s n="ut"/></l>              <r>ilt<s n="n"/><s n="ut"/></r></p></e>
+<e>       <p><l>syre<s n="n"/><s n="nt"/></l>              <r>ilt<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>syren<s n="n"/><s n="ut"/></l>             <r>syren<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>syskon<s n="n"/><s n="nt"/></l>            <r>søskende<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>sysselsättning<s n="n"/><s n="ut"/></l>    <r>beskæftigelse<s n="n"/><s n="ut"/></r></p></e>
@@ -5600,7 +5619,7 @@ Pardef naming scheme:
 <e>       <p><l>värvning<s n="n"/><s n="ut"/></l>          <r>hvervning<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>väst<s n="n"/><s n="ut"/></l>              <r>vest<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>västtysk<s n="n"/><s n="ut"/></l>          <r>vesttysker<s n="n"/><s n="ut"/></r></p></e>
-<e>       <p><l>väte<s n="n"/><s n="ut"/></l>              <r>brint<s n="n"/><s n="ut"/></r></p></e>
+<e>       <p><l>väte<s n="n"/><s n="nt"/></l>              <r>brint<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>vätska<s n="n"/><s n="ut"/></l>            <r>væske<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>växling<s n="n"/><s n="ut"/></l>           <r>veksling<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>växt<s n="n"/><s n="ut"/></l>              <r>vækst<s n="n"/><s n="ut"/></r></p></e>
@@ -5706,7 +5725,7 @@ Pardef naming scheme:
 <e>       <p><l>öknamn<s n="n"/><s n="nt"/></l>            <r>øgenavn<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>ökning<s n="n"/><s n="ut"/></l>            <r>øgning<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>öl<s n="n"/><s n="nt"/></l>                <r>øl<s n="n"/><s n="nt"/></r></p></e>
-<e>       <p><l>öl<s n="n"/><s n="ut"/></l>                <r>øl<s n="n"/><s n="ut"/></r></p></e>
+<e>       <p><l>öl<s n="n"/><s n="ut"/></l>                <r>øl<s n="n"/><s n="ut"/></r></p><par n="@ind"/></e>
 <e>       <p><l>ölback<s n="n"/><s n="ut"/></l>            <r>ølkasse<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>önskemål<s n="n"/><s n="nt"/></l>          <r>ønske<s n="n"/><s n="nt"/></r></p></e>
 <e>       <p><l>öppning<s n="n"/><s n="ut"/></l>           <r>åbning<s n="n"/><s n="ut"/></r></p></e>
@@ -5762,7 +5781,7 @@ Pardef naming scheme:
 <e a="PT"><p><l>vaktmästare<s n="n"/><s n="ut"/></l>       <r>tjener<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>smycke<s n="n"/><s n="nt"/></l>            <r>smykke<s n="n"/><s n="nt"/></r></p></e>
 <e a="PT"><p><l>pekfinger<s n="n"/><s n="nt"/></l>         <r>pegefinger<s n="n"/><s n="ut"/></r></p></e>
-<e a="PT"><p><l>gröpe<s n="n"/><s n="ut"/></l>             <r>grut<s n="n"/><s n="ut"/></r></p></e>
+<e a="PT"><p><l>gröpe<s n="n"/><s n="nt"/></l>             <r>grut<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>tunnbindare<s n="n"/><s n="ut"/></l>       <r>bødker<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>öra<s n="n"/><s n="nt"/></l>               <r>øre<s n="n"/><s n="nt"/></r></p></e>
 <e a="PT"><p><l>ärende<s n="n"/><s n="nt"/></l>            <r>ærinde<s n="n"/><s n="nt"/></r></p></e>
@@ -5819,7 +5838,7 @@ Pardef naming scheme:
 <e a="PT"><p><l>fura<s n="n"/><s n="ut"/></l>              <r>fyr<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>gumma<s n="n"/><s n="ut"/></l>             <r>kone<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>åker<s n="n"/><s n="ut"/></l>              <r>mark<s n="n"/><s n="ut"/></r></p></e>
-<e a="PT"><p><l>vardagsrum<s n="n"/><s n="ut"/></l>        <r>stue<s n="n"/><s n="ut"/></r></p></e>
+<e a="PT"><p><l>vardagsrum<s n="n"/><s n="nt"/></l>        <r>stue<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>väder<s n="n"/><s n="nt"/></l>             <r>vejr<s n="n"/><s n="nt"/></r></p></e>
 
 <e a="PT"><p><l>kaj<s n="n"/><s n="ut"/></l>               <r>kaj<s n="n"/><s n="ut"/></r></p></e>
@@ -5900,7 +5919,7 @@ Pardef naming scheme:
 <e a="PT"><p><l>schejk<s n="n"/><s n="ut"/></l>            <r>sheik<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>shejk<s n="n"/><s n="ut"/></l>             <r>sheik<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>reling<s n="n"/><s n="ut"/></l>            <r>ræling<s n="n"/><s n="ut"/></r></p></e>
-<e a="PT"><p><l>prassel<s n="n"/><s n="ut"/></l>           <r>raslen<s n="n"/><s n="ut"/></r></p></e>
+<e a="PT"><p><l>prassel<s n="n"/><s n="nt"/></l>           <r>raslen<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>napp<s n="n"/><s n="ut"/></l>              <r>sut<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>motljus<s n="n"/><s n="nt"/></l>           <r>modlys<s n="n"/><s n="nt"/></r></p></e>
 <e a="PT"><p><l>medlemsavgift<s n="n"/><s n="ut"/></l>     <r>medlemskontingent<s n="n"/><s n="ut"/></r></p></e>
@@ -5994,7 +6013,7 @@ Pardef naming scheme:
 <e a="PT"><p><l>hertig<s n="n"/><s n="ut"/></l>            <r>hertug<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>huvudbyggnad<s n="n"/><s n="ut"/></l>      <r>hovedbygning<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>vita<s n="n"/><s n="ut"/></l>              <r>hvide<s n="n"/><s n="ut"/></r></p></e>
-<e a="PT"><p><l>vitvin<s n="n"/><s n="ut"/></l>            <r>hvidvin<s n="n"/><s n="ut"/></r></p></e>
+<e a="PT"><p><l>vitvin<s n="n"/><s n="nt"/></l>            <r>hvidvin<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>handfull<s n="n"/><s n="ut"/></l>          <r>håndfuld<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>järnvägsstation<s n="n"/><s n="ut"/></l>   <r>jernbanestation<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>kilo<s n="n"/><s n="nt"/></l>              <r>kilo<s n="n"/><s n="nt"/></r></p></e>
@@ -6320,8 +6339,8 @@ Pardef naming scheme:
 <e a="Wiki"><p><l>druva<s n="n"/><s n="ut"/></l>           <r>drue<s n="n"/><s n="ut"/></r></p></e>
 <e a="Wiki"><p><l>durkslag<s n="n"/><s n="ut"/></l>        <r>dørslag<s n="n"/><s n="ut"/></r></p></e>
 <e a="Wiki"><p><l>en<s n="n"/><s n="ut"/></l>              <r>ene<s n="n"/><s n="ut"/></r></p></e>
-<e a="Wiki"><p><l>farinsocker<s n="n"/><s n="ut"/></l>     <r>farin<s n="n"/><s n="ut"/></r></p></e>
-<e a="Wiki"><p><l>fikon<s n="n"/><s n="ut"/></l>           <r>figen<s n="n"/><s n="ut"/></r></p></e>
+<e a="Wiki"><p><l>farinsocker<s n="n"/><s n="nt"/></l>     <r>farin<s n="n"/><s n="ut"/></r></p></e>
+<e a="Wiki"><p><l>fikon<s n="n"/><s n="nt"/></l>           <r>figen<s n="n"/><s n="ut"/></r></p></e>
 <e a="Wiki"><p><l>florsocker<s n="n"/><s n="ut"/></l>      <r>flormelis<s n="n"/><s n="ut"/></r></p></e>
 <e a="Wiki"><p><l>fläder<s n="n"/><s n="ut"/></l>          <r>hyldeblomst<s n="n"/><s n="ut"/></r></p></e>
 <e a="Wiki"><p><l>fläderbär<s n="n"/><s n="ut"/></l>       <r>hyldebær<s n="n"/><s n="ut"/></r></p></e>
@@ -6407,7 +6426,7 @@ Pardef naming scheme:
 <e a="Wiki"><p><l>pistasch<s n="n"/><s n="ut"/></l>        <r>pistacie<s n="n"/><s n="ut"/></r></p></e>
 <e a="Wiki"><p><l>plast<s n="n"/><s n="ut"/></l>           <r>plastik<s n="n"/><s n="ut"/></r></p></e>
 <e a="Wiki"><p><l>potatis<s n="n"/><s n="ut"/></l>         <r>kartofel<s n="n"/><s n="ut"/></r></p></e>
-<e a="Wiki"><p><l>potatismos<s n="n"/><s n="ut"/></l>      <r>kartoffelmos<s n="n"/><s n="ut"/></r></p></e>
+<e a="Wiki"><p><l>potatismos<s n="n"/><s n="nt"/></l>      <r>kartoffelmos<s n="n"/><s n="ut"/></r></p></e>
 <e a="Wiki"><p><l>pressgurka<s n="n"/><s n="ut"/></l>      <r>agurkesalat<s n="n"/><s n="ut"/></r></p></e>
 <e a="Wiki"><p><l>pumpa<s n="n"/><s n="ut"/></l>           <r>græskar<s n="n"/><s n="ut"/></r></p></e>
 <e a="Wiki"><p><l>purjolök<s n="n"/><s n="ut"/></l>        <r>porre<s n="n"/><s n="ut"/></r></p></e>
@@ -6583,7 +6602,7 @@ Pardef naming scheme:
 <e a="PT"><p><l>muskot<s n="n"/><s n="ut"/></l>            <r>muskat<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>muskotnöt<s n="n"/><s n="ut"/></l>         <r>muskatnød<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>nafs<s n="n"/><s n="nt"/></l>              <r>haps<s n="n"/><s n="nt"/></r></p></e>
-<e a="PT"><p><l>omfång<s n="n"/><s n="ut"/></l>            <r>fang<s n="n"/><s n="nt"/></r></p></e>
+<e a="PT"><p><l>omfång<s n="n"/><s n="nt"/></l>            <r>fang<s n="n"/><s n="nt"/></r></p></e>
 <e a="PT"><p><l>omrörning<s n="n"/><s n="ut"/></l>         <r>omrøring<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>palettkniv<s n="n"/><s n="ut"/></l>        <r>paletkniv<s n="n"/><s n="ut"/></r></p></e>
 <e a="PT"><p><l>parentes<s n="n"/><s n="ut"/></l>          <r>klamme<s n="n"/><s n="ut"/></r></p></e>
