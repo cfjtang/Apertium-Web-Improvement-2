@@ -214,6 +214,7 @@ Entering dix-mode calls the hook dix-mode-hook.
 
 (defmacro dix-with-sexp (&rest body)
   "Execute `BODY' with `nxml-sexp-element-flag' set to true."
+  (declare (indent 1) (debug t))
   `(let ((old-sexp-element-flag nxml-sexp-element-flag))
      (setq nxml-sexp-element-flag t)
      (let ((ret ,@body))
@@ -221,18 +222,17 @@ Entering dix-mode calls the hook dix-mode-hook.
        ret)))
 (defmacro dix-with-no-case-fold (&rest body)
   "Execute `BODY' with `case-fold-search' set to nil."
+  (declare (indent 1) (debug t))
   `(let ((old-case-fold-search case-fold-search))
      (setq case-fold-search nil)
      ,@body
      (setq case-fold-search old-case-fold-search)))
-(put 'dix-with-sexp 'lisp-indent-function 0)
-(put 'dix-with-no-case-fold 'lisp-indent-function 0)
 
 (defvar dix-parse-bound 10000
-  "Relative bound; maximum amount of chars (not lines) to parse
-through in dix xml operations (since dix tend to get
-huge). Decrease the number if operations ending in \"No parent
-element\" take too long.")
+  "Max amount of chars (not lines) to parse through in dix xml operations.
+Useful since dix tend to get huge. Relative bound. Decrease the
+number if operations ending in \"No parent element\" take too
+long.")
 
 (put 'dix-bound-error 'error-conditions '(error dix-parse-error dix-bound-error))
 (put 'dix-bound-error 'error-message "Hit `dix-parse-bound' when parsing")
@@ -340,7 +340,7 @@ Optional argument CLEAN removes trailing __n and such."
 
 (defun dix-lemma-at-point ()
   (if (string-match "-[^.]+\\.[^.]+$" (buffer-file-name))
-      (word-at-point) ;; bidix
+      (dix-l/r-word-at-point) ;; bidix
     (save-excursion   ;; monodix
       (dix-up-to "e" "section")
       (re-search-forward "lm=\"\\([^\"]*\\)" nil t)
@@ -963,18 +963,52 @@ If given, optional argument `DIR' increases srl instead."
 	(cond ((looking-at "<i") (indent-to dix-i-align-column))
 	      ((looking-at "<p") (indent-to dix-pb-align-column)))))))
 
-(defun dix-r-at-point ()
-  "Return <r> of <e> at point as pair of buffer positions."
-  (save-excursion
-    (dix-up-to "e" "pardef")
-    (nxml-down-element 2) (nxml-forward-element 1)
-    (cons (point) (nxml-scan-element-forward (point)))))
-(defun dix-l-at-point ()
+(defun dix-l-at-point-reg ()
   "Return <l> of <e> at point as pair of buffer positions."
   (save-excursion
     (dix-up-to "e" "pardef")
     (nxml-down-element 2)
-    (cons (point) (nxml-scan-element-forward (point)))))
+    (cons (dix-token-start) (nxml-scan-element-forward (point)))))
+
+(defun dix-r-at-point-reg ()
+  "Return <r> of <e> at point as pair of buffer positions."
+  (save-excursion
+    (dix-up-to "e" "pardef")
+    (nxml-down-element 2)
+    (nxml-forward-element 1)
+    (cons (dix-token-start) (nxml-scan-element-forward (point)))))
+
+(defun dix-first-cdata-of-elt (pos)
+  "Return first available CDATA of elt after POS as string."
+  (save-excursion
+    (goto-char pos)
+    (nxml-down-element 1)
+    (let ((beg (point)))
+      (dix-with-sexp (forward-sexp))
+      (buffer-substring beg (point)))))
+
+(defun dix-l-word-at-point ()
+  "Return first available CDATA of <l> of <e> at point as string."
+  (dix-first-cdata-of-elt (car (dix-l-at-point-reg))))
+
+(defun dix-r-word-at-point ()
+  "Return first available CDATA of <r> of <e> at point as string."
+  (dix-first-cdata-of-elt (car (dix-r-at-point-reg))))
+
+
+(defun dix-l/r-word-at-point ()
+  "Return first available CDATA of nearest <l> or <r> as string."
+  (let ((l (dix-l-at-point-reg))
+        (r (dix-r-at-point-reg)))
+    (cond
+     ((< (point) (cdr l)) (dix-first-cdata-of-elt (car l)))
+     ((> (point) (car r)) (dix-first-cdata-of-elt (car r)))
+     ((< (- (point)
+            (cdr l))
+         (- (car r)
+            (point)))
+      (dix-first-cdata-of-elt (car l)))
+     (t (dix-first-cdata-of-elt (car r))))))
 
 (defun dix-sense-swap ()
   "Swap this translation with the above.
@@ -992,12 +1026,12 @@ the above <e> is part of the same sense group."
 	(let* ((reg1 (save-excursion
 		       (dix-with-sexp (nxml-backward-element 1))
 		       (if (string= "slr" dir)
-			   (dix-r-at-point)
-			 (dix-l-at-point))))
+			   (dix-r-at-point-reg)
+			 (dix-l-at-point-reg))))
 	       (elt1 (buffer-substring (car reg1) (cdr reg1))))
 	  (let* ((reg2 (if (string= "slr" dir)
-			   (dix-r-at-point)
-			 (dix-l-at-point)))
+			   (dix-r-at-point-reg)
+			 (dix-l-at-point-reg)))
 		 (elt2 (buffer-substring (car reg2) (cdr reg2))))
 	    (goto-char (car reg2))
 	    (delete-region (car reg2) (cdr reg2))
@@ -1083,6 +1117,13 @@ it if it's not present)."
       (incf cpos)))
   str)
 
+(defun dix-token-start ()
+  "Give the position of the start of the following element.
+Useful after e.g. `nxml-down-element' if there's whitespace."
+  (if (looking-at "<")
+      (point)
+    (nxml-token-after)))
+
 (defun dix-sort-e-by-l (reverse beg end &optional by-r)
   "Sort region alphabetically by contents of <l> element (or by
 <r> element if optional argument `by-r' is true); argument means
@@ -1123,7 +1164,7 @@ Note: will not work if you have several <e>'s per line!"
 	     (nxml-down-element 1)
 	     (let* ((lstart (point))
 		    (lend (progn (nxml-forward-element) (point)))
-		    (rstart (if (looking-at "<") (point) (nxml-token-after)))
+		    (rstart (dix-token-start))
 		    (rend (progn (nxml-forward-element) (point)))
 		    (l (dix-asciify (buffer-substring-no-properties lstart lend)))
 		    (r (dix-asciify (buffer-substring-no-properties rstart rend))))
@@ -1960,8 +2001,8 @@ Used by `dix-grep-all'.")
 (defvar dix-grep-fns
   '(;; dix:
     ("e" . dix-lemma-at-point)
-    ("l" . word-at-point)
-    ("r" . word-at-point)
+    ("l" . dix-l-word-at-point)
+    ("r" . dix-r-word-at-point)
     ("i" . dix-i-at-point)
     ("par" . dix-par-at-point)
     ("pardef" . dix-pardef-at-point))
