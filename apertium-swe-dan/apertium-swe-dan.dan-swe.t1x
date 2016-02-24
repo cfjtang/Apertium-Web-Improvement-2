@@ -712,12 +712,9 @@
   <section-rules>
     <!-- Verbs -->
 
-    <rule comment="VBLEXPP
-                   This rule has to be above the regular vblex rule,
-                   override lemq-moving for pp verbs.
-                   (No mod/ser/haver/aux do lemq-moving, so don't have to match those.)">
+    <rule comment="VBLEX">
       <pattern>
-        <pattern-item n="vblexpp"/>
+        <pattern-item n="verb"/>
       </pattern>
       <action>
         <call-macro n="set_caseFirstWord"><with-param pos="1"/></call-macro>
@@ -741,46 +738,6 @@
             </lu>
           </chunk>
         </out>
-      </action>
-    </rule>
-
-    <rule comment="VERB
-                   If we have nn multiwords, these need the lemq after the
-                   inflected part. All lemq's include their own initial space.
-                   This rule has to be below the passive rule.">
-      <pattern>
-        <pattern-item n="verb"/>
-      </pattern>
-      <action>
-        <call-macro n="set_caseFirstWord"><with-param pos="1"/></call-macro>
-        <let><var n="c_name"/><lit v="verb"/></let>
-        <choose><when>
-          <test><or>
-            <equal><clip pos="1" side="tl" part="lemh"/><lit v="bli"/></equal>
-            <equal><clip pos="1" side="tl" part="lemh"/><lit v="vere"/></equal>
-          </or></test>
-          <let><var n="c_name"/><lit v="aux"/></let>
-        </when></choose>
-        <out>
-          <chunk namefrom="c_name" case="caseFirstWord">
-            <tags><tag><clip pos="1" side="tl" part="tags"/></tag></tags>
-            <lu>
-              <clip pos="1" side="tl" part="lemh"/>
-              <clip pos="1" side="tl" part="a_verb"/>
-              <clip pos="1" side="tl" part="temps"/>
-              <clip pos="1" side="tl" part="voice"/>
-            </lu>
-          </chunk>
-        </out>
-        <choose><when>
-          <test><not><equal><clip pos="1" side="tl" part="lemq"/><lit v=""/></equal></not></test>
-          <out>
-            <chunk name="lemq">
-              <tags><tag><lit-tag v="vblex.lemq"/></tag></tags>
-              <lu><clip pos="1" side="tl" part="lemq"/></lu>
-            </chunk>
-          </out>
-        </when></choose>
       </action>
     </rule>
 
