@@ -240,7 +240,8 @@ element\" take too long.")
 (put 'dix-barrier-error 'error-message "Hit barrier when parsing")
 
 (defun dix-backward-up-element (&optional arg bound)
-  "Modified from `nxml-backward-up-element' to include optional argument `BOUND'."
+  "Modified from `nxml-backward-up-element' to include optional argument BOUND.
+Optional argument ARG says how many elements to move."
   (interactive "p")
   (or arg (setq arg 1))
   (if (< arg 0)
@@ -312,7 +313,7 @@ for some hints."
 
 (defun dix-enclosing-elt (&optional noerror)
   "Return name of element we're in.
-Optional argument `NOERROR' will make parse bound errors return
+Optional argument NOERROR will make parse bound errors return
 nil."
   (let ((bound (max (point-min)
 		    (- (point) dix-parse-bound))))
@@ -478,14 +479,14 @@ list `ATTRIBUTES' of the same format as
     ("tags-item" "tags" "lemma")
     ("label-item" "label")
     ("tagger" "name"))
-  "Association list of elements and which attributes are considered interesting,
-used by `dix-next'.")
+  "Association list of elements and which attributes are considered interesting.
+Used by `dix-next'.")
 
 (defvar dix-skip-empty
   '("dictionary" "alphabet" "sdefs" "pardefs" "lu" "p" "e" "tags" "chunk" "tag" "pattern" "rule" "action" "out" "b" "def-macro" "choose" "when" "test" "equal" "not" "otherwise" "let" "forbid" "label-sequence" "tagset")
-  "Skip past these elements when using `dix-next' (but not if
-they have interesting attributes as defined by
-`dix-interesting').")
+  "Skip past these elements when using `dix-next'.
+They'll not be skipped if they have interesting attributes as defined by
+`dix-interesting', however.")
 ;;; TODO: skip <[lr]><g><b/> and go to nearest CDATA in e.g. <l><g><b/>for</g></l>
 
 (defun dix-nearest (pivot backward &rest args)
@@ -511,7 +512,8 @@ which is also a member of `attributes' (in the format of
 		 interest)))
 
 (defun dix-next-one (&optional backward)
-  "Helper for `dix-next'.
+  "Move forward one interesting element.
+Helper for `dix-next' (move back if BACKWARD non-nil).
 TODO: handle pardef entries too; make non-recursive."
 
   (defun move (spot)
@@ -838,7 +840,7 @@ End:
 
 (defun dix-restriction-cycle (&optional dir)
   "Cycle through possible values of the `r' attribute of the <e>
-element at point. Optional argument `dir' is a string, either
+element at point. Optional argument DIR is a string, either
 \"\", \"LR\" or \"RL\"."
   (interactive)
   (save-excursion
@@ -1952,8 +1954,8 @@ on a previously narrowed buffer (the default behaviour for
     ("e" "lm" "l" "r" "i")
     ("par" "n")
     ("pardef" "n"))
-  "Association list of elements and which attributes are considered interesting for grepping,
-used by `dix-grep-all'.")
+  "Association list of elements and which attributes are considered interesting for grepping.
+Used by `dix-grep-all'.")
 
 (defvar dix-grep-fns
   '(;; dix:
@@ -1963,8 +1965,8 @@ used by `dix-grep-all'.")
     ("i" . dix-i-at-point)
     ("par" . dix-par-at-point)
     ("pardef" . dix-pardef-at-point))
-  "Association list of elements and which functions to find the greppable symbol at point,
-used by `dix-grep-all'.")
+  "Association list of elements and which functions to find the greppable symbol at point.
+Used by `dix-grep-all'.")
 
 
 (defun dix-nearest-greppable ()
