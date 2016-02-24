@@ -2024,10 +2024,12 @@ Used by `dix-grep-all'.")
       (message "Nothing greppable found here (see variables dix-greppable and dix-grep-fns).")
       nil)))
 
-(defun dix-grep-all ()
-  "Show all usages of this pardef in the dictionaries represented
-by the (customizable) string `dix-dixfiles'"
-  (interactive)
+(defun dix-grep-all (&optional include-this)
+  "Show all usages of this pardef in related dictionaries.
+Related dictionaries are represented by the (customizable) string
+`dix-dixfiles'. Unless optional argument INCLUDE-THIS is given,
+the current file is excluded from the results."
+  (interactive "P")
   (let* ((greppable (dix-nearest-greppable))
          ;; TODO: if par/pardef, want to search only par/pardef, and so on
          (found-in (car greppable))
@@ -2038,21 +2040,25 @@ by the (customizable) string `dix-dixfiles'"
          (needle-attrib (replace-regexp-in-string "<b/>" " " needle))
          (needle-cdata (replace-regexp-in-string " " "<b/>" needle))
          ;; TODO: exclude current file?
-         (files (mapconcat #'identity (dix-existing-dixfiles) " ")))
+         (files (mapconcat #'identity (dix-existing-dixfiles include-this) " ")))
     (grep (format "grep -nH -e '=\"%s\"' -e '>%s<' %s"
                   needle-attrib
                   needle-cdata
                   files))))
 
-(defun dix-existing-dixfiles (&optional dir)
-  "Get a list of any existing files that match the dix-dixfiles
-patterns, uniq'd and turned relative according to `dir' (defaults
-to `default-directory')."
+(defun dix-existing-dixfiles (include-this &optional dir)
+  "Get the set of existing files that match `dix-dixfiles' patterns.
+Excludes the file of the current buffer unless INCLUDE-THIS is
+non-nil. The set is uniq'd and turned relative according to
+DIR (defaults to `default-directory')."
   (let ((default-directory (or dir default-directory)))
-    (let* ((existing (apply #'append (mapcar #'file-expand-wildcards dix-dixfiles)))
+    (let* ((this (buffer-file-name (current-buffer)))
+           (existing (apply #'append (mapcar #'file-expand-wildcards dix-dixfiles)))
            (absolute (mapcar #'file-truename existing))
-           (uniq (cl-remove-duplicates absolute :test #'equal)))
-      (mapcar #'file-relative-name uniq))))
+           (uniq (cl-remove-duplicates absolute :test #'equal))
+           (w/o-this (if include-this uniq
+                       (remove this uniq))))
+      (mapcar #'file-relative-name w/o-this))))
 
 ;;; Alignment ----------------------------------------------------------------
 (defcustom dix-rp-align-column 28 "Column to align pardef <r> elements to with `align'."
