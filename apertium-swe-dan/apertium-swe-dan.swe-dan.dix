@@ -56,7 +56,6 @@ Pardef naming scheme:
     <sdef n="sp" 	c="Singular/plural"/>
     <sdef n="sg" 	c="Singular"/>
     <sdef n="pl" 	c="Plural"/>
-    <sdef n="rel" 	c="Relative"/>
     <sdef n="itg" 	c="Interrogative"/>
     <sdef n="dem" 	c="Demonstrative"/>
     <sdef n="def" 	c="Definite"/>
@@ -75,6 +74,8 @@ Pardef naming scheme:
     <sdef n="nom" 	c="Subject"/>
     <sdef n="acc" 	c="Object"/>
     <sdef n="ref" 	c="Reflexive"/>
+    <sdef n="res"       c="Reciprocal pronoun"/>
+    <sdef n="rel"       c="Relative pronoun"/>
     <sdef n="sent" 	c="End of sentence"/>
     <sdef n="inf" 	c=""/>
     <sdef n="past" 	c=""/>
@@ -299,7 +300,15 @@ Pardef naming scheme:
 <e>       <p><l><s n="adj"/><s n="ord"/></l> <r><s n="adj"/><s n="ord"/></r></p><par n="adjgrad"/></e>
     </pardef>
 
+    <pardef n="acc_pos:acc_gen" c="pronouns">
+<e>       <p><l><s n="acc"/></l>           <r><s n="p3"/><s n="un"/><s n="pl"/><s n="acc"/></r></p></e>
+<e>       <p><l><s n="pos"/><s n="pl"/></l><r><s n="p3"/><s n="un"/><s n="pl"/><s n="gen"/></r></p></e>
+    </pardef>
 
+    <pardef n="acc_pos:nom_gen" c="pronouns">
+<e>       <p><l><s n="acc"/></l>           <r><s n="p3"/><s n="un"/><s n="pl"/><s n="nom"/></r></p></e>
+<e>       <p><l><s n="pos"/><s n="pl"/></l><r><s n="p3"/><s n="un"/><s n="pl"/><s n="gen"/></r></p></e>
+    </pardef>
 
 
   </pardefs>
@@ -449,15 +458,17 @@ Pardef naming scheme:
 <e r="LR" a="PT"><p><l>undertecknad<s n="prn"/><s n="pers"/><s n="p3"/></l><r>undertegnede<s n="prn"/><s n="pers"/><s n="p3"/></r></p></e>
 <e r="LR" a="PT"><p><l>författaren<s n="prn"/><s n="pers"/><s n="p3"/></l><r>forfatteren<s n="prn"/><s n="pers"/><s n="p3"/></r></p></e>
 
-<e r="LR" a="PT"><p><l>somliga<s n="prn"/><s n="pers"/><s n="un"/><s n="p3"/><s n="pl"/></l><r>nogen<s n="prn"/><s n="ut"/><s n="p3"/><s n="sg"/></r></p></e>
 
 <e>       <p><l>vi<s n="prn"/><s n="pers"/><s n="p1"/></l><r>vi<s n="prn"/><s n="pers"/><s n="p1"/></r></p></e>
 <e>       <p><l>ni<s n="prn"/><s n="pers"/><s n="p2"/></l><r>I<s n="prn"/><s n="pers"/><s n="p2"/></r></p></e>
 <e>       <p><l>de<s n="prn"/><s n="pers"/><s n="p3"/></l><r>de<s n="prn"/><s n="pers"/><s n="p3"/></r></p></e>
 
-<e>       <p><l>sig<s n="prn"/></l>                    <r>sig<s n="prn"/></r></p></e>
-<e>       <p><l>varandra<s n="prn"/></l>               <r>hinanden<s n="prn"/></r></p></e>
-<e>       <p><l>någonting<s n="prn"/></l>               <r>nogen<s n="prn"/></r></p></e>
+<e>       <p><l>sig<s n="prn"/></l>                   <r>sig<s n="prn"/></r></p></e>
+<e>       <p><l>varandra<s n="prn"/><s n="res"/></l>  <r>hinanden<s n="prn"/><s n="res"/></r></p><par n="acc_pos:acc_gen"/></e>
+
+<e>       <p><l>någonting<s n="prn"/><s n="ind"/></l> <r>nogen<s n="prn"/><s n="ind"/></r></p><par n="acc_pos:nom_gen"/></e>
+<e>       <p><l>somliga<s n="prn"/><s n="ind"/></l>   <r>nogen<s n="prn"/><s n="ind"/></r></p></e>
+<e>       <p><l>någon<s n="prn"/><s n="ind"/></l>     <r>nogen<s n="prn"/><s n="ind"/></r></p></e>
 
 <!-- Framhävande pronomen -->
 
@@ -535,7 +546,6 @@ Pardef naming scheme:
 
 <e>       <p><l>mig<s n="prn"/></l>                    <r>mig<s n="prn"/></r></p></e>
 <e>       <p><l>många<s n="prn"/></l>                  <r>mange<s n="prn"/></r></p></e> <!-- TODO:CHECK-->
-<e>       <p><l>någon<s n="prn"/></l>                  <r>nogen<s n="prn"/></r></p></e>
 <e>       <p><l>oss<s n="prn"/></l>                    <r>os<s n="prn"/></r></p></e>
 
 <e>       <p><l>varje<s n="prn"/></l>                  <r>hver<s n="prn"/></r></p></e>
