@@ -462,7 +462,9 @@
                c="arg.1: noun, arg.2: adjective
                   Only take noun gender if adj is GD, or if noun has changed gender.
                   (We want to allow 'helt.nt svart.mf katt.m', no gender change nor GD on 'helt',
-                   but o/w make sure adj corresponds: 'helt.nt forfatterskap => heil.mf forfattarskap')">
+                  but o/w make sure adj corresponds: 'helt.nt forfatterskap => heil.mf forfattarskap')
+
+                  Also: make n def if adj is def.">
       <choose><when c="The 'un' gender is only on taggings that never have other possibilities.
                        also, be conservative: only set gender if sl→tl changed gender, or we have a GD">
         <test><and>
@@ -507,6 +509,13 @@
       </when></choose>
       <!-- In case the above didn't help: -->
       <call-macro n="set_gender1.adj"><with-param pos="2"/></call-macro>
+      <!-- Make n def if adj seems def: -->
+      <choose>
+        <when>
+          <test><equal><clip pos="2" side="tl" part="art"/><lit-tag v="def"/></equal></test>
+          <let><clip pos="1" side="tl" part="art"/><lit-tag v="def"/></let>
+        </when>
+      </choose>
     </def-macro>
 
     <def-macro n="set_grau_aux1" npar="1"
