@@ -493,7 +493,10 @@
                 <equal><clip pos="2" side="tl" part="nbr"/><lit-tag v="sg"/></equal>
                 <equal><clip pos="2" side="tl" part="nbr"/><lit-tag v="sp"/></equal>
               </or>
-              <equal><clip pos="2" side="tl" part="art"/><lit-tag v="def"/></equal>
+              <or>
+                <equal><clip pos="2" side="tl" part="art"/><lit-tag v="def"/></equal>
+                <equal><clip pos="2" side="tl" part="lemh"/><lit v="första"/></equal>
+              </or>
             </and></test>
             <choose><when>
               <test><equal><clip pos="1" side="tl" part="gen"/><lit-tag v="ut"/></equal></test>
@@ -509,7 +512,8 @@
       </when></choose>
       <!-- In case the above didn't help: -->
       <call-macro n="set_gender1.adj"><with-param pos="2"/></call-macro>
-      <!-- Make n def if adj seems def: -->
+      <!-- Make n def if adj seems def:
+           NB: This means all swe.dix nouns have to be able to take def (at least RL) -->
       <choose>
         <when>
           <test><equal><clip pos="2" side="tl" part="art"/><lit-tag v="def"/></equal></test>
