@@ -2,6 +2,39 @@
 <modes>
 <!-- Swedish → Danish -->
 
+  <mode name="swe-dan" install="yes">
+    <pipeline>
+      <program name="lt-proc -e">
+        <file name="swe-dan.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="swe-dan.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="swe-dan.autobil.bin"/>
+      </program>
+      <program name="lrx-proc -m">
+        <file name="swe-dan.autolex.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-swe-dan.swe-dan.t1x"/>
+        <file name="swe-dan.t1x.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-swe-dan.swe-dan.t2x"/>
+        <file name="swe-dan.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-swe-dan.swe-dan.t3x"/>
+        <file name="swe-dan.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="swe-dan.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
   <mode name="swe-dan-morph" install="no">
     <pipeline>
       <program name="lt-proc -w -e">
@@ -57,7 +90,7 @@
   </mode>
 
 
-  <mode name="swe-dan-transfer" install="no">
+  <mode name="swe-dan-chunker" install="no">
     <pipeline>
       <program name="lt-proc -e">
         <file name="swe-dan.automorf.bin"/>
@@ -79,7 +112,7 @@
     </pipeline>
   </mode>
 
-  <mode name="swe-dan" install="yes">
+  <mode name="swe-dan-interchunk" install="no">
     <pipeline>
       <program name="lt-proc -e">
         <file name="swe-dan.automorf.bin"/>
@@ -98,12 +131,43 @@
         <file name="apertium-swe-dan.swe-dan.t1x"/>
         <file name="swe-dan.t1x.bin"/>
       </program>
-      <program name="lt-proc $1">
-        <file name="swe-dan.autogen.bin"/>
+      <program name="apertium-interchunk">
+        <file name="apertium-swe-dan.swe-dan.t2x"/>
+        <file name="swe-dan.t2x.bin"/>
       </program>
     </pipeline>
   </mode>
 
+  <mode name="swe-dan-postchunk" install="no">
+    <pipeline>
+      <program name="lt-proc -e">
+        <file name="swe-dan.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="swe-dan.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="swe-dan.autobil.bin"/>
+      </program>
+      <program name="lrx-proc -m">
+        <file name="swe-dan.autolex.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-swe-dan.swe-dan.t1x"/>
+        <file name="swe-dan.t1x.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-swe-dan.swe-dan.t2x"/>
+        <file name="swe-dan.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-swe-dan.swe-dan.t3x"/>
+        <file name="swe-dan.t3x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
   <mode name="swe-dan-dgen" install="no">
     <pipeline>
       <program name="lt-proc -e">
@@ -116,9 +180,20 @@
       <program name="lt-proc -b">
         <file name="swe-dan.autobil.bin"/>
       </program>
+      <program name="lrx-proc -m">
+        <file name="swe-dan.autolex.bin"/>
+      </program>
       <program name="apertium-transfer -b">
         <file name="apertium-swe-dan.swe-dan.t1x"/>
         <file name="swe-dan.t1x.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-swe-dan.swe-dan.t2x"/>
+        <file name="swe-dan.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-swe-dan.swe-dan.t3x"/>
+        <file name="swe-dan.t3x.bin"/>
       </program>
       <program name="lt-proc -d">
         <file name="swe-dan.autogen.bin"/>
