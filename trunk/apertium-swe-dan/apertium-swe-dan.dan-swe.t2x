@@ -242,16 +242,14 @@
             <when>
               <test><or>
                 <equal><var n="det_gender"/><lit v=""/></equal>
-                <and>
-                  <equal><var n="number_no_sp"/><lit-tag v="sg"/></equal>
-                  <equal><clip pos="1" part="gen"/><lit-tag v="GD"/></equal>
-                </and>
+                <equal><var n="det_gender"/><lit-tag v="GD"/></equal>
+                <equal><var n="det_gender"/><lit-tag v="un"/></equal>
               </or></test>
               <let><var n="det_gender"/><lit-tag v="ut"/></let>
             </when>
           </choose>
         </when>
-        <otherwise>
+        <otherwise c="plurals (and only plurals) get un">
           <let><var n="det_gender"/><lit-tag v="un"/></let>
         </otherwise>
       </choose>
@@ -1085,7 +1083,7 @@
         <call-macro n="set_ana"><with-param pos="4"/></call-macro>
         <call-macro n="switch_cases"><with-param pos="3"/><with-param pos="2"/></call-macro>
 
-        <call-macro n="out_det_when_adjlike"><with-param pos="3"/><with-param pos="2"/></call-macro>
+        <call-macro n="out_det_when_adjlike"><with-param pos="4"/><with-param pos="2"/></call-macro>
         <out>
           <chunk><clip pos="3" part="whole"/></chunk>
           <b pos="1"/>
