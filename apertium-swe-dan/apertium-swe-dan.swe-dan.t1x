@@ -1442,49 +1442,6 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
       </action>
     </rule>
 
-    <rule comment="REGLA: får inte VERB  -   må ikke VERB">
-      <pattern>
-        <pattern-item n="få"/>
-        <pattern-item n="inte"/>
-        <pattern-item n="verb"/>
-      </pattern>
-      <action>
-        <call-macro n="f_conj_supn1">
-          <with-param pos="1"/>
-        </call-macro>
-        <out>
-          <chunk name="vblex">
-            <tags><tag><clip pos="1" side="tl" part="tags"/></tag></tags>
-            <lu>
-              <lit v="måtte"/>
-              <clip pos="1" side="tl" part="a_verb"/>
-              <clip pos="1" side="tl" part="temps"/>
-              <clip pos="1" side="tl" part="voice"/>
-            </lu>
-            <b pos="1"/>
-          </chunk>
-          <chunk name="adv">
-            <tags><tag><clip pos="1" side="tl" part="tags"/></tag></tags>
-            <lu>
-              <clip pos="2" side="tl" part="whole"/>
-            </lu>
-          </chunk>
-            <b pos="2"/>
-          <chunk name="vblex">
-            <tags><tag><clip pos="1" side="tl" part="tags"/></tag></tags>
-            <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_verb"/>
-              <clip pos="3" side="tl" part="temps"/>
-              <clip pos="3" side="tl" part="voice"/>
-              <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-        <call-macro n="resetvars"><with-param pos="1"/></call-macro>
-      </action>
-    </rule>
-
 
     <rule comment="REGLA: VAUX SUPN_PP // Två personer har förts → To personer er ført ">
       <pattern>

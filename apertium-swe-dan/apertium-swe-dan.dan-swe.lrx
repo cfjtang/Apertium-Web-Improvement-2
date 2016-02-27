@@ -1,4 +1,15 @@
 <rules>
   <rule> <match lemma="hjem" tags="adv"> <select lemma="hem" tags="adv"/> </match> </rule>
+
+  <rule weight="1.0"> <match lemma="måtte" tags="vblex.*"><select lemma="måste"/></match> </rule>
+  <rule weight="1.0"> <match lemma="kunne" tags="vblex.*"><select lemma="kunna"/></match> </rule>
+  <rule weight="2.0">
+    <match lemma="måtte" tags="vblex.*">
+      <select lemma="få"/>
+    </match>
+    <match lemma="ikke"/>
+    <match tags="vblex.inf.*"/>
+  </rule>
+
 </rules>
 
