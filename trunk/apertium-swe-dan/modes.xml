@@ -4,8 +4,11 @@
 
   <mode name="swe-dan" install="yes">
     <pipeline>
-      <program name="lt-proc -e">
+      <program name="lt-proc -w -e">
         <file name="swe-dan.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="swe-dan.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="swe-dan.prob"/>
@@ -43,11 +46,25 @@
     </pipeline>
   </mode>
 
+  <mode name="swe-dan-disam" install="no">
+    <pipeline>
+      <program name="lt-proc -w -e">
+        <file name="swe-dan.automorf.bin"/>
+      </program>
+      <program name="cg-conv -a"/>
+      <program name="vislcg3 --trace --grammar">
+        <file name="swe-dan.rlx.bin"/>
+      </program>
+    </pipeline>
+  </mode>
 
   <mode name="swe-dan-tagger" install="no">
     <pipeline>
-      <program name="lt-proc -e">
+      <program name="lt-proc -w -e">
         <file name="swe-dan.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="swe-dan.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="swe-dan.prob"/>
@@ -58,8 +75,11 @@
 
   <mode name="swe-dan-biltrans" install="no">
     <pipeline>
-      <program name="lt-proc -e">
+      <program name="lt-proc -w -e">
         <file name="swe-dan.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="swe-dan.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="swe-dan.prob"/>
@@ -73,8 +93,11 @@
 
   <mode name="swe-dan-lex" install="no">
     <pipeline>
-      <program name="lt-proc -e">
+      <program name="lt-proc -w -e">
         <file name="swe-dan.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="swe-dan.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="swe-dan.prob"/>
@@ -92,8 +115,11 @@
 
   <mode name="swe-dan-chunker" install="no">
     <pipeline>
-      <program name="lt-proc -e">
+      <program name="lt-proc -w -e">
         <file name="swe-dan.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="swe-dan.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="swe-dan.prob"/>
@@ -114,8 +140,11 @@
 
   <mode name="swe-dan-interchunk" install="no">
     <pipeline>
-      <program name="lt-proc -e">
+      <program name="lt-proc -w -e">
         <file name="swe-dan.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="swe-dan.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="swe-dan.prob"/>
@@ -131,7 +160,7 @@
         <file name="apertium-swe-dan.swe-dan.t1x"/>
         <file name="swe-dan.t1x.bin"/>
       </program>
-      <program name="apertium-interchunk">
+      <program name="apertium-interchunk -t">
         <file name="apertium-swe-dan.swe-dan.t2x"/>
         <file name="swe-dan.t2x.bin"/>
       </program>
@@ -140,8 +169,11 @@
 
   <mode name="swe-dan-postchunk" install="no">
     <pipeline>
-      <program name="lt-proc -e">
+      <program name="lt-proc -w -e">
         <file name="swe-dan.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="swe-dan.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="swe-dan.prob"/>
@@ -170,8 +202,11 @@
   
   <mode name="swe-dan-dgen" install="no">
     <pipeline>
-      <program name="lt-proc -e">
+      <program name="lt-proc -w -e">
         <file name="swe-dan.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="swe-dan.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="swe-dan.prob"/>
@@ -207,7 +242,7 @@
 
   <mode name="dan-swe" install="yes">
     <pipeline>
-      <program name="lt-proc -e -w">
+      <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
       </program>
       <program name="cg-proc -w">
@@ -243,7 +278,7 @@
 
   <mode name="dan-swe-morph" install="no">
     <pipeline>
-      <program name="lt-proc -e -w">
+      <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
       </program>
     </pipeline>
@@ -251,7 +286,7 @@
 
   <mode name="dan-swe-tagger-nocg" install="no">
     <pipeline>
-      <program name="lt-proc -e -w">
+      <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
@@ -263,7 +298,7 @@
 
   <mode name="dan-swe-disam" install="no">
     <pipeline>
-      <program name="lt-proc -e -w">
+      <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
       </program>
       <program name="cg-conv -a"/>
@@ -275,7 +310,7 @@
 
   <mode name="dan-swe-tagger" install="no">
     <pipeline>
-      <program name="lt-proc -e -w">
+      <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
       </program>
       <program name="cg-proc -w">
@@ -291,7 +326,7 @@
 
   <mode name="dan-swe-biltrans" install="no">
     <pipeline>
-      <program name="lt-proc -e -w">
+      <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
       </program>
       <program name="cg-proc -w">
@@ -309,7 +344,7 @@
 
   <mode name="dan-swe-lex" install="no">
     <pipeline>
-      <program name="lt-proc -e -w">
+      <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
       </program>
       <program name="cg-proc -w">
@@ -330,7 +365,7 @@
 
   <mode name="dan-swe-chunker" install="no">
     <pipeline>
-      <program name="lt-proc -e -w">
+      <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
       </program>
       <program name="cg-proc -w">
@@ -355,7 +390,7 @@
 
   <mode name="dan-swe-interchunk" install="no">
     <pipeline>
-      <program name="lt-proc -e -w">
+      <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
       </program>
       <program name="cg-proc -w">
@@ -385,7 +420,7 @@
 
   <mode name="dan-swe-postchunk" install="no">
     <pipeline>
-      <program name="lt-proc -e -w">
+      <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
       </program>
       <program name="cg-proc -w">
@@ -418,7 +453,7 @@
 
   <mode name="dan-swe-dgen" install="no">
     <pipeline>
-      <program name="lt-proc -e -w">
+      <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
       </program>
       <program name="cg-proc -w">
