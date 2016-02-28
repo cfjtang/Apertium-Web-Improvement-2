@@ -156,6 +156,10 @@
     <def-cat n="infm">
       <cat-item lemma="å" tags="part"/>
     </def-cat>
+    <def-cat n="ha">
+      <cat-item tags="vbhaver.inf.actv"/>
+      <cat-item lemma="ha" tags="vblex.inf.actv"/>
+    </def-cat>
     <def-cat n="sin">
       <cat-item lemma="seg" tags="det.pos.*"/>
     </def-cat>
@@ -169,9 +173,12 @@
       <cat-item tags="vbmod.*"/>
       <cat-item tags="vaux.*"/>
     </def-cat>
-    <def-cat n="vblexpp">
+    <def-cat n="verbpp">
       <cat-item tags="vblex.pp"/>
-      <cat-item tags="vblex.pp.*"/>
+      <cat-item tags="vbser.pp"/>
+      <cat-item tags="vaux.pp"/>
+      <cat-item tags="vbhaver.pp"/>
+      <cat-item tags="vbmod.pp"/>
     </def-cat>
     <def-cat n="vblexinf">
       <cat-item tags="vblex.inf"/>
@@ -189,8 +196,6 @@
       <cat-item tags="vaux.*.pasv"/>
       <cat-item tags="vbhaver.*.pasv"/>
       <cat-item tags="vbmod.*.pasv"/>
-      <cat-item tags="vblex.pstv.pres"/>
-      <cat-item tags="vblex.pstv.past"/>
     </def-cat>
   </section-def-cats>
   <section-def-attrs>
@@ -742,6 +747,43 @@
               <clip pos="1" side="tl" part="voice"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+    <rule comment="PASV at ha PP: Menes at have dræbt → Tros ha dödat">
+      <pattern>
+        <pattern-item n="verbpass"/>
+        <pattern-item n="cnjsub-at"/>
+        <pattern-item n="ha"/>
+        <pattern-item n="verbpp"/>
+      </pattern>
+      <action>
+        <call-macro n="set_caseFirstWord"><with-param pos="1"/></call-macro>
+        <let><var n="c_name"/><lit v="verb"/></let>
+        <choose><when>
+          <test><or>
+            <equal><clip pos="1" side="tl" part="lemh"/><lit v="bli"/></equal>
+            <equal><clip pos="1" side="tl" part="lemh"/><lit v="vere"/></equal>
+          </or></test>
+          <let><var n="c_name"/><lit v="aux"/></let>
+        </when></choose>
+        <out>
+          <chunk namefrom="c_name" case="caseFirstWord">
+            <tags><tag><clip pos="1" side="tl" part="tags"/></tag></tags>
+            <lu><clip pos="1" side="tl" part="whole"/></lu>
+          </chunk>
+          <b pos="1"/>
+          <b pos="2"/>
+          <chunk namefrom="c_name" case="caseFirstWord">
+            <tags><tag><clip pos="3" side="tl" part="tags"/></tag></tags>
+            <lu><clip pos="3" side="tl" part="whole"/></lu>
+          </chunk>
+          <b pos="3"/>
+          <chunk namefrom="c_name" case="caseFirstWord">
+            <tags><tag><clip pos="4" side="tl" part="tags"/></tag></tags>
+            <lu><clip pos="4" side="tl" part="whole"/></lu>
           </chunk>
         </out>
       </action>
