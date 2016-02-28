@@ -131,16 +131,19 @@
       <cat-item tags="vbser.past.*"/>
       <cat-item tags="vbhaver.*"/>
       <cat-item lemma="ha" tags="vblex.*"/>
+      <cat-item lemma="vara¹" tags="vblex.pres.*"/>
+      <cat-item lemma="vara¹" tags="vblex.past.*"/>
     </def-cat>
 
     <!-- Lexicalised categories -->
- 
+
     <def-cat n="komme">
       <cat-item lemma="komma" tags="vblex.*"/>
     </def-cat>
 
     <def-cat n="haver">
       <cat-item tags="vbhaver.inf.actv"/>
+      <cat-item lemma="ha" tags="vblex.inf.actv"/>
     </def-cat>
 
     <def-cat n="få">
@@ -725,29 +728,16 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
     </def-macro>
 
     <def-macro n="f_conj_pasv1" npar="1">
-      <let>
-        <var n="auxiliar"/>
-        <lit v=""/>
-      </let>
+      <let><var n="auxiliar"/><lit v=""/></let>
       <choose>
-        <when>
-          <test>
+        <when><test>
             <and>
-              <in caseless="yes">
-                <clip pos="1" side="tl" part="lem"/>
-                <list n="no_pres_pasv"/>
-              </in>
+              <in caseless="yes"><clip pos="1" side="tl" part="lem"/><list n="no_pres_pasv"/></in>
               <or>
-                <equal>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/>
-                </equal>
-                <equal>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="inf"/>
-                </equal>
+                <equal><clip pos="1" side="tl" part="temps"/><lit-tag v="pres"/></equal>
+                <equal><clip pos="1" side="tl" part="temps"/><lit-tag v="inf"/></equal>
               </or>
-              <equal><clip pos="1" side="sl" part="voz"/><lit-tag v="pasv"/></equal>
+              <equal><clip pos="1" side="sl" part="voice"/><lit-tag v="pasv"/></equal>
             </and>
           </test>
           <let>
@@ -760,24 +750,14 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
               <lit v="$ ^"/>
             </concat>
           </let>
-          <let>
-            <clip pos="1" side="tl" part="temps"/>
-            <lit-tag v="pp"/>
-          </let>
-          <let>
-            <clip pos="1" side="tl" part="voz"/>
-            <lit v=""/>
-          </let>
+          <let><clip pos="1" side="tl" part="temps"/><lit-tag v="pp"/> </let>
+          <let><clip pos="1" side="tl" part="voice"/><lit v=""/></let>
         </when>
-        <when>
-          <test>
+        <when><test>
             <and>
-              <in caseless="yes">
-                <clip pos="1" side="tl" part="lem"/>
-                <list n="no_past_pasv"/>
-              </in>
+              <in caseless="yes"><clip pos="1" side="tl" part="lem"/><list n="no_past_pasv"/></in>
               <equal><clip pos="1" side="tl" part="temps"/><lit-tag v="past"/></equal>
-              <equal><clip pos="1" side="tl" part="voz"/><lit-tag v="pasv"/></equal>
+              <equal><clip pos="1" side="tl" part="voice"/><lit-tag v="pasv"/></equal>
             </and>
           </test>
           <let>
@@ -788,59 +768,12 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
               <lit v="$ ^"/>
             </concat>
           </let>
-          <let>
-            <clip pos="1" side="tl" part="temps"/>
-            <lit-tag v="pp"/>
-          </let>
-          <let>
-            <clip pos="1" side="tl" part="voz"/>
-            <lit v=""/>
-          </let>
-        </when>
-
-      </choose>
-    </def-macro>
-
-    <def-macro n="f_conj_supn1" npar="1" c="supine→pp (no voice); subjunctive→pp (keep voice)
-                                            TODO: bidix pardef, and should we do an aux for the subjunctives?">
-      <choose>
-        <when>
-          <test>
-              <equal><clip pos="1" side="sl" part="temps"/><lit-tag v="supn"/></equal>
-          </test>
-          <let>
-            <clip pos="1" side="tl" part="voz"/>
-            <lit v=""/>
-          </let>
-          <let>
-            <clip pos="1" side="tl" part="temps"/>
-            <lit-tag v="pp"/>
-          </let>
-        </when>
-      </choose>
-      <choose>
-        <when>
-          <test>
-            <equal><clip pos="1" side="sl" part="temps"/><lit-tag v="pis"/></equal>
-          </test>
-          <let>
-            <clip pos="1" side="tl" part="temps"/>
-            <lit-tag v="past"/>
-          </let>
-        </when>
-      </choose>
-      <choose>
-        <when>
-          <test>
-            <equal><clip pos="1" side="sl" part="temps"/><lit-tag v="prs"/></equal>
-          </test>
-          <let>
-            <clip pos="1" side="tl" part="temps"/>
-            <lit-tag v="pres"/>
-          </let>
+          <let><clip pos="1" side="tl" part="temps"/><lit-tag v="pp"/> </let>
+          <let><clip pos="1" side="tl" part="voice"/><lit v=""/></let>
         </when>
       </choose>
     </def-macro>
+
   </section-def-macros>
 
 
@@ -1395,9 +1328,6 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
         <pattern-item n="supn_pp"/>
       </pattern>
       <action>
-        <call-macro n="f_conj_supn1">
-          <with-param pos="1"/>
-        </call-macro>
         <out>
           <chunk name="vblex">
             <tags><tag><clip pos="1" side="tl" part="tags"/></tag></tags>
@@ -1413,18 +1343,12 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
     </rule>
 
 
-
     <rule comment="REGLA: VERB">
       <pattern>
         <pattern-item n="verb"/>
       </pattern>
       <action>
-        <call-macro n="f_conj_supn1">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="f_conj_pasv1">
-          <with-param pos="1"/>
-        </call-macro>
+        <call-macro n="f_conj_pasv1"><with-param pos="1"/></call-macro>
         <out>
           <chunk name="vblex">
             <tags><tag><clip pos="1" side="tl" part="tags"/></tag></tags>
@@ -1449,13 +1373,8 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
         <pattern-item n="supn_pp"/>
       </pattern>
       <action>
-        <call-macro n="f_conj_auxiliar2">
-          <with-param pos="1"/>
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="f_conj_supn1">
-          <with-param pos="2"/>
-        </call-macro>
+        <call-macro n="f_conj_pasv1"><with-param pos="1"/></call-macro>
+        <call-macro n="f_conj_auxiliar2"><with-param pos="1"/><with-param pos="2"/></call-macro>
         <out>
           <chunk name="vblex">
             <tags><tag><clip pos="1" side="tl" part="tags"/></tag></tags>
@@ -1474,7 +1393,7 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
               <clip pos="2" side="tl" part="temps"/>
-              <!--            <clip pos="2" side="tl" part="voice"/> -->
+              <clip pos="2" side="tl" part="voice"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
           </chunk>
@@ -1490,9 +1409,6 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
         <pattern-item n="supn_pp"/>
       </pattern>
       <action>
-        <call-macro n="f_conj_supn1">
-          <with-param pos="3"/>
-        </call-macro>
         <out>
           <chunk name="vblex">
             <tags><tag><clip pos="1" side="tl" part="tags"/></tag></tags>
@@ -1503,13 +1419,13 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
               <clip pos="1" side="tl" part="voice"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
-            <b pos="1"/>
           </chunk>
+          <b pos="1"/>
           <chunk name="cnjadv">
             <tags><tag><clip pos="1" side="tl" part="tags"/></tag></tags>
             <lu>
               <lit v="at"/>
-              <lit-tag v="cnjadv"/>
+              <lit-tag v="cnjsub"/>
             </lu>
           </chunk>
           <b/>
@@ -1543,9 +1459,6 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
         <pattern-item n="verb_inf"/>
       </pattern>
       <action>
-        <call-macro n="f_conj_supn1">
-          <with-param pos="1"/>
-        </call-macro>
         <out>
           <chunk name="vblex">
             <tags><tag><clip pos="1" side="tl" part="tags"/></tag></tags>
