@@ -995,20 +995,23 @@ If given, optional argument `DIR' increases srl instead."
   "Return first available CDATA of <r> of <e> at point as string."
   (dix-first-cdata-of-elt (car (dix-r-at-point-reg))))
 
-
-(defun dix-l/r-word-at-point ()
-  "Return first available CDATA of nearest <l> or <r> as string."
+(defun dix-l/r-at-point-reg ()
+  "Return nearest region of of <l>/<r> as pair of buffer positions."
   (let ((l (dix-l-at-point-reg))
         (r (dix-r-at-point-reg)))
     (cond
-     ((< (point) (cdr l)) (dix-first-cdata-of-elt (car l)))
-     ((> (point) (car r)) (dix-first-cdata-of-elt (car r)))
+     ((< (point) (cdr l)) l)
+     ((> (point) (car r)) r)
      ((< (- (point)
             (cdr l))
          (- (car r)
             (point)))
-      (dix-first-cdata-of-elt (car l)))
-     (t (dix-first-cdata-of-elt (car r))))))
+      l)
+     (t r))))
+
+(defun dix-l/r-word-at-point ()
+  "Return first available CDATA of nearest <l> or <r> as string."
+  (dix-first-cdata-of-elt (car (dix-l/r-at-point-reg))))
 
 (defun dix-sense-swap ()
   "Swap this translation with the above.
@@ -1629,20 +1632,63 @@ ending in __vblex_adj"
   (interactive)
   (let ((par-guess
          (save-excursion
-           (when (re-search-backward
-                  (concat "<par\\(?:def\\)? n=\"\\([^\"]*\\)") nil 'noerror 1)
-             (match-string-no-properties 1)))))
-    (dix-up-to "e")
+           (or
+            (when (re-search-backward "<par n=\"\\([^\"]*\\)" nil 'noerror 1)
+              (match-string-no-properties 1))
+            (when (re-search-backward "<pardef n=\"\\([^\"]*\\)" nil 'noerror 1)
+              (match-string-no-properties 1))))))
+    (dix-up-to "e" "section")
     (nxml-forward-element)
     (nxml-backward-down-element)
     (let ((p (+ (point) 8)))
       (insert (format "<par n=\"%s\"/>" par-guess))
       (goto-char p))))
 
+(defun dix-add-s ()
+  "Just add an <s>-element, guessing a name from nearest previous s.
+The guesser will first try to find a tag from the same
+context (ie. a tag that was seen after the tag we're adding a tag
+after)."
+  (interactive)
+  (let ((reg (dix-l/r-at-point-reg)))
+    ;; (elt (buffer-substring-no-properties (+ 1 (car reg))
+    ;;                                      (+ 2 (car reg))))
+    ;; Move so we're inside the l or r:
+    (when (or (< (point) (car reg))
+              (> (point) (cdr reg)))
+      (goto-char (car reg)))
+    ;; If we were inside an s, move before it:
+    (nxml-token-after)
+    (when (equal (xmltok-start-tag-qname) "s")
+      (nxml-up-element))
+    ;; Go to start of next s, or end of l/r:
+    (if (re-search-forward "<s +[^>]+/>" (cdr reg) 'noerror 1)
+        (goto-char (match-beginning 0))
+      (goto-char (- (cdr reg) 4)))
+    (let ((s-guess
+           (save-excursion
+             (or
+              (when (re-search-backward (concat
+                                         ;; First try finding a tag following the tag we're at:
+                                         (regexp-quote (buffer-substring (- (point) 13)
+                                                                         (point)))
+                                         "<s n=\"\\([^\"]*\\)")
+                                        nil 'noerror 1)
+                (match-string-no-properties 1))
+              (when (re-search-backward "<s n=\"\\([^\"]*\\)" nil 'noerror 1)
+                (match-string-no-properties 1))
+              (when (re-search-backward "<sdef n=\"\\([^\"]*\\)" nil 'noerror 1)
+                (match-string-no-properties 1))
+              "sg")))
+          (p (+ (point) 6)))
+      (insert (format "<s n=\"%s\"/>" s-guess))
+      (goto-char p))))
+
 
 (defun dix-point-after-> ()
+  "True if point is exactly after the > symbol."
   (equal (buffer-substring-no-properties (1- (point)) (point))
-	 ">"))
+         ">"))
 
 (defun dix-space ()
   "This should return a space, unless we're inside the data area
@@ -2041,9 +2087,9 @@ the current file is excluded from the results."
          (needle-cdata (replace-regexp-in-string " " "<b/>" needle))
          ;; TODO: exclude current file?
          (files (mapconcat #'identity (dix-existing-dixfiles include-this) " ")))
-    (grep (format "grep -nH -e '=\"%s\"' -e '>%s<' %s"
-                  needle-attrib
-                  needle-cdata
+    (grep (format "grep -nH -e %s -e %s %s"
+                  (shell-quote-argument (format "lm=\"%s\"" needle-attrib))
+                  (shell-quote-argument (format ">%s<" needle-cdata))
                   files))))
 
 (defun dix-existing-dixfiles (include-this &optional dir)
@@ -2117,10 +2163,7 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "C-c L") 'dix-LR-restriction-copy)
 (define-key dix-mode-map (kbd "C-c R") 'dix-RL-restriction-copy)
 (define-prefix-command 'dix-sense-prefix)
-(define-key dix-mode-map (kbd "C-c s") 'dix-sense-prefix)
-(define-key dix-mode-map (kbd "C-c s l") 'dix-slr-copy)
-(define-key dix-mode-map (kbd "C-c s r") 'dix-srl-copy)
-(define-key dix-mode-map (kbd "C-c s <tab>") 'dix-sense-swap)
+(define-key dix-mode-map (kbd "C-c s") 'dix-add-s)
 (define-key dix-mode-map (kbd "C-c C") 'dix-copy)
 (define-key dix-mode-map (kbd "C-c C-y") 'dix-copy-yank)
 (define-key dix-mode-map (kbd "<C-tab>") 'dix-restriction-cycle)
