@@ -1251,6 +1251,12 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
         <pattern-item n="adj"/>
       </pattern>
       <action>
+        <choose>
+          <when c="If we have a pp and no adj+noun rule matched, lose the inflection (de er ätna→de er spist)">
+            <test><equal><clip pos="1" side="tl" part="a_adj"/><lit-tag v="adj.pp"/></equal></test>
+            <let><clip pos="1" side="tl" part="tags"/><lit-tag v="adj.pp.ut.sg.ind"/></let>
+          </when>
+        </choose>
         <let><var n="c_name"/><lit v="adj"/></let>
         <call-macro n="set_gender1.adj"><with-param pos="1"/></call-macro>
         <call-macro n="set_grau_aux1"><with-param pos="1"/></call-macro>
