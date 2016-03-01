@@ -6,7 +6,7 @@ AC_PREREQ(2.52)
 m4_define([required_apertium_version], [3.4.0])
 m4_define([required_lttoolbox_version], [3.3.2])
 
-AC_INIT([Apertium Swedish-Danish], [0.5.2], [spectre360@users.sourceforge.net], [apertium-swe-dan], [http://wiki.apertium.org/wiki/Apertium-swe-dan])
+AC_INIT([Apertium Swedish-Danish], [0.7.0], [spectre360@users.sourceforge.net], [apertium-swe-dan], [http://wiki.apertium.org/wiki/Apertium-swe-dan])
 AM_INIT_AUTOMAKE
 
 AC_PROG_LN_S
