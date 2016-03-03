@@ -1,5 +1,165 @@
+# -*- mode:org -*-
+#+STARTUP: showall
 
-Sat Apr  5 18:48:57 BST 2008
+* Version 0.7.0, 2016-03-01
+  SVN rev: 66076
 
-  * Changed names of transfer files to 
-    reflect more standard.
+Almost 7 years after the first release, the pair finally supports
+Danish→Swedish :)
+
+Other new features include:
+- monolingual dependencies, including a completely new Swedish monodix
+  based on the SALDO lexicon
+  ( http://spraakbanken.gu.se/eng/resource/saldo )
+- CG rules (for both directions, though the Swedish one is currently
+  quite minimal)
+- lexical selection rules
+- compounding
+- three-stage transfer (both directions; old swe→dan was one-stage)
+
+Bidix is also expanded a bit, though a lot of time was spent on
+testvoc due to having a completely new Swedish lexicon and no
+release-work in quite some time.
+
+Coverage on Svenska Talbanken is 90.8%, where where 0.5.1 gave 79.2%. A
+lot of translations are given "for free" due to compounding: counting
+dynamic compounds as unknowns in 0.7.0 gives us 87.2%.
+
+This release was sponsored by Apertium PMC and Wikimedia Foundation.
+
+* Version 0.5.1, 2013-05-31
+
+Just minor fixes to apertium-sv-da Makefile and configure scripts to
+make it compile with changes to core tools.
+
+* Version 0.5.0, 2009-10-09
+
+Første Open Source maskinoversættelse mellem svensk og dansk
+
+First open source machine translation between Swedish and Danish
+
+
+** Release statement – Dansk (English version below)
+
+Vi har netop frigivet version 0.5 af svensk-dansk til open source
+maskinoversættessystemet Apertium.
+
+Det er det første frie maskinoversættelsesystem mellem svensk og
+dansk.
+
+Det kan allerede nu bruges fra http://apertium.org/, men forhåbentlig
+vil fællesskabet omkring fri software tage det til sig og snart gøre
+det tilgængeligt på bl.a. alle Linux-arbejdsstationer.
+
+Til udviklingen har vi brugt et antal frit tilgængelige kilder, bl.a.
+open source stavekontrollen Aspell, Den stora svenska ordlistan,
+http://dsso.se og den svenske og danske Wikipedia og Wiktionary.
+
+
+Udviklingen er sponsoreret af Google Summer of Code (GSOC) og
+foretaget af student Michael Kristensen. Mentorer på projektet er
+Francis Tyers (Universitat d'Alacant og Prompsit Language Engineering)
+og Jacob Nordfalk (Ingeniørhøjskolen i København).
+
+For nærmere oplysninger om udviklingen af sprogparret, se
+http://wiki.apertium.org/wiki/Swedish_and_Danish
+
+For mere information om apertium og GSOC, se
+http://socghop.appspot.com/org/home/google/gsoc2009/apertium.
+
+
+
+Tekniske specifikationer
+
+| Svensk morfologisk ordbog | 5.230 ordrødder  |
+| Tosproget ordbog          | 6.854 ordrødder  |
+| Dansk morfologisk ordbog  | 10.694 ordrødder |
+
+Dækningen på Wikipedia-tekst er p.t. 72% og korpuset Europarl 80%.
+
+Vi anvender 1-trins "shallow transfer" med 17 transferregler.
+
+Vi har foretaget en sammenlignende vurdering med andre tilgængelige
+maskinoversættelsessystemer på 65 sætninger fra Wikipedia.
+
+Resultaterne findes nedenfor (lavest tal er bedst)
+
+| System    | Edit distance | WER (Word Error Rate) |
+|-----------+---------------+-----------------------|
+| Apertium  |           353 |                    31 |
+| Gramtrans |           308 |                    26 |
+| Google    |           557 |                    48 |
+
+Yderligere oplysninger kan findes i artiklen "Shallow-transfer rule-based
+machine translation for Swedish to Danish" som vi vil præsentere på
+First International Workshop on Free/Open-Source Rule-Based Machine
+Translation (http://xixona.dlsi.ua.es/freerbmt09/).
+
+
+For mere information, kontakt Jacob Nordfalk, Ingeniørhøjskolen i
+København (jano@ihk.dk), telefon 26206512.
+
+
+** Release statement – English
+
+A new language pair, Swedish-Danish, has been released for the free
+and open-source Apertium machine translator engine.
+
+It's the first open source machine translator for Swedish and Danish.
+
+The pair is immediately available for testing at http://apertium.org/,
+but will hopefully be adopted by the free-software community and be
+available on i.a. the Linux desktop.
+
+In developing this system, we used a number of freely available
+sources of information for constructing the system, i.a. high coverage
+spell-checkers available in the aspell project, Den stora svenska
+ordlistan, http://dsso.se and the Swedish and Danish Wikipedia and
+Wiktionaries.
+
+
+This language pair was developed as part of a Google Summer of Code
+(GsoC) project by Michael Kristensen, mentored by Francis Tyers
+(Universitat d'Alacant and Prompsit Language Engineering) and Jacob
+Nordfalk (Ingeniørhøjskolen i København). For more information on
+Apertium and GsoC, see
+http://socghop.appspot.com/org/home/google/gsoc2009/apertium .
+
+Many thanks to Thyge Larsen for his assistance with post-edition and
+evaluation.
+
+For more details on development and the language pair, see
+http://wiki.apertium.org/wiki/Swedish_and_Danish
+
+
+Technical details
+
+| Swedish monolingual dictionary | 5,230 lemmas  |
+| Bilingual dictionary           | 6,854 lemmas  |
+| Danish monolingual dictionary  | 10,694 lemmas |
+
+We measured coverage on Wikipedia to 72 % and the EuroParl corpus to
+80 %.
+
+The system used 1-stage shallow transfer with 17 transfer rules.
+
+We have made a comparative evaluation to other available MT systems.
+The results for 65 Wikipedia sentences can be found below
+
+| System    | Edit distance | WER (Word Error Rate) |
+|-----------+---------------+-----------------------|
+| Apertium  |           353 |                    31 |
+| Gramtrans |           308 |                    26 |
+| Google    |           557 |                    48 |
+
+
+Further details can be found in the article "Shallow-transfer
+rule-based machine translation for Swedish to Danish" to be presented
+during the First International Workshop on Free/Open-Source Rule-Based
+Machine Translation (http://xixona.dlsi.ua.es/freerbmt09/).
+
+
+
+
+For more information, pls. contact Jacob Nordfalk, Ingeniørhøjskolen i
+København (jano@ihk.dk), phone +4526206512.
