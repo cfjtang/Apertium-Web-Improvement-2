@@ -1,13 +1,9 @@
 import sys, string, codecs;
 
-sys.stdin = codecs.getreader('utf-8')(sys.stdin);
-sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
-sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
-
 MAGIC = 3078783;
 idx = 0;
 
-inf = file(sys.argv[1]);
+inf = open(sys.argv[1]);
 outf = open(sys.argv[1] + '.' + str(idx), 'w');
 
 cur_len = 0
@@ -47,7 +43,7 @@ while 1: #{
 		outline = line[0] + line[1];
 		outf.write(outline + '\n');
 		outf.flush();
-		print '+ ' , sys.argv[1] + '.' + str(idx) + ':' , cur_len , ' > ' , MAGIC , ' @ ' + cur_lemma;
+		print('+ ' , sys.argv[1] + '.' + str(idx) + ':' , cur_len , ' > ' , MAGIC , ' @ ' + cur_lemma);
 		overline = read_line(inf);
 		outf.write(overline[0] + overline[1] + '\n');
 		while 1: #{
