@@ -142,7 +142,7 @@ AC_SUBST(Z_CFLAGS)
 AC_SUBST(Z_LIBS)
 
 AC_CHECK_HEADER(pcreposix.h,
-  AC_CHECK_LIB(pcre, pcre_info,[
+  AC_CHECK_LIB(pcre, pcre_fullinfo,[
   LIBS="$LIBS -lpcreposix -lpcre"
   no_comp_check=yes],
   AC_MSG_ERROR([*** unable to locate pcre library ***])),
