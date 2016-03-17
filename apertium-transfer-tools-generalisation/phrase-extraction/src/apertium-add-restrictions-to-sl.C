@@ -31,7 +31,9 @@
 #include "Utils.H"
 #include <cmath>
 
-
+#if !HAVE_DECL_GETWCHAR_UNLOCKED
+#define getwchar_unlocked getwchar
+#endif
 
 using namespace std;
 
