@@ -56,47 +56,41 @@ AlignmentTemplate::AlignmentTemplate(const AlignmentTemplate& al):Alignment(al) 
   invalid=al.invalid;
   restrictions=al.restrictions;
 }
-    
+
 AlignmentTemplate::~AlignmentTemplate() {
 }
 
-void 
-AlignmentTemplate::set_keeprestrictions(bool &keep)
-{
-	keep_restrictions=keep;
+void
+AlignmentTemplate::set_keeprestrictions(bool &keep) {
+  keep_restrictions=keep;
 }
 
-bool 
-AlignmentTemplate::is_keeprestrictions()
-{
-	return keep_restrictions;
+bool
+AlignmentTemplate::is_keeprestrictions() {
+ return keep_restrictions;
 }
 
-void 
-AlignmentTemplate::set_keeprestrictionsofunalignedtoo(bool &keep)
-{
-	keep_restrictions_of_unaligned_too=keep;
+void
+AlignmentTemplate::set_keeprestrictionsofunalignedtoo(bool &keep) {
+  keep_restrictions_of_unaligned_too=keep;
 }
 
-bool 
-AlignmentTemplate::is_keeprestrictionsofunalignedtoo()
-{
-	return keep_restrictions_of_unaligned_too;
+bool
+AlignmentTemplate::is_keeprestrictionsofunalignedtoo() {
+  return keep_restrictions_of_unaligned_too;
 }
 
-void 
-AlignmentTemplate::set_keeplemmas(bool &keep)
-{
-	keep_lemmas=keep;
+void
+AlignmentTemplate::set_keeplemmas(bool &keep) {
+  keep_lemmas=keep;
 }
 
-bool 
-AlignmentTemplate::is_keeplemmas()
-{
-	return keep_lemmas;
+bool
+AlignmentTemplate::is_keeplemmas() {
+  return keep_lemmas;
 }
 
-void 
+void
 AlignmentTemplate::set_count(int count) {
   score=(double)count;
 }
@@ -265,18 +259,15 @@ AlignmentTemplate::xtract_alignment_template(Alignment& al, FSTProcessor& fstp) 
 
     if (Utils::is_unknown_word(w)) 
       bclass=L"__UNKNOWN__";
-    else if (source_lexicalized_words.is_lexicalized_word(w) && !is_keeprestrictions()) 
+    else if (source_lexicalized_words.is_lexicalized_word(w) && !is_keeprestrictions())
       bclass=L"__CLOSEWORD__";
     else {
-	 
-	 bool okTokeepRestriction=true;
-	 bool tryingTokeepRestrictionOfLexicalisedWord=false;	
-	 if(source_lexicalized_words.is_lexicalized_word(w) && is_keeprestrictions())
-	 {
-		 tryingTokeepRestrictionOfLexicalisedWord=true;
-	 }
-	  
-		
+      bool okTokeepRestriction=true;
+      bool tryingTokeepRestrictionOfLexicalisedWord=false;	
+      if(source_lexicalized_words.is_lexicalized_word(w) && is_keeprestrictions()) {
+        tryingTokeepRestrictionOfLexicalisedWord=true;
+      }
+
       //We need to replace each "_" in w by a blank " " before translating
       w=StringUtils::substitute(w,L"_",L" ");
 
@@ -284,16 +275,15 @@ AlignmentTemplate::xtract_alignment_template(Alignment& al, FSTProcessor& fstp) 
 
       if (!is_translation_ok(biltrans)) {
 	if(tryingTokeepRestrictionOfLexicalisedWord)
-		okTokeepRestriction=false;
-	else
-	{
-	at.invalid=INVALID_NO_OK_TRANSLATIONS;
-	wcerr<<L"Error in AlignmentTemplate::xtract_alignment_template: ";
-	wcerr<<L"There were no OK translation for source word '"<<w<<"', translation was: '"<<biltrans<<L"'\n";
-	at.restrictions.push_back(L"__INVALID__");
-	return at;
-	}
-      } 
+          okTokeepRestriction=false;
+	else {
+          at.invalid=INVALID_NO_OK_TRANSLATIONS;
+          wcerr<<L"Error in AlignmentTemplate::xtract_alignment_template: ";
+          wcerr<<L"There were no OK translation for source word '"<<w<<"', translation was: '"<<biltrans<<L"'\n";
+          at.restrictions.push_back(L"__INVALID__");
+          return at;
+        }
+      }
 
       //Execution continues only if ALL since this point was OK
       bclass=Utils::get_tags(biltrans);
@@ -301,61 +291,57 @@ AlignmentTemplate::xtract_alignment_template(Alignment& al, FSTProcessor& fstp) 
 
       int tlp=-1;
       if(tryingTokeepRestrictionOfLexicalisedWord)
-		tlp=at.get_target_word_pos(i);
+        tlp=at.get_target_word_pos(i);
       else
         tlp=at.get_open_target_word_pos(i);
       if (tlp>=0) {
 	wstring tlemma=StringUtils::substitute(Utils::get_lemma(Utils::remove_begin_and_end_marks(al.target[tlp])),L"_",L" ");
 
 	if (StringUtils::tolower(blemma) != StringUtils::tolower(tlemma)) {
-	if(tryingTokeepRestrictionOfLexicalisedWord)
-		okTokeepRestriction=false;
-	else
-	{
-	  at.invalid=INVALID_DIFFERENT_TRANSLATIONS;
-	  wcerr<<L"Warning: The AT extracted from the following alignment cannot be used.\n";
-	  wcerr<<al<<L"\n";
-	  wcerr<<L"Cause: translation of '"<<w<<L"' is '"<<blemma<<L"', but it should be '"<<tlemma<<L"'\n";
-	  at.restrictions.push_back(L"__INVALID__");
-	  return at;
-    }
+          if(tryingTokeepRestrictionOfLexicalisedWord)
+            okTokeepRestriction=false;
+          else {
+            at.invalid=INVALID_DIFFERENT_TRANSLATIONS;
+            wcerr<<L"Warning: The AT extracted from the following alignment cannot be used.\n";
+            wcerr<<al<<L"\n";
+            wcerr<<L"Cause: translation of '"<<w<<L"' is '"<<blemma<<L"', but it should be '"<<tlemma<<L"'\n";
+            at.restrictions.push_back(L"__INVALID__");
+            return at;
+          }
 	}
       } else {
-	if(tryingTokeepRestrictionOfLexicalisedWord)
-		okTokeepRestriction=false;
-	else
-	{
-		wcerr<<L"Warning: The AT extracted from the following alignment cannot be used.\n";
-		wcerr<<al<<L"\n";
-		wcerr<<"Cause: bug not solved\n";
-		at.invalid=INVALID_OTHERS;
-		at.restrictions.push_back(L"__INVALID__");
-		return at;
-	}
+        if(tryingTokeepRestrictionOfLexicalisedWord)
+          okTokeepRestriction=false;
+        else {
+          wcerr<<L"Warning: The AT extracted from the following alignment cannot be used.\n";
+          wcerr<<al<<L"\n";
+          wcerr<<"Cause: bug not solved\n";
+          at.invalid=INVALID_OTHERS;
+          at.restrictions.push_back(L"__INVALID__");
+          return at;
+        }
       }
       
       if(tryingTokeepRestrictionOfLexicalisedWord && !okTokeepRestriction && !is_keeprestrictionsofunalignedtoo())
-		bclass=L"__CLOSEWORD__";
-	  
-	  //if word is not present in bilingual dictionary
-	  if(bclass.size()==0)
-	    bclass=L"__CLOSEWORD__";
-            
+        bclass=L"__CLOSEWORD__";
+
+      //if word is not present in bilingual dictionary
+      if(bclass.size()==0)
+        bclass=L"__CLOSEWORD__";
     }
     
-	at.restrictions.push_back(bclass);
+    at.restrictions.push_back(bclass);
   }
 
-  if (is_keeplemmas())
-  {
-		//restore lemmas of open words
-		for(int i=0; i< at.source.size(); i++)
-			if(at.source[i]==Utils::get_tags(at.source[i]))
-				at.source[i]= Utils::remove_begin_and_end_marks(al.source[i]);
-		
-		for(int i=0; i< at.target.size(); i++)
-			if(at.target[i]==Utils::get_tags(at.target[i]))
-				at.target[i]=Utils::remove_begin_and_end_marks(al.target[i]);
+  if (is_keeplemmas()) {
+    //restore lemmas of open words
+    for(int i=0; i< at.source.size(); i++)
+      if(at.source[i]==Utils::get_tags(at.source[i]))
+        at.source[i]= Utils::remove_begin_and_end_marks(al.source[i]);
+
+    for(int i=0; i< at.target.size(); i++)
+      if(at.target[i]==Utils::get_tags(at.target[i]))
+        at.target[i]=Utils::remove_begin_and_end_marks(al.target[i]);
   }
   return at;
 }
@@ -460,8 +446,6 @@ AlignmentTemplate::is_equivalent_to_word_for_word(Alignment& al, FSTProcessor& f
 
 bool
 AlignmentTemplate::are_open_word_aligments_ok() {
-
-	
   bool open_sl[source.size()];
   bool open_tl[target.size()];
 
@@ -518,7 +502,7 @@ AlignmentTemplate::are_open_word_aligments_ok() {
   return true;
 }
 
-int 
+int
 AlignmentTemplate::get_open_source_word_pos(int target_pos) {
   for (unsigned i=0; i<source.size(); i++) {
     if (((source[i][0]==L'<')||(source[i]==L"__UNKNOWN__")) && (alignment[i][target_pos]))
@@ -532,7 +516,7 @@ AlignmentTemplate::get_open_source_word_pos(int target_pos) {
   return -1;
 }
 
-int 
+int
 AlignmentTemplate::get_first_open_source_word_pos(int target_pos) {
   for (unsigned i=0; i<source.size(); i++) {
     if (((source[i][0]==L'<')||(source[i]==L"__UNKNOWN__")) && (alignment[i][target_pos]))
@@ -542,7 +526,7 @@ AlignmentTemplate::get_first_open_source_word_pos(int target_pos) {
   return get_source_word_pos(target_pos) ;
 }
 
-int 
+int
 AlignmentTemplate::get_source_word_pos(int target_pos) {
   for (unsigned i=0; i<source.size(); i++) {
     if (alignment[i][target_pos])
@@ -556,24 +540,23 @@ AlignmentTemplate::get_source_word_pos(int target_pos) {
   return -1;
 }
 
-int 
+int
 AlignmentTemplate::get_open_target_word_pos(int source_pos, bool exit_if_not_found) {
   for (unsigned i=0; i<target.size(); i++) {
     if (((target[i][0]==L'<')||(target[i]==L"__UNKNOWN__")) && (alignment[source_pos][i]))
       return i;
   }
 
-  if (exit_if_not_found)
-  {
-	  wcerr<<L"Error in AlignmentTemplate::get_open_target_word_pos: No open target word aligned with source word at "<<source_pos<<L" was found\n";
-	  wcerr<<L"AT: "<<to_wstring()<<L"\n";
-	  exit(EXIT_FAILURE);
+  if (exit_if_not_found) {
+    wcerr<<L"Error in AlignmentTemplate::get_open_target_word_pos: No open target word aligned with source word at "<<source_pos<<L" was found\n";
+    wcerr<<L"AT: "<<to_wstring()<<L"\n";
+    exit(EXIT_FAILURE);
   }
 
   return -1;
 }
 
-int 
+int
 AlignmentTemplate::get_target_word_pos(int source_pos) {
   for (unsigned i=0; i<target.size(); i++) {
     if  (alignment[source_pos][i])

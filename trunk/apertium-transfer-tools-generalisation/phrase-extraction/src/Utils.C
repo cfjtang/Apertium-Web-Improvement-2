@@ -64,7 +64,6 @@ Utils::split_string(const string& input, const string& delimiter) {
   return result;
 }
 
-
 string 
 Utils::vector2string(const vector<string>& v) {
   string s="";
@@ -192,13 +191,12 @@ Utils::get_tag_value(wstring tags, wstring values) {
   vector<wstring> pval=StringUtils::split_wstring(values,L"|");
 
   for(wstring::size_type i=0; i<pval.size(); i++) {
-    if (tags.find(pval[i]) != wstring::npos)
-    {
-		int pos=tags.find(pval[i]);
-		if( (pos==0 || tags[pos-1]==L'.') && (pos==tags.size()-1 || tags[pos+1]==L'.'))
-			return pval[i];
-		else
-			return L"";
+    if (tags.find(pval[i]) != wstring::npos) {
+      int pos=tags.find(pval[i]);
+      if( (pos==0 || tags[pos-1]==L'.') && (pos==tags.size()-1 || tags[pos+1]==L'.'))
+        return pval[i];
+      else
+        return L"";
     }
   }
 

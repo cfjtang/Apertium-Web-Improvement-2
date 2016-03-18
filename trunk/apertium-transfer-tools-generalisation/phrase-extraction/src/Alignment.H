@@ -49,7 +49,7 @@ protected:
   //True if source size and the target size of both alignments (*this
   //and al2) are equal
   bool are_the_same_alignment(const Alignment& al2);
-  
+
   static vector<wstring> marker_categories;
 public: 
        
@@ -68,7 +68,7 @@ public:
   int get_target_length();
 
   void set_score(double p_score);
-  
+
   int length();
 
   wstring to_wstring();
@@ -91,7 +91,7 @@ public:
   bool all_end_words_aligned();
   
   static void set_marker_categories(const vector<wstring> v);
-  
+
   friend ostream& operator << (ostream& os, Alignment& al);
 
   friend wostream& operator << (wostream& os, Alignment& al);
