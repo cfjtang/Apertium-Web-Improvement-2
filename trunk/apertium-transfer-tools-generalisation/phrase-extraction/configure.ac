@@ -148,14 +148,11 @@ AC_CHECK_HEADER(pcreposix.h,
   AC_MSG_ERROR([*** unable to locate pcre library ***])),
   AC_MSG_ERROR([*** unable to locate pcreposix.h include file ***]))
 
-PKG_CHECK_MODULES(LIBXML2, [dnl
-  libxml-2.0 >= required_libxml_version])
+PKG_CHECK_MODULES(LIBXML2, [libxml-2.0 >= required_libxml_version])
 
-PKG_CHECK_MODULES(LTTOOLBOX, [dnl
-  lttoolbox-3.2 >= required_lttoolbox_version])
+PKG_CHECK_MODULES(LTTOOLBOX, [lttoolbox-3.2 >= required_lttoolbox_version])
   
-PKG_CHECK_MODULES(APERTIUM, [dnl
-  apertium-3.2 >= required_apertium_version])
+PKG_CHECK_MODULES(APERTIUM, [apertium-3.2 >= required_apertium_version])
 
 AC_PATH_PROG(XMLLINT, xmllint, no)
 
