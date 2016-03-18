@@ -460,6 +460,7 @@ list `ATTRIBUTES' of the same format as
     ("def-attr" "n")
     ("def-cat" "n")
     ("def-list" "n")
+    ("def-var" "n")
     ("pattern-item" "n")
     ("chunk" "name" "case" "namefrom")
     ("var" "n")
