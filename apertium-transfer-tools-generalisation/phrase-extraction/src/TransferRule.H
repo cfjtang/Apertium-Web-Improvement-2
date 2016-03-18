@@ -47,27 +47,27 @@ private:
   static map<wstring,pair<set<wstring>, set<wstring> > > attributes;
 
   static wstring category_name(const wstring& lemma, const wstring& tags);
-  
+
   static wstring escape_attr(const wstring attrstr);
-  
+
   static wstring attribute_pos_group_name(const wstring& pos);
 
   static bool using_explicit_empty_tags;
 
   static bool sm_generalise;
-  
+
   static bool provided_patterns;
-  
+
   static bool no_vars_determined;
-  
+
   static bool one_pattern_per_rule;
-  
+
   static bool no_double_check_restrictions;
-  
+
   static bool use_discard_rule;
-  
+
   static bool generate_chunks;
-  
+
   static bool empty_restrictions_match_everything;
 
   static int rule_counter;
@@ -92,33 +92,33 @@ public:
   static wstring gen_apertium_transfer_head(bool debug=false);
 
   static wstring gen_apertium_transfer_foot(bool debug=false);
-  
+
   static int load_attributes(istream*);
-  
+
   static wstring get_attribute_for_tag(wstring&, wstring&);
-  
+
   static void remove_generalised_tags(wstring &);
-  
+
   static void remove_final_asterisk(wstring &);
-  
+
   static vector<wstring> extract_attribute_names(wstring &);
-  
+
   static void set_using_explicit_empty_tags(bool f);
-  
+
   static void set_generalise(bool f);
-  
+
   static void set_provided_patterns(bool f);
-  
+
   static void set_novarsdetermined(bool f);
-  
+
   static void set_onepatternperrule(bool f);
-  
+
   static void set_generate_chunks(bool f);
-  
+
   static void set_no_double_check_restrictions(bool f);
-  
+
   static void set_use_discard_rule(bool f);
-  
+
   static void set_empty_restrictions_match_everything(bool f);
 };
 

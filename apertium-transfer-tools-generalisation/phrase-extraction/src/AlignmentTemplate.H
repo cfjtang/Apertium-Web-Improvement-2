@@ -43,11 +43,11 @@ private:
 
   //Return true if the translation 't' is ok
   static bool is_translation_ok(wstring t);
-  
+
   static bool keep_restrictions;
   static bool keep_restrictions_of_unaligned_too;
   static bool keep_lemmas;
-  
+
 
 public: 
 
@@ -95,9 +95,9 @@ public:
    * with each open target word.
    */
   int get_open_source_word_pos(int target_pos);
-  
+
   int get_first_open_source_word_pos(int target_pos);
-  
+
   int get_source_word_pos(int target_pos);
 
   /** This method returns the position of the open target word that is
@@ -106,7 +106,7 @@ public:
    * with each open source word.
    */
   int get_open_target_word_pos(int source_pos,bool exit_if_not_found=true);
-  
+
   int get_target_word_pos(int source_pos);
 
   /** Test if the alignment template performs no transformation, i.e.,
@@ -121,13 +121,13 @@ public:
   static void set_lexicalized_words(const LexicalizedWords& scw, const LexicalizedWords& tcw);
   
   static AlignmentTemplate xtract_alignment_template(Alignment& al, FSTProcessor& fstp);
-  
+
   static void set_keeprestrictions(bool &keep);
   static bool is_keeprestrictions();
-  
+
   static void set_keeprestrictionsofunalignedtoo(bool &keep);
   static bool is_keeprestrictionsofunalignedtoo();
-  
+
   static void set_keeplemmas(bool &keep);
   static bool is_keeplemmas();
 

@@ -266,21 +266,19 @@ int main(int argc, char* argv[]) {
   while (!fin->eof()) {
     getline(*fin,oneat);
     if(oneat.length()>0) {
-	  
-	  vector<wstring> *pattern=NULL;
-	  
-	  wstring atwstr=UtfConverter::fromUtf8(oneat);
-	  if(providedpatterns)
-	  {
-		  int pos=atwstr.find(L'|');
-		  wstring patternstr=atwstr.substr(0,pos);
-		  pattern=new vector<wstring>();
-		  vector<wstring> pieces= StringUtils::split_wstring(patternstr,L" ");
-		  *pattern=pieces;
-		  
-		  atwstr=atwstr.substr(pos+1);
-	  }
-	  
+      vector<wstring> *pattern=NULL;
+
+      wstring atwstr=UtfConverter::fromUtf8(oneat);
+      if(providedpatterns) {
+        int pos=atwstr.find(L'|');
+        wstring patternstr=atwstr.substr(0,pos);
+        pattern=new vector<wstring>();
+        vector<wstring> pieces= StringUtils::split_wstring(patternstr,L" ");
+        *pattern=pieces;
+
+        atwstr=atwstr.substr(pos+1);
+      }
+  
       AlignmentTemplate at(atwstr);
 
       double c;
@@ -307,7 +305,7 @@ int main(int argc, char* argv[]) {
       } else {
 	ndiscarded++;
       }
-      
+
       delete pattern;
     }
   }
@@ -316,7 +314,6 @@ int main(int argc, char* argv[]) {
     all_rules+=tr->gen_apertium_transfer_rule(debug);
     nrules++;
   }
-  
 
   delete tr;
   delete fin;

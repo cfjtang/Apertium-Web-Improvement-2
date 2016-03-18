@@ -26,13 +26,13 @@
 #include <cstdlib>
 #include <iostream>
 #include <cmath>
-#include <algorithm> 
+#include <algorithm>
 
 vector<wstring> Alignment::marker_categories;
 
 void 
-Alignment::set_marker_categories(const vector<wstring> v){
-	marker_categories=v;
+Alignment::set_marker_categories(const vector<wstring> v) {
+  marker_categories=v;
 }
 
 Alignment::Alignment() {
@@ -84,7 +84,7 @@ Alignment::get_source_length() {
 }
 
 void
-Alignment::set_score(double p_score){
+Alignment::set_score(double p_score) {
   score=p_score;
 }
 
@@ -128,103 +128,88 @@ Alignment::extract_bilingual_phrases(int min_length, int max_length, int use_mar
 
 /*
  * Use-marker:
-	* -1 : no marker. All bilingual phrases are extracted
-	* 0 : ugly marker extraction. don't use it
-	* 1 : soft marker
-	* 2 : hard marker
- * 
- */ 
-  
+ * -1 : no marker. All bilingual phrases are extracted
+ * 0 : ugly marker extraction. don't use it
+ * 1 : soft marker
+ * 2 : hard marker
+ *
+ */
+
   cerr << "SL sentence: "<<endl;
   for (int i= 0; i< source.size(); i++)
-	  wcerr <<"'"<< source[i] << "' ";
+    wcerr <<"'"<< source[i] << "' ";
   
   string marker_string="";
-  for (int i=0 ; i< source.size(); i++){
-	int posStart=source[i].find(L"<");
-	int posEnd=source[i].find(L">");
-	if (posStart == wstring::npos || posEnd == wstring::npos){
-		marker_string+="*";
-	}
-	else{
-		wstring first_tag=source[i].substr(posStart,posEnd-posStart+1);
-		vector<wstring>::iterator found = find (marker_categories.begin(), marker_categories.end(), first_tag);
-		if (found != marker_categories.end()) {
-			marker_string+="m";
-		} else {
-			marker_string+="w";
-		}
-	}
+  for (int i=0 ; i< source.size(); i++) {
+    int posStart=source[i].find(L"<");
+    int posEnd=source[i].find(L">");
+    if (posStart == wstring::npos || posEnd == wstring::npos) {
+      marker_string+="*";
+    } else{
+      wstring first_tag=source[i].substr(posStart,posEnd-posStart+1);
+      vector<wstring>::iterator found = find (marker_categories.begin(), marker_categories.end(), first_tag);
+      if (found != marker_categories.end()) {
+        marker_string+="m";
+      } else {
+        marker_string+="w";
+      }
+    }
   }
 
   cerr << endl <<"Marker string: "<<marker_string<<endl;
-  
-  
+
   for(unsigned i2=0; i2<target.size(); i2++) {
     for(unsigned i1=0; i1<=i2; i1++) {
-      //cerr<<"I2 "<<i2<<"\n";
-      //cerr<<"I1 "<<i1<<"\n";
       set<int> SP;
       for(unsigned j=0; j<source.size(); j++) {
-	for(unsigned i=i1; i<=i2; i++) {
-	  if (alignment[j][i])
-	    SP.insert(j);
-	}
-      }    
-
-      //cerr<<"SP: ";
-      //for(set<int>::iterator it=SP.begin(); it!= SP.end(); it++)
-      //  cerr<<*it<<" ";
-      //cerr<<"\n";
+        for(unsigned i=i1; i<=i2; i++) {
+          if (alignment[j][i])
+            SP.insert(j);
+        }
+      }
 
       if (consecutive(SP)) {
-	//cerr<<"SP consecutive\n";
-	int j1=*(SP.begin()); //min value
-	int j2=*(--SP.end()); //max value
-	int phrase_length=j2-j1+1;
+        int j1=*(SP.begin()); //min value
+        int j2=*(--SP.end()); //max value
+        int phrase_length=j2-j1+1;
 
-	//cerr<<"min:"<<j1<<"\n";
-	//cerr<<"max:"<<j2<<"\n";
-	//cerr<<"phrase:" <<sub_alignment(j1, j2, i1, i2).to_string()<<"\n";
-	//cerr<<"phrase length:"<<phrase_length<<"\n";
-	if ((phrase_length>=min_length)&&(phrase_length<=max_length)) {
-	  if (consistent(j1, j2, i1, i2)) {
-	    
-	    //check marker
-	    bool markerOK=true;
-	    
-	    if (use_marker>-1){
-		    if (j1 != 0){
-			if (marker_string[j1]!='m')
-				markerOK=false;
-		    }
-		    if (j2!=source.size()-1){
-			if (marker_string[j2]!='w')
-				markerOK=false;
-		    }
-		    
-		    
-		    if (j1 != 0 && use_marker==2){
-			   if(marker_string[j1-1]!='w')
-				  markerOK=false;
-		    }
-		    
-		    if(j2 < source.size()-1 && (use_marker==0 || use_marker==2) ){
-			if(marker_string[j2+1]!='m')
-				markerOK=false;
-		    }
-		
-	    }
-		    
-	    if (markerOK)
-		bil_phrases.push_back(sub_alignment(j1, j2, i1, i2));
-	    //cerr<<"Added\n";
-	  }
-	}
-      } //else {
-	//cerr<<"SP no consecutive\n";
-      //}
-      //cerr<<"\n";
+        if ((phrase_length>=min_length)&&(phrase_length<=max_length)) {
+          if (consistent(j1, j2, i1, i2)) {
+
+            //check marker
+            bool markerOK=true;
+
+            if (use_marker>-1) {
+              if (j1 != 0) {
+                if (marker_string[j1]!='m') {
+                  markerOK=false;
+                }
+              }
+              if (j2!=source.size()-1) {
+                if (marker_string[j2]!='w') {
+                  markerOK=false;
+                }
+              }
+
+              if (j1 != 0 && use_marker==2) {
+                if(marker_string[j1-1]!='w') {
+                  markerOK=false;
+                }
+              }
+
+              if(j2 < source.size()-1 && (use_marker==0 || use_marker==2)) {
+                if(marker_string[j2+1]!='m') {
+                  markerOK=false;
+                }
+              }
+            }
+
+            if (markerOK) {
+              bil_phrases.push_back(sub_alignment(j1, j2, i1, i2));
+            }
+          }
+        }
+      }
     }
   }
 
