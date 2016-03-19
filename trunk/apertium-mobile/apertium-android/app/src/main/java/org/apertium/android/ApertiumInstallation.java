@@ -19,6 +19,9 @@
 package org.apertium.android;
 
 import android.util.Log;
+
+import com.bugsense.trace.BugSenseHandler;
+
 import dalvik.system.DexClassLoader;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -104,7 +107,7 @@ public class ApertiumInstallation {
       try {
         Translator.setBase(basedir, getClassLoaderForPackage(pkg)); // getClassLoaderForPackage(pkg)
         for (String mode : Translator.getAvailableModes()) {
-          String title = Translator.getTitle(mode);
+          String title = LanguageTitles.getTitle(mode);
           Log.d("", mode + "  " + title + "  " + basedir);
           titleToMode.put(title, mode);
           modeToPackage.put(mode, pkg);
@@ -174,6 +177,10 @@ public class ApertiumInstallation {
   public DexClassLoader getClassLoaderForPackage(String pkg) {
 //        Log.d(TAG, "new DexClassLoader(" + basedir + ".jar");
     //return new DexClassLoader(getBasedirForPackage(pkg)+ ".jar", bytecodeCacheDir.getAbsolutePath(), null, this.getClass().getClassLoader());
+    if (!bytecodeCacheDir.exists()) { // Fix for https://mint.splunk.com/dashboard/project/185c8f8c/errors/987908380
+      BugSenseHandler.sendException(new IOException("bytecodeCacheDir was removed: "+bytecodeCacheDir));
+      bytecodeCacheDir.mkdirs();
+    }
     return new DexClassLoader(bytecodeDir+ "/" + pkg + ".jar", bytecodeCacheDir.getAbsolutePath(), null, this.getClass().getClassLoader());
   }
 

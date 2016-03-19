@@ -245,8 +245,8 @@ public class TranslatorActivity extends Activity implements OnClickListener {
       Runtime rt = Runtime.getRuntime();
       Log.d(TAG, "start mem f=" + rt.freeMemory() / 1000000 + "  t=" + rt.totalMemory() / 1000000 + " m=" + rt.maxMemory() / 1000000);
       IOUtils.timing = new org.apertium.utils.Timing("overall");
+      String input = inputText[0];
       try {
-        String input = inputText[0];
         Log.i(TAG, "Translator Run input " + input);
         Timing timing = new Timing("Translator.translate()");
         //String output = Translator.translate(input);
@@ -258,10 +258,11 @@ public class TranslatorActivity extends Activity implements OnClickListener {
         return output.toString();
       } catch (Throwable e) {
         e.printStackTrace();
-        Log.e(TAG, "ApertiumActivity.TranslationRun MODE =" + activity.currentModeTitle + ";InputText = " + activity.inputEditText.getText());
+        Log.e(TAG, "ApertiumActivity.TranslationRun MODE =" + activity.currentModeTitle + ";InputText = " + input);
+        BugSenseHandler.sendException(new Exception(e));
         return "error: " + e;
       } finally {
-        IOUtils.timing.report();
+        if (IOUtils.timing!=null) IOUtils.timing.report(); // Fix for https://mint.splunk.com/dashboard/project/185c8f8c/errors/1149188060
         IOUtils.timing = null;
         Log.d(TAG, "start mem f=" + rt.freeMemory() / 1000000 + "  t=" + rt.totalMemory() / 1000000 + " m=" + rt.maxMemory() / 1000000);
       }

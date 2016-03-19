@@ -45,7 +45,7 @@ public class App extends Application {
 
     // If you want to use BugSense for your fork, register with
     // them and place your own API key in /assets/bugsense.txt
-    try {
+    if (!BuildConfig.DEBUG) try {
       byte[] buffer = new byte[16];
       int n = getAssets().open("bugsense.txt").read(buffer);
       String key = new String(buffer, 0, n).trim();
