@@ -19,13 +19,9 @@
 package org.apertium.android;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -38,7 +34,9 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.bugsense.trace.BugSenseHandler;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -53,7 +51,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import org.apertium.Translator;
 
 /**
  @author Mikel Artetxe, Jacob Nordfalk
@@ -173,7 +170,7 @@ public class InstallActivity extends Activity implements OnItemClickListener, On
         packages.add(pkg);
         URL url = new URL(columns[1]);
         d.packageToURL.put(pkg, url);
-        String modeTitle = Translator.getTitle(columns[3]);
+        String modeTitle = LanguageTitles.getTitle(columns[3]);
         d.packageToTitle.put(pkg, modeTitle);
         if (installedPackages.contains(pkg)) {
           installedPackages.remove(pkg);
@@ -199,6 +196,8 @@ public class InstallActivity extends Activity implements OnItemClickListener, On
     Collections.sort(packages);
     d.packages = packages;
   }
+
+
 
   private static class RepoAsyncTask extends AsyncTask {
     Data d;
@@ -284,7 +283,7 @@ public class InstallActivity extends Activity implements OnItemClickListener, On
       TextView status = (TextView) v.findViewById(R.id.status);
 
       String pkg = d.packages.get(row);
-      String pkgTitle = d.packageToTitle.get(pkg);
+      String pkgTitle = d.packageToTitle.get(pkg).replace(",","<br/>\n");
       boolean isChecked = isChecked(pkg);
       checkBox.setChecked(isChecked);
 
@@ -299,7 +298,7 @@ public class InstallActivity extends Activity implements OnItemClickListener, On
         name.setText(Html.fromHtml("<html><b>" + pkgTitle + "</b></html>"));
         status.setText(Html.fromHtml("<html><b>Marked to uninstall</b></html>"));
       } else {
-        name.setText(pkgTitle);
+        name.setText(Html.fromHtml("<html>" + pkgTitle + "</html>"));
         String txt;
         if (d.updatedPackages.contains(pkg)) {
           txt = "<html><i>Installed from repository</i></html>";
@@ -365,7 +364,7 @@ public class InstallActivity extends Activity implements OnItemClickListener, On
       d.progressMax = d.packagesToInstall.size() * 100;
 
       int packageNo = 0;
-      for (String pkg : d.packagesToInstall) {
+      for (String pkg : new HashSet<String>(d.packagesToInstall)) { // Avoid ConcurrentModificationException
         if (isCancelled()) break;
         try {
           publishProgress(d.activity.getString(R.string.downloading) + " " + pkg + "...");
@@ -396,6 +395,7 @@ public class InstallActivity extends Activity implements OnItemClickListener, On
           d.installedPackages.add(pkg);
         } catch (Exception ex) {
           ex.printStackTrace();
+          BugSenseHandler.sendException(ex);
           return ex;
         }
       }
