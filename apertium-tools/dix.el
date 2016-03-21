@@ -1871,12 +1871,12 @@ lahka:slags
 			 (match-string 1 template-basis))
 		    "$"))
 	   (inlist-start (save-excursion (nxml-token-before)
-					   (goto-char xmltok-start)
-					   (re-search-forward "[^ \t\n]")
-					   (match-beginning 0)))
+                                         (goto-char xmltok-start)
+                                         (re-search-forward "[^ \t\n]")
+                                         (match-beginning 0)))
 	   (inlist-end (save-excursion (goto-char (nxml-token-after))
-					 (re-search-backward "[^ \t\n]")
-					 (match-end 0)))
+                                       (re-search-backward "[^ \t\n]")
+                                       (match-end 0)))
 	   (inlist (split-string
 		    (dix-trim-string (buffer-substring-no-properties
 				      inlist-start
@@ -1895,7 +1895,7 @@ lahka:slags
 							   (replace-regexp-in-string " " "<b/>" (if (cdr lr)
 												    (cadr lr)
 												  (car lr))))))
-			 (when (third lr) (error "More than one : in line: %s" line))
+			 (when (cl-caddr lr) (error "More than one : in line: %s" line))
 			 (format (if (equal l r)
 				     template
 				   ;; both <l> and <r> in input, perhaps change <i/> to <l/>...<r/>:
@@ -1985,33 +1985,33 @@ on a previously narrowed buffer (the default behaviour for
 `narrow-to-region'), otherwise the buffer is widened first."
   (interactive "P")
   (dix-with-no-case-fold
-   (let (sdefs)
-     (save-excursion ;; find all sdefs
-       (save-restriction (widen)
-	 (goto-char (point-min))
-	 (while (re-search-forward
-		 "<sdef[^>]*n=\"\\([^\"]*\\)\"" nil 'noerror)
-	   (add-to-list 'sdefs (match-string-no-properties 1)))))
-     (let ((sdef (completing-read "sdef/POS-tag: " sdefs nil 'require-match))
-	   id start end sections)
-       (save-excursion ;; find all sections
-	 (save-restriction (widen)
-	   (goto-char (point-min))
-	   (while (setq start (re-search-forward
-			       "<section[^>]*id=\"\\([^\"]*\\)\"" nil 'noerror))
-	     (setq id (match-string-no-properties 1))
-	     (setq end (re-search-forward "</section>"))
-	     (if (search-backward (concat "<s n=\"" sdef "\"") start 'noerror)
-		 (add-to-list 'sections (list id start end))))))
-       ;; narrow to region between first and last occurrence of sdef in chosen section
-       (let* ((ids (mapcar 'car sections))
-	      (id (if (cdr sections)
-		      (completing-read "Section:" ids nil 'require-match
-				       (if (cdr ids) nil (car ids)))
-		    (caar sections)))
-	      (section (assoc id sections)))
-	 (unless no-widen (widen))
-	 (dix-narrow-to-sdef-narrow sdef (second section) (third section)))))))
+      (let (sdefs)
+        (save-excursion ;; find all sdefs
+          (save-restriction (widen)
+                            (goto-char (point-min))
+                            (while (re-search-forward
+                                    "<sdef[^>]*n=\"\\([^\"]*\\)\"" nil 'noerror)
+                              (add-to-list 'sdefs (match-string-no-properties 1)))))
+        (let ((sdef (completing-read "sdef/POS-tag: " sdefs nil 'require-match))
+              id start end sections)
+          (save-excursion ;; find all sections
+            (save-restriction (widen)
+                              (goto-char (point-min))
+                              (while (setq start (re-search-forward
+                                                  "<section[^>]*id=\"\\([^\"]*\\)\"" nil 'noerror))
+                                (setq id (match-string-no-properties 1))
+                                (setq end (re-search-forward "</section>"))
+                                (if (search-backward (concat "<s n=\"" sdef "\"") start 'noerror)
+                                    (add-to-list 'sections (list id start end))))))
+          ;; narrow to region between first and last occurrence of sdef in chosen section
+          (let* ((ids (mapcar 'car sections))
+                 (id (if (cdr sections)
+                         (completing-read "Section:" ids nil 'require-match
+                                          (if (cdr ids) nil (car ids)))
+                       (caar sections)))
+                 (section (assoc id sections)))
+            (unless no-widen (widen))
+            (dix-narrow-to-sdef-narrow sdef (second section) (cl-caddr section)))))))
 
 ;;; The following is rather nn-nb-specific stuff. Todo: generalise or remove.
 (defun dix-move-to-top ()
