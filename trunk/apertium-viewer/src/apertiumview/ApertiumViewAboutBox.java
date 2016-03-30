@@ -8,8 +8,13 @@
  */
 package apertiumview;
 
+import java.awt.Desktop;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apertium.utils.IOUtils;
 
 public class ApertiumViewAboutBox extends javax.swing.JDialog {
@@ -61,7 +66,12 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
     homepageLabel.setFont(homepageLabel.getFont().deriveFont(homepageLabel.getFont().getStyle() | java.awt.Font.BOLD));
     homepageLabel.setText("Homepage:");
 
-    appHomepageLabel.setText("http://wiki.apertium.org/wiki/Apertium-viewer");
+    appHomepageLabel.setText("<html><a href='http://wiki.apertium.org/wiki/Apertium-viewer'>http://wiki.apertium.org/wiki/Apertium-viewer</a>\n");
+    appHomepageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        appHomepageLabelMouseClicked(evt);
+      }
+    });
 
     vendorLabel.setFont(vendorLabel.getFont().deriveFont(vendorLabel.getFont().getStyle() | java.awt.Font.BOLD));
     vendorLabel.setText("Author:");
@@ -116,7 +126,7 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                   .addComponent(appVersionLabel)
                   .addComponent(appVendorLabel)
-                  .addComponent(appHomepageLabel)))
+                  .addComponent(appHomepageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
               .addComponent(appTitleLabel))
             .addGap(0, 0, Short.MAX_VALUE))
           .addComponent(jScrollPane1))
@@ -141,7 +151,7 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(homepageLabel)
-          .addComponent(appHomepageLabel))
+          .addComponent(appHomepageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jScrollPane1)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -155,6 +165,13 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
     setVisible(false);
   }//GEN-LAST:event_closeButtonActionPerformed
 
+  private void appHomepageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_appHomepageLabelMouseClicked
+			try {
+				Desktop.getDesktop().browse(new URI("http://wiki.apertium.org/wiki/Apertium-viewer"));
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+  }//GEN-LAST:event_appHomepageLabelMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JLabel appVersionLabel;
