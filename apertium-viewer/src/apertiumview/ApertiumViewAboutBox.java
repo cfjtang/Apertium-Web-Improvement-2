@@ -18,6 +18,7 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
 		super(parent);
 		initComponents();
 		StringWriter sw = new StringWriter();
+		sw.append(Version.getNewVersionMessage());
 		sw.append("Apertium Java cahce dir: "+IOUtils.cacheDir);
 		sw.append("\n\nJava dir: "+System.getProperty("java.home"));
 		sw.append("\n\nPath for external commands:\n"+System.getenv("PATH"));
@@ -26,6 +27,7 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
 		String envs = System.getenv().toString().replace(", ", "\n").substring(1);
 		sw.append("\n\nEnvironment variables:\n"+envs.substring(0, envs.length()-1));
 		jTextAreaSystemInfo.setText(sw.toString());
+		jTextAreaSystemInfo.setCaretPosition(0);
 		appVersionLabel.setText(Version.APERTIUM_VIEWER_VERSION);
 	}
 
@@ -87,6 +89,7 @@ public class ApertiumViewAboutBox extends javax.swing.JDialog {
     versionLabel.setText("Product Version:");
 
     jTextAreaSystemInfo.setColumns(20);
+    jTextAreaSystemInfo.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
     jTextAreaSystemInfo.setRows(5);
     jScrollPane1.setViewportView(jTextAreaSystemInfo);
 
