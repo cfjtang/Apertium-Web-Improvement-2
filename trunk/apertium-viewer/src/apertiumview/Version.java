@@ -29,20 +29,27 @@ import java.net.URL;
  */
 public class Version {
 	public static final String APERTIUM_VIEWER_VERSION = "2.5.2";
+	private static String message = null;
 
-	static String checkForNewVersion() throws IOException {
-		final String REPO_URL = "http://javabog.dk/filer/apertium/apertium-viewer-newest-version.txt";
-		StringBuilder sb = new StringBuilder();
-		InputStreamReader isr = new InputStreamReader(new URL(REPO_URL).openStream());
-		int ch = isr.read();
-		while (ch != -1) { sb.append((char)ch); ch = isr.read(); }
-		isr.close();
-		int n = sb.indexOf("\n");
-		String newestVersion = sb.substring(0, n).trim();
-		if (APERTIUM_VIEWER_VERSION.equals(newestVersion)) return null;
-		String ret = "\nA new version of Apertium-viewer is available\nCurrent version: "+APERTIUM_VIEWER_VERSION
-				+"\nNew version: "+sb;
-		return ret;
+	static String getNewVersionMessage() {
+		if (message!=null) return message;
+		try {
+			final String REPO_URL = "http://javabog.dk/filer/apertium/apertium-viewer-newest-version.txt";
+			StringBuilder sb = new StringBuilder();
+			InputStreamReader isr = new InputStreamReader(new URL(REPO_URL).openStream());
+			int ch = isr.read();
+			while (ch != -1) { sb.append((char)ch); ch = isr.read(); }
+			isr.close();
+			int n = sb.indexOf("\n");
+			String newestVersion = sb.substring(0, n).trim();
+			if (APERTIUM_VIEWER_VERSION.equals(newestVersion)) message = ""; // no new version
+			else message = "\nA new version of Apertium-viewer is available\nCurrent version: "
+					+APERTIUM_VIEWER_VERSION+"\nNew version: "+sb+"\n\n";
+		} catch (Exception e) {
+			e.printStackTrace();
+			message = "";
+		}
+		return message;
 	}
 
 }
