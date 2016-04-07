@@ -137,8 +137,10 @@
   :init
   (add-hook 'nxml-mode-hook
             (lambda ()
-              (modify-syntax-entry ?> ")<" nxml-mode-syntax-table)
-              (modify-syntax-entry ?< "(>" nxml-mode-syntax-table)
+              (when (boundp 'nxml-mode-syntax-table)
+                ;; TODO: why would it not be bound? old versions?
+                (modify-syntax-entry ?> ")<" nxml-mode-syntax-table)
+                (modify-syntax-entry ?< "(>" nxml-mode-syntax-table))
               (and (buffer-file-name)
                    (string-match "\\.t[0-9s]x$\\|\\.lrx$" buffer-file-name)
                    (dix-mode 1))
