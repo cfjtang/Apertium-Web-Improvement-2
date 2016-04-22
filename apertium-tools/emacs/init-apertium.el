@@ -136,13 +136,11 @@
          ("\\.multidix\\'" . nxml-mode))
   :init
   (add-hook 'nxml-mode-hook
-            (lambda ()
-              (if (not (boundp 'nxml-mode-syntax-table))
-                  (message "WARNING: you seem to have an old version of nxml-mode installed; check your .emacs")
-                (modify-syntax-entry ?> ")<" nxml-mode-syntax-table)
-                (modify-syntax-entry ?< "(>" nxml-mode-syntax-table))
+            (defun dix-on-nxml-mode ()
+              (modify-syntax-entry ?> ")<" nxml-mode-syntax-table)
+              (modify-syntax-entry ?< "(>" nxml-mode-syntax-table)
               (and (buffer-file-name)
-                   (string-match "\\.t[0-9s]x$\\|\\.lrx$" buffer-file-name)
+                   (string-match "\\.t[0-9s]x$\\|\\.lrx\\|/modes\\.xml$" buffer-file-name)
                    (dix-mode 1))
               (and (buffer-file-name)
                    (string-match "\\.\\(meta\\|multi\\)?dix$" buffer-file-name)
