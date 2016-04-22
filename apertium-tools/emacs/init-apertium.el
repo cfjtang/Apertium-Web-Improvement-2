@@ -246,6 +246,12 @@
     (add-hook 'hfst-mode-hook #'company-mode)))
 
 
+(use-package bind-key
+  :config
+  (bind-key* "C-+" #'text-scale-increase)
+  (bind-key* "M-+" #'text-scale-decrease))
+
+
 ;; Back to sane value, less large freezes:
 (setq gc-cons-threshold (* 4 1024 1024))
 
