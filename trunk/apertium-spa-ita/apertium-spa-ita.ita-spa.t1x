@@ -3,11 +3,19 @@
   <section-def-cats>
     <def-cat n="nom">
       <cat-item tags="n.*"/><!--Falten els altres np (antroponims) que tenen gen i nbr, revisar regles.-->
+    </def-cat>
+
+    <def-cat n="top">
+      <cat-item tags="np.top.*"/>
       <cat-item tags="np.loc.*"/>
     </def-cat>
 
+    <def-cat n="cog">
+      <cat-item tags="np.cog.*"/>
+    </def-cat>
+ 
     <def-cat n="ant">
-      <cat-item tags="np.ant"/>
+      <cat-item tags="np.ant.*"/>
     </def-cat>
 
     <def-cat n="adj">
@@ -271,8 +279,7 @@
       <attr-item tags="n"/>
       <attr-item tags="n.acr"/>
       <attr-item tags="n.unc"/>
-      <attr-item tags="np.loc"/>
-      <attr-item tags="np.ant"/>
+      <attr-item tags="np"/>
     </def-attr>
 
     <def-attr n="a_np_acr">
@@ -399,9 +406,11 @@
     </def-attr>
 
     <def-attr n="tipus_np">
+      <attr-item tags="top"/>
       <attr-item tags="loc"/>
       <attr-item tags="al"/>
       <attr-item tags="ant"/>
+      <attr-item tags="cog"/>
     </def-attr>
 
     <def-attr n="tipus_det">
@@ -3641,6 +3650,54 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: TOPÒNIM">
+      <pattern>
+	<pattern-item n="top"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="top" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="tipus_np"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: COGNOMEN">
+      <pattern>
+	<pattern-item n="cog"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="cog" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="tipus_np"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
     <rule comment="REGLA: ANTROPÒNIM">
       <pattern>
 	<pattern-item n="ant"/>
@@ -3655,7 +3712,9 @@
 	      <tag><lit-tag v="SN"/></tag>
 	    </tags>
 	    <lu>   
-	      <clip pos="1" side="tl" part="whole"/>
+	      <clip pos="1" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="tipus_np"/>
 	    </lu>
 	  </chunk>
 	</out>
