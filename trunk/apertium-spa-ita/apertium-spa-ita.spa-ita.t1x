@@ -216,6 +216,12 @@
       <cat-item tags="cnjcoo"/>
     </def-cat>
 
+    <def-cat n="cnj">
+      <cat-item tags="cnjcoo"/>
+      <cat-item tags="cnjadv"/>
+      <cat-item tags="cnjsub"/>
+    </def-cat>
+
     
     <def-cat n="prep">
       <cat-item tags="pr"/>
@@ -5277,6 +5283,28 @@
 	      <clip pos="1" side="tl" part="gen_mf"/>	 
 	      <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
 	      <clip pos="1" side="tl" part="nbr_sp"/>	 
+	    </lu> 
+	  </chunk>
+	</out>
+      </action>
+    </rule> 
+    
+    <rule comment="REGLA: cnj">
+      <pattern>
+	<pattern-item n="cnj"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="cnjcoo" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="CNJ"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="whole"/> 
+
 	    </lu> 
 	  </chunk>
 	</out>
