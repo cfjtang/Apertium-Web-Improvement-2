@@ -10,7 +10,11 @@
       <cat-item tags="np.loc.*"/>
     </def-cat>
 
-    <def-cat n="cog">
+    <def-cat n="al">
+      <cat-item tags="np.al.*"/>
+    </def-cat>
+
+     <def-cat n="cog">
       <cat-item tags="np.cog.*"/>
     </def-cat>
  
@@ -3684,6 +3688,29 @@
 	</call-macro>
 	<out>
 	  <chunk name="cog" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="tipus_np"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: ALTRES">
+      <pattern>
+	<pattern-item n="al"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="al" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	    </tags>
