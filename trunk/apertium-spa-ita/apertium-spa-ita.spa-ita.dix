@@ -79,6 +79,43 @@
     <sdef n="time"/>	
   </sdefs>
   <pardefs>
+    <pardef n="sp_ND">
+      <e r="LR"><p><l><s n="sp"/></l><r><s n="ND"/></r></p></e>
+      <e r="RL"><p><l><s n="sp"/></l><r><s n="sg"/></r></p></e>
+      <e r="RL"><p><l><s n="sp"/></l><r><s n="pl"/></r></p></e>
+    </pardef>
+
+    <pardef n="mf_GD">
+      <e r="LR"><p><l><s n="mf"/></l><r><s n="GD"/></r></p></e>
+      <e r="RL"><p><l><s n="mf"/></l><r><s n="f"/></r></p></e>
+      <e r="RL"><p><l><s n="mf"/></l><r><s n="m"/></r></p></e>
+    </pardef>
+
+    <pardef n="ND_sp">
+      <e r="LR"><p><l><s n="sg"/></l><r><s n="sp"/></r></p></e>
+      <e r="LR"><p><l><s n="pl"/></l><r><s n="sp"/></r></p></e>
+      <e r="RL"><p><l><s n="ND"/></l><r><s n="sp"/></r></p></e>
+    </pardef>
+
+    <pardef n="GD_mf">
+      <e r="LR"><p><l><s n="f"/></l><r><s n="mf"/></r></p></e>
+      <e r="LR"><p><l><s n="m"/></l><r><s n="mf"/></r></p></e>
+      <e r="RL"><p><l><s n="GD"/></l><r><s n="mf"/></r></p></e>
+    </pardef>
+
+    <pardef n="GD_mf|ND_sp">
+      <e r="LR"><p><l><s n="f"/></l><r><s n="mf"/></r></p><par n="ND_sp"/></e>
+      <e r="LR"><p><l><s n="m"/></l><r><s n="mf"/></r></p><par n="ND_sp"/></e>
+      <e r="RL"><p><l><s n="GD"/></l><r><s n="mf"/></r></p><par n="ND_sp"/></e>
+    </pardef>
+
+    <pardef n="mf_GD|sp_ND">
+      <e r="LR"><p><l><s n="mf"/></l><r><s n="GD"/></r></p><par n="sp_ND"/></e>
+      <e r="RL"><p><l><s n="mf"/></l><r><s n="f"/></r></p><par n="sp_ND"/></e>
+      <e r="RL"><p><l><s n="mf"/></l><r><s n="m"/></r></p><par n="sp_ND"/></e>
+    </pardef>
+
+
     <pardef n="mil">
       <e><i><s n="num"/></i></e>
       <e><p><l><b/>mil<s n="num"/></l><r>mila<s n="num"/></r></p></e>
@@ -423,6 +460,7 @@
     <e r="RL"><p><l>suyo<s n="det"/><s n="pos"/><s n="mf"/><s n="ND"/></l><r>loro<s n="det"/><s n="pos"/><s n="mf"/><s n="sp"/></r></p></e>
     <e><p><l>tal<s n="det"/></l><r>tale<s n="det"/></r></p></e>
     <e><p><l>todo<s n="predet"/></l><r>tutto<s n="predet"/></r></p></e>
+    <e r="RL"><p><l>todo<s n="predet"/><s n="f"/><s n="ND"/></l><r>tutto<s n="predet"/><s n="f"/><s n="sp"/></r></p></e>
     
     <e><p><l>ambos<s n="det"/><s n="ind"/></l><r>entrambi<b/>i<s n="det"/><s n="ind"/></r></p></e>
     
@@ -2245,6 +2283,7 @@
 
     <e r="LR"><p><l>haber<b/>que<s n="vbmod"/></l><r>avere<b/>bisogno<b/>di<s n="vbmod"/></r></p></e>
     <e><p><l>poder<s n="vbmod"/></l><r>potere<s n="vbmod"/></r></p></e>
+    <!--<e><p><l>poder<s n="vblex"/></l><r>potere<s n="vblex"/></r></p></e>-->
     <e r="LR"><p><l>haber<g><b/>de</g><s n="vbmod"/></l><r>dovere<s n="vbmod"/></r></p></e>
     <e r="LR"><p><l>tener<g><b/>que</g><s n="vbmod"/></l><r>dovere<s n="vbmod"/></r></p></e>
     <e r="LR"><p><l>tener<g><b/>de<b/>plazo</g><s n="vblex"/></l><r>avere<g><b/>tempo</g><s n="vblex"/></r></p></e>
@@ -3198,7 +3237,6 @@
     <e><p><l>plantear<s n="vblex"/></l><r>sollevare<s n="vblex"/></r></p></e>
     <e><p><l>plasmar<s n="vblex"/></l><r>plasmare<s n="vblex"/></r></p></e>
     <e><p><l>poblar<s n="vblex"/></l><r>popolare<s n="vblex"/></r></p></e>
-    <e><p><l>poder<s n="vblex"/></l><r>potere<s n="vblex"/></r></p></e>
     <e><p><l>ponderar<s n="vblex"/></l><r>ponderare<s n="vblex"/></r></p></e>
     <e><p><l>poner<s n="vblex"/></l><r>mettere<s n="vblex"/></r></p></e>
     <e r="RL"><p><l>poner<s n="vblex"/></l><r>porre<s n="vblex"/></r></p></e>
@@ -3758,8 +3796,8 @@
     <e><p><l>ciertamente<s n="adv"/></l><r>certamente<s n="adv"/></r></p></e>
     <e><p><l>claramente<s n="adv"/></l><r>chiaramente<s n="adv"/></r></p></e>
     <e><p><l>claro<s n="adv"/></l><r>chiaro<s n="adv"/></r></p></e>
-    <e><p><l>como<s n="adv"/></l><r>come<s n="adv"/></r></p></e>
-    <e r="LR"><p><l>cómo<s n="adv"/><s n="itg"/></l><r>come<s n="adv"/><s n="itg"/></r></p></e>
+    <!--<e><p><l>como<s n="adv"/></l><r>come<s n="adv"/></r></p></e>-->
+    <e><p><l>cómo<s n="adv"/><s n="itg"/></l><r>come<s n="adv"/><s n="itg"/></r></p></e>
     <e><p><l>como<b/>consecuencia<s n="adv"/></l><r>come<b/>conseguenza<s n="adv"/></r></p></e>
     <e><p><l>como<b/>de<b/>costumbre<s n="adv"/></l><r>come<b/>di<b/>consueto<s n="adv"/></r></p></e>
     <e><p><l>como<b/>en<b/>cualquier<b/>lugar<b/>del<b/>mundo<s n="adv"/></l><r>come<b/>in<b/>qualsiasi<b/>posto<b/>del<b/>mondo<s n="adv"/></r></p></e>
@@ -12887,8 +12925,8 @@
     <!-- Pronoms -->
     <e><p><l>algo<s n="prn"/></l><r>qualcosa<s n="prn"/></r></p></e>
     <e r="RL"><p><l>algo<s n="prn"/></l><r>alcunché<s n="prn"/></r></p></e>
-    <e><p><l>alguien<s n="prn"/><s n="tn"/><s n="m"/></l><r>qualcuno<s n="prn"/><s n="tn"/><s n="m"/></r></p></e>
-    <e r="RL"><p><l>alguien<s n="prn"/><s n="tn"/><s n="m"/></l><r>qualcuno<s n="prn"/><s n="tn"/><s n="f"/></r></p></e>
+    <e><p><l>alguien<s n="prn"/><s n="tn"/></l><r>qualcuno<s n="prn"/><s n="tn"/></r></p><par n="mf_GD"/></e>
+    <e r="RL"><p><l>alguien<s n="prn"/><s n="tn"/><s n="mf"/></l><r>qualcuno<s n="prn"/><s n="tn"/><s n="f"/></r></p></e>
     <e><p><l>alguno<s n="prn"/><s n="tn"/><s n="m"/></l><r>alcuno<s n="prn"/><s n="tn"/><s n="m"/></r></p></e>
     <e><p><l>alguno<s n="prn"/><s n="tn"/><s n="f"/></l><r>alcuno<s n="prn"/><s n="tn"/><s n="f"/></r></p></e>
     <e r="RL"><p><l>ambos<s n="prn"/></l><r>tutti<b/>e<b/>due<s n="prn"/></r></p></e>
@@ -12955,8 +12993,8 @@
     
     <e><p><l>me<s n="prn"/><s n="pro"/></l><r>mi<s n="prn"/><s n="pro"/></r></p></e>
     <e><p><l>mí<s n="prn"/><s n="tn"/></l><r>me<s n="prn"/><s n="tn"/></r></p></e>
-    <e><p><l>nada<s n="prn"/></l><r>niente<s n="prn"/></r></p></e>
-    <e r="RL"><p><l>nada<s n="prn"/></l><r>nulla<s n="prn"/></r></p></e>
+    <e><p><l>nada<s n="prn"/><s n="tn"/><s n="nt"/></l><r>niente<s n="prn"/><s n="tn"/><s n="nt"/><s n="sg"/></r></p></e>
+    <e><p><l>nada<s n="prn"/><s n="tn"/><s n="nt"/></l><r>nulla<s n="prn"/><s n="tn"/><s n="nt"/><s n="sg"/></r></p></e>
     <e r="LR"><p><l>nadie<s n="prn"/><s n="tn"/><s n="mf"/></l><r>nessuno<s n="prn"/><s n="tn"/><s n="m"/></r></p></e>
     <e><p><l>ninguno<s n="prn"/><s n="tn"/><s n="m"/></l><r>nessuno<s n="prn"/><s n="tn"/><s n="m"/></r></p></e>
     <e><p><l>ninguno<s n="prn"/><s n="tn"/><s n="f"/></l><r>nessuno<s n="prn"/><s n="tn"/><s n="f"/></r></p></e>
@@ -12965,7 +13003,7 @@
     <e r="LR"><p><l>nosotros<s n="prn"/><s n="tn"/><s n="p1"/><s n="m"/></l><r>noi<s n="prn"/><s n="tn"/><s n="p1"/><s n="mf"/></r></p></e>
     <e r="LR"><p><l>nosotros<s n="prn"/><s n="tn"/><s n="p1"/><s n="f"/></l><r>noi<s n="prn"/><s n="tn"/><s n="p1"/><s n="mf"/></r></p></e>
     <e r="RL"><p><l>nosotros<s n="prn"/><s n="tn"/><s n="p1"/><s n="GD"/></l><r>noi<s n="prn"/><s n="tn"/><s n="p1"/><s n="mf"/></r></p></e>
-    <e><p><l>os<s n="prn"/><s n="pro"/></l><r>vi<s n="prn"/><s n="pro"/></r></p></e>
+    <e><p><l>os<s n="prn"/><s n="pro"/><s n="p2"/></l><r>vi<s n="prn"/><s n="pro"/><s n="p2"/></r></p></e>
     <e><p><l>otro<s n="prn"/><s n="tn"/></l><r>altro<s n="prn"/><s n="tn"/></r></p></e>
     <e><p><l>otros<b/>muchos<s n="prn"/><s n="tn"/></l><r>tanti<b/>altri<s n="prn"/><s n="tn"/></r></p></e>
     <e><p><l>poco<s n="prn"/><s n="tn"/></l><r>poco<s n="prn"/><s n="tn"/></r></p></e>
