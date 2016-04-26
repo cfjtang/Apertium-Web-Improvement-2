@@ -140,7 +140,7 @@
               (modify-syntax-entry ?> ")<" nxml-mode-syntax-table)
               (modify-syntax-entry ?< "(>" nxml-mode-syntax-table)
               (and (buffer-file-name)
-                   (string-match "\\.t[0-9s]x$\\|\\.lrx\\|/modes\\.xml$" buffer-file-name)
+                   (string-match "\\.t[0-9s]x$\\|\\.lrx\\|/modes\\.xml$\\|/cross-model\\.xml$" buffer-file-name)
                    (dix-mode 1))
               (and (buffer-file-name)
                    (string-match "\\.\\(meta\\|multi\\)?dix$" buffer-file-name)
