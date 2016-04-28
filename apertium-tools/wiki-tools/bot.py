@@ -81,7 +81,7 @@ def getCounts(uri, fileFormat):
 
 svnDataCache = {}
 
-def getFileLocs(pair, fileFormat, includePost=False, locations=['incubator', 'trunk', 'languages', 'nursery', 'staging']):
+def getFileLocs(pair, fileFormat, includePost=False, locations=['trunk', 'languages', 'staging', 'nursery', 'incubator']):
     global svnDataCache
 
     try:
