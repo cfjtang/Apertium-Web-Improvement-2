@@ -34,21 +34,21 @@ def getCounts(uri, fileFormat):
 
         if fileFormat == 'monodix':
             return {
-                'stems': len(dixTree.findall("section/*[@lm]")),
+                'stems': len(dixTree.findall("section/e[@lm]")),
                 'paradigms': len(dixTree.find('pardefs').findall("pardef"))
             }
         elif fileFormat == 'metamonodix':
             return {
-                'meta stems': len(dixTree.findall("section/*[@lm]")),
+                'meta stems': len(dixTree.findall("section/e[@lm]")),
                 'meta paradigms': len(dixTree.find('pardefs').findall("pardef"))
             }
         elif fileFormat == 'bidix':
             return {
-                'stems': len(dixTree.findall("*[@id='main']/e//l"))
+                'stems': len(dixTree.findall("section/e"))
             }
         elif fileFormat == 'metabidix':
             return {
-                'meta stems': len(dixTree.findall("*[@id='main']/e//l"))
+                'meta stems': len(dixTree.findall("section/e"))
             }
         elif fileFormat == 'lexc':
             logging.getLogger('countStems').setLevel(logging.ERROR)
