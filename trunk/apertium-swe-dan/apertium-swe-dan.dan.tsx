@@ -101,10 +101,10 @@ PRNPOS
     <tags-item tags="adj.*"/>
   </def-label>
   <def-label name="NUM">
-    <tags-item tags="num"/>
+    <tags-item tags="det.qnt"/>
   </def-label>
   <def-label name="NUMS">
-    <tags-item tags="num.*"/>
+    <tags-item tags="det.qnt.*"/>
   </def-label>
   <def-label name="VBMODDA" closed="true">
     <tags-item tags="vbmod.da"/>
