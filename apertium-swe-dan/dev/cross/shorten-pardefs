@@ -1,0 +1,23 @@
+#!/usr/bin/gawk -f
+
+# This is needed because the expanded crossings contain e.g. <n><ut> where
+# (for some entries) bidix has full pardefs like <n><ut><sg><ind>
+
+BEGIN{FS=":|:[<>]:"; OFS=":"}
+
+{
+
+    $1=gensub(/<vblex>.*/,"<vblex>","1",$1)
+    $2=gensub(/<vblex>.*/,"<vblex>","1",$2)
+
+    $1=gensub(/<n>(<[^>]*>).*/,"<n>\\1","1",$1)
+    $2=gensub(/<n>(<[^>]*>).*/,"<n>\\1","1",$2)
+
+    $1=gensub(/<adj>(<sint>)?<(sup|pst|comp)>.*/,"<adj>\\1","1",$1)
+    $2=gensub(/<adj>(<sint>)?<(sup|pst|comp)>.*/,"<adj>\\1","1",$2)
+
+    $1=gensub(/<adj><pp.*/,"<vblex>","1",$1)
+    $2=gensub(/<adj><pp.*/,"<vblex>","1",$2)
+
+    print
+}
