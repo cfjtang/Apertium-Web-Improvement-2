@@ -28,7 +28,9 @@ cross-nor: nno.13 nob.13
 
 %.exp: %.dix
 	lt-expand $< $@.tmp
-	LC_ALL=C sort -u $@.tmp > $@
+	./shorten-pardefs < $@.tmp > $@.tmp2
+	LC_ALL=C sort -u $@.tmp2 > $@
+	@rm $@.tmp $@.tmp2
 
 %/dix/apertium-swe-dan.swe-dan-crossed.dix: %/swe-nor.dix %/dan-nor.dix dan.dix swe.dix cross-model.xml
 	(cd $*; apertium-dixtools cross-param ../swe.dix -r swe-nor.dix -r dan-nor.dix ../dan.dix ../cross-model.xml )
