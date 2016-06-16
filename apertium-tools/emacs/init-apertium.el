@@ -244,7 +244,20 @@
   (when (locate-library "company")
     (add-hook 'c++-mode-hook #'company-mode)
     (add-hook 'cg-mode-hook #'company-mode)
-    (add-hook 'hfst-mode-hook #'company-mode)))
+    (add-hook 'hfst-mode-hook #'company-mode))
+  :config
+  ;; It's annoying when you try to insert a newline and it inserts a completion:
+  (unbind-key "RET" company-active-map)
+  (unbind-key "<return>" company-active-map)
+  ;; OTOH, users often expect TAB to do magical things; literal tabs
+  ;; can always be inserted with C-q TAB
+  (define-key company-active-map [tab] 'company-complete-selection)
+  (define-key company-active-map (kbd "TAB") 'company-complete-selection)
+  ;; But if you've explicitly moved up/down the list of suggestions,
+  (setq company-auto-complete #'company-explicit-action-p)
+  ;; then whitespace/punctuation/close/comment-end(newline) will
+  ;; complete (and self-insert):
+  (setq company-auto-complete-chars '(?\  ?\) ?. ?>)))
 
 
 (use-package bind-key
