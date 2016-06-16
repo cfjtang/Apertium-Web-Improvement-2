@@ -251,8 +251,15 @@
   (unbind-key "<return>" company-active-map)
   ;; OTOH, users often expect TAB to do magical things; literal tabs
   ;; can always be inserted with C-q TAB
-  (define-key company-active-map [tab] 'company-complete-selection)
-  (define-key company-active-map (kbd "TAB") 'company-complete-selection)
+  (defun company-indent-or-complete ()
+    "Indent if no prefix, otherwise complete."
+    ;; from https://www.emacswiki.org/emacs/CompanyMode#toc10
+    (interactive)
+    (if (looking-at "\\_>")
+        (company-complete-common)
+      (indent-according-to-mode)))
+  (define-key company-active-map [tab] 'company-indent-or-complete)
+  (define-key company-active-map (kbd "TAB") 'company-indent-or-complete)
   ;; But if you've explicitly moved up/down the list of suggestions,
   (setq company-auto-complete #'company-explicit-action-p)
   ;; then whitespace/punctuation/close/comment-end(newline) will
