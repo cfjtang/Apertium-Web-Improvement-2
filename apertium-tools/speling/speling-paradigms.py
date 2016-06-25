@@ -98,13 +98,13 @@ def sort_flexions_by_key(a): #{
 # lemma    ;  surface form       ;  symbols                  ;  part-of-speech
 # uttanbíggjamaður;  uttanbíggjamenninir;  definite, plural, nominative;  noun, masculine
 
-def find_longest_common_substring(lemma, flexion): #{
+def find_longest_common_prefix(lemma, flexion): #{
 	candidate = '';
 	length = len(lemma);
 	for char in lemma: #{
 		candidate = candidate + char;
 		#print >> sys.stderr , 'cand: ' , candidate , '; flexion:', flexion;
-		if candidate not in flexion: #{
+		if candidate != flexion[:len(candidate)]:
 			return candidate[:-1];
 		#}
 	#}
@@ -178,7 +178,7 @@ for line in llist: #{
 	#}
 	#print lemma , ' / ' , inflection;
 	full = inflection;
-	stem = find_longest_common_substring(lemma, inflection);
+	stem = find_longest_common_prefix(lemma, inflection);
 	pos = row[3].strip();
 	syms = row[2].strip();
 	symlist = pos + ':' + syms;
