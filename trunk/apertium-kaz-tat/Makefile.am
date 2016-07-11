@@ -173,3 +173,30 @@ install-data-local: install-modes
 CLEANFILES = $(TARGETS_COMMON)
 clean-local: 
 	-rm -rf .deps modes
+
+###############################################################################
+## Unit tests
+###############################################################################
+
+test-$(PREFIX1)-t1x: $(BASENAME).$(PREFIX1).t1x
+	./qa $(PREFIX1)-t1x
+
+unit-tests: test-$(PREFIX1)-t1x
+
+###############################################################################
+## Acceptance tests
+###############################################################################
+
+test-$(PREFIX1)-reg:
+	t/regression-tests
+
+test-$(PREFIX1)-corp:
+	./qa $(PREFIX1)-corp
+
+acceptance-tests: test-$(PREFIX1)-reg test-$(PREFIX1)-corp
+
+###############################################################################
+## All tests
+###############################################################################
+
+all-tests: unit-tests acceptance-tests
