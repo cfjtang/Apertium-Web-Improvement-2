@@ -10,6 +10,15 @@
 
   <rule> <match lemma="hjem" tags="adv"> <select lemma="hem" tags="adv"/> </match> </rule>
 
+  <rule weight="1.0"><match lemma="tage" tags="vblex.*"><select lemma="ta" tags="vblex.*"/></match></rule>
+  <rule weight="2.0">
+    <match lemma="tage" tags="vblex.*">
+      <select lemma="ta"/>
+    </match>
+    <match lemma="til"/>
+    <match tags="np.*"/>
+  </rule>
+
   <rule weight="1.0"> <match lemma="mod" tags="pr"><select lemma="mot"/></match> </rule>
   <rule weight="1.0"> <match lemma="til" tags="pr"><select lemma="til"/></match> </rule>
   <rule weight="1.0"> <match lemma="fra" tags="pr"><select lemma="från"/></match> </rule>
@@ -1583,7 +1592,6 @@
 <rule weight="0.9"><match lemma="hvorunder" tags="adv"><select lemma="där" tags="adv"/></match></rule><!-- 81338 -->
 <rule weight="0.9"><match lemma="skamme" tags="vblex.*"><select lemma="skämma" tags="vblex.*"/></match></rule><!-- 1865 -->
 <rule weight="0.9"><match lemma="bevis" tags="n.nt.*"><select lemma="bevis" tags="n.nt.*"/></match></rule><!-- 5690 -->
-<rule weight="0.9"><match lemma="tage" tags="vblex.*"><select lemma="ta" tags="vblex.*"/></match></rule><!-- 149571 -->
 <rule weight="0.9"><match lemma="rasle" tags="vblex.*"><select lemma="prassla" tags="vblex.*"/></match></rule><!-- 47 -->
 <rule weight="0.9"><match lemma="gadekryds" tags="n.nt.*"><select lemma="gatukorsning" tags="n.ut.*"/></match></rule><!-- 8 -->
 <rule weight="0.9"><match lemma="udlænding" tags="n.ut.*"><select lemma="främling" tags="n.ut.*"/></match></rule><!-- 1443 -->
