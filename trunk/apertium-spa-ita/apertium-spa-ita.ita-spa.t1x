@@ -5,8 +5,7 @@
       <cat-item tags="n.*"/><!--Falten els altres np (antroponims) que tenen gen i nbr, revisar regles.-->
     </def-cat>
 
-    <def-cat n="top">
-      <cat-item tags="np.top.*"/>
+    <def-cat n="loc">
       <cat-item tags="np.loc.*"/>
     </def-cat>
 
@@ -64,22 +63,9 @@
       <cat-item tags="prn.*"/>
     </def-cat>
     
-    <def-cat n="compar">
-      <cat-item lemma="mayor" tags="adj.*"/>
-      <cat-item lemma="menor" tags="adj.*"/>
-      <cat-item lemma="igual" tags="adj.*"/>
-      <cat-item lemma="más"   tags="adv"/>
-      <cat-item lemma="menos" tags="adv"/>
-    </def-cat>
-
     <def-cat n="rel">
       <cat-item tags="prn.rel.*"/>
       <cat-item tags="rel.*"/>
-    </def-cat>
-
-    <def-cat n="que_compar">
-      <cat-item lemma="que" tags="cnjsub"/>
-      <cat-item lemma="que" tags="rel"/>
     </def-cat>
     
     <def-cat n="prnenc">
@@ -89,6 +75,7 @@
     <def-cat n="prnpro">
       <cat-item tags="prn.pro.*"/>
     </def-cat>	
+
     <def-cat n="verb"> <!-- tots els verbs--> 
       <cat-item tags="vblex.*"/>
       <cat-item tags="vbser.*"/>
@@ -120,22 +107,16 @@
       <cat-item tags="vbhaver.ger"/>
       <cat-item tags="vbmod.ger"/>
     </def-cat>
-    
-    <def-cat n="hacer">
-      <cat-item lemma="hacer" tags="vblex.pri.p3.sg"/>
-    </def-cat>
-
-    <def-cat n="haber">
-      <cat-item lemma="haber" tags="vbhaver.*"/>
-    </def-cat>
 
     <def-cat n="avere">
       <cat-item lemma="avere" tags="vbhaver.*"/>
       <cat-item lemma="avere" tags="vblex.*"/>
     </def-cat>
+
     <def-cat n="bisogno">
       <cat-item lemma="bisogno" tags="n.m.*"/>
     </def-cat>
+
     <def-cat n="di">
       <cat-item lemma="di" tags="pr"/>
     </def-cat>
@@ -143,28 +124,6 @@
     <def-cat n="essere">
       <cat-item lemma="essere" tags="vblex.*"/>
       <cat-item lemma="essere" tags="vbser.*"/>
-    </def-cat>
-
-    <def-cat n="estar">
-      <cat-item lemma="estar" tags="vblex.*"/>
-    </def-cat>
-
-    <def-cat n="ir">
-      <cat-item lemma="ir" tags="vblex.*"/>
-    </def-cat>
-
-    <def-cat n="sido">
-      <cat-item lemma="ser" tags="vbser.pp.m.sg"/>
-      <cat-item lemma="ser" tags="vblex.pp.m.sg"/>
-    </def-cat>
-
-    <def-cat n="siendo">
-      <cat-item lemma="ser" tags="vbser.ger"/>
-      <cat-item lemma="ser" tags="vblex.ger"/>
-    </def-cat>
-
-    <def-cat n="caber">
-      <cat-item lemma="caber" tags="vblex.*"/>
     </def-cat>
 
     <def-cat n="pp">
@@ -216,18 +175,6 @@
       <cat-item tags="vbmod.prs.*"/>-->
     </def-cat>
 
-    <def-cat n="verbnoref">
-      <cat-item lemma="ir" tags="vblex.*"/>
-      <cat-item lemma="caer" tags="vblex.*"/>
-      <cat-item lemma="escapar" tags="vblex.*"/>
-      <cat-item lemma="morir" tags="vblex.*"/>
-      <cat-item lemma="desmayar" tags="vblex.*"/>
-      <cat-item lemma="quedar" tags="vblex.*"/>
-      <cat-item lemma="reír" tags="vblex.*"/>
-      <cat-item lemma="ruborizar" tags="vblex.*"/>
-    </def-cat>
-
-
     <def-cat n="adv_preadv">
       <cat-item tags="adv"/>
       <cat-item tags="preadv"/>
@@ -250,6 +197,7 @@
     <def-cat n="cnjsub">
       <cat-item tags="cnjsub"/>
     </def-cat>
+
     <def-cat n="prep">
       <cat-item tags="pr"/>
     </def-cat>
@@ -269,8 +217,6 @@
     <def-cat n="pr_su">
       <cat-item lemma="su" tags="pr"/>
     </def-cat>
-
-
     
     <def-cat n="sent">
       <cat-item tags="sent"/>
@@ -410,7 +356,6 @@
     </def-attr>
 
     <def-attr n="tipus_np">
-      <attr-item tags="top"/>
       <attr-item tags="loc"/>
       <attr-item tags="al"/>
       <attr-item tags="ant"/>
@@ -439,6 +384,7 @@
       <attr-item tags="sp"/>
       <attr-item tags="ND"/>
     </def-attr>
+
     <def-attr n="nbr_sense_sp">
       <attr-item tags="sg"/>
       <attr-item tags="pl"/>
@@ -463,10 +409,9 @@
       <attr-item tags="ger"/>
       <attr-item tags="inf"/>
     </def-attr>
-
-
-
   </section-def-attrs>
+
+
   <section-def-vars>
     <def-var n="tipusprep"/>
     <def-var n="tipusverb"/>
@@ -504,63 +449,7 @@
     </def-list>
 
 
-    <def-list n="temporales">
-      <list-item v="mes"/>
-      <list-item v="día"/>
-      <list-item v="año"/>
-      <list-item v="semana"/>
-      <list-item v="tiempo"/>
-      <list-item v="hora"/>
-      <list-item v="minuto"/>
-      <list-item v="segundo"/>
-      <list-item v="noche"/>
-      <list-item v="tarde"/>
-    </def-list>
-
-<!-- TODO: fr -> it -->
-    <def-list n="nloc">
-      <list-item v="maison"/>
-      <list-item v="monde"/>
-      <list-item v="rue"/>
-      <list-item v="zona"/>
-      <list-item v="école"/>
-      <list-item v="prison"/>
-      <list-item v="habitation"/>
-      <list-item v="chambre"/>
-      <list-item v="salle"/>
-      <list-item v="salon"/>
-      <list-item v="mairie"/>
-      <list-item v="université"/>
-      <list-item v="hôpital"/>
-      <list-item v="hôtel"/>
-    </def-list>
-
-    <def-list n="mes">
-      <list-item v="gèr"/>
-      <list-item v="genièr"/>
-      <list-item v="hereuèr"/>
-      <list-item v="febrièr"/>
-      <list-item v="març"/>
-      <list-item v="abriu"/>
-      <list-item v="abril"/>
-      <list-item v="mai"/>
-      <list-item v="junhsèga"/>
-      <list-item v="julhet"/>
-      <list-item v="junh"/>
-      <list-item v="juriol"/>
-      <list-item v="agost"/>
-      <list-item v="seteme"/>
-      <list-item v="setembre"/>
-      <list-item v="octubre"/>
-      <list-item v="octòbre"/>
-      <list-item v="octobre"/>
-      <list-item v="noveme"/>
-      <list-item v="novembre"/>
-      <list-item v="deseme"/>
-      <list-item v="desembre"/>
-    </def-list>
-
-    <def-list n="semana">
+    <def-list n="daysoftheweek">
       <list-item v="lunedì"/>
       <list-item v="martedì"/>
       <list-item v="mercoledì"/>
@@ -570,75 +459,22 @@
       <list-item v="domenica"/>
     </def-list>
 
-    <def-list n="parte_día">
+<def-list n="prn_mete">
+      <list-item v="me"/>
+      <list-item v="te"/>
+      <list-item v="lui"/>
+      <list-item v="lei"/>
+      <list-item v="noi"/>
+      <list-item v="voi"/>
+      <list-item v="loro"/>
+    </def-list>
+
+    <def-list n="partoftheday">
       <list-item v="mattina"/>
       <list-item v="pomeriggio"/>
       <list-item v="sera"/>
     </def-list>
 
-    <def-list n="v_amb_a">
-      <list-item v="soumettre"/>
-      <list-item v="aller"/>
-    </def-list>
-
-    <def-list n="v_no_part">
-      <list-item v="aller"/>
-      <list-item v="partir"/>
-      <list-item v="arriver"/>
-      <list-item v="venir"/>
-      <list-item v="passer"/>
-      <list-item v="sortir"/>
-    </def-list>
-
-    <def-list n="vbcop">
-      <list-item v="semblar"/>
-    </def-list>
-
-    <def-list n="v_amb_en">
-      <list-item v="entrer"/>
-      <list-item v="fêter"/>
-      <list-item v="célébrer"/>
-      <list-item v="vivre"/>
-      <list-item v="habiter"/>
-      <list-item v="mourir"/>
-      <list-item v="naître"/>
-      <list-item v="être"/>
-    </def-list>
-
-    <def-list n="vbambser">
-      <list-item v="anar"/>
-      <list-item v="passar"/>
-      <list-item v="arribar"/>
-      <list-item v="morir"/>
-      <list-item v="entrar"/>
-      <list-item v="defuntar"/>
-      <list-item v="nèisher"/>
-      <list-item v="nàisser"/>
-      <list-item v="partir"/>
-      <list-item v="venir"/>
-      <list-item v="vier"/>
-      <list-item v="èster"/>
-      <list-item v="èsser"/>
-      <list-item v="davalar"/>
-      <list-item v="baissar"/>
-      <list-item v="baishar"/>
-      <list-item v="aperténer"/>
-      <list-item v="pertànher"/>
-    </def-list>
-
-    <def-list n="vbnoref">
-      <list-item v="ir"/>
-      <list-item v="caer"/>
-      <list-item v="escapar"/>
-      <list-item v="morir"/>
-      <list-item v="desmayar"/>
-      <list-item v="quedar"/>
-      <list-item v="reír"/>
-      <list-item v="ruborizar"/>
-    </def-list>
-
-
-     
 
 
   </section-def-lists>
@@ -712,142 +548,6 @@
 	</when>
       </choose>
     </def-macro>
-
- 
-
-   <!-- <def-macro n="temps_verb" npar="1">
-      <let>
-	<var n="verb"/>
-	<lit v=""/>
-      </let>
-      <choose>
-	<when>
-	  <test>
-	    <equal>
-	      <clip pos="1" side="sl" part="temps"/>
-	      <lit-tag v="ifi"/>
-	    </equal>
-	  </test>
-	  <append n="verb">
-	    <lit v="anar"/>
-	    <lit-tag v="vaux"/>
-	    <clip pos="1" side="tl" part="pers"/>
-	    <clip pos="1" side="tl" part="nbr"/>
-	    <lit v="$ ^"/>
-	    <clip pos="1" side="tl" part="lemh"/>
-	    <clip pos="1" side="tl" part="a_verb"/>
-	    <lit-tag v="inf"/>
-	  </append>
-	</when>
-	<otherwise>
-	  <append n="verb">
-	    <clip pos="1" side="tl" part="lemh"/>
-	    <clip pos="1" side="tl" part="a_verb"/>
-	    <clip pos="1" side="tl" part="temps"/>
-	    <clip pos="1" side="tl" part="pers"/>
-	    <clip pos="1" side="tl" part="nbr"/>
-	  </append>
-	</otherwise>
-      </choose>
-    </def-macro> -->
-
-    <def-macro n="tipus_verb" npar="1">
-      <choose>
-	<when>
-	  <test>
-	    <in caseless="yes">
-	      <clip pos="1" side="sl" part="lem"/>
-	      <list n="v_amb_a"/>
-	    </in>
-	  </test>
-	  <let>
-	    <var n="tipusverb"/>
-	    <lit-tag v="vba"/>
-	  </let>
-	</when>
-	<when>
-	  <test>
-	    <in caseless="yes">
-	      <clip pos="1" side="sl" part="lem"/>
-	      <list n="v_amb_en"/>
-	    </in>
-	  </test>
-	  <let>
-	    <var n="tipusverb"/>
-	    <lit-tag v="vben"/>
-	  </let>
-	</when>
-	<when>
-	  <test>
-	    <in caseless="yes">
-	      <clip pos="1" side="sl" part="lem"/>
-	      <list n="v_no_part"/>
-	    </in>
-	  </test>
-	  <let>
-	    <var n="tipusverb"/>
-	    <lit-tag v="nopart"/>
-	  </let>	  
-	</when>
-	<otherwise>
-	  <let>
-	    <var n="tipusverb"/>
-	    <lit-tag v="nodef"/>
-	  </let>
-	</otherwise>
-      </choose>
-<!--			<choose>
-    <when>
-	  <test>
-	  <in caseless="yes">
-	  <clip pos="1" side="sl" part="lem"/>
-	  <list n="vbcop"/>
-	  </in>
-	  </test>
-	  <let>
-	  <clip pos="1" side="sl" part="a_verb"/>
-	  <lit-tag v="vbcop"/>
-	  </let>
-	  </when>
-	  </choose>-->
-    </def-macro>
-
-    <def-macro n="tipus_nom" npar="1">
-      <choose>
-	<when>
-	  <test>
-	    <or>
-	      <in caseless="yes">
-		<clip pos="1" side="sl" part="lem"/>
-		<list n="nloc"/>
-	      </in>
-	      <equal>
-		<clip pos="1" side="sl" part="tipus_np"/>
-		<lit-tag v="loc"/>
-	      </equal>
-	    </or>
-	  </test>
-	  <let>
-	    <var n="tipusnom"/>
-	    <lit-tag v="loc"/>
-	  </let>
-	</when>
-	<when>
-	  <test>
-	    <in caseless="yes">
-	      <clip pos="1" side="sl" part="lem"/>
-	      <list n="mes"/>
-	    </in>
-	  </test>
-	  <let>
-	    <var n="tipusnom"/>
-	    <lit-tag v="mes"/>
-	  </let>
-	</when>
-      </choose>
-    </def-macro>
-
-
 
     <def-macro n="firstWord" npar="1">
       <let>
@@ -3493,7 +3193,7 @@
 
     <!--*************************************** REGLES DE SN ******************************************** -->
 
-    <rule comment="REGLA: NOM (per a collocar la cua en les multiparaules amb g">
+    <rule comment="REGLA: NOM (multiwords like corporate tax = impuesto de sociedades">
       <pattern>
 	<pattern-item n="nom"/>
       </pattern>
@@ -3510,8 +3210,6 @@
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><var n="genero"/></tag>
 	      <tag><var n="numero"/></tag>
-	  <!--    <tag><clip pos="1" side="tl" part="gen"/></tag>
-	      <tag><clip pos="1" side="sl" part="nbr"/></tag> -->
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="lemh"/> 
@@ -3527,7 +3225,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: NOM NOM">
+    <rule comment="REGLA: NOM NOM (lunedì sera = el lunes por la noche">
       <pattern>
         <pattern-item n="nom"/>
         <pattern-item n="nom"/>
@@ -3540,16 +3238,16 @@
           <with-param pos="1"/>
         </call-macro>
         <choose>
-          <when> <!-- Caso particular: NOM(día_de_la_semana) NOM("mattina|pomeriggio|sera") -> "El" día_de_la_semana "por la mañana|tarde|noche" -->
+          <when> <!-- Caso particular: NOM(día_de_la_daysoftheweek) NOM("mattina|pomeriggio|sera") -> "El" día_de_la_daysoftheweek "por la mañana|tarde|noche" -->
             <test>
               <and>
                 <in caseless="yes">
                   <clip pos="1" side="sl" part="lem"/>
-                  <list n="semana"/>
+                  <list n="daysoftheweek"/>
                 </in>
                 <in caseless="yes">
                   <clip pos="2" side="sl" part="lem"/>
-                  <list n="parte_día"/>
+                  <list n="partoftheday"/>
                 </in>
               </and>
             </test>
@@ -3568,7 +3266,7 @@
               </when>
             </choose>
             <out>
-              <chunk name="nom_semana" case="caseFirstWord">
+              <chunk name="nom_daysoftheweek" case="caseFirstWord">
                 <tags>
                   <tag><lit-tag v="SN"/></tag>
                   <tag><var n="genero"/></tag>
@@ -3605,7 +3303,7 @@
               </chunk>
             </out>
           </when>
-          <otherwise> <!-- Caso general: NOM NOM -->
+          <otherwise> <!-- Caso general: NOM NOM (macchina bomba = coche + bomba) -->
             <out>
               <chunk name="nom" case="caseFirstWord">
                 <tags>
@@ -3654,16 +3352,16 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: TOPÒNIM">
+    <rule comment="REGLA: TOPÒNIM (Sofia -> Sofía)"> 
       <pattern>
-	<pattern-item n="top"/>
+	<pattern-item n="loc"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
 	<out>
-	  <chunk name="top" case="caseFirstWord">
+	  <chunk name="loc" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	    </tags>
@@ -3677,8 +3375,7 @@
       </action>
     </rule>
 
-
-    <rule comment="REGLA: COGNOMEN">
+    <rule comment="REGLA: COGNOMEN (Vasallo -> Vasallo)">
       <pattern>
 	<pattern-item n="cog"/>
       </pattern>
@@ -3725,7 +3422,7 @@
     </rule>
 
 
-    <rule comment="REGLA: ANTROPÒNIM">
+    <rule comment="REGLA: ANTROPÒNIM (Alfonso -> Alfonso)">
       <pattern>
 	<pattern-item n="ant"/>
       </pattern>
@@ -3748,7 +3445,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: DET NOM">
+    <rule comment="REGLA: DET NOM (Il bambino -> El niño)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
@@ -3761,40 +3458,6 @@
           <with-param pos="2"/>
           <with-param pos="1"/>
         </call-macro>
-        <choose>
-          <when> <!-- Caso particular: DETerminante definido NOMbre propio de lugar (il Portogallo -> Portugal) -->
-            <test>
-              <and>
-                <equal>
-                  <clip pos="1" side="sl" part="tipus_det"/>
-                  <lit-tag v="def"/>
-                </equal>
-                <equal>
-                  <clip pos="2" side="sl" part="tipus_np"/>
-                  <lit-tag v="loc"/>
-                </equal>
-              </and>
-            </test>
-            <out>
-              <chunk name="nom" case="caseFirstWord">
-                <tags>
-                  <tag><lit-tag v="SN"/></tag>
-                  <tag><var n="genero"/></tag>
-                  <tag><var n="numero"/></tag>
-                </tags>
-                <lu>
-                  <clip pos="2" side="tl" part="lemh"/> 
-                  <clip pos="2" side="tl" part="a_nom"/>
-                  <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
-                  <clip pos="2" side="tl" part="gen_mf"/>  
-                  <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
-                  <clip pos="2" side="tl" part="nbr_sp"/>
-                  <clip pos="2" side="tl" part="lemq"/>              
-                </lu>
-              </chunk>
-            </out>
-          </when>
-          <otherwise> <!-- Caso general: DET NOM -->
             <out>
               <chunk name="det_nom" case="caseFirstWord">
                 <tags>
@@ -3822,12 +3485,10 @@
                 </lu>
               </chunk>
             </out>
-          </otherwise>
-        </choose>
       </action>
     </rule>
 
-    <rule comment="REGLA: PREDET DET NOM">
+    <rule comment="REGLA: PREDET DET NOM (Tutti i giorni -> Todos los días)">
       <pattern>
 	<pattern-item n="predet"/>
 	<pattern-item n="det"/>
@@ -3850,7 +3511,7 @@
 	      <tag><var n="numero"/></tag>
 	    </tags>
 	    <lu>
-	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_det"/>
 	      <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
 	      <clip pos="1" side="tl" part="gen_mf"/>	 
@@ -3859,7 +3520,7 @@
 	    </lu> 
 	    <b pos="1"/>
 	    <lu>
-	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_det"/>
 	      <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
 	      <clip pos="2" side="tl" part="gen_mf"/>	 
@@ -3882,8 +3543,7 @@
     </rule>
 
 
-
-    <rule comment="REGLA: PREDET DET ADJ NOM">
+    <rule comment="REGLA: PREDET DET ADJ NOM (Tutte le belle ragazze -> Todas las bonitas chicas)"> 
       <pattern>
 	<pattern-item n="predet"/>
 	<pattern-item n="det"/>
@@ -3949,7 +3609,7 @@
     </rule>
 
 
-    <rule comment="REGLA: DET NUM">
+    <rule comment="REGLA: DET NUM (Il primo -> El primero)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="num"/>
@@ -3993,7 +3653,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: NUM NOM">
+    <rule comment="REGLA: NUM NOM (Una mucca -> Una vaca)"> 
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="nom"/>
@@ -4038,7 +3698,7 @@
 
 
 
-    <rule comment="REGLA: NOM ADJ">
+    <rule comment="REGLA: NOM ADJ (Donna bella -> Mujer bonita)"> 
       <pattern>
 	<pattern-item n="nom"/>
 	<pattern-item n="adjec"/>
@@ -4084,7 +3744,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: ADJ NOM">
+    <rule comment="REGLA: ADJ NOM (Importante lavoro -> Importante trabajo)">
       <pattern>
 	<pattern-item n="adjec"/>
 	<pattern-item n="nom"/>
@@ -4132,7 +3792,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: DET ADJ ADJ NOM">
+    <rule comment="REGLA: DET ADJ ADJ NOM (La gran intelligente donna -> La grande inteligente mujer)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="adv_preadv"/>
@@ -4197,7 +3857,7 @@
     </rule>
 
 
-    <rule comment="DET NUMERAL NOM">
+    <rule comment="DET NUMERAL NOM (La seconda professoressa -> La segunda profesora)"> 
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="num"/>
@@ -4257,7 +3917,7 @@
     </rule>
 
 
-    <rule comment="REGLA: NOM ADJ ADJ">
+    <rule comment="REGLA: NOM ADJ ADJ (">
       <pattern>
 	<pattern-item n="nom"/>
 	<pattern-item n="adjec"/>
@@ -4315,7 +3975,7 @@
       </action>
     </rule>
     
-    <rule comment="REGLA: DET NOM ADJ">
+    <rule comment="REGLA: DET NOM ADJ (La nave grande -> El barco grande)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
@@ -4339,7 +3999,7 @@
 	      </equal>
 	    </test>
 	<out>
-	  <chunk name="det_adj_nom" case="caseFirstWord">
+	  <chunk name="det_adj_nom" case="caseFirstWord"> 
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><var n="genero"/></tag>
@@ -4422,7 +4082,7 @@
       </action>
     </rule>
     
-    <rule comment="REGLA: DET ADJ">
+    <rule comment="REGLA: DET ADJ (L'alto -> El alto), (L'abbandonato -> El abandonado)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="adjec"/>
@@ -4445,13 +4105,13 @@
 	    </test>
 	    <let>
 	      <var n="lemachunk"/>
-	      <lit v="det_pp"/>
+	      <lit v="det_pp"/> 
 	    </let>
 	  </when>
 	  <otherwise>
 	    <let>
 	      <var n="lemachunk"/>
-	      <lit v="det_adj"/>
+	      <lit v="det_adj"/> 
 	    </let>
 	  </otherwise>		
 	</choose>
@@ -4486,7 +4146,7 @@
       </action>
     </rule>
     
-    <rule comment="REGLA: DET ADJ NOM">
+    <rule comment="REGLA: DET ADJ NOM (La gran casa -> La gran casa)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="adjec"/>
@@ -4545,7 +4205,7 @@
       </action>
     </rule>
     
-    <rule comment="REGLA: DET ADJ cnj	 ADJ NOM">
+    <rule comment="REGLA: DET ADJ cnj	 ADJ NOM (Il saggio e gentile uomo -> El sabio y amable hombre)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="adjec"/>
@@ -4625,7 +4285,7 @@
       </action>
     </rule>
     
-    <rule comment="REGLA: NUM ADV ADJ NOM">
+    <rule comment="REGLA: NUM ADV ADJ NOM (Un molto buon giorno -> Un muy buen día)">
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="adv"/>
@@ -4689,7 +4349,7 @@
       </action>
     </rule>
     
-    <rule comment="REGLA: NUM ADJ NOM">
+    <rule comment="REGLA: NUM ADJ NOM (Tre enormi piante -> Tres enormes plantas)">
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="adjec"/>
@@ -4748,7 +4408,7 @@
       </action>
     </rule>
     
-    <rule comment="REGLA: NUM ADJ cnj ADJ NOM">
+    <rule comment="REGLA: NUM ADJ cnj ADJ NOM (Una gentile e simpatica persona -> Una amable y simpática persona)">
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="adjec"/>
@@ -4830,7 +4490,7 @@
     </rule>
     
     
-    <rule comment="REGLA: NUM NOM ADJ">
+    <rule comment="REGLA: NUM NOM ADJ (Mille persone ammirevoli -> Mil personas admirables)">
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="nom"/>
@@ -4886,7 +4546,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: NOM ADV ADJ">
+    <rule comment="REGLA: NOM ADV ADJ (Uomo molto vecchio -> Hombre muy viejo)">
       <pattern>
 	<pattern-item n="nom"/>
 	<pattern-item n="adv_preadv"/>
@@ -4936,7 +4596,7 @@
       </action>
     </rule>
     
-    <rule comment="REGLA: DET NOM ADV ADJ">
+    <rule comment="REGLA: DET NOM ADV ADJ (Un bimbo molto attivo -> Un niño muy activo)"> 
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
@@ -4998,7 +4658,7 @@
     </rule>
     
 
-    <rule comment="REGLA: NUM NOM ADV ADJ">
+    <rule comment="REGLA: NUM NOM ADV ADJ (Due cani molto malati -> Dos perros muy enfermos)">
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="nom"/>
@@ -5059,7 +4719,7 @@
       </action>
     </rule>
     
-    <rule comment="REGLA: NOM ADJ cnjcoo ADJ">
+    <rule comment="REGLA: NOM ADJ cnjcoo ADJ (Stella brillante e piccola -> Estrella brillante y pequeña)">
       <pattern>
 	<pattern-item n="nom"/>
 	<pattern-item n="adjec"/>
@@ -5122,7 +4782,7 @@
       </action>
     </rule>
     
-    <rule comment="REGLA: DET NOM ADJ cnjcoo ADJ">
+    <rule comment="REGLA: DET NOM ADJ cnjcoo ADJ (Il gatto grigio e peloso -> El gato gris y peludo)"> 
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
@@ -5197,7 +4857,7 @@
     </rule>
 
 
-    <rule comment="REGLA: PIU ADJ DI">
+    <rule comment="REGLA: PIU ADJ DI (Più alto della mamma : Más alto que la mamá)">
       <pattern>
 	<pattern-item n="piu"/>
 	<pattern-item n="adj"/>
@@ -5292,7 +4952,7 @@
     
 
 
-    <rule comment="REGLA: ADJECTIU (quan no acompanya res o va amb desconeguda)">
+    <rule comment="REGLA: ADJECTIU (quan no acompanya res o va amb desconeguda) (Bello -> Bonito)">
       <pattern>
 	<pattern-item n="adj"/>
       </pattern>
@@ -5330,7 +4990,7 @@
  
 
 
-<rule comment="REGLA: cnjsub ">
+<rule comment="REGLA: cnjsub  (Affinché -> Para que)">
       <pattern>
 	<pattern-item n="cnjsub"/>
       </pattern>
@@ -5351,7 +5011,7 @@
       </action>
     </rule>
 
-<rule comment="REGLA: cnjcoo ">
+<rule comment="REGLA: cnjcoo (Né -> Ni) ">
       <pattern>
 	<pattern-item n="cnjcoo"/>
       </pattern>
@@ -5373,7 +5033,7 @@
     </rule>
 
 
-<rule comment="REGLA: cnjadv">
+<rule comment="REGLA: cnjadv (Malgrado -> A pesar de que)">
       <pattern>
 	<pattern-item n="cnjadv"/>
       </pattern>
@@ -5437,7 +5097,7 @@
     </rule>
 
 
-    <rule comment="REGLA: DET(quan no acompanya res o va amb desconeguda)">
+    <rule comment="REGLA: DET(quan no acompanya res o va amb desconeguda) (Alcun -> Algún)">
       <pattern>
 	<pattern-item n="det"/>
       </pattern>
@@ -5501,7 +5161,7 @@
       </action>
     </rule> 
     
-    <rule> <!-- REGLA: PRONOM -->
+    <rule comment="REGLA: PRONOM (Chiunque -> Sea quien sea)"> 
       <pattern>
 	<pattern-item n="prn"/>
       </pattern>
@@ -5563,7 +5223,7 @@
     </rule>
 
    
-   <rule comment="REGLA: PARTICIPIO">
+   <rule comment="REGLA: PARTICIPIO (Fatto -> Hecho)"> 
       <pattern>
 	<pattern-item n="pp"/>
       </pattern>
@@ -5831,248 +5491,8 @@
       </action>
     </rule>  
 
-<!--
-<rule comment="REGLA: HABER MOD INF ">
-      <pattern>
-	<pattern-item n="haber"/>
-	<pattern-item n="mod"/>
-	<pattern-item n="inf"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="canvia_fts">
-	  <with-param pos="1"/>
-	</call-macro>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="tl" part="auxiliar"/>
-		<lit-tag v="auxser"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" side="tl" part="lem"/>
-	      <lit v="essere"/>
-	    </let>
-	    <let>
-	      <clip pos="1" side="tl" part="a_verb"/>
-	      <lit-tag v="vbser"/>
-	    </let>
-	    <let>
-	      <var n="lemachunk"/>
-	      <lit v="ser_mod_inf"/>
-	    </let>
-	  </when>
-	  <otherwise>
-	    <let>
-	      <var n="lemachunk"/>
-	      <lit v="haber_mod_inf"/>
-	    </let>
-	  </otherwise>
-	</choose>
-	<out>
-	  <chunk namefrom="lemachunk" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="SV"/></tag>
-              <tag><clip pos="2" side="tl" part="a_verb"/></tag>
-              <tag><clip pos="1" side="tl" part="temps"/></tag>
-              <tag><clip pos="1" side="tl" part="pers"/></tag>
-              <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
-	    </tags>
-	    <lu>   
-	      <clip pos="1" side="tl" part="whole"/> 
-	    </lu>
-	    <b pos="1"/>
-	    <lu>   
-	      <clip pos="2" side="tl" part="lemh"/> 
-	      <clip pos="2" side="tl" part="a_verb"/>
-	      <clip pos="2" side="tl" part="temps"/>
-	      <clip pos="2" side="tl" part="gen"/>	 
-	      <clip pos="2" side="tl" part="nbr"/>
-	      <clip pos="2" side="tl" part="lemq"/>
-	    </lu>
-	    <b pos="2"/>
-	    <lu>   
-	      <clip pos="3" side="tl" part="lemh"/> 
-	      <clip pos="3" side="tl" part="a_verb"/>
-	      <clip pos="3" side="tl" part="temps"/>
-	      <clip pos="3" side="tl" part="lemq"/>
-	    </lu>
-	  </chunk>
-	</out>
-      </action>
-    </rule> 
 
-    <rule comment="REGLA: ESTAR PP ">
-      <pattern>
-	<pattern-item n="estar"/>
-	<pattern-item n="pp"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="canvia_fts">
-	  <with-param pos="1"/>
-	</call-macro>
-	<let>
-	  <clip pos="1" side="tl" part="lem"/>
-	  <lit v="essere"/>
-	</let>
-	<let>
-	  <clip pos="1" side="tl" part="a_verb"/>
-	  <lit-tag v="vbser"/>
-	</let>
-	<out>
-	  <chunk name="estar_pp" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="SV"/></tag>
-	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-	      <tag><clip pos="1" side="tl" part="temps"/></tag>
-	      <tag><clip pos="1" side="tl" part="pers"/></tag>
-	      <tag><clip pos="2" side="tl" part="gen"/></tag>
-	      <tag><clip pos="2" side="tl" part="nbr"/></tag>	      
-	    </tags>
-	    <lu>   
-	      <clip pos="1" side="tl" part="lemh"/> 
-	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <clip pos="1" side="tl" part="gen"/>	 
-	      <clip pos="1" side="tl" part="nbr"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </lu>
-	    <b pos="1"/>
-	    <lu>   
-	      <clip pos="2" side="tl" part="lemh"/> 
-	      <clip pos="2" side="tl" part="a_verb"/>
-	      <clip pos="2" side="tl" part="temps"/>
-	      <clip pos="2" side="tl" part="gen" link-to="5"/>	 
-	      <clip pos="2" side="tl" part="nbr" link-to="6" />
-	      <clip pos="2" side="tl" part="lemq"/>
-	    </lu>
-	  </chunk>
-	</out>
-      </action>
-    </rule>   
-    
-  
-
-    <rule comment="REGLA: HABER sido PP ">
-      <pattern>
-	<pattern-item n="haber"/>
-	<pattern-item n="sido"/>
-	<pattern-item n="pp"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="canvia_fts">
-	  <with-param pos="1"/>
-	</call-macro>
-	<let>
-	  <clip pos="1" side="tl" part="lem"/>
-	  <lit v="essere"/>
-	</let>
-	<let>
-	  <clip pos="1" side="tl" part="a_verb"/>
-	  <lit-tag v="vbser"/>
-	</let>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="1" side="sl" part="nbr"/>
-		<clip pos="3" side="sl" part="nbr"/>
-	      </equal>
-	    </test>		
-	    <out>
-	      <chunk name="haber_sido_pp" case="caseFirstWord">
-		<tags>
-		  <tag><lit-tag v="SV"/></tag>
-		  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
-		  <tag><clip pos="1" side="tl" part="temps"/></tag>
-		  <tag><clip pos="1" side="tl" part="pers"/></tag>
-		  <tag><clip pos="3" side="tl" part="gen"/></tag>
-		  <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
-		</tags>
-		<lu>   
-		  <clip pos="1" side="tl" part="lem"/> 
-		  <clip pos="1" side="tl" part="a_verb"/>
-		  <clip pos="1" side="tl" part="temps"/>
-		  <clip pos="1" side="tl" part="pers"/>
-		  <clip pos="1" side="tl" part="gen"/>	 
-		  <clip pos="1" side="tl" part="nbr" link-to="6"/>
-		</lu>
-		<b pos="1"/>
-		<lu>   
-		  <clip pos="2" side="tl" part="lemh"/> 
-		  <clip pos="2" side="tl" part="a_verb"/>
-		  <clip pos="2" side="tl" part="temps"/>
-		  <clip pos="3" side="tl" part="gen" link-to="5"/>	 
-		  <clip pos="2" side="tl" part="nbr" link-to="6"/>
-		  <clip pos="2" side="tl" part="lemq"/>
-		</lu>
-		<b pos="2"/>
-		<lu>   
-		  <clip pos="3" side="tl" part="lemh"/> 
-		  <clip pos="3" side="tl" part="a_verb"/>
-		  <clip pos="3" side="tl" part="temps"/>
-		  <clip pos="3" side="tl" part="gen" link-to="5"/>	 
-		  <clip pos="3" side="tl" part="nbr" link-to="6"/>
-		  <clip pos="3" side="tl" part="lemq"/>
-		</lu> 
-	      </chunk>
-	    </out>
-	  </when>
-	  <otherwise><!-+-si número no coincide en sl, tampoco debe hacerlo en tl (no se enlaza nbr con el chunk) -+->	    
-	    <out>
-	      <chunk name="haber_sido_pp" case="caseFirstWord">
-		<tags>
-		  <tag><lit-tag v="SV"/></tag>
-		  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
-		  <tag><clip pos="1" side="tl" part="temps"/></tag>
-		  <tag><clip pos="1" side="tl" part="pers"/></tag>
-		  <tag><clip pos="3" side="tl" part="gen"/></tag>
-		  <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
-		</tags>
-		<lu>   
-		  <clip pos="1" side="tl" part="lem"/> 
-		  <clip pos="1" side="tl" part="a_verb"/>
-		  <clip pos="1" side="tl" part="temps"/>
-		  <clip pos="1" side="tl" part="pers"/>
-		  <clip pos="1" side="tl" part="gen"/>	 
-		  <clip pos="1" side="tl" part="nbr"/>
-		</lu>
-		<b pos="1"/>
-		<lu>   
-		  <clip pos="2" side="tl" part="lemh"/> 
-		  <clip pos="2" side="tl" part="a_verb"/>
-		  <clip pos="2" side="tl" part="temps"/>
-		  <clip pos="3" side="tl" part="gen" link-to="5"/>	 
-		  <clip pos="2" side="tl" part="nbr"/>
-		  <clip pos="2" side="tl" part="lemq"/>
-		</lu>
-		<b pos="2"/>
-		<lu>   
-		  <clip pos="3" side="tl" part="lemh"/> 
-		  <clip pos="3" side="tl" part="a_verb"/>
-		  <clip pos="3" side="tl" part="temps"/>
-		  <clip pos="3" side="tl" part="gen" link-to="5"/>	 
-		  <clip pos="3" side="tl" part="nbr"/>
-		  <clip pos="3" side="tl" part="lemq"/>
-		</lu> 
-	      </chunk>
-	    </out>
-	  </otherwise>
-	</choose>
-      </action>
-    </rule>  -->
-
-    <rule comment="REGLA: CONTINUARE A INFINITIVO -> CONTINUAR GERUNDIO">
+    <rule comment="REGLA: CONTINUARE A INFINITIVO -> CONTINUAR GERUNDIO (Continuare a fare -> Continuar haciendo)">
       <pattern>
         <pattern-item n="vb_continuare"/>
         <pattern-item n="pr_a"/>
@@ -6105,7 +5525,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: CONTARE SU -> CONTAR CON">
+    <rule comment="REGLA: CONTARE SU -> CONTAR CON (Conto su ->       )">
       <pattern>
         <pattern-item n="vb_contare"/>
         <pattern-item n="pr_su"/>
@@ -6136,7 +5556,145 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: ESSERE A NOM">
+<!-- review
+    <rule comment="REGLA: CONTARE SU DI PRN -> CONTAR CON (Conto su ->       )">
+      <pattern>
+        <pattern-item n="vb_contare"/>
+        <pattern-item n="pr_su"/>
+        <pattern-item n="di"/>
+        <pattern-item n="prn"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+       <choose>
+          <when> 
+            <test>
+                <in caseless="yes">
+                  <clip pos="4" side="sl" part="lem"/>
+                  <list n="prn_mete"/>
+                </in>
+            </test>
+         <choose>
+          <when>
+           <test>
+	    <and> 
+             <equal>
+                <clip pos="4" side="sl" part="nbr"/>
+                <lit-tag v="sg"/>
+             </equal> 
+             <equal>
+                <clip pos="4" side="sl" part="pers"/>
+                <lit-tag v="p1"/>
+             </equal>
+            </and>
+            </test>
+           <let>
+               <var n="lema"/>
+               <lit v="conmigo"/>
+           </let>
+          <out>
+          <chunk name="conmigo" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <var n="lema"/>
+              <lit-tag v="prn.tn"/>
+              <clip pos="4" side="sl" part="pers"/>
+              <clip pos="4" side="sl" part="gen"/>
+              <clip pos="4" side="sl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
+        </when>
+        <otherwise>
+        <choose>
+          <when>
+           <test>
+	    <and> 
+             <equal>
+                <clip pos="4" side="sl" part="nbr"/>
+                <lit-tag v="sg"/>
+             </equal> 
+             <equal>
+                <clip pos="4" side="sl" part="pers"/>
+                <lit-tag v="p2"/>
+             </equal>
+            </and>
+            </test>
+           <let>
+               <var n="lema"/>
+               <lit v="contigo"/>
+           </let>
+          <out>
+          <chunk name="conmigo" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <var n="lema"/>
+              <lit-tag v="prn.tn"/>
+              <clip pos="4" side="sl" part="pers"/>
+              <clip pos="4" side="sl" part="gen"/>
+              <clip pos="4" side="sl" part="nbr"/>
+            </lu>
+          </chunk>
+          </out>
+       </when>
+        </choose>
+ 
+        </otherwise>
+        </choose>
+         </when>
+        <otherwise>
+       <out>
+          <chunk name="noconmigo" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+             <lit v="con"/>
+             <lit-tag v="pr"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+             <clip pos="4" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+      </otherwise>
+      </choose>
+      </action>
+    </rule>
+-->
+
+    <rule comment="REGLA: ESSERE A NOM (Essere a casa ->       )">
       <pattern>
         <pattern-item n="essere"/>
         <pattern-item n="pr_a"/>
@@ -6199,7 +5757,7 @@
               </chunk>
             </out>
           </when>
-          <otherwise> <!-- Caso general: ESSERE A NOM -->
+          <otherwise> <!-- Caso general: ESSERE A NOM --> 
             <out>
               <chunk name="prep_nom" case="caseFirstWord">
                 <tags>
@@ -6221,7 +5779,7 @@
       </action>
     </rule>
 
-<!--    <rule comment="REGLA: ESSERE ADJ">
+<!--    <rule comment="REGLA: ESSERE ADJ (Essere carino -> Ser agradable)">
       <pattern>
         <pattern-item n="essere"/>
         <pattern-item n="adj"/>
