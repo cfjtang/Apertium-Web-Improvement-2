@@ -567,7 +567,7 @@
 	      <test>
                 <and>
                   <equal>
-                    <clip pos="1" side="sl" part="a_np"/>
+                    <clip pos="1" side="sl" part="a_np_acr"/>
                     <lit v=""/>
                   </equal>
 		  <equal> 
@@ -5556,7 +5556,6 @@
       </action>
     </rule>
 
-<!-- review
     <rule comment="REGLA: CONTARE SU DI PRN -> CONTAR CON (Conto su ->       )">
       <pattern>
         <pattern-item n="vb_contare"/>
@@ -5568,34 +5567,33 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-       <choose>
-          <when> 
-            <test>
-                <in caseless="yes">
-                  <clip pos="4" side="sl" part="lem"/>
-                  <list n="prn_mete"/>
-                </in>
-            </test>
-         <choose>
-          <when>
-           <test>
-	    <and> 
-             <equal>
-                <clip pos="4" side="sl" part="nbr"/>
-                <lit-tag v="sg"/>
-             </equal> 
-             <equal>
-                <clip pos="4" side="sl" part="pers"/>
-                <lit-tag v="p1"/>
-             </equal>
+	<call-macro n="f_treuGDND">
+	  <with-param pos="4"/>
+	</call-macro>
+          <choose>
+	  <when>
+	    <test>
+            <and>
+	    <in caseless="yes">
+	      <clip pos="4" side="sl" part="lem"/>
+	      <list n="prn_mete"/>
+	    </in>
+	    <equal>
+	      <clip pos="4" side="sl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </equal>
+            <equal>
+	      <clip pos="4" side="sl" part="pers"/>
+	      <lit-tag v="p1"/>
+	    </equal>
             </and>
-            </test>
-           <let>
-               <var n="lema"/>
-               <lit v="conmigo"/>
-           </let>
-          <out>
-          <chunk name="conmigo" case="caseFirstWord">
+	    </test>
+            <let>
+	      <var n="lema"/>
+	      <lit v="conmigo"/>
+	    </let>
+        <out>
+          <chunk name="SV_conmigo" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="SV"/></tag>
               <tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -5616,28 +5614,34 @@
             </lu>
           </chunk>
         </out>
-        </when>
-        <otherwise>
-        <choose>
-          <when>
-           <test>
-	    <and> 
-             <equal>
-                <clip pos="4" side="sl" part="nbr"/>
-                <lit-tag v="sg"/>
-             </equal> 
-             <equal>
-                <clip pos="4" side="sl" part="pers"/>
-                <lit-tag v="p2"/>
-             </equal>
-            </and>
-            </test>
-           <let>
-               <var n="lema"/>
-               <lit v="contigo"/>
-           </let>
+
+
+           </when>
+           <otherwise>
+                 <choose>
+	 	 <when>
+	    		<test>
+            		<and>
+	    		  <in caseless="yes">
+	      		  <clip pos="4" side="sl" part="lem"/>
+	      		  <list n="prn_mete"/>
+	    		  </in>
+	    		<equal>
+	      		  <clip pos="4" side="sl" part="nbr"/>
+	      		<lit-tag v="sg"/>
+	    		</equal>
+            		<equal>
+	      		  <clip pos="4" side="tl" part="pers"/>
+	      		  <lit-tag v="p2"/>
+	    		</equal>
+            		</and>
+	    		</test>
+            		<let>
+	      		<var n="lema"/>
+	      		<lit v="contigo"/>
+	    		</let>
           <out>
-          <chunk name="conmigo" case="caseFirstWord">
+          <chunk name="SV_contigo" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="SV"/></tag>
               <tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -5657,16 +5661,14 @@
               <clip pos="4" side="sl" part="nbr"/>
             </lu>
           </chunk>
-          </out>
-       </when>
-        </choose>
- 
-        </otherwise>
-        </choose>
-         </when>
-        <otherwise>
+        </out>
+
+
+            	</when>
+                <otherwise>
+
        <out>
-          <chunk name="noconmigo" case="caseFirstWord">
+          <chunk name="SV_prn" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="SV"/></tag>
               <tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -5684,15 +5686,23 @@
             </lu>
             <b pos="1"/>
             <lu>
-             <clip pos="4" side="tl" part="whole"/>
+             <clip pos="4" side="tl" part="lem"/>
+             <clip pos="4" side="tl" part="a_prn"/>
+             <clip pos="4" side="tl" part="tipus_prn"/>
+             <clip pos="4" side="tl" part="pers"/>
+             <clip pos="4" side="tl" part="gen"/>
+             <clip pos="4" side="tl" part="nbr"/>
             </lu>
           </chunk>
         </out>
-      </otherwise>
-      </choose>
+
+             </otherwise>
+             </choose>
+        </otherwise>
+        </choose>
       </action>
     </rule>
--->
+
 
     <rule comment="REGLA: ESSERE A NOM (Essere a casa ->       )">
       <pattern>
