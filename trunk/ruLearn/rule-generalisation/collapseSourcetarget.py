@@ -1,4 +1,4 @@
-#
+# -*- encoding: utf-8 -*-
 # Copyright 2009-2016 Víctor M. Sánchez-Cartagena, Felipe Sánchez-Martínez, Universitat d'Alacant
 #
 # This file is part of ruLearn.
