@@ -130,13 +130,40 @@ adj:adjtype,gender,numberat
 
 In some cases some tags may not be present. For instance, possessive adjectives contain the tag "<pos>",
 but common adjectives do not contain a tag specifying the type of adjective. It is not a problem, since, in that case,
-the algorithm will create a special "empty" tag. Note also that the set of tag types and sequences must be the same for both languages of the pair.
+the algorithm will create a special "empty" tag. Note also that the set of tag types and sequences are the same for both languages of the pair.
+
+A good way of identifying all the tag groups and sequences is listing all the
+sequences of tags that can be found in monolingual dictionary entries with the following commands:
+
+lt-expand SL_MONOLINGUAL_DICTIONARY.dix | grep -Fv ':<:' | sed 's_:>:_:_' | cut -f 2 -d ':' | tr '+' '\n' | sed 's:^[^<]*<:<:' | cut -f 1 -d '#' | LC_ALL=C sort -u
+
+lt-expand TL_MONOLINGUAL_DICTIONARY.dix | grep -Fv ':>:' | sed 's_:<:_:_' | cut -f 2 -d ':' | tr '+' '\n' | sed 's:^[^<]*<:<:' | cut -f 1 -d '#' | LC_ALL=C sort -u
 
 [preprocess SL] and [preprocess TL]
 
 When analysing the parallel corpus with Apertium, some additional operations may be needed.
-See the linguistic configuration files for the es-ca and ca-es language pairs to obtain some examples of operations which need to be carried out after the analysis. If you are not sure about what to include in these sections,
-leave them empty.
+See the linguistic configuration files for the es-ca and ca-es language pairs to obtain some examples of operations which need to be carried out after the analysis. The main reason
+to include these additional operations is that Apertium language pairs are not
+symmetric. When ruLearn analyses the training corpus for rule inference, it
+uses the result of compiling TL monolingual dictionary as if it is used for analysing
+the input text in the TL->SL language pair. The morphological inflection information
+tags may not be the same as when the TL monolingual dictionary is used for generating
+surface forms in the SL->TL language pair. A typical example is the definite determiner
+in Catalan when inferring rules for the Spanish->Catalan language pair.
+ When this determiner is placed before a word that starts with vowel, it is written as
+"l'" instead of "el" (masculine) or "la" (feminine). When the Catalan monolingual
+dictionary is compiled for analysis, it analyses "l'" as <det><def><mf><sg> (definite determiner
+masculine-feminine singular). However, when the Catalan dictionary is compiled for
+generation, it does not contain any entry for "l'<det><def><mf><sg>" because, when we translate
+from Spanish, the transfer module only generates determiners with either masculine or
+feminine gender, and the post-generation module is the one that turns el+vowel or la+vowel
+into l'+vowel. Thus, we don't want the automatically inferred transfer rules
+to generate "l'<det><def><mf><sg>". In order to avoid that, we must postprocess the output
+of the analysis of the Catalan side of the training corpus to replace the lexical forms
+"l'<det><def><mf><sg>" with either "el<det><def><m><sg>" or "la<det><def><f><sg>".
+
+
+If you are not sure about what to include in these sections, leave them empty.
 
 [markers]
 
@@ -146,7 +173,7 @@ Usually, the following markers are used:
 
 cm,cnjcoo,cnjsub,det,detnt,lpar,lquest,pr,preadv,predet,prn,rel,rpar,vbdo,vbhaver,vbmod,vbser,vaux,gen
 
-When dealing with a new language pair, they may need to be updated.
+When dealing with a new language pair, they may need to be updated
 
 [post transfer]
 
