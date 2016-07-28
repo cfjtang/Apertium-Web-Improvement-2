@@ -239,13 +239,14 @@
   :defer t
   :ensure t
   :init
-  (setq company-minimum-prefix-length 2
-        company-idle-delay 0.2)
   (when (locate-library "company")
     (add-hook 'c++-mode-hook #'company-mode)
     (add-hook 'cg-mode-hook #'company-mode)
     (add-hook 'hfst-mode-hook #'company-mode))
   :config
+  (setq company-minimum-prefix-length 2
+        company-idle-delay 0.2
+        company-show-numbers t)
   ;; It's annoying when you try to insert a newline and it inserts a completion:
   (unbind-key "RET" company-active-map)
   (unbind-key "<return>" company-active-map)
@@ -266,6 +267,12 @@
   ;; complete (and self-insert):
   (setq company-auto-complete-chars '(?\  ?\) ?. ?>)))
 
+(use-package company-statistics
+  :ensure t
+  :after company
+  :config
+  (setq company-statistics-size 800)
+  (add-hook 'after-init-hook #'company-statistics-mode))
 
 (use-package bind-key
   :config
