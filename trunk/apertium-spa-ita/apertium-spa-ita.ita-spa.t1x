@@ -487,6 +487,20 @@
       <list-item v="sera"/>
     </def-list>
 
+    <def-list n="mesesdelaño">
+      <list-item v="gennaio"/>
+      <list-item v="febbraio"/>
+      <list-item v="marzo"/>
+      <list-item v="aprile"/>
+      <list-item v="maggio"/>
+      <list-item v="giugno"/>
+      <list-item v="luglio"/>
+      <list-item v="agosto"/>
+      <list-item v="settembre"/>
+      <list-item v="ottobre"/>
+      <list-item v="novembre"/>
+      <list-item v="dicembre"/>
+    </def-list>
 
 
   </section-def-lists>
@@ -3500,6 +3514,82 @@
       </action>
     </rule>
 
+
+
+
+
+
+
+
+
+
+
+
+<rule comment="REGLA: A.PREP NOM(mesesdelaño) (A gennaio -> En enero)"> <!-- REVISAR GEMA  -->
+      <pattern>
+	<pattern-item n="prep"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="f_concord1">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+        </call-macro>
+	<out>
+	  <chunk name="prep_nom_mesesdelaño" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="whole"/> 
+	    </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/> 
+              <clip pos="2" side="tl" part="a_nom"/>
+              <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+              <clip pos="2" side="tl" part="gen_mf"/>  
+              <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+              <clip pos="2" side="tl" part="nbr_sp"/>
+              <clip pos="2" side="tl" part="lemq"/>   
+            </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+           <lit-tag v="pr"/>
+                </lu>
+                <b/>
+                <lu>
+                  <lit v="en"/>
+                  <lit-tag v="pr"/>
+                  <clip pos="1" side="tl" part="gen"/>
+                  <clip pos="1" side="tl" part="nbr"/>
+                </lu>
+                <b/>
+                <lu>
+                  <clip pos="1" side="tl" part="whole"/>
+                </lu>
+              </chunk>
+            </out>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <rule comment="REGLA: PREDET DET NOM (Tutti i giorni -> Todos los días)">
       <pattern>
 	<pattern-item n="predet"/>
@@ -5596,7 +5686,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: CONTARE SU -> CONTAR CON (Conto su ->       )">
+    <rule comment="REGLA: CONTARE SU -> CONTAR CON (Conto su -> Contar con)">
       <pattern>
         <pattern-item n="vb_contare"/>
         <pattern-item n="pr_su"/>
@@ -5627,7 +5717,7 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: CONTARE SU DI PRN -> CONTAR CON (Conto su di te ->  Cuento contigo)">
+    <rule comment="REGLA: CONTARE SU DI PRN -> CONTAR CON (Conto su di te -> Cuento contigo)">
       <pattern>
         <pattern-item n="vb_contare"/>
         <pattern-item n="pr_su"/>
