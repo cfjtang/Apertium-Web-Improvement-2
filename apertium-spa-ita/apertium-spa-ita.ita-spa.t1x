@@ -487,7 +487,7 @@
       <list-item v="sera"/>
     </def-list>
 
-    <def-list n="mesesdelaño">
+    <def-list n="meses">
       <list-item v="gennaio"/>
       <list-item v="febbraio"/>
       <list-item v="marzo"/>
@@ -3517,17 +3517,9 @@
 
 
 
-
-
-
-
-
-
-
-
-<rule comment="REGLA: A.PREP NOM(mesesdelaño) (A gennaio -> En enero)"> <!-- REVISAR GEMA  -->
+<rule comment="REGLA: A.PREP NOM (mesesdelaño) (A gennaio -> En enero)"> <!-- REVISADA POR GEMA  -->
       <pattern>
-	<pattern-item n="prep"/>
+	<pattern-item n="pr_a"/>
         <pattern-item n="nom"/>
       </pattern>
       <action>
@@ -3535,60 +3527,67 @@
 	  <with-param pos="1"/>
 	</call-macro>
         <call-macro n="f_concord1">
-          <with-param pos="1"/>
           <with-param pos="2"/>
         </call-macro>
-	<out>
-	  <chunk name="prep_nom_mesesdelaño" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
-	    </tags>
-	    <lu>   
-	      <clip pos="1" side="tl" part="whole"/> 
-	    </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="2" side="tl" part="lemh"/> 
-              <clip pos="2" side="tl" part="a_nom"/>
-              <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
-              <clip pos="2" side="tl" part="gen_mf"/>  
-              <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
-              <clip pos="2" side="tl" part="nbr_sp"/>
-              <clip pos="2" side="tl" part="lemq"/>   
-            </lu>
-	  </chunk>
-	</out>
-      </action>
-    </rule>
-
-           <lit-tag v="pr"/>
-                </lu>
-                <b/>
-                <lu>
+        <choose>
+	  <when>
+	    <test>
+	    <in caseless="yes">
+	      <clip pos="2" side="sl" part="lem"/>
+	      <list n="meses"/>
+	    </in>
+	    </test>
+	    <out>
+	      <chunk name="prep_nom_meses" case="caseFirstWord">
+	        <tags>
+	          <tag><lit-tag v="SPREP"/></tag>
+                  <tag><var n="genero"/></tag>
+                  <tag><var n="numero"/></tag>
+	        </tags>
+	        <lu>
                   <lit v="en"/>
                   <lit-tag v="pr"/>
-                  <clip pos="1" side="tl" part="gen"/>
-                  <clip pos="1" side="tl" part="nbr"/>
                 </lu>
-                <b/>
+                <b pos="1"/>
                 <lu>
+                  <clip pos="2" side="tl" part="lemh"/> 
+                  <clip pos="2" side="tl" part="a_nom"/>
+                  <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+                  <clip pos="2" side="tl" part="gen_mf"/>  
+                  <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+                  <clip pos="2" side="tl" part="nbr_sp"/>
+                  <clip pos="2" side="tl" part="lemq"/>   
+                </lu>
+	      </chunk>
+	    </out>
+          </when>  
+          <otherwise>
+            <out>
+	      <chunk name="prep_nom" case="caseFirstWord">
+	        <tags>
+	          <tag><lit-tag v="SPREP"/></tag>
+                  <tag><var n="genero"/></tag>
+                  <tag><var n="numero"/></tag>
+	        </tags>
+	        <lu>
                   <clip pos="1" side="tl" part="whole"/>
                 </lu>
-              </chunk>
-            </out>
-
-
-
-
-
-
-
-
-
-
-
-
-
+                <b pos="1"/>
+                <lu>
+                  <clip pos="2" side="tl" part="lemh"/> 
+                  <clip pos="2" side="tl" part="a_nom"/>
+                  <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+                  <clip pos="2" side="tl" part="gen_mf"/>  
+                  <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+                  <clip pos="2" side="tl" part="nbr_sp"/>
+                  <clip pos="2" side="tl" part="lemq"/>   
+                </lu>
+	      </chunk>
+	    </out>
+          </otherwise>
+        </choose>
+      </action>
+    </rule>
 
     <rule comment="REGLA: PREDET DET NOM (Tutti i giorni -> Todos los días)">
       <pattern>
