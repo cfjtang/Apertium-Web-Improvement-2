@@ -60,6 +60,17 @@
       <cat-item tags="detnt"/>
       <!-- <cat-item tags="num.*"/> -->
     </def-cat>
+
+
+    <def-cat n="adjdetnum">
+      <cat-item tags="adj.*"/>
+      <cat-item tags="adj.ind.*"/>
+      <cat-item tags="det.ind.*"/>
+      <cat-item tags="num.*"/>
+      <cat-item tags="num"/>
+    </def-cat>
+
+
     <def-cat n="num">
       <cat-item tags="num.*"/>
       <cat-item tags="num"/>
@@ -119,6 +130,11 @@
       <cat-item lemma="avere" tags="vblex.*"/>
     </def-cat>
 
+
+    <def-cat n="fare">
+      <cat-item lemma="fare" tags="vblex.*"/>
+    </def-cat>
+
     <def-cat n="bisogno">
       <cat-item lemma="bisogno" tags="n.m.*"/>
     </def-cat>
@@ -146,12 +162,6 @@
       <cat-item tags="vblex.pp.m.sg"/>
       <cat-item tags="vbser.pp.m.sg"/>
      </def-cat>
-
-    <def-cat n="detnum">
-      <cat-item tags="det.ind.*"/>
-      <cat-item tags="num.*"/>
-      <cat-item tags="num"/>
-    </def-cat>
 
     <def-cat n="prnref">
       <cat-item tags="prn.pro.ref.p3.mf.sp"/>
@@ -253,6 +263,7 @@
       <attr-item tags="adj.sup"/>
       <attr-item tags="adj.ind"/>
       <attr-item tags="adj.itg"/>
+      <attr-item tags="adj.ord"/>
       <attr-item tags="vblex"/>
       <attr-item tags="vbmod"/>
       <attr-item tags="vbhaver"/>
@@ -459,6 +470,9 @@
       <list-item v="morire"/>
       <list-item v="piacere"/>
       <list-item v="confondere"/>
+      <list-item v="salire"/>
+      <list-item v="accogliere"/>
+
     </def-list>
 
 
@@ -480,6 +494,26 @@
       <list-item v="noi"/>
       <list-item v="voi"/>
       <list-item v="loro"/>
+    </def-list>
+
+
+    <def-list n="temporales">
+      <list-item v="mese"/>
+      <list-item v="giorno"/>
+      <list-item v="anno"/>
+      <list-item v="settimana"/>
+      <list-item v="tempo"/>
+      <list-item v="ora"/>
+      <list-item v="minuto"/>
+      <list-item v="secondo"/>
+      <list-item v="notte"/>
+      <list-item v="pomeriggio"/>
+      <list-item v="mattina"/>
+      <list-item v="lustro"/>
+      <list-item v="secolo"/>
+      <list-item v="millenio"/>
+      <list-item v="era"/>
+      <list-item v="deccenio"/>
     </def-list>
 
     <def-list n="partoftheday">
@@ -6029,6 +6063,96 @@
       </action>
 </rule>
  
+
+    <rule comment="REGLA: DET/NUM/ADJ NOM FA ">
+      <pattern>
+	<pattern-item n="adjdetnum"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="fare"/>
+      </pattern>
+      <action>
+	<call-macro n="f_concord2">
+	  <with-param pos="2"/>
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <in caseless="yes">
+		<clip pos="2" side="sl" part="lem"/>
+		<list n="temporales"/>
+	      </in>
+	    </test>
+	    <out>
+	      <chunk name="det_temp_fa" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SADV"/></tag>	      
+	    </tags>
+	    <lu>   
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_verb"/>
+	      <clip pos="3" side="tl" part="temps"/>
+	      <clip pos="3" side="tl" part="pers"/>
+	      <clip pos="3" side="tl" part="gen"/>	 
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <clip pos="3" side="tl" part="lemq"/>
+	    </lu>
+           <b pos="1"/>
+	    <lu>    
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="2"/>
+	    <lu>
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="gen"/>	 
+	      <clip pos="2" side="tl" part="nbr"/>	 
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu> 
+	  </chunk>
+	</out>
+	  </when>
+	  <otherwise>
+	<out>
+	  <chunk name="det_nom_fa" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="3" side="tl" part="temps"/></tag>
+              <tag><clip pos="3" side="tl" part="pers"/></tag>
+              <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>    
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="1"/> 
+	    <lu>
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_nom"/>
+	      <clip pos="3" side="tl" part="gen"/>	 
+	      <clip pos="3" side="tl" part="nbr"/>	 
+	      <clip pos="3" side="tl" part="lemq"/>
+	    </lu> 
+	    <b pos="2"/>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <clip pos="1" side="tl" part="gen"/>	 
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+	  </otherwise>
+
+	</choose>
+      </action>
+    </rule>
   
 
 
