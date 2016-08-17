@@ -81,6 +81,21 @@
       <cat-item tags="vbhaver.*"/>
       <cat-item tags="vbmod.*"/>
     </def-cat>
+
+    <def-cat n="verbcontinuar"> <!--continuar, seguir--> 
+      <cat-item lemma="continuar" tags="vblex.*"/>
+      <cat-item lemma="seguir" tags="vblex.*"/>
+      <cat-item lemma="empezar" tags="vblex.*"/>
+      <cat-item lemma="comenzar" tags="vblex.*"/>
+      <cat-item lemma="acabar" tags="vblex.*"/>
+      <cat-item lemma="terminar" tags="vblex.*"/>
+    </def-cat>
+
+    <def-cat n="verbconseguir"> <!--conseguir, lograr--> 
+      <cat-item lemma="conseguir" tags="vblex.*"/>
+      <cat-item lemma="lograr" tags="vblex.*"/>
+    </def-cat>
+
     
     <def-cat n="mod">  
       <cat-item tags="vbmod.*"/>
@@ -268,6 +283,7 @@
     <def-attr n="a_adj">          
       <attr-item tags="adj"/>
       <attr-item tags="adj.pos"/>
+      <attr-item tags="adj.ord"/>
       <attr-item tags="adj.sup"/>
       <attr-item tags="adj.ind"/>
       <attr-item tags="adj.itg"/>
@@ -6915,6 +6931,191 @@
 	      <clip pos="3" side="tl" part="gen"/>	 
 	      <clip pos="3" side="tl" part="nbr"/>
 	      <clip pos="3" side="tl" part="lemq"/>
+	    </lu> 
+	  </chunk>
+	</out>
+      </action>
+    </rule> 
+
+<rule comment="REGLA: Continuar/seguir + ger = continuare a + inf (continúa siendo : continua a essere) ">
+      <pattern>
+	<pattern-item n="verbcontinuar"/>
+	<pattern-item n="ger"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="canvia_fts">
+	  <with-param pos="1"/>
+	</call-macro>
+        <choose>
+          <when>
+            <test>
+            <or>
+              <equal>
+                <clip pos="1" side="sl" part="lemh"/>
+                <lit v="continuar"/>   
+              </equal>
+              <equal>
+                <clip pos="1" side="sl" part="lemh"/>
+                <lit v="seguir"/>   
+              </equal>
+            </or>           
+            </test>
+              <let>
+                <clip pos="1" side="tl" part="lemh"/>
+                <lit v="continuare"/>   
+              </let>
+              <let>
+                 <var n="tipusprep"/>
+                <lit v="a"/>   
+              </let>           
+          </when>
+         </choose>
+        <choose>
+          <when>
+            <test>
+            <or>
+              <equal>
+                <clip pos="1" side="sl" part="lemh"/>
+                <lit v="empezar"/>   
+              </equal>
+              <equal>
+                <clip pos="1" side="sl" part="lemh"/>
+                <lit v="comenzar"/>   
+              </equal>
+            </or>           
+            </test>
+              <let>
+                <clip pos="1" side="tl" part="lemh"/>
+                <lit v="cominciare"/>   
+              </let>
+              <let>
+                 <var n="tipusprep"/>
+                <lit v="per"/>   
+              </let>
+          </when>
+         </choose>
+        <choose>
+          <when>
+            <test>
+            <or>
+              <equal>
+                <clip pos="1" side="sl" part="lemh"/>
+                <lit v="acabar"/>   
+              </equal>
+              <equal>
+                <clip pos="1" side="sl" part="lemh"/>
+                <lit v="terminar"/>   
+              </equal>
+            </or>
+            </test>
+              <let>
+                <clip pos="1" side="tl" part="lemh"/>
+                <lit v="finire"/>   
+              </let>
+              <let>
+                 <var n="tipusprep"/>
+                <lit v="per"/>   
+              </let>           
+          </when>
+         </choose>
+	  <call-macro n="check_ifi">
+	  <with-param pos="1"/>
+	  </call-macro>
+	<out>
+	  <chunk name="verb_prep_inf" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>   
+	      <var n="verb"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>   
+	      <var n="tipusprep"/>
+              <lit-tag v="pr"/>
+	    </lu>
+	    <b/>
+	    <lu>   
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_verb"/>
+	      <lit-tag v="inf"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu> 
+	  </chunk>
+	</out>
+      </action>
+    </rule> 
+ 
+<rule comment="REGLA: Conseguir/lograr + inf = riuscire a(d) + inf (logará llegar : riuscira ad arrivare) ">
+      <pattern>
+	<pattern-item n="verbconseguir"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="canvia_fts">
+	  <with-param pos="1"/>
+	</call-macro>
+        <choose>
+          <when>
+            <test>
+            <or>
+              <equal>
+                <clip pos="1" side="sl" part="lemh"/>
+                <lit v="conseguir"/>   
+              </equal>
+              <equal>
+                <clip pos="1" side="sl" part="lemh"/>
+                <lit v="lograr"/>   
+              </equal>
+            </or>           
+            </test>
+              <let>
+                <clip pos="1" side="tl" part="lemh"/>
+                <lit v="riuscire"/>   
+              </let>
+              <let>
+                 <var n="tipusprep"/>
+                <lit v="a"/>   
+              </let>           
+          </when>
+         </choose>
+	  <call-macro n="check_ifi">
+	  <with-param pos="1"/>
+	  </call-macro>
+	<out>
+	  <chunk name="verb_prep_inf" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>   
+              <var n="verb"/>
+	      <!--<clip pos="1" side="tl" part="whole"/>-->
+	    </lu>
+	    <b pos="1"/>
+	    <lu>   
+	      <var n="tipusprep"/>
+              <lit-tag v="pr"/>
+	    </lu>
+	    <b/>
+	    <lu>   
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_verb"/>
+	      <lit-tag v="inf"/>
+	      <clip pos="2" side="tl" part="lemq"/>
 	    </lu> 
 	  </chunk>
 	</out>
