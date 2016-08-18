@@ -142,9 +142,23 @@
     <def-cat n="di">
       <cat-item lemma="di" tags="pr"/>
     </def-cat>
+
+    <def-cat n="ci">
+       <cat-item lemma= "ci" tags="prn.pro.adv"/>
+    </def-cat>
+
     <def-cat n="essere">
       <cat-item lemma="essere" tags="vblex.*"/>
       <cat-item lemma="essere" tags="vbser.*"/>
+    </def-cat>
+
+    <def-cat n="essere-p3">
+       <cat-item lemma="essere" tags="vbser.*.p3.*"/>
+    </def-cat>
+
+    <def-cat n="essere-pp">
+       <cat-item lemma="essere" tags="vbser.pp.*"/>
+       <cat-item lemma="stare" tags="vblex.pp.*"/>
     </def-cat>
     
     <def-cat n="venire">
@@ -5447,6 +5461,157 @@
       </action>
     </rule>
 
+    <rule comment="regla: c'è"> <!-- c'è > hay (tots els temps simples de l'italià))-->
+       <pattern>
+         <pattern-item n="ci"/>
+         <pattern-item n="essere-p3"/>
+       </pattern>
+       <action>
+         <call-macro n="f_concord1">
+           <with-param pos="2"/>
+         </call-macro>
+        <call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>   
+	 <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbhaver"/></let>
+        <choose>
+	<when> 
+	  <test>
+	    <equal>
+	      <clip pos="2" side="tl" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </equal>
+	  </test>
+         <out>
+           <chunk name="hay" case="caseFirstWord">
+             <tags>
+               <tag><lit-tag v="SV"/></tag>
+             </tags>
+               <lu>
+                 <lit v="hay"/>
+                 <lit-tag v="vblex.pri.p3.sg"/>
+               </lu>
+           </chunk>
+         </out>
+	</when>
+         <otherwise>
+         <out>
+           <chunk name="hay" case="caseFirstWord">
+             <tags>
+               <tag><lit-tag v="SV"/></tag>
+             </tags>
+               <lu>
+                 <lit v="haber"/>
+                 <lit-tag v="vbhaver"/>
+                 <clip pos="2" side="tl" part="temps"/>
+                 <clip pos="2" side="tl" part="pers"/>
+                 <lit-tag v="sg"/>
+                 <clip pos="2" side="tl" part="lemq"/>
+               </lu>
+           </chunk>
+         </out>
+	</otherwise>
+      </choose>
+        <call-macro n="f_bcond">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+        </call-macro>
+     </action>
+    </rule>
+
+
+    <rule comment="regla: c'è stato"> <!-- c'è stato > ha habido-->
+       <pattern>
+         <pattern-item n="ci"/>
+         <pattern-item n="essere-p3"/>
+         <pattern-item n="essere-pp"/>
+       </pattern>
+       <action>
+         <call-macro n="f_concord1">
+           <with-param pos="3"/>
+         </call-macro>
+         <call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>   
+	 <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbhaver"/></let>
+         <out>
+           <chunk name="ha_habido" case="caseFirstWord">
+             <tags>
+               <tag><lit-tag v="SV"/></tag>
+             </tags>
+               <lu>
+                 <lit v="haber"/>
+                 <lit-tag v="vbhaver"/>
+                 <clip pos="2" side="tl" part="temps"/>
+                 <clip pos="2" side="tl" part="pers"/>
+                 <clip pos="2" side="tl" part="nbr"/>
+                 <clip pos="2" side="tl" part="lemq"/>
+               </lu>
+               <b pos="2"/>
+               <lu>  
+		 <lit v="haber"/>
+                 <lit-tag v="vbhaver.pp.m.sg"/>
+               </lu>
+           </chunk>
+         </out>
+        <call-macro n="f_bcond">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+        </call-macro>
+     </action>
+    </rule>
+
+
+ <rule comment="regla: c'è adv stato"> <!-- c'è mai stato > ha habido nunca-->
+       <pattern>
+         <pattern-item n="ci"/>
+         <pattern-item n="essere-p3"/>
+         <pattern-item n="adv"/>
+         <pattern-item n="essere-pp"/>
+       </pattern>
+       <action>
+         <call-macro n="f_concord1">
+           <with-param pos="4"/>
+         </call-macro>
+         <call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>   
+	 <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbhaver"/></let>
+         <out>
+           <chunk name="ha_habido" case="caseFirstWord">
+             <tags>
+               <tag><lit-tag v="SV"/></tag>
+             </tags>
+               <lu>
+                 <lit v="haber"/>
+                 <lit-tag v="vbhaver"/>
+                 <clip pos="2" side="tl" part="temps"/>
+                 <clip pos="2" side="tl" part="pers"/>
+                 <clip pos="2" side="tl" part="nbr"/>
+                 <clip pos="2" side="tl" part="lemq"/>
+               </lu>
+               <b pos="2"/>
+               <lu>  
+		 <lit v="haber"/>
+                 <lit-tag v="vbhaver.pp.m.sg"/>
+               </lu>
+           </chunk>
+           <b pos="3"/> 
+           <chunk name="adv" case="caseFirstWord">
+             <tags>
+               <tag><lit-tag v="ADV"/></tag>
+             </tags>
+               <lu>
+                 <clip pos="3" side="tl" part="whole"/>
+               </lu>
+           </chunk>
+         </out>
+        <call-macro n="f_bcond">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+        </call-macro>
+     </action>
+    </rule>
 
   <rule comment="REGLA: VERB ">
       <pattern>
@@ -5661,6 +5826,36 @@
             </let>
 	  </otherwise>
 	</choose>
+        <choose>
+        <when>
+	  <test>
+          <and>
+	    <equal>
+	      <clip pos="1" side="sl" part="pers"/>
+	      <lit-tag v="p3"/>
+	    </equal>
+	    <equal>
+	      <clip pos="1" side="sl" part="nbr"/>
+	      <lit-tag v="pl"/>
+	    </equal>
+	    <equal>
+	      <clip pos="2" side="sl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </equal>
+          </and>
+	  </test>
+	    <let>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <lit-tag v="p1"/>
+	    </let>
+        </when>
+        <otherwise>
+	    <let>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <clip pos="1" side="tl" part="pers"/>
+	    </let>
+        </otherwise>
+        </choose>
 	<out>
 	  <chunk namefrom="lemachunk" case="caseFirstWord">
 	    <tags>
@@ -5671,7 +5866,12 @@
               <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
 	    </tags>
 	    <lu>   
-	      <clip pos="1" side="tl" part="whole"/> 
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <clip pos="1" side="tl" part="gen"/>	 
+	      <clip pos="2" side="sl" part="nbr"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu>   
@@ -5686,6 +5886,218 @@
 	</out>
       </action>
     </rule>  
+
+
+  
+ <rule comment="REGLA: ESSERE ADV PP  è mai stato : ha estado nunca ">
+      <pattern>
+	<pattern-item n="essere"/>
+	<pattern-item n="adv"/>
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	    <in caseless="yes">
+	      <clip pos="3" side="sl" part="lem"/>
+	      <list n="auxser"/>
+	    </in>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="lem"/>
+	      <lit v="haber"/>
+	    </let>
+	    <let>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <lit-tag v="vbhaver"/>
+	    </let>
+	    <let>
+	      <var n="lemachunk"/>
+	      <lit v="haber_pp"/>
+	    </let>
+	    <let>
+	      <clip pos="3" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	    <let>
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <var n="lemachunk"/>
+	      <lit v="estar_pp"/>
+	    </let>
+	    <let>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <lit v="estar"/>
+	    </let>
+            <let>
+              <clip pos="1" side="tl" part="a_verb"/>
+	      <lit-tag v="vblex"/>
+            </let>
+	  </otherwise>
+	</choose>
+        <choose>
+        <when>
+	  <test>
+          <and>
+	    <equal>
+	      <clip pos="1" side="sl" part="pers"/>
+	      <lit-tag v="p3"/>
+	    </equal>
+	    <equal>
+	      <clip pos="1" side="sl" part="nbr"/>
+	      <lit-tag v="pl"/>
+	    </equal>
+	    <equal>
+	      <clip pos="3" side="sl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </equal>
+          </and>
+	  </test>
+	    <let>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <lit-tag v="p1"/>
+	    </let>
+        </when>
+        <otherwise>
+	    <let>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <clip pos="1" side="tl" part="pers"/>
+	    </let>
+        </otherwise>
+        </choose>
+	<out>
+	  <chunk namefrom="lemachunk" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <clip pos="1" side="tl" part="gen"/>	 
+	      <clip pos="3" side="sl" part="nbr"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>   
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_verb"/>
+	      <clip pos="3" side="tl" part="temps"/>
+	      <clip pos="3" side="tl" part="gen"/>	 
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <clip pos="3" side="tl" part="lemq"/>
+	    </lu> 
+	    <b pos="2"/>
+            <lu>   
+	      <clip pos="2" side="tl" part="whole"/> 
+	    </lu>
+	   
+	  </chunk>
+	</out>
+      </action>
+    </rule>  
+
+
+  
+ <rule comment="REGLA: AVERE PP ">
+      <pattern>
+	<pattern-item n="avere"/>
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk namefrom="haber_pp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
+	    </tags>
+	    <lu>   
+	      <lit v="haber"/>
+              <lit-tag v="vbhaver"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <clip pos="1" side="tl" part="gen"/>	 
+	      <clip pos="2" side="sl" part="nbr"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>   
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_verb"/>
+	      <clip pos="2" side="tl" part="temps"/>
+	      <clip pos="2" side="tl" part="gen"/>	 
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu> 
+	  </chunk>
+	</out>
+      </action>
+    </rule>  
+
+
+  
+ <rule comment="REGLA: AVERE ADV PP  ho mai sentito : he eschuchado nunca ">
+      <pattern>
+	<pattern-item n="avere"/>
+	<pattern-item n="adv"/>
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk namefrom="haber_pp_adv" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
+	    </tags>
+	    <lu>   
+	      <lit v="haber"/>
+              <lit-tag v="vbhaver"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <clip pos="1" side="tl" part="gen"/>	 
+	      <clip pos="1" side="sl" part="nbr"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>   
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_verb"/>
+	      <clip pos="3" side="tl" part="temps"/>
+	      <clip pos="3" side="tl" part="gen"/>	 
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <clip pos="3" side="tl" part="lemq"/>
+	    </lu> 
+	    <b pos="2"/>
+            <lu>   
+	      <clip pos="2" side="tl" part="whole"/> 
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>  
+
 
 
     <rule comment="REGLA: CONTINUARE/DIVERTIRSI A INFINITIVO -> CONTINUAR GERUNDIO (Continuare a fare -> Continuar haciendo)">
