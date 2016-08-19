@@ -38,7 +38,15 @@
     <def-cat n="por-da">
       <cat-item name="por-da"/>
     </def-cat>
+
+    <def-cat n="che-di">
+      <cat-item name="che-di"/>
+    </def-cat>
     
+    <def-cat n="vconj-inf">
+      <cat-item name="vconj-inf"/>
+    </def-cat>
+
     <def-cat n="loro">
       <cat-item name="loro"/>
     </def-cat>
@@ -94,6 +102,21 @@
       <attr-item tags="vbmod"/>
       <attr-item tags="HAVER"/>
     </def-attr>
+
+    <def-attr n="a_temps">
+      <attr-item tags="inf"/>	  
+      <attr-item tags="ger"/>
+      <attr-item tags="pp"/>
+      <attr-item tags="pri"/>
+      <attr-item tags="pii"/>
+      <attr-item tags="ifi"/>
+      <attr-item tags="fti"/>
+      <attr-item tags="prs"/>
+      <attr-item tags="pis"/>
+      <attr-item tags="fts"/>
+      <attr-item tags="imp"/>
+    </def-attr>
+
 
     <def-attr n="a_nom">
       <attr-item tags="n"/>
@@ -178,6 +201,44 @@
 	</out>   
       </action>
     </rule>   
+
+   <rule comment="CHE-DI">
+      <pattern>
+	<pattern-item n="che-di"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="1" part="lem"/>
+	  <lit v="di"/>
+	</let>
+	<out>
+	  <lu>
+	    <clip pos="1" part="lem"/>
+            <lit-tag v="pr"/>
+	  </lu> 
+	</out>   
+      </action>
+    </rule>   
+
+   <rule comment="INF">
+      <pattern>
+	<pattern-item n="vconj-inf"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="1" part="a_temps"/>
+	  <lit-tag v="inf"/>
+	</let>
+	<out>
+	  <lu>
+	    <clip pos="1" part="lem"/>
+	    <clip pos="1" part="a_verb"/>
+	    <clip pos="1" part="a_temps"/>
+	  </lu> 
+	</out>   
+      </action>
+    </rule>   
+
     
  <rule comment="LORO">
       <pattern>
