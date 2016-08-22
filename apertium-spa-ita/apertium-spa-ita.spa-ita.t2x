@@ -6,13 +6,17 @@
       <cat-item tags="SN.*"/>
     </def-cat>
     
+    <def-cat n="SN-mes">
+      <cat-item lemma="mes" tags="SN.*"/>
+    </def-cat>
+
     
     <def-cat n="SN_DET">
       <cat-item tags="SN.*"/>
       <cat-item tags="DET.*"/>
     </def-cat>
 
-    <def-cat n="pr">
+    <def-cat n="PR">
       <cat-item tags="PREP"/>
       <cat-item tags="PREP.*"/>
     </def-cat>
@@ -78,6 +82,10 @@
 
     <def-cat n="POR">
       <cat-item lemma="por" tags="PREP"/>
+    </def-cat>
+
+    <def-cat n="EN">
+      <cat-item lemma="en" tags="PREP"/>
     </def-cat>
     
     <def-cat n="NUM">
@@ -775,6 +783,31 @@
 
 
 
+ <rule comment="REGLA: PR-en SN-mes">
+      <pattern>
+	<pattern-item n="EN"/>
+	<pattern-item n="SN-mes"/>
+      </pattern>
+      <action>
+	<call-macro n="assigna_gen_nbr">
+	  <with-param pos="2"/>
+	</call-macro>
+	<let>
+	  <clip pos="1" part="lem"/>
+	  <lit v="en-a"/>
+	</let>
+	  <out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  </out>
+      </action>
+ </rule>
+
 
  <rule comment="REGLA: SV SN">
       <pattern>
@@ -962,7 +995,7 @@
     <rule comment="REGLA: SN SP vbcop SA">
       <pattern>
 	<pattern-item n="SN"/>
-	<pattern-item n="pr"/>
+	<pattern-item n="PR"/>
 	<pattern-item n="SN"/>
 	<pattern-item n="vbcop"/>
 	<pattern-item n="SA"/>
@@ -1017,7 +1050,7 @@
     <rule comment="REGLA: SN SP vbcop SN">
       <pattern>
 	<pattern-item n="SN"/>
-	<pattern-item n="pr"/>
+	<pattern-item n="PR"/>
 	<pattern-item n="SN"/>
 	<pattern-item n="vbcop"/>
 	<pattern-item n="SN"/>

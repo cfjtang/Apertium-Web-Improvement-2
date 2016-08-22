@@ -300,6 +300,7 @@
     <def-attr n="a_num">
       <attr-item tags="num"/>
       <attr-item tags="num.percent"/>
+      <attr-item tags="num.time"/>
     </def-attr>
 
     <def-attr n="a_verb">
@@ -507,28 +508,18 @@
     </def-list>
 
     <def-list n="mes">
-      <list-item v="gèr"/>
-      <list-item v="genièr"/>
-      <list-item v="hereuèr"/>
-      <list-item v="febrièr"/>
-      <list-item v="març"/>
-      <list-item v="abriu"/>
+      <list-item v="enero"/>
+      <list-item v="febrero"/>
+      <list-item v="marzo"/>
       <list-item v="abril"/>
-      <list-item v="mai"/>
-      <list-item v="junhsèga"/>
-      <list-item v="julhet"/>
-      <list-item v="junh"/>
-      <list-item v="juriol"/>
+      <list-item v="mayo"/>
+      <list-item v="junio"/>
+      <list-item v="julio"/>
       <list-item v="agost"/>
-      <list-item v="seteme"/>
-      <list-item v="setembre"/>
+      <list-item v="septiembre"/>
       <list-item v="octubre"/>
-      <list-item v="octòbre"/>
-      <list-item v="octobre"/>
-      <list-item v="noveme"/>
-      <list-item v="novembre"/>
-      <list-item v="deseme"/>
-      <list-item v="desembre"/>
+      <list-item v="noviembre"/>
+      <list-item v="diciembre"/>
     </def-list>
 
     <def-list n="v_amb_a">
@@ -787,7 +778,6 @@
      </choose>
    </def-macro>
 	   
-
 
     <def-macro n="f_prep" npar="1">
       <choose>
@@ -3712,8 +3702,28 @@
 	<call-macro n="f_concord1">
 	  <with-param pos="1"/>
 	</call-macro>
+        <choose>
+        <when>
+        <test>
+           <in>
+            <clip pos="1" side="sl" part="lemh"/>
+            <list n="mes"/>
+           </in>
+        </test>
+           <let>
+             <var n="lemachunk"/>
+             <lit v="mes"/>
+           </let>
+        </when>
+        <otherwise>
+           <let>
+             <var n="lemachunk"/>
+             <lit v="nom"/>
+           </let>
+        </otherwise>
+        </choose>
 	<out>
-	  <chunk name="nom" case="caseFirstWord">
+	  <chunk namefrom="lemachunk" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><var n="genero"/></tag>
@@ -3862,12 +3872,53 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-
 	<call-macro n="f_concord2">
 	  <with-param pos="2"/>
 	  <with-param pos="1"/>
 	</call-macro>
-	
+        <choose>
+        <when>
+          <test>
+            <contains-substring>
+               <clip pos="2" side="sl" part="lem"/>
+               <lit v=":"/>
+          </contains-substring>
+          </test>
+	<out>
+	  <chunk name="det_ore_num" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><var n="genero"/></tag>
+	      <tag><var n="numero"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+	      <clip pos="1" side="tl" part="gen_mf"/>	 
+	      <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+	      <clip pos="1" side="tl" part="nbr_sp"/>	 
+	    </lu> 
+	    <b pos="1"/>
+            <lu>
+             <lit v="ora"/>
+             <lit-tag v="n.f"/>
+             <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+	     <clip pos="1" side="tl" part="nbr_sp"/>	
+            </lu>
+            <b/>
+	    <lu>     
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_num"/>
+	      <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+	      <clip pos="2" side="tl" part="gen_mf"/>	 
+	      <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+	      <clip pos="2" side="tl" part="nbr_sp"/>	 
+	    </lu>
+	  </chunk>
+	</out>	 
+         </when> 
+        <otherwise>
 	<out>
 	  <chunk name="det_num" case="caseFirstWord">
 	    <tags>
@@ -3894,6 +3945,8 @@
 	    </lu>
 	  </chunk>
 	</out>	  
+       </otherwise>
+       </choose>
       </action>
     </rule>
 
@@ -4155,6 +4208,59 @@
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>	
+      <choose>
+        <when>
+          <test>
+          <and>
+          <contains-substring>
+               <clip pos="2" side="sl" part="lem"/>
+               <lit v=":"/>
+          </contains-substring>
+          <equal>
+               <clip pos="3" side="sl" part="lem"/>
+               <lit v="hora"/>
+          </equal> 
+          </and>
+          </test>
+	<out>
+	  <chunk name="det_ore_num" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><var n="genero"/></tag>
+	      <tag><var n="numero"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+	      <clip pos="1" side="tl" part="gen_mf"/>	 
+	      <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+	      <clip pos="1" side="tl" part="nbr_sp"/>	 
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_nom"/>
+	      <clip pos="3" side="tl" part="gen_sense_mf" link-to="2"/>
+	      <clip pos="3" side="tl" part="gen_mf"/>	 
+	      <clip pos="3" side="tl" part="nbr_sense_sp" link-to="3"/>
+	      <clip pos="3" side="tl" part="nbr_sp"/>	 
+	      <clip pos="3" side="tl" part="lemq"/>
+	    </lu>
+	    <b pos="2"/>
+	    <lu>
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_num"/>
+	      <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+	      <clip pos="2" side="tl" part="gen_mf"/>	 
+	      <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+	      <clip pos="2" side="tl" part="nbr_sp"/>	 
+	    </lu>
+	  </chunk>
+	</out>
+  
+         </when>
+         <otherwise>
 	<out>
 	  <chunk name="det_num_nom" case="caseFirstWord">
 	    <tags>
@@ -4191,6 +4297,8 @@
 	    </lu>
 	  </chunk>
 	</out>
+       </otherwise>
+       </choose>
       </action>
     </rule>
 
@@ -5336,29 +5444,8 @@
       </action>
     </rule>
 
- <rule comment="REGLA: POR">
-      <pattern>
-	<pattern-item n="por"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<out>
-	  <chunk name="por" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
-	    </tags>
-	    <lu>   
-	      <clip pos="1" side="tl" part="whole"/> 
-	    </lu> 
-	  </chunk>
-	</out>
-      </action>
-    </rule>
 
-
-<rule comment="REGLA: PREP (todas las prep excepto 'por', que entra por la regla anterior)">
+<rule comment="REGLA: PREP">
       <pattern>
 	<pattern-item n="prep"/>
       </pattern>
@@ -5366,8 +5453,12 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+        <let>
+	      <var n="lemachunk"/>
+	      <clip pos="1" side="sl" part="lem"/> 
+	</let>
 	<out>
-	  <chunk name="prep" case="caseFirstWord">
+	  <chunk namefrom="lemachunk" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
