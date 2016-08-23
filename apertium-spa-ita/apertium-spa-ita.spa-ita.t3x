@@ -16,13 +16,11 @@
     </def-cat>
 
     <def-cat n="sn_2e">
-      <cat-item name="det_nom"/>
-      <cat-item name="det_adj"/>
+      <cat-item name="cada_num"/>
     </def-cat>
     
     <def-cat n="sn_3e">
-      <cat-item name="det_adj_nom"/>
-      <cat-item name="det_nom_adj"/>
+      <cat-item name="cada_num_nom"/>
     </def-cat>
     
     <def-cat n="sn_4e">
@@ -43,9 +41,20 @@
       <cat-item name="che-di"/>
     </def-cat>
 
-
      <def-cat n="en-a">
       <cat-item name="en-a"/>
+    </def-cat>
+   
+    <def-cat n="de-su">
+      <cat-item name="de-su"/>
+    </def-cat>
+
+    <def-cat n="inpiu">
+      <cat-item name="in_più"/>
+    </def-cat>
+
+    <def-cat n="dimeno">
+      <cat-item name="di_meno"/>
     </def-cat>
 
     <def-cat n="vconj-inf">
@@ -56,6 +65,11 @@
       <cat-item name="loro"/>
     </def-cat>
     
+    <def-cat n="det">
+      <cat-item name="det"/>
+    </def-cat>
+
+
   </section-def-cats>
 
   <section-def-attrs>
@@ -244,7 +258,61 @@
       </action>
     </rule>   
 
+  <rule comment="DE-SU">
+      <pattern>
+	<pattern-item n="de-su"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="1" part="lem"/>
+	  <lit v="su"/>
+	</let>
+	<out>
+	  <lu>
+	    <clip pos="1" part="lem"/>
+            <lit-tag v="pr"/>
+	  </lu> 
+	</out>   
+      </action>
+    </rule>   
 
+  <rule comment="DI-MENO">
+      <pattern>
+	<pattern-item n="dimeno"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="1" part="lem"/>
+	  <lit v="di meno"/>
+	</let>
+	<out>
+	  <lu>
+	    <clip pos="1" part="lem"/>
+            <lit-tag v="adv"/>
+	  </lu> 
+	</out>   
+      </action>
+    </rule>   
+
+
+
+  <rule comment="IN-PIU">
+      <pattern>
+	<pattern-item n="inpiu"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="1" part="lem"/>
+	  <lit v="in più"/>
+	</let>
+	<out>
+	  <lu>
+	    <clip pos="1" part="lem"/>
+            <lit-tag v="adv"/>
+	  </lu> 
+	</out>   
+      </action>
+    </rule>   
 
    <rule comment="INF">
       <pattern>
@@ -260,6 +328,21 @@
 	    <clip pos="1" part="lem"/>
 	    <clip pos="1" part="a_verb"/>
 	    <clip pos="1" part="a_temps"/>
+	  </lu> 
+	</out>   
+      </action>
+    </rule>   
+
+
+ <rule comment="CREA DET">
+      <pattern>
+	<pattern-item n="det"/>
+      </pattern>
+      <action>
+	<out>
+	  <lu>
+	   <lit v="il"/>
+	  <lit-tag v="det.def.m.sg"/>
 	  </lu> 
 	</out>   
       </action>

@@ -10,7 +10,16 @@
       <cat-item lemma="mes" tags="SN.*"/>
     </def-cat>
 
-    
+    <def-cat n="SN-num-nom">
+      <cat-item lemma="num_nom" tags="SN.*"/>
+    </def-cat>
+
+    <def-cat n="SN-cada-num-nom">
+      <cat-item lemma="cada_num_nom" tags="SN.*"/>
+      <cat-item lemma="cada_num" tags="SN.*"/>
+    </def-cat>
+
+
     <def-cat n="SN_DET">
       <cat-item tags="SN.*"/>
       <cat-item tags="DET.*"/>
@@ -46,8 +55,13 @@
     </def-cat>
     
     <def-cat n="ADV">
-      <cat-item lemma="adv" tags="adv"/>
-      <cat-item lemma="adv" tags="adv.*"/>
+      <cat-item tags="ADV"/>
+      <cat-item tags="ADV.*"/>
+    </def-cat>
+
+    <def-cat n="ADV-piumeno">
+      <cat-item lemma="più" tags="ADV"/>
+      <cat-item lemma="meno" tags="ADV"/>
     </def-cat>
 
     <def-cat n="cnjsub">
@@ -87,9 +101,18 @@
     <def-cat n="EN">
       <cat-item lemma="en" tags="PREP"/>
     </def-cat>
+
+    <def-cat n="DE">
+      <cat-item lemma="de" tags="PREP"/>
+    </def-cat>
     
     <def-cat n="NUM">
       <cat-item tags="NUM.*"/>
+      <cat-item tags="NUM"/>
+    </def-cat>
+
+   <def-cat n="NUM-years">
+      <cat-item lemma="year" tags="NUM"/>
     </def-cat>
 
     <def-cat n="punt">
@@ -168,6 +191,7 @@
 
     <def-attr n="a_SN">
       <attr-item tags="SN"/>
+      <attr-item tags="treu_det"/>
     </def-attr>
 
   </section-def-attrs>
@@ -580,6 +604,45 @@
     </rule>
 
 
+    <rule comment="REGLA: SN-num-nom ADV-piumeno">
+      <pattern>
+	<pattern-item n="SN-num-nom"/>
+	<pattern-item n="ADV-piumeno"/>
+      </pattern>
+      <action>
+       <choose>
+       <when>
+       <test>
+        <equal>
+          <clip pos="2" part="lem"/>
+          <lit v="più"/>
+        </equal>
+        </test>
+         <let>
+          <clip pos="2" part="lem"/>
+          <lit v="in_più"/>
+        </let>
+       </when>
+       <otherwise>
+       <let>
+          <clip pos="2" part="lem"/>
+          <lit v="di_meno"/>
+       </let>
+       </otherwise>
+       </choose>
+        <out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
     <rule comment="REGLA: SN copulativa">
       <pattern>
 	<pattern-item n="SN"/>
@@ -597,6 +660,41 @@
 	  <b pos="1"/>
 	  <chunk>
 	    <clip pos="2" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: NUM DE SN-cada-num-nom">
+      <pattern>
+	<pattern-item n="NUM"/>
+	<pattern-item n="DE"/>
+	<pattern-item n="SN-cada-num-nom"/>
+      </pattern>
+      <action>
+        <call-macro n="assigna_gen_nbr">
+	  <with-param pos="3"/>
+	</call-macro>
+        <let>
+          <clip pos="2" part="lem"/>
+          <lit v="de-su"/>
+        </let> 
+        <let>
+          <clip pos="3" part="a_SN"/>
+          <lit-tag v="treu_det"/>
+        </let>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
 	  </chunk>
 	</out>
       </action>
@@ -807,6 +905,36 @@
 	  </out>
       </action>
  </rule>
+
+
+
+
+ <rule comment="REGLA: PR NUM-years">
+      <pattern>
+	<pattern-item n="PR"/>
+	<pattern-item n="NUM-years"/>
+      </pattern>
+      <action>
+	<call-macro n="assigna_gen_nbr">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+          <chunk>
+            <lit v="det"/>
+            <lit-tag v="DET.def.m.sg"/>
+          </chunk>
+          <b/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  </out>
+      </action>
+ </rule>
+
 
 
  <rule comment="REGLA: SV SN">
