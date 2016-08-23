@@ -3745,6 +3745,97 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: NUM">
+      <pattern>
+	<pattern-item n="num"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="f_concord1">
+	  <with-param pos="1"/>
+	</call-macro>
+        <choose>
+        <when>
+        <test>
+          <or>         
+           <begins-with>
+            <clip pos="1" side="sl" part="lem"/>
+            <lit v="11"/>
+           </begins-with>
+           <begins-with>
+            <clip pos="1" side="sl" part="lem"/>
+            <lit v="12"/>
+           </begins-with>
+           <begins-with>
+            <clip pos="1" side="sl" part="lem"/>
+            <lit v="13"/>
+           </begins-with>
+           <begins-with>
+            <clip pos="1" side="sl" part="lem"/>
+            <lit v="14"/>
+           </begins-with>
+           <begins-with>
+            <clip pos="1" side="sl" part="lem"/>
+            <lit v="15"/>
+           </begins-with>
+           <begins-with>
+            <clip pos="1" side="sl" part="lem"/>
+            <lit v="16"/>
+           </begins-with>
+           <begins-with>
+            <clip pos="1" side="sl" part="lem"/>
+            <lit v="17"/>
+           </begins-with>
+           <begins-with>
+            <clip pos="1" side="sl" part="lem"/>
+            <lit v="18"/>
+           </begins-with>
+           <begins-with>
+            <clip pos="1" side="sl" part="lem"/>
+            <lit v="19"/>
+           </begins-with>
+           <begins-with>
+            <clip pos="1" side="sl" part="lem"/>
+            <lit v="20"/>
+           </begins-with>
+         </or>
+        </test>
+           <let>
+             <var n="lemachunk"/>
+             <lit v="year"/>
+           </let>
+        </when>
+        <otherwise>
+           <let>
+             <var n="lemachunk"/>
+             <lit v="num"/>
+           </let>
+        </otherwise>
+        </choose>
+	<out>
+	  <chunk namefrom="lemachunk" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="NUM"/></tag>
+	      <tag><var n="genero"/></tag>
+	      <tag><var n="numero"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_num"/>
+	      <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+	      <clip pos="1" side="tl" part="gen_mf"/>	 
+	      <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+	      <clip pos="1" side="tl" part="nbr_sp"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+
     <rule comment="REGLA: ANTROPÒNIM">
       <pattern>
 	<pattern-item n="ant"/>
@@ -3919,8 +4010,28 @@
 	</out>	 
          </when> 
         <otherwise>
+         <choose>
+          <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="sl" part="lem"/>
+		<lit v="cada"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <var n="lemachunk"/>
+	      <lit v="cada_num"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <var n="lemachunk"/>
+	      <lit v="det_num"/>
+	    </let>
+	  </otherwise>		
+	</choose>
 	<out>
-	  <chunk name="det_num" case="caseFirstWord">
+	  <chunk namefrom="lemachunk" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><var n="genero"/></tag>
@@ -4203,11 +4314,6 @@
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
-	<call-macro n="f_concord3">
-	  <with-param pos="3"/>
-	  <with-param pos="1"/>
-	  <with-param pos="2"/>
-	</call-macro>	
       <choose>
         <when>
           <test>
@@ -4258,14 +4364,34 @@
 	    </lu>
 	  </chunk>
 	</out>
-  
          </when>
          <otherwise>
+        <choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="sl" part="lem"/>
+		<lit v="cada"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <var n="lemachunk"/>
+	      <lit v="cada_num_nom"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <var n="lemachunk"/>
+	      <lit v="det_num_nom"/>
+	    </let>
+	  </otherwise>		
+	</choose>
+
 	<out>
-	  <chunk name="det_num_nom" case="caseFirstWord">
+	  <chunk namefrom="lemachunk" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
-	      <tag><var n="genero"/></tag>
+              <tag><var n="genero"/></tag>
 	      <tag><var n="numero"/></tag>
 	    </tags>
 	    <lu>
@@ -5325,8 +5451,6 @@
 	      <tag><lit-tag v="SA"/></tag>
 	      <tag><var n="genero"/></tag>
 	      <tag><var n="numero"/></tag>
-<!--	      <tag><clip pos="2" side="tl" part="gen"/></tag>
-	      <tag><clip pos="2" side="tl" part="nbr"/></tag> -->
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/> 
@@ -5398,8 +5522,6 @@
 	      <tag><lit-tag v="SA"/></tag>
 	      <tag><var n="genero"/></tag>
 	      <tag><var n="numero"/></tag>
-	     <!-- <tag><clip pos="1" side="tl" part="gen"/></tag>
-	      <tag><clip pos="1" side="tl" part="nbr"/></tag> -->
 	    </tags>
 	    <lu>   
 	      <clip pos="1" side="tl" part="lemh"/> 
@@ -5478,9 +5600,12 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-        <let><var n="tipusadv"/><clip pos="1" side="tl" part="lem"/></let>
+        <let>
+             <var n="tipusadv"/>
+             <clip pos="1" side="tl" part="lem"/>
+        </let>
 	<out>
-	  <chunk name="adv" case="caseFirstWord">
+	  <chunk namefrom="tipusadv" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="ADV"/></tag>
 	    </tags>
