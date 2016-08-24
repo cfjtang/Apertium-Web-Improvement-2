@@ -71,8 +71,18 @@
       <cat-item lemma="por" tags="PREP"/>
     </def-cat>
     
+   <def-cat n="SU">
+      <cat-item lemma="su" tags="PREP"/>
+    </def-cat>
+    
     <def-cat n="NUM">
       <cat-item tags="NUM.*"/>
+    </def-cat>
+   
+    <def-cat n="NUM-SN">
+      <cat-item tags="NUM.*"/>
+      <cat-item lemma="num_nom" tags="SN.*"/>
+      <cat-item lemma="num_nom_adj" tags="SN.*"/>
     </def-cat>
 
     <def-cat n="punt">
@@ -603,6 +613,44 @@
 	    <clip pos="2" part="whole"/>
 	  </chunk>
 	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+   <rule comment="REGLA: NUM SU NUM, due su tre - dos de cada tres">
+      <pattern>
+	<pattern-item n="NUM"/>
+	<pattern-item n="SU"/>
+	<pattern-item n="NUM-SN"/>
+      </pattern>
+      <action>
+	<call-macro n="assigna_gen_nbr">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
+	  <with-param pos="3"/>
+	</call-macro>
+        <let>
+          <clip pos="2" part="lem"/>
+	  <lit v="su-de"/>
+        </let>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+          <chunk>
+            <lit v="det-cada"/>
+            <lit-tag v="DET.ind.mf.sg"/>
+          </chunk>
+          <b/>
 	  <chunk>
 	    <clip pos="3" part="whole"/>
 	  </chunk>
