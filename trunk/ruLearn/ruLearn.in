@@ -207,8 +207,12 @@ fi
   if [ -f "$CANDIDATE1" ]; then
 	BILDIXMAKVAR="PAR_BILDIX=$CANDIDATE1"
   else
-	CANDIDATE2=`mktemp`
-	xsltproc  $DATADIR/translate-to-default-equivalent.xsl $DATADIR/apertium-$APERTIUMPAIR.$APERTIUMPAIR.dix > $CANDIDATE2
+    if [ -f "$DATADIR/translate-to-default-equivalent.xsl" ]; then
+	    CANDIDATE2=`mktemp`
+	    xsltproc  $DATADIR/translate-to-default-equivalent.xsl $DATADIR/apertium-$APERTIUMPAIR.$APERTIUMPAIR.dix > $CANDIDATE2
+    else
+        CANDIDATE2=$DATADIR/apertium-$APERTIUMPAIR.$APERTIUMPAIR.dix
+    fi
 	BILDIXMAKVAR="PAR_BILDIX=$CANDIDATE2"
   fi
 
@@ -222,50 +226,51 @@ fi
 
 #find monolingual .dix files
 if [ "${FLAGS_override_mono_dix_l1}" != "" ]; then
-	MONODIXL2="${FLAGS_override_mono_dix_l1}"
+	MONODIXL1=`readlink -f "${FLAGS_override_mono_dix_l1}"`
 	if [ ! -f "$MONODIXL1" ]; then
 		echo "Error: $SL monolingual dictionary $MONODIXL1 not found"
 		exit 1
 	fi
-fi
-if [ -f $DATADIR/.deps/$SL.dix ] ; then
-	MONODIXL1=$DATADIR/.deps/$SL.dix
-elif [ -f $DATADIR/apertium-$APERTIUMPAIR.$SL.dix ]; then
-	MONODIXL1=$DATADIR/apertium-$APERTIUMPAIR.$SL.dix
-elif [ -f $DATADIR/apertium-$APERTIUMPAIR.$SL.dix ]; then
-	MONODIXL1=$DATADIR/apertium-$APERTIUMPAIR.$SL.dixtmp1
-elif [ -f $DATADIR/.deps/apertium-hbs.hbs.dix  ]; then
-	MONODIXL1=$DATADIR/.deps/apertium-hbs.hbs.dix
 else
-	if [ "${FLAGS_alignments_with_bildic}" == "${FLAGS_TRUE}" ]; then
-		echo "Monolingual dictionary .dix file for $SL not found in Apertium data directory. Please disable --alignments_with_bildic flag or specify a .dix file with --override_mono_dix_l1"
-		exit 1
-	fi
+    if [ -f $DATADIR/.deps/$SL.dix ] ; then
+    	MONODIXL1=$DATADIR/.deps/$SL.dix
+    elif [ -f $DATADIR/apertium-$APERTIUMPAIR.$SL.dix ]; then
+    	MONODIXL1=$DATADIR/apertium-$APERTIUMPAIR.$SL.dix
+    elif [ -f $DATADIR/apertium-$APERTIUMPAIR.$SL.dix ]; then
+    	MONODIXL1=$DATADIR/apertium-$APERTIUMPAIR.$SL.dixtmp1
+    elif [ -f $DATADIR/.deps/apertium-hbs.hbs.dix  ]; then
+    	MONODIXL1=$DATADIR/.deps/apertium-hbs.hbs.dix
+    else
+    	if [ "${FLAGS_alignments_with_bildic}" == "${FLAGS_TRUE}" ]; then
+    		echo "Monolingual dictionary .dix file for $SL not found in Apertium data directory. Please disable --alignments_with_bildic flag or specify a .dix file with --override_mono_dix_l1"
+    		exit 1
+    	fi
+    fi
 fi
-
 
 #find monolingual .dix files
 if [ "${FLAGS_override_mono_dix_l2}" != "" ]; then
-	MONODIXL2="${FLAGS_override_mono_dix_l2}"
+	MONODIXL2=`readlink -f "${FLAGS_override_mono_dix_l2}"`
 	if [ ! -f "$MONODIXL2" ]; then
 		echo "Error: $TL monolingual dictionary $MONODIXL2 not found"
 		exit 1
 	fi
-fi
-if [ "$MONODIXL2" == "" ]; then
-if [ -f $DATADIR/.deps/$TL.dix ] ; then
-	MONODIXL2=$DATADIR/.deps/$TL.dix
-elif [ -f $DATADIR/apertium-$APERTIUMPAIR.$TL.dix ]; then
-	MONODIXL2=$DATADIR/apertium-$APERTIUMPAIR.$TL.dix
-elif [ -f $DATADIR/apertium-$APERTIUMPAIR.$TL.dixtmp1 ]; then
-	MONODIXL2=$DATADIR/apertium-$APERTIUMPAIR.$TL.dixtmp1
-elif [ -f $DATADIR/.deps/apertium-hbs.hbs.dix  ]; then
-	MONODIXL2=$DATADIR/.deps/apertium-hbs.hbs.dix
 else
-	if [ "${FLAGS_alignments_with_bildic}" == "${FLAGS_TRUE}" ]; then
-		echo "Monolingual dictionary .dix file for $TL not found in Apertium data directory. Please disable --alignments_with_bildic flag or specify a .dix file with --override_mono_dix_l2"
-		exit 1
-	fi
+    if [ "$MONODIXL2" == "" ]; then
+    if [ -f $DATADIR/.deps/$TL.dix ] ; then
+    	MONODIXL2=$DATADIR/.deps/$TL.dix
+    elif [ -f $DATADIR/apertium-$APERTIUMPAIR.$TL.dix ]; then
+    	MONODIXL2=$DATADIR/apertium-$APERTIUMPAIR.$TL.dix
+    elif [ -f $DATADIR/apertium-$APERTIUMPAIR.$TL.dixtmp1 ]; then
+    	MONODIXL2=$DATADIR/apertium-$APERTIUMPAIR.$TL.dixtmp1
+    elif [ -f $DATADIR/.deps/apertium-hbs.hbs.dix  ]; then
+    	MONODIXL2=$DATADIR/.deps/apertium-hbs.hbs.dix
+    else
+    	if [ "${FLAGS_alignments_with_bildic}" == "${FLAGS_TRUE}" ]; then
+    		echo "Monolingual dictionary .dix file for $TL not found in Apertium data directory. Please disable --alignments_with_bildic flag or specify a .dix file with --override_mono_dix_l2"
+    		exit 1
+    	fi
+    fi
 fi
 fi
 
@@ -431,7 +436,7 @@ fi
 
     #extract transfer rules from bilingual phrases
 
-    #1. generate multiple alignment templates from each bilingual phrases
+    #1. generate multiple alignment templates from each bilingual phrase
     if [ ! -e $MYTMPDIR/generalisation ]; then
 			echo "Running generalisation of ATs ..."
     ruLearn-generateATs -v -6 -d $MYTMPDIR  -f $BILEXTRACTIONDIR/alignmentTemplatesPlusLemmas.withalllemmas.onlyslpos.filtered-1-count.${SL}-${INTERNALTL}.gz -i "." -x "_$PAIR" $ONLYLEXGENFLAG $RBPE_FLAG &> $MYTMPDIR/generalisation.log || {
