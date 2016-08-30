@@ -2,7 +2,9 @@
 <transfer default="chunk">
   <section-def-cats>
     <def-cat n="nom">
-      <cat-item tags="n.*"/><!--Falten els altres np (antroponims) que tenen gen i nbr, revisar regles.-->
+      <cat-item tags="n.*"/>
+      <cat-item tags="n.acr.*"/>   
+      <cat-item tags="abbr"/>
     </def-cat>
 
     <def-cat n="loc">
@@ -262,6 +264,7 @@
     <def-attr n="a_nom">
       <attr-item tags="n"/>
       <attr-item tags="n.acr"/>
+      <attr-item tags="abbr"/>
       <attr-item tags="n.unc"/>
       <attr-item tags="np"/>
     </def-attr>
@@ -6316,7 +6319,7 @@
     </rule>
 
 
-    <rule comment="REGLA: ESSERE A NOM (Essere a casa ->       )">
+    <rule comment="REGLA: ESSERE A NOM (Essere a casa -> Estar en casa)">
       <pattern>
         <pattern-item n="essere"/>
         <pattern-item n="pr_a"/>

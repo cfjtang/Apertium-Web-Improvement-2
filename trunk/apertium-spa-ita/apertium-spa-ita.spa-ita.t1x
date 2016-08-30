@@ -3,11 +3,16 @@
   <section-def-cats>
     <def-cat n="nom">
       <cat-item tags="n.*"/><!--Falten els altres np (antroponims) que tenen gen i nbr, revisar regles.-->
-      <cat-item tags="np.loc.*"/>
+      <cat-item tags="n.acr.*"/>
+      <cat-item tags="abbr"/>
     </def-cat>
 
     <def-cat n="ant">
       <cat-item tags="np.ant"/>
+    </def-cat>
+
+    <def-cat n="loc">
+      <cat-item tags="np.loc"/>
     </def-cat>
 
     <def-cat n="adj">
@@ -260,6 +265,7 @@
     <def-attr n="a_nom">
       <attr-item tags="n"/>
       <attr-item tags="n.acr"/>
+      <attr-item tags="abbr"/>
       <attr-item tags="n.unc"/>
       <attr-item tags="np.loc"/>
       <attr-item tags="np.ant"/>
@@ -3857,6 +3863,27 @@
       </action>
     </rule>
 
+ <rule comment="REGLA: LOCATIVE">
+      <pattern>
+	<pattern-item n="loc"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="loc" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
     <rule comment="REGLA: DET NOM">
       <pattern>
 	<pattern-item n="det"/>
@@ -4031,7 +4058,7 @@
 	  </otherwise>		
 	</choose>
 	<out>
-	  <chunk namefrom="lemachunk" case="caseFirstWord">
+          <chunk namefrom="lemachunk" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><var n="genero"/></tag>
@@ -5734,7 +5761,7 @@
 
 
 
-    <rule comment="REGLA: hay : c'è (gender is calculated in intechunk stage) ">
+    <rule comment="REGLA: hay : c'è (gender is calculated in interchunk stage) ">
       <pattern>
 	<pattern-item n="hay"/>
       </pattern>
