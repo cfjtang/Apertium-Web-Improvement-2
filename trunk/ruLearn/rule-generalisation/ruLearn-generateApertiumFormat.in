@@ -360,7 +360,7 @@ if [ "$DEVELOPMENT_CORPUS" != "" ]; then
     echo "evaluating different thresholds"
     TUNING_FILE=$DIR/tuning-$TUNING_ID/tuning_data
     rm -f $TUNING_FILE
-    for treshold in `__PYTHON__ $PYTHONLIBDIR/seq.py $START_T $STEP_T $END_T | sed 's:\(\.[1-9]\)0*$:\1:' | sed 's:^1\.00$:1:'`; do
+    for treshold in `__PYTHON__ $PYTHONLIBDIR/seq.py $START_T $STEP_T $END_T` ; do
             if [ ! -f  $DIR/tuning-$TUNING_ID/queries/dev-f-${treshold}/experiment/evaluation/evaluation_learnedrules ]; then
           ruLearn-evaluateRules $LFLAG $USEFIXEDBILDICFLAG -x "$TAGSEQUENCESANDGROUPSSUFFIX" -s $SL -t $TL $INVERSE_PAIR -f $DIR/tuning-$TUNING_ID/result-f-${treshold}.gz -z -d $DIR/tuning-$TUNING_ID -q dev-f-${treshold} -e $DEVELOPMENT_CORPUS $APERTIUM_SOURCES_FLAG $APERTIUM_PREFIX_FLAG $PYTHONHOME_FLAG $RICHATSFLAG $RBPE_FLAG_FOR_EVEXP 2> $DIR/tuning-$TUNING_ID/debug/debug-eval-dev-f-${treshold} || { echo "Error in the evaluation with the dev. corpus and threshold $threshold. Aborting. See the log at $DIR/tuning-$TUNING_ID/debug/debug-eval-dev-f-${treshold} for more information" >&2 ;
 			    exit 1; }
