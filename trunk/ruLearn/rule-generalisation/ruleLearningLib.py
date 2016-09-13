@@ -462,25 +462,25 @@ def AlignmentTemplate_generate_all_structural_generalisations(at,generalisationO
 					#first check aligned words
 					for slindex in slindexes:
 						#first check bilingual dic. If no equivalency can be found, check Sl tags
-						if (at.parsed_restrictions[slindex].get_tags_with_feature_names_as_dict().get(featureName)==featureValue or (at.parsed_sl_lexforms[slindex].get_tags_with_feature_names_as_dict().get(featureName)==featureValue and not featureName in at.parsed_restrictions[slindex].get_tags_with_feature_names_as_dict())) and not generalisationOptions.is_onlySLReferences:
+						if (at.parsed_restrictions[slindex].get_tags_with_feature_names_as_dict().get(featureName)==featureValue or (at.parsed_sl_lexforms[slindex].get_tags_with_feature_names_as_dict().get(featureName)==featureValue and not featureName in at.parsed_restrictions[slindex].get_tags_with_feature_names_as_dict())) and not generalisationOptions.is_onlySLReferences():
 							valuesForThisLexform.append(get_representation_of_tl_generalised_tag_from_bidix(featureName,slindex))
 							indexesOfRestrictionsReferenced.add(slindex)
 						elif at.parsed_sl_lexforms[slindex].get_tags_with_feature_names_as_dict().get(featureName)==featureValue:
 							valuesForThisLexform.append(get_representation_of_tl_generalised_tag_from_sl_word(featureName,slindex))
 
-						#if not, check other SL words
-						if len(valuesForThisLexform) == 0:
-							newslindexes= set(range(len(at.parsed_sl_lexforms))) - set(slindexes)
-							for slindex in newslindexes:
-								if (at.parsed_restrictions[slindex].get_tags_with_feature_names_as_dict().get(featureName)==featureValue or (at.parsed_sl_lexforms[slindex].get_tags_with_feature_names_as_dict().get(featureName)==featureValue and not featureName in at.parsed_restrictions[slindex].get_tags_with_feature_names_as_dict())) and not generalisationOptions.is_onlySLReferences:
-									valuesForThisLexform.append(get_representation_of_tl_generalised_tag_from_bidix(featureName,slindex))
-									indexesOfRestrictionsReferenced.add(slindex)
-								elif at.parsed_sl_lexforms[slindex].get_tags_with_feature_names_as_dict().get(featureName)==featureValue:
-									valuesForThisLexform.append(get_representation_of_tl_generalised_tag_from_sl_word(featureName,slindex))
+					#if not, check other SL words
+					if len(valuesForThisLexform) == 0:
+						newslindexes= set(range(len(at.parsed_sl_lexforms))) - set(slindexes)
+						for slindex in newslindexes:
+							if (at.parsed_restrictions[slindex].get_tags_with_feature_names_as_dict().get(featureName)==featureValue or (at.parsed_sl_lexforms[slindex].get_tags_with_feature_names_as_dict().get(featureName)==featureValue and not featureName in at.parsed_restrictions[slindex].get_tags_with_feature_names_as_dict())) and not generalisationOptions.is_onlySLReferences():
+								valuesForThisLexform.append(get_representation_of_tl_generalised_tag_from_bidix(featureName,slindex))
+								indexesOfRestrictionsReferenced.add(slindex)
+							elif at.parsed_sl_lexforms[slindex].get_tags_with_feature_names_as_dict().get(featureName)==featureValue:
+								valuesForThisLexform.append(get_representation_of_tl_generalised_tag_from_sl_word(featureName,slindex))
 
-						#if not, and option is enabled, mantain value
-						if len(valuesForThisLexform) == 0 and generalisationOptions.is_generaliseNonMatchingToo():
-							valuesForThisLexform.append(featureValue)
+					#if not, and option is enabled, mantain value
+					if len(valuesForThisLexform) == 0 and generalisationOptions.is_generaliseNonMatchingToo():
+						valuesForThisLexform.append(featureValue)
 				else:
 					#First check whether value is shared with any aligned SL word
 					for slindex in slindexes:
