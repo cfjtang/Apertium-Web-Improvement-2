@@ -287,11 +287,11 @@ if [ ! -f "$CFGFILE" ]; then
 	echo "ERROR: configuration file $CFGFILE cannot be found" >&2
 	exit 1
 fi
-cat "$CFGFILE" | sed '0,/\[tag groups\]/d' | sed '/^\[/q' | head -n -1 > $MYTMPDIR/config/taggroups_${SL}-${TL}
-cat "$CFGFILE" | sed '1,/\[tag sequences\]/d' | sed '/^\[/q' | head -n -1 > $MYTMPDIR/config/tagsequences_${SL}-${TL}
+cat "$CFGFILE" | sed '0,/\[tag groups\]/d' | sed '/^\[/q' | head -n -1 | grep -v '^#' > $MYTMPDIR/config/taggroups_${SL}-${TL}
+cat "$CFGFILE" | sed '1,/\[tag sequences\]/d' | sed '/^\[/q' | head -n -1 |  grep -v '^#' > $MYTMPDIR/config/tagsequences_${SL}-${TL}
 
 echo "#! __BASH__" > $MYTMPDIR/config/preprocess_${SL}_${SL}-${TL}.sh
-cat "$CFGFILE" | sed '1,/\[preprocess SL\]/d' | sed '/^\[/q' | head -n -1 | sed 's:^[ ]*$::' | grep -v '^$'  >> $MYTMPDIR/config/preprocess_${SL}_${SL}-${TL}.sh
+cat "$CFGFILE" | sed '1,/\[preprocess SL\]/d' | sed '/^\[/q' | head -n -1 | sed 's:^[ ]*$::' | grep -v '^$' |   grep -v '^#'  >> $MYTMPDIR/config/preprocess_${SL}_${SL}-${TL}.sh
 NUMLINES=`cat $MYTMPDIR/config/preprocess_${SL}_${SL}-${TL}.sh | wc -l`
 if [ $NUMLINES -le 1 ]; then
 	echo "cat" >>  $MYTMPDIR/config/preprocess_${SL}_${SL}-${TL}.sh
@@ -299,16 +299,16 @@ fi
 chmod u+x $MYTMPDIR/config/preprocess_${SL}_${SL}-${TL}.sh
 
 echo "#! __BASH__" > $MYTMPDIR/config/preprocess_${TL}_${SL}-${TL}.sh
-cat "$CFGFILE" | sed '1,/\[preprocess TL\]/d' | sed '/^\[/q' | head -n -1 | sed 's:^[ ]*$::' | grep -v '^$' >> $MYTMPDIR/config/preprocess_${TL}_${SL}-${TL}.sh
+cat "$CFGFILE" | sed '1,/\[preprocess TL\]/d' | sed '/^\[/q' | head -n -1 | sed 's:^[ ]*$::' | grep -v '^$' |  grep -v '^#' >> $MYTMPDIR/config/preprocess_${TL}_${SL}-${TL}.sh
 NUMLINES=`cat $MYTMPDIR/config/preprocess_${TL}_${SL}-${TL}.sh | wc -l`
 if [ $NUMLINES -le 1 ]; then
 	echo "cat" >>  $MYTMPDIR/config/preprocess_${TL}_${SL}-${TL}.sh
 fi
 chmod u+x $MYTMPDIR/config/preprocess_${TL}_${SL}-${TL}.sh
 
-cat "$CFGFILE" | sed '1,/\[markers\]/d' | sed '/^\[/q' | head -n -1 | tr ',' '\n' | grep -v '^$' | sed 's:^:<:' | sed 's:$:>:' > $MYTMPDIR/config/markers
+cat "$CFGFILE" | sed '1,/\[markers\]/d' | sed '/^\[/q' | head -n -1 | tr ',' '\n' | grep -v '^$' | sed 's:^:<:' | sed 's:$:>:' |  grep -v '^#' > $MYTMPDIR/config/markers
 
-cat "$CFGFILE" | sed '1,/\[post transfer\]/d' | __PYTHON__ $PYTHONLIBDIR/generatePostTransferXML.py > $MYTMPDIR/config/apertium-${SL}-${TL}.posttransfer.ptx
+cat "$CFGFILE" | sed '1,/\[post transfer\]/d' |  grep -v '^#'  |  __PYTHON__ $PYTHONLIBDIR/generatePostTransferXML.py > $MYTMPDIR/config/apertium-${SL}-${TL}.posttransfer.ptx
 
 
 echo "Temporary directory: $MYTMPDIR" 1>&2
