@@ -557,6 +557,7 @@ fi
 			echo "Error in rule redundancy removal and evaluation. Aborting. See the log at $MYTMPDIR/tuning.log" >&2 ;
 			exit 1;
 	}
+            ln -s  `readlink -f "$MYTMPDIR/tuning-$FILTERING_NAME-${THRESHOLD_START}-${THRESHOLD_STEP}-${THRESHOLD_END}-subrules/rules.result.xml"` $MYTMPDIR/rules.result.xml
 
 		cat $MYTMPDIR/tuning-$FILTERING_NAME-${THRESHOLD_START}-${THRESHOLD_STEP}-${THRESHOLD_END}-subrules/summary
 		echo "Rules can be found at: $MYTMPDIR/tuning-$FILTERING_NAME-${THRESHOLD_START}-${THRESHOLD_STEP}-${THRESHOLD_END}-subrules/rules.result.xml"
