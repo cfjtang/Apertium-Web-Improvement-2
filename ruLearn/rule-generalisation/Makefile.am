@@ -6,7 +6,7 @@ rulearnlibdir=$(libdir)
 rulearnlib_DATA= shflags createModeForBeamSearchEvaluation.sh createModeWithLearnedRules.sh translate_apertium.sh mteval-v11b-nosgm.sh calculateStatsForPairedBootstrapResampling.sh createModeNoRules.sh empty-rules-for-translating.t1x mteval-v13-nosgm-segments.sh mteval-v11b.pl mteval-v13.pl tercom.7.25.jar evaluateBeamSearchHypothesis.sh generateLog-v11.pl
 
 rulearnsharedir=$(datadir)/ruLearn
-rulearnshare_DATA=sample-config.ca-es.cfg sample-config.es-ca.cfg sample-config.br-fr.cfg sample-config.en-es.cfg sample-config.es-en.cfg
+rulearnshare_DATA=sample-config.ca-es.cfg sample-config.es-ca.cfg sample-config.br-fr.cfg sample-config.en-es.cfg sample-config.es-en.cfg newstest2010head40.en newstest2010head40.es
 
 pythonlibdir=$(libdir)/python
 pythonlib_DATA= \
