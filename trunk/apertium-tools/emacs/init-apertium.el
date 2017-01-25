@@ -136,16 +136,17 @@
          ("\\.metadix\\'" . nxml-mode)
          ("\\.multidix\\'" . nxml-mode))
   :init
+  (setq rng-nxml-auto-validate-flag nil)
   (add-hook 'nxml-mode-hook
             (defun dix-on-nxml-mode ()
               (modify-syntax-entry ?> ")<" nxml-mode-syntax-table)
               (modify-syntax-entry ?< "(>" nxml-mode-syntax-table)
               (and (buffer-file-name)
-                   (string-match "\\.t[0-9s]x$\\|\\.lrx\\|\\.metalrx\\|/modes\\.xml$\\|/cross-model\\.xml$" buffer-file-name)
+                   (string-match "\\.\\(meta\\|multi\\)?dix$\\|\\.t[0-9s]x$\\|\\.lrx$\\|\\.metalrx$\\|/modes\\.xml$\\|/cross-model\\.xml$" buffer-file-name)
                    (dix-mode 1))
-              (and (buffer-file-name)
-                   (string-match "\\.\\(meta\\|multi\\)?dix$" buffer-file-name)
-                   (dix-mode 1))))
+              (unless (and (buffer-file-name)
+                           (string-match "\\.\\(meta\\|multi\\)?dix$" buffer-file-name))
+                (rng-validate-mode 1))))
   (add-hook 'dix-mode-hook #'dix-C-c-letter-keybindings)
   (setq dix-hungry-backspace t)
   :config
@@ -185,8 +186,10 @@
 (add-to-list 'auto-mode-alist '("\\.relabel\\'" . whitespace-mode))
 
 (use-package cg
+  :load-path ("/opt/local/share/emacs/site-lisp"
+              "/usr/local/share/emacs/site-lisp"
+              "/usr/share/emacs/site-lisp")
   :defer t
-  :ensure t
   :mode (("\\.rlx\\'" . cg-mode)
          ("\\.lex\\'" . cg-mode)
          ("\\.rle\\'" . cg-mode)
