@@ -174,9 +174,8 @@
   :init
   (defun flycheck-mode-unless-big-dictionary ()
     "We want it in transfer files (which are dix-mode), just not dictionaries (which are big).'"
-    (if (and (buffer-file-name)
-             (string-match "\\.\\(meta\\|multi\\)?dix$" buffer-file-name))
-        (flycheck-mode -1)
+    (unless (and (buffer-file-name)
+                 (string-match "\\.\\(meta\\|multi\\)?dix$" buffer-file-name))
       (flycheck-mode +1)))
   (add-hook 'dix-mode-hook #'flycheck-mode-unless-big-dictionary))
 
