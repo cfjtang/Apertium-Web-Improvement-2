@@ -165,10 +165,20 @@
   (define-key nxml-mode-map (kbd "M-D") 'nxml-backward-down-element))
 
 (use-package flycheck-apertium
-  :defer t
   :ensure t
-  :init (add-hook 'dix-mode-hook #'flycheck-mode)
   :after dix)
+
+(use-package flycheck
+  :defer 10
+  :ensure t
+  :init
+  (defun flycheck-mode-unless-big-dictionary ()
+    "We want it in transfer files (which are dix-mode), just not dictionaries (which are big).'"
+    (if (and (buffer-file-name)
+             (string-match "\\.\\(meta\\|multi\\)?dix$" buffer-file-name))
+        (flycheck-mode -1)
+      (flycheck-mode +1)))
+  (add-hook 'dix-mode-hook #'flycheck-mode-unless-big-dictionary))
 
 (use-package hfst-mode
   :defer t
