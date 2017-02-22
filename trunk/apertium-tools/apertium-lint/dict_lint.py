@@ -6,10 +6,11 @@ import json, sys, re, xml, os, hashlib, string
 from lxml import etree as ET
 from lxml.etree import tostring
 from itertools import chain
+import argparse
 
 
 def readConfig():
-	with open("config.json") as dataFile:
+	with open(args.config) as dataFile:
 		data = json.load(dataFile)
 		return data["monodix"]
 
@@ -741,7 +742,7 @@ def monodixErrors(paradigms, errorsConf):
 			method()
 
 
-def main(arg1):
+def main(arg_list):
 
 	"""
 	Main function responsible for handling
@@ -760,7 +761,8 @@ def main(arg1):
 	#for i in range(len(errorsConf)):
 	#	errorsConf[str(i+1)]["enable"] == "yes"
 
-	global paradigms, singleWordEntries, multiWordEntries
+	global paradigms, singleWordEntries, multiWordEntries, args
+    args = arg_list
 
 	tree = ET.parse(fName)
 	paradigms = parseParadigms(tree)
@@ -778,4 +780,10 @@ def main(arg1):
 	#for entry in multiWordEntries:
 	#	print(entry, multiWordEntries[entry])
 if __name__=="__main__":
-    sys.exit(main(sys.argv[1]))
+    argparser = argparse.ArgumentParser(description='apertium_lint')
+
+    argparser.add_argument("-c", "--config", action="store", help="Configuration file for apertium-lint", default='config.json')
+    argparser.add_argument("filename", action="store", help="File to be linted")
+
+    args = argparser.parse_args()
+    sys.exit(main(args))

@@ -3,6 +3,7 @@
 # -*- encoding: utf-8 -*-
 
 import json, sys, re, xml, os, hashlib, string
+import argparse
 import subprocess
 import dict_lint
 import bidix_lint
@@ -12,7 +13,7 @@ import tagger_lint
 
 def readConfig():
 	try:
-		config = open('config.json')
+		config = open(args.config)
 
 		try:
 			json.load(config)
@@ -22,11 +23,11 @@ def readConfig():
 			exit(1)
 
 	except FileNotFoundError:
-		print("File not found : config.json not found in present directory")
+		print("File not found : Configuration file not found")
 		print("Please use a valid config file and try again")
 		exit(1)
 
-	print("Valid config.json loaded succesfully")
+	print("Valid configuration file loaded succesfully")
 
 def parseFile(fName, fPath):
 	"""
@@ -75,32 +76,34 @@ def parseFile(fName, fPath):
 	exit(1)
 
 def main():
+	"""Parse the arguments using argparse package"""
+	argparser = argparse.ArgumentParser(description='apertium_lint')
 
-	if len(sys.argv) != 2:
-		print ("Error : Invalid number of arguments")
-		print ("To run : python3 <filename>")
-		exit(1)
+	argparser.add_argument("-c", "--config", action="store", help="Configuration file for apertium-lint", default='config.json')
+	argparser.add_argument("filename", action="store", help="File to be linted")
 
+	global args
+	args = argparser.parse_args()
 	categories = {"monodix":"dict_lint", "bidix":"bidix_lint", "transfer":"transfer_lint", "modes":"modes_lint", "tagger":"tagger_lint"}
-	fName = sys.argv[1]
+	fName = args.filename
 	fName = fName.strip()
 	fType = parseFile(fName.split('/')[-1], fName)
 	readConfig()
 
 	if fType == 'monodix':
-		dict_lint.main(fName)
+		dict_lint.main(args)
 
 	elif fType == 'bidix':
-		bidix_lint.main(fName)
+		bidix_lint.main(args)
 
 	elif fType == 'transfer':
-		transfer_lint.main(fName)
+		transfer_lint.main(args)
 	
 	elif fType == 'modes':
-		modes_lint.main(fName)
+		modes_lint.main(args)
 
 	elif fType == 'tagger':
-		tagger_lint.main(fName)
+		tagger_lint.main(args)
 		
 	else :
 		print("Support coming in soon")
