@@ -258,7 +258,10 @@ def parseModes():
 			fileList = []				#List of files associated with each program
 			
 			for file in program.iterchildren():
-				fileName = file.attrib['name']
+				try:
+					fileName = file.attrib['name']
+				except KeyError:
+					continue
 				fileList.append(fileName)
 
 			progDict[progName].append(fileList)
@@ -291,7 +294,7 @@ def main(arg1):
 	tree = ET.parse(fName)
 	modes = parseModes()
 
-	print(modes)
+	#print(modes)
 	
 	#modesErrors(errorsConf)
 
