@@ -145,9 +145,24 @@ def installSwitchNo():
 	If in the definition of a certain mode, the attribute
 	install=”no”, the name should have an 
 	appropriate suffix like -morph, -interchunk, etc.
+
+	-anmor or -morph run the morphological analysers
+	-disam runs up until morphological (CG) disambiguation
+	-syntax runs up until syntactical (CG) disambiguation
+	-tagger runs up until probabilistic (apertium-tagger) disambiguation (or, if no .prob, up until the last disambiguation step)
+	-biltrans runs up until the bidix
+	-lex runs up until lexical selection
+	-transfer runs up until (1-stage) transfer
+	-chunker runs up until the first stage of 3-or-more-stage transfer
+	-interchunk runs up until the second stage of 3-stage transfer
+	-interchunk1 and -interchunk2 are used when the pair has 4-stage transfer
+	-postchunk runs up until the last stage of transfer
+	-dgen run up until generation (using lt-proc -d to include debug symbols)
 	"""
 
-	validSuffix = ["morph", "interchunk"]						#Need to add more suffixes here
+	validSuffix = ["morph", "interchunk", "anmor", "disam", "syntax",
+					"tagger", "biltrans", "lex", "transfer", "chunker"
+					"interchunk1", "interchunk2", "postchunk", "dgen"]						#Need to add more suffixes here
 
 	print("Enforcing rules related to install='no'")
 	for entry in modes:
