@@ -1,8 +1,6 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-
-
 import json, sys, re, xml, os, hashlib, string
 import subprocess
 from lxml import etree as ET
@@ -25,22 +23,34 @@ def getLineNumber(pattern):
 			if pattern in line:
 				return num
 
-def taggerErrors(errorsConf):
-	for key in errorsConf:
-		if errorsConf[key]["enable"] == True:
-			valid = globals().copy()
-			valid.update(locals())
-			method = valid.get(key)
-			if not method:
-				raise NotImplementedError("Method %s not implemented" % key)
-			method()
+
+def defLabelClosed():
+	print("Checking validity of the 'closed' attribute in def-label")
+	
+	valid = ["true", "false"]
+
+	for entry in tagsetData:
+		closedVal = tagsetData[entry]['closed']
+		if closedVal not in valid:
+			print(errorsConf["defLabelClosed"]["message"], entry, closedVal)
+
+def validateLabelSequence():
+	print("Validating label sequence")
+	
+	for entry in forbidSequences:
+		if entry:
+			label1 = entry[0]
+			label2 = entry[1]
+
+			if label1 not in tagsetData:
+				print(errorsConf["validateLabelSequence"]["message"] % (label1))
+
+			if label2 not in tagsetData:
+				print(errorsConf["validateLabelSequence"]["message"] % (label2))
+
 
 def parseLabels():
 
-	tagsetData = {}
-	forbidSequences = []
-	multTagset = {}
-	rulesList = []
 	taggerPath = "./tagger"
 	tagsetPath = ".//tagset"
 	forbidPath = ".//forbid"
@@ -54,7 +64,7 @@ def parseLabels():
 				except KeyError: labelName = None
 
 				try: labelClosed = label.attrib['closed']
-				except KeyError: labelClosed = False
+				except KeyError: labelClosed = "false"
 
 				tagList = []
 
@@ -111,8 +121,10 @@ def parseLabels():
 			for labelSequences in forbid.iterchildren():
 				labelItemList = []
 				for labelItems in labelSequences.iterchildren():
-					labelItemList.append(labelItems)
-
+					try:
+						labelItemList.append(labelItems.attrib['label'])
+					except KeyError:
+						continue
 				forbidSequences.append(labelItemList)
 
 		for rules in tree.findall(rulesPath):
@@ -121,7 +133,6 @@ def parseLabels():
 				if enforceAfter.tag != 'enforce-after':					#Skips comments
 					continue
 				enforceAfterLabel = enforceAfter.attrib['label']
-				print(enforceAfterLabel)
 				for labelset in enforceAfter.iterchildren():
 					labelList = []
 					for label in labelset.iterchildren():
@@ -130,11 +141,21 @@ def parseLabels():
 					enforceDict[enforceAfterLabel] = labelList
 			rulesList.append(enforceDict)
 
-		print(rulesList)
+		#print(rulesList)
 
 	#for x in tagsetData:
 	#	print(x)
 	#	print(tagsetData[x])
+
+def taggerErrors(errorsConf):
+	for key in errorsConf:
+		if errorsConf[key]["enable"] == True:
+			valid = globals().copy()
+			valid.update(locals())
+			method = valid.get(key)
+			if not method:
+				raise NotImplementedError("Method %s not implemented" % key)
+			method()
 
 def main(arg1):
 	"""
@@ -142,11 +163,17 @@ def main(arg1):
 	"""
 	global errorsConf, tree, fName
 
+	global tagsetData, forbidSequences, multTagset, rulesList 
+
+	tagsetData, forbidSequences, multTagset, rulesList = {}, [], {}, []
+
 	errorsConf = readConfig()
 	fName = arg1
 
 	tree = ET.parse(fName)	
 
 	parseLabels()
+	taggerErrors(errorsConf)
+
 if __name__=="__main__":
 		sys.exit(main(sys.argv[1]))
