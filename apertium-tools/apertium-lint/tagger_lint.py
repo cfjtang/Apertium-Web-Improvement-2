@@ -40,10 +40,11 @@ def parseLabels():
 	tagsetData = {}
 	forbidSequences = []
 	multTagset = {}
-	rules = []
+	rulesList = []
 	taggerPath = "./tagger"
 	tagsetPath = ".//tagset"
 	forbidPath = ".//forbid"
+	rulesPath = ".//enforce-rules"
 
 	for tagset in tree.findall(tagsetPath):
 		for label in tagset.iterchildren():
@@ -114,7 +115,22 @@ def parseLabels():
 
 				forbidSequences.append(labelItemList)
 
+		for rules in tree.findall(rulesPath):
+			enforceDict = {}
+			for enforceAfter in rules.iterchildren():
+				if enforceAfter.tag != 'enforce-after':					#Skips comments
+					continue
+				enforceAfterLabel = enforceAfter.attrib['label']
+				print(enforceAfterLabel)
+				for labelset in enforceAfter.iterchildren():
+					labelList = []
+					for label in labelset.iterchildren():
+						if label.tag == 'label-item' :
+							labelList.append(label.attrib['label'])
+					enforceDict[enforceAfterLabel] = labelList
+			rulesList.append(enforceDict)
 
+		print(rulesList)
 
 	#for x in tagsetData:
 	#	print(x)
