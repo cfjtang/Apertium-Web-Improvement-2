@@ -8,6 +8,7 @@ import dict_lint
 import bidix_lint
 import transfer_lint
 import modes_lint
+import tagger_lint
 
 def readConfig():
 	try:
@@ -37,18 +38,23 @@ def parseFile(fName, fPath):
 	for x in range(2):
 		for y in range(2):
 
-			match = re.search("^apertium-[a-z]{"+ str(x+2)+ "}-[a-z]{"+ str(y+2)+ "}\.[a-z]{"+ str(y+2)+ "}\.dix", fName)
+			match = re.search("apertium-[a-z]{"+ str(x+2)+ "}-[a-z]{"+ str(y+2)+ "}\.[a-z]{"+ str(y+2)+ "}\.dix", fName)
 			if match != None and os.path.isfile(fPath):
 				print("Working with monodix : "+ fName)
 				return "monodix"
 
-			match = re.search("^apertium-[a-z]{"+ str(x+2)+ "}-[a-z]{"+ str(y+2)+ "}\.[a-z]{"+ str(x+2)+ "}-[a-z]{"+ str(y+2)+ "}\.dix", fName)
+			match = re.search("apertium-[a-z]{"+ str(x+2)+"}\.[a-z]{"+ str(y+2)+ "}\.dix", fName)
+			if match != None and os.path.isfile(fPath):
+				print("Working with monodix : "+ fName)
+				return "monodix"
+
+			match = re.search("apertium-[a-z]{"+ str(x+2)+ "}-[a-z]{"+ str(y+2)+ "}\.[a-z]{"+ str(x+2)+ "}-[a-z]{"+ str(y+2)+ "}\.dix", fName)
 			if match != None and os.path.isfile(fPath):
 				print("Working with bidix : "+ fName)
 				return "bidix"
 
 	#Transfer files
-	match = re.search("^apertium.*\.t[0-3]x", fName)
+	match = re.search("apertium.*\.t[0-3]x", fName)
 	if match != None and os.path.isfile(fPath):
 		print("Working with transfer file : "+ fName)
 		return "transfer"
@@ -60,10 +66,10 @@ def parseFile(fName, fPath):
 		return "modes"
 
 	#Tagger files
-	match = re.search("^apertium.*\.tsx", fName)
+	match = re.search("apertium.*\.tsx", fName)
 	if match != None and os.path.isfile(fPath):
-		print("Working with transfer file : "+ fName)
-		return "Tagger"
+		print("Working with tagger file : "+ fName)
+		return "tagger"
 
 	print("Invalid file")
 	exit(1)
@@ -92,6 +98,9 @@ def main():
 	
 	elif fType == 'modes':
 		modes_lint.main(fName)
+
+	elif fType == 'tagger':
+		tagger_lint.main(fName)
 		
 	else :
 		print("Support coming in soon")
