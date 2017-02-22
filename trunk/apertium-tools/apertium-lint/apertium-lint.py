@@ -8,7 +8,6 @@ import dict_lint
 import bidix_lint
 import transfer_lint
 import modes_lint
-import tagger_lint
 
 def readConfig():
 	try:
@@ -63,8 +62,8 @@ def parseFile(fName, fPath):
 	#Tagger files
 	match = re.search("^apertium.*\.tsx", fName)
 	if match != None and os.path.isfile(fPath):
-		print("Working with tagger file : "+ fName)
-		return "tagger"
+		print("Working with transfer file : "+ fName)
+		return "Tagger"
 
 	print("Invalid file")
 	exit(1)
@@ -93,9 +92,6 @@ def main():
 	
 	elif fType == 'modes':
 		modes_lint.main(fName)
-
-	elif fType == 'tagger':
-		tagger_lint.main(fName)
 		
 	else :
 		print("Support coming in soon")

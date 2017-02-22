@@ -91,7 +91,7 @@ def repeatedProgram():
 
 def validateProgram():
 	"""
-	Ever modes files consists of various programs,
+	Ever modes files consits of various programs,
 	each having a unique name. It is possible that
 	a program may be wrongly named and passes unnoticed.
 
@@ -147,7 +147,7 @@ def installSwitchNo():
 	appropriate suffix like -morph, -interchunk, etc.
 	"""
 
-	validSuffix = ["morph", "interchunk"]						#Need to add more suffixes here
+	validSuffix = ["morph", "interchunk"]
 
 	print("Enforcing rules related to install='no'")
 	for entry in modes:
