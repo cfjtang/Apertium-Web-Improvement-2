@@ -7,9 +7,10 @@ import subprocess
 from lxml import etree as ET
 from lxml.etree import tostring
 from itertools import chain
+import argparse
 
 def readConfig():
-    with open("config.json") as dataFile:
+    with open(args.config) as dataFile:
         data = json.load(dataFile)
         return data["bidix"]
 
@@ -435,18 +436,19 @@ def bidixErrors():
             method()
 
 
-def main(arg1):
+def main(arg_list):
     """
     Main function responsible for handling
     the bidix lint's worflow
     """
 
-    global fName, errorsConf, actualEntryMap, sdefs
+    global fName, errorsConf, actualEntryMap, sdefs, args
+    args = arg_list
 
     actualEntryMap = {}
     sdefs = []
     errorsConf = readConfig()                               #Read the config file to select the errors that are to be reported
-    fName = arg1
+    fName = args.filename
 
     global leftTree, rightTree
 
@@ -497,4 +499,10 @@ def main(arg1):
 
     exit(1)
 if __name__=="__main__":
-    sys.exit(main(sys.argv[1]))
+    argparser = argparse.ArgumentParser(description='apertium_lint')
+
+    argparser.add_argument("-c", "--config", action="store", help="Configuration file for apertium-lint", default='config.json')
+    argparser.add_argument("filename", action="store", help="File to be linted")
+
+    args = argparser.parse_args()
+    sys.exit(main(args))

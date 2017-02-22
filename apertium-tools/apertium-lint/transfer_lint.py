@@ -7,9 +7,10 @@ from lxml import etree as ET
 from lxml.etree import tostring
 from itertools import chain
 from collections import OrderedDict
+import argparse
 
 def readConfig():
-	with open("config.json") as dataFile:
+	with open(args.config) as dataFile:
 		data = json.load(dataFile)
 		return data["transfer"]
 
@@ -461,14 +462,15 @@ def TransferErrors(errorsConf):
 				raise NotImplementedError("Method %s not implemented" % key)
 			method()
 
-def main(arg1):
+def main(arg_list):
 	"""
 	Main function, handles the lint's workflow
 	"""
-	global errorsConf, tree, fName
+	global errorsConf, tree, fName, args
+	args = arg_list
 
 	errorsConf = readConfig()
-	fName = arg1
+	fName = args.filename
 
 	global defCats, defAttrs, defVars, defLists, defMacros, rules
 
@@ -489,4 +491,10 @@ def main(arg1):
 	TransferErrors(errorsConf)
 
 if __name__=="__main__":
-    sys.exit(main(sys.argv[1]))
+	argparser = argparse.ArgumentParser(description='apertium_lint')
+
+	argparser.add_argument("-c", "--config", action="store", help="Configuration file for apertium-lint", default='config.json')
+	argparser.add_argument("filename", action="store", help="File to be linted")
+
+	args = argparser.parse_args()
+	sys.exit(main(args))
