@@ -38,9 +38,12 @@ def taggerErrors(errorsConf):
 def parseLabels():
 
 	tagsetData = {}
+	forbidSequences = []
 	multTagset = {}
+	rules = []
 	taggerPath = "./tagger"
 	tagsetPath = ".//tagset"
+	forbidPath = ".//forbid"
 
 	for tagset in tree.findall(tagsetPath):
 		for label in tagset.iterchildren():
@@ -75,8 +78,6 @@ def parseLabels():
 				try: labelName = label.attrib['name']
 				except KeyError: labelName = None
 
-				print(labelName)
-
 				try: labelClosed = label.attrib['closed']
 				except KeyError: labelClosed = False
 
@@ -103,12 +104,21 @@ def parseLabels():
 				labelDict['label-item'] = tagList2
 				labelDict['tags-item'] = tagList1
 							
-				tagsetData[labelName] = labelDict
+				multTagset[labelName] = labelDict
+
+		for forbid in tree.findall(forbidPath):
+			for labelSequences in forbid.iterchildren():
+				labelItemList = []
+				for labelItems in labelSequences.iterchildren():
+					labelItemList.append(labelItems)
+
+				forbidSequences.append(labelItemList)
 
 
-	for x in tagsetData:
-		print(x)
-		print(tagsetData[x])
+
+	#for x in tagsetData:
+	#	print(x)
+	#	print(tagsetData[x])
 
 def main(arg1):
 	"""
