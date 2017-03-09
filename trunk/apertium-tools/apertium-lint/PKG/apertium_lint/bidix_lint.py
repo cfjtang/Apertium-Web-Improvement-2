@@ -2,37 +2,46 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-import json, sys, re, xml, os, hashlib, string
+import json
+import os
+import sys
 import subprocess
 from lxml import etree as ET
 from lxml.etree import tostring
 from itertools import chain
+import argparse
+
 
 def readConfig():
-    with open("config.json") as dataFile:
+    with open(args.config) as dataFile:
         data = json.load(dataFile)
-        return data["bidix"]
+        return data['bidix']
+
 
 def stringify_children(node):
-	text = ([node.text]+list(chain(*([tostring(child).decode('utf-8')] for child in node.getchildren()))))
-	return text
+    text = ([node.text]+list(chain(*([tostring(child).decode('utf-8')]
+                                     for child in node.getchildren()))))
+    return text
+
 
 def makeKey(children):
     concat = []
     for child in children:
-        if child != None and '<s n=' not in child:
+        if child is not None and '<s n=' not in child:
             concat.append(child)
 
-    key = ""
+    key = ''
     for strings in concat:
         key = key + strings
 
     return key
 
+
 def genearateActualEntry(entry):
     children = stringify_children(entry)
     content = children[1]
     return content
+
 
 def getLineNumber(pattern):
     with open(fName) as curFile:
@@ -40,12 +49,14 @@ def getLineNumber(pattern):
             if pattern in line:
                 return num
 
+
 def checkFile(fName):
     if os.path.isfile(fName.strip()):
-        print("Working with monodix : "+ fName)
+        print('Working with monodix : ' + fName)
     else:
-        print("File", fName, "could not be found")
+        print('File', fName, 'could not be found')
         exit(1)
+
 
 def transferDirection():
     """
@@ -56,13 +67,19 @@ def transferDirection():
     validDirection = ['LR', 'RL', None]
     for key in mainSection:
         for lists in mainSection[key]:
-            if len(lists) == 2 and (lists[-1] != 'regex' and lists[-1] != '<i>'):                                             #This will only go through when a list with two nested lists is encountered
-                transferDir = (lists[0][0] if lists[0] != None else None) 
+            # This will only go through when a list with two nested lists is
+            # encountered
+            if len(lists) == 2 and (lists[-1] != 'regex' and
+                                    lists[-1] != '<i>'):
+                transferDir = (lists[0][0] if lists[0] is not None else None)
             else:
                 continue
             if transferDir not in validDirection:
-                print(errorsConf["transferDirection"]["message"], key, transferDir)
-                print("Issue found on line number : ", getLineNumber(actualEntryMap[key]))
+                print(errorsConf['transferDirection']
+                      ['message'], key, transferDir)
+                print('Issue found on line number : ',
+                      getLineNumber(actualEntryMap[key]))
+
 
 def repeatedEntries():
     """
@@ -88,12 +105,12 @@ def repeatedEntries():
             except IndexError:
                 continue
 
-            hashtable.append(hash(str(leftData+ rightData)))
+            hashtable.append(hash(str(leftData + rightData)))
 
         if len(set(hashtable)) != len(hashtable):
-            print(errorsConf["repeatedEntries"]["message"], entry)
-            print("Issue found on line number : ", getLineNumber(actualEntryMap[entry]))
-
+            print(errorsConf['repeatedEntries']['message'], entry)
+            print('Issue found on line number : ',
+                  getLineNumber(actualEntryMap[entry]))
 
 
 def unwantedWhiteSpace():
@@ -103,20 +120,22 @@ def unwantedWhiteSpace():
     for checking and reporting if any white spaces have crept
     in, in place of <b/>
     """
-    for entry in mainSection:        
-        if entry == None or len(entry) != 2:
+    for entry in mainSection:
+        if entry is not None or len(entry) != 2:
             continue
         lKey = entry[0]
         rKey = entry[1]
 
         try:
-            if " " not in lKey and " " not in rKey:
+            if ' ' not in lKey and ' ' not in rKey:
                 pass
             else:
-                print(errorsConf["unwantedWhiteSpace"]["message"], entry)
-                print("Issue found on line number : ", getLineNumber(actualEntryMap[entry]))
+                print(errorsConf['unwantedWhiteSpace']['message'], entry)
+                print('Issue found on line number : ',
+                      getLineNumber(actualEntryMap[entry]))
         except TypeError:
             continue
+
 
 def compareSdefs():
     """
@@ -127,21 +146,23 @@ def compareSdefs():
     monodixes.
     """
 
-    print("Comparing Sdefs")
-    difference1 = set(bidixSdef).difference(leftSdef)   #Sdefs present in bidix and not in left
-    difference2 = set(bidixSdef).difference(rightSdef)   #Sdefs present in bidix and not in right
+    print('Comparing Sdefs')
+    # Sdefs present in bidix and not in left
+    difference1 = set(bidixSdef).difference(leftSdef)
+    # Sdefs present in bidix and not in right
+    difference2 = set(bidixSdef).difference(rightSdef)
     difference = set(difference2).intersection(difference1)
-    print(errorsConf["compareSdefs"]["message"])
+    print(errorsConf['compareSdefs']['message'])
     print(difference)
 
-    
+
 def verifyInvariablePart():
     """
     Multiwords with inner inflection consist of a word that can inflect
-    an invariable element. For these entries we need to specify the 
-    inflection paradigm just after the word that inflects. 
-    The invariable part must be marked with the element <g> in the right side. 
-    If the <g> tag is present in the bilingual dictionary, 
+    an invariable element. For these entries we need to specify the
+    inflection paradigm just after the word that inflects.
+    The invariable part must be marked with the element <g> in the right side.
+    If the <g> tag is present in the bilingual dictionary,
     it should also be present in the monolingual dictionary.
 
     This function is responsible for detecting issues the same
@@ -163,7 +184,7 @@ def verifyInvariablePart():
             if entry.strip() in monodix:
                 continue
             else:
-                print(errorsConf["verifyInvariablePart"]["message"], entry)
+                print(errorsConf['verifyInvariablePart']['message'], entry)
 
 
 def parseExpandedDix(expanded):
@@ -173,7 +194,7 @@ def parseExpandedDix(expanded):
 
     lt-expand OP : bypasses:bypass<vblex><pres><p3><sg>
                    bypassed:bypass<vblex><past>
-    
+
     Dictionary format : key = bypass
     Entry for key = [[vblex, presm, p3, sg], [vblex, past]]
     """
@@ -183,16 +204,16 @@ def parseExpandedDix(expanded):
         attributes = []
         try:
             if ':<:' in entry:
-                rightPart = entry.split(":<:")[1]
+                rightPart = entry.split(':<:')[1]
             elif ':>:' in entry:
-                rightPart = entry.split(":>:")[1]
+                rightPart = entry.split(':>:')[1]
             else:
-                rightPart = entry.split(":")[1]          #Split it right in the centre
-            
-            rightPart = rightPart.split("<")
-        
+                rightPart = entry.split(':')[1]  # Split it right in the centre
+
+            rightPart = rightPart.split('<')
+
             for x in rightPart:
-                hold = x.split(">")
+                hold = x.split('>')
                 for iterator in hold:
                     if iterator != '':
                         attributes.append(iterator)
@@ -213,10 +234,11 @@ def parseExpandedDix(expanded):
                 extractedList[key].append(attributes)
             else:
                 extractedList[key] = [attributes]
-        
+
         except IndexError:
             pass
     return extractedList
+
 
 def cleanExpandedBidixEntry(entry):
     """
@@ -235,6 +257,7 @@ def cleanExpandedBidixEntry(entry):
 
     return tmpList
 
+
 def parseExpandedBidix(expanded):
     """
     Given data from lt-expand <<bidix>>,
@@ -242,17 +265,15 @@ def parseExpandedBidix(expanded):
     """
     extractedList = {}
     for entry in expanded:
-        tmpList = []
-        attributes = []
         if ':<:' in entry:
-            lr = entry.split(":<:")
+            lr = entry.split(':<:')
         elif ':>:' in entry:
-            lr = entry.split(":>:")
+            lr = entry.split(':>:')
         else:
             lr = entry.split(':')
 
         try:
-            tmpleft  = lr[0]
+            tmpleft = lr[0]
             tmpright = lr[1]
         except IndexError:
             continue
@@ -264,12 +285,12 @@ def parseExpandedBidix(expanded):
         rightKey = tmpright.split('<')[0]
 
         if leftKey not in extractedList:
-            extractedList[leftKey] = [leftList, "LEFT"]
+            extractedList[leftKey] = [leftList, 'LEFT']
         else:
             extractedList[leftKey].append(leftList)
 
         if rightKey not in extractedList:
-            extractedList[rightKey] = [rightList, "RIGHT"]
+            extractedList[rightKey] = [rightList, 'RIGHT']
         else:
             extractedList[rightKey].append(rightList)
 
@@ -289,10 +310,9 @@ def parseMainSection(tree):
     r_path = './/r'
     s_path = './s'
     regex_path = './re'
-    par_path = './par'
 
     for entry in tree.findall(sectionPath):
-        
+
         tmpList = []
         tmpList2 = []
         tmpList3 = []
@@ -320,7 +340,7 @@ def parseMainSection(tree):
                 tmpList2.append(sTag.attrib['n'])
             tmpList.append(tmpList2)
             allChildren = stringify_children(lTag)
-            #debug
+            # debug
             lKey = makeKey(allChildren)
 
             tmpList2 = []
@@ -337,7 +357,7 @@ def parseMainSection(tree):
             tmpList3.append(rText)
             allChildren = stringify_children(rTag)
 
-            #debug
+            # debug
             rKey = makeKey(allChildren)
 
             tmpList2 = []
@@ -374,7 +394,7 @@ def parseMainSection(tree):
             tmpList4.append('regex')
 
         for iTag in entry.findall(i_path):
-            iText = iTag.text                       #Lol seems like I'm doing something for apple
+            iText = iTag.text  # Lol seems like I'm doing something for apple
             tmpList5.append(iText)
 
             tmpList2 = []
@@ -389,7 +409,7 @@ def parseMainSection(tree):
             if key in mainSection:
                 mainSection[key].append([tmpList, tmpList3])
             else:
-                mainSection[key] = [[tmpList,tmpList3]]
+                mainSection[key] = [[tmpList, tmpList3]]
 
         if tmpList4:
             key = (tmpList4[0])
@@ -408,45 +428,48 @@ def parseMainSection(tree):
 
     return mainSection
 
+
 def parseSdef(tree):
     """
-    Given any tree extracts sdefs 
+    Given any tree extracts sdefs
     """
     sdefs = []
-    sdef_path = ".//sdef"
+    sdef_path = './/sdef'
     for sdef in tree.findall(sdef_path):
         sdefs.append(sdef.attrib['n'])
 
     return sdefs
 
-def bidixErrors():
 
+def bidixErrors():
     """
     Takes care of errors related to pardef entries
     """
 
     for key in errorsConf:
-        if errorsConf[key]["enable"] == True:
+        if errorsConf[key]['enable']:
             valid = globals().copy()
             valid.update(locals())
             method = valid.get(key)
             if not method:
-                raise NotImplementedError("Method %s not implemented" % key)
+                raise NotImplementedError('Method %s not implemented' % key)
             method()
 
 
-def main(arg1):
+def main(arg_list):
     """
     Main function responsible for handling
     the bidix lint's worflow
     """
 
-    global fName, errorsConf, actualEntryMap, sdefs
+    global fName, errorsConf, actualEntryMap, sdefs, args
+    args = arg_list
 
     actualEntryMap = {}
     sdefs = []
-    errorsConf = readConfig()                               #Read the config file to select the errors that are to be reported
-    fName = arg1
+    # Read the config file to select the errors that are to be reported
+    errorsConf = readConfig()
+    fName = args.filename
 
     global leftTree, rightTree
 
@@ -462,22 +485,22 @@ def main(arg1):
     leftTree = ET.parse(left.strip())
     rightTree = ET.parse(right.strip())
     mainSection = parseMainSection(tree)
-    
+
     bidixSdef = parseSdef(tree)
     leftSdef = parseSdef(leftTree)
     rightSdef = parseSdef(rightTree)
-    
-    leftCommand = subprocess.check_output(["lt-expand", left])
-    rightCommand = subprocess.check_output(["lt-expand", right])
-    bidixCommand = subprocess.check_output(["lt-expand", fName])
-    
-    temp = str(leftCommand)
+
+    leftCommand = subprocess.check_output(['lt-expand', left])
+    rightCommand = subprocess.check_output(['lt-expand', right])
+    bidixCommand = subprocess.check_output(['lt-expand', fName])
+
+    str(leftCommand)
 
     leftExpanded = leftCommand.decode('utf-8').split('\n')
     rightExpanded = rightCommand.decode('utf-8').split('\n')
     bidixExpanded = bidixCommand.decode('utf-8').split('\n')
 
-    #print (leftExpanded)
+    # print (leftExpanded)
 
     global leftCleaned, rightCleaned, bidixCleaned
 
@@ -485,16 +508,24 @@ def main(arg1):
     rightCleaned = parseExpandedDix(rightExpanded)
     bidixCleaned = parseExpandedBidix(bidixExpanded)
 
-    #for entry in mainSection:
+    # for entry in mainSection:
     #    print(entry, mainSection[entry])
-    #print("Thanks")
-    
-    bidixErrors()                   #Responsible for trigerring the lint
-    
-    #debugStatements
-    #generateSTagOrders(leftTree)
+    # print("Thanks")
 
+    bidixErrors()  # Responsible for trigerring the lint
 
+    # debugStatements
+    # generateSTagOrders(leftTree)
     exit(1)
-if __name__=="__main__":
-    sys.exit(main(sys.argv[1]))
+
+
+if __name__ == '__main__':
+    argparser = argparse.ArgumentParser(description='apertium_lint')
+
+    argparser.add_argument('-c', '--config', action='store',
+                           help='Configuration file for apertium-lint',
+                           default='config.json')
+    argparser.add_argument('filename', action='store', help='File to be linted')
+
+    args = argparser.parse_args()
+    sys.exit(main(args))

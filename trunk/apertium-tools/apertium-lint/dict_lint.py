@@ -102,8 +102,7 @@ def paradigmNames():  # Still to be made better
     a specific format
     """
     print('Checking paradigm names for issues')
-    pattern = '^([a-zA-Z]*[\/]?)[a-zA-Z]*[_]?[\/]?([a-zA-Z\-]*'+
-    '(_{2})?[a-zA-Z]+)*$'
+    pattern = '^([a-zA-Z]*[\/]?)[a-zA-Z]*[_]?[\/]?([a-zA-Z\-]*(_{2})?[a-zA-Z]+)*$'
     for entry in paradigms:
         match = re.search(pattern, entry)
         if match is None:

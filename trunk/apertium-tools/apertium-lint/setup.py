@@ -1,21 +1,21 @@
 """
-A setuptools based setup module for apertium-lint.
+A setuptools based setup module for apertium_lint.
 
 https://packaging.python.org/en/latest/distributing.html
 """
 
 # Always prefer setuptools over distutils
-from setuptools import setup, find_packages
+from setuptools import setup
 
 # To use a consistent encoding
-from codecs import open
-from os import path
+# from codecs import open
+# from os import path
 
-here = path.abspath(path.dirname(__file__))
+# here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
-    long_description = f.read()
+# with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+#     long_description = f.read()
 
 setup(
     name='apertium_lint',
@@ -23,10 +23,10 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.1',
+    version='0.25',
 
-    description='Lint for apertium',
-    long_description=long_description,
+    description='Linters for Apertium Rule Based Machine Translation Platform',
+    # long_description=long_description,
 
     # The project's main homepage.
     url='https://svn.code.sf.net/p/apertium/svn/trunk/apertium-tools/apertium-lint/',
@@ -36,7 +36,7 @@ setup(
     author_email='jpsinghgoud@gmail.com',
 
     # Choose your license
-    # license=''
+    license='MIT',
 
     classifiers=[
         # How mature is the project.
@@ -51,11 +51,14 @@ setup(
         'Programming Language :: Python :: 3.5'
     ],
 
-    keywords='Lint XML Dictionaries Tagger Modes Transfer development',
+    keywords=['lint', 'XML', 'NLP', 'dictionaries', 'development',],
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    # packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    packages=['apertium_lint'],
+
+    zip_safe=False,
 
     # Alternatively, if you want to distribute just a my_module.py, uncomment
     # this:
@@ -97,4 +100,5 @@ setup(
     #        'sample=sample:main',
     #    ],
     # },
+    scripts=['bin/apertium_lint'],
 )
