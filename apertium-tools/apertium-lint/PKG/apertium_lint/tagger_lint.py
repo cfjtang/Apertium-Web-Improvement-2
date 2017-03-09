@@ -1,179 +1,213 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-import json, sys, re, xml, os, hashlib, string
-import subprocess
+import json
+import sys
 from lxml import etree as ET
 from lxml.etree import tostring
 from itertools import chain
-from collections import OrderedDict
+import argparse
+
 
 def readConfig():
-	with open("config.json") as dataFile:
-		data = json.load(dataFile)
-		return data["tagger"]
+    with open(args.config) as dataFile:
+        data = json.load(dataFile)
+        return data['tagger']
+
 
 def stringify_children(node):
-	text = ([node.text]+list(chain(*([tostring(child).decode('utf-8')] for child in node.getchildren()))))
-	return text
+    text = ([node.text]+list(chain(*([tostring(child).decode('utf-8')]
+                                     for child in node.getchildren()))))
+    return text
+
 
 def getLineNumber(pattern):
-	with open(fName) as curFile:
-		for num, line in enumerate(curFile, 1):
-			if pattern in line:
-				return num
+    with open(fName) as curFile:
+        for num, line in enumerate(curFile, 1):
+            if pattern in line:
+                return num
 
 
 def defLabelClosed():
-	print("Checking validity of the 'closed' attribute in def-label")
-	
-	valid = ["true", "false"]
+    print("Checking validity of the 'closed' attribute in def-label")
 
-	for entry in tagsetData:
-		closedVal = tagsetData[entry]['closed']
-		if closedVal not in valid:
-			print(errorsConf["defLabelClosed"]["message"], entry, closedVal)
+    valid = ['true', 'false']
+
+    for entry in tagsetData:
+        closedVal = tagsetData[entry]['closed']
+        if closedVal not in valid:
+            print(errorsConf['defLabelClosed']['message'], entry, closedVal)
+
 
 def validateLabelSequence():
-	print("Validating label sequence")
-	
-	for entry in forbidSequences:
-		if entry:
-			label1 = entry[0]
-			label2 = entry[1]
+    print('Validating label sequence')
 
-			if label1 not in tagsetData:
-				print(errorsConf["validateLabelSequence"]["message"] % (label1))
+    for entry in forbidSequences:
+        if entry:
+            label1 = entry[0]
+            label2 = entry[1]
 
-			if label2 not in tagsetData:
-				print(errorsConf["validateLabelSequence"]["message"] % (label2))
+            if label1 not in tagsetData:
+                print(errorsConf['validateLabelSequence']['message'] % (label1))
+
+            if label2 not in tagsetData:
+                print(errorsConf['validateLabelSequence']['message'] % (label2))
 
 
 def parseLabels():
 
-	taggerPath = "./tagger"
-	tagsetPath = ".//tagset"
-	forbidPath = ".//forbid"
-	rulesPath = ".//enforce-rules"
+    tagsetPath = './/tagset'
+    forbidPath = './/forbid'
+    rulesPath = './/enforce-rules'
 
-	for tagset in tree.findall(tagsetPath):
-		for label in tagset.iterchildren():
-			if label.tag == 'def-label':			#Singular labels
-				labelDict = {}
-				try: labelName = label.attrib['name']
-				except KeyError: labelName = None
+    for tagset in tree.findall(tagsetPath):
+        for label in tagset.iterchildren():
+            if label.tag == 'def-label':  # Singular labels
+                labelDict = {}
+                try:
+                    labelName = label.attrib['name']
+                except KeyError:
+                    labelName = None
 
-				try: labelClosed = label.attrib['closed']
-				except KeyError: labelClosed = "false"
+                try:
+                    labelClosed = label.attrib['closed']
+                except KeyError:
+                    labelClosed = 'false'
 
-				tagList = []
+                tagList = []
 
-				for tagsItem in label.iterchildren():
+                for tagsItem in label.iterchildren():
 
-					try: lemma = tagsItem.attrib['lemma']
-					except KeyError: lemma = None
+                    try:
+                        lemma = tagsItem.attrib['lemma']
+                    except KeyError:
+                        lemma = None
 
-					try: tags = tagsItem.attrib['tags']
-					except KeyError : tags = None
+                    try:
+                        tags = tagsItem.attrib['tags']
+                    except KeyError:
+                        tags = None
 
-					tagList.append((lemma, tags))
+                    tagList.append((lemma, tags))
 
-				labelDict['name'] = labelName
-				labelDict['closed'] = labelClosed
-				labelDict['tagsItem'] = tagList
+                labelDict['name'] = labelName
+                labelDict['closed'] = labelClosed
+                labelDict['tagsItem'] = tagList
 
-				tagsetData[labelName] = labelDict
-			
-			if label.tag == 'def-mult':
-				labelDict = {}
-				try: labelName = label.attrib['name']
-				except KeyError: labelName = None
+                tagsetData[labelName] = labelDict
 
-				try: labelClosed = label.attrib['closed']
-				except KeyError: labelClosed = False
+            if label.tag == 'def-mult':
+                labelDict = {}
+                try:
+                    labelName = label.attrib['name']
+                except KeyError:
+                    labelName = None
 
-				tagList1, tagList2 = [], []
+                try:
+                    labelClosed = label.attrib['closed']
+                except KeyError:
+                    labelClosed = False
 
-				for sequence in label.iterchildren():
-					for tagsItem in sequence.iterchildren():
+                tagList1, tagList2 = [], []
 
-						if tagsItem.tag == 'tags-item' :
-							try: lemma = tagsItem.attrib['lemma']
-							except KeyError: lemma = None
-							try: tags = tagsItem.attrib['tags']
-							except KeyError : tags = Non
+                for sequence in label.iterchildren():
+                    for tagsItem in sequence.iterchildren():
 
-						if tagsItem.tag == 'label-item' :
-							try: label = tagsItem.attrib['label']
-							except KeyError: label = None
+                        if tagsItem.tag == 'tags-item':
+                            try:
+                                lemma = tagsItem.attrib['lemma']
+                            except KeyError:
+                                lemma = None
+                            try:
+                                tags = tagsItem.attrib['tags']
+                            except KeyError:
+                                tags = Non
 
-						tagList1.append((lemma, tags))
-						tagList2.append(label)
+                        if tagsItem.tag == 'label-item':
+                            try:
+                                label = tagsItem.attrib['label']
+                            except KeyError:
+                                label = None
 
-				labelDict['name'] = labelName
-				labelDict['closed'] = labelClosed
-				labelDict['label-item'] = tagList2
-				labelDict['tags-item'] = tagList1
-							
-				multTagset[labelName] = labelDict
+                        tagList1.append((lemma, tags))
+                        tagList2.append(label)
 
-		for forbid in tree.findall(forbidPath):
-			for labelSequences in forbid.iterchildren():
-				labelItemList = []
-				for labelItems in labelSequences.iterchildren():
-					try:
-						labelItemList.append(labelItems.attrib['label'])
-					except KeyError:
-						continue
-				forbidSequences.append(labelItemList)
+                labelDict['name'] = labelName
+                labelDict['closed'] = labelClosed
+                labelDict['label-item'] = tagList2
+                labelDict['tags-item'] = tagList1
 
-		for rules in tree.findall(rulesPath):
-			enforceDict = {}
-			for enforceAfter in rules.iterchildren():
-				if enforceAfter.tag != 'enforce-after':					#Skips comments
-					continue
-				enforceAfterLabel = enforceAfter.attrib['label']
-				for labelset in enforceAfter.iterchildren():
-					labelList = []
-					for label in labelset.iterchildren():
-						if label.tag == 'label-item' :
-							labelList.append(label.attrib['label'])
-					enforceDict[enforceAfterLabel] = labelList
-			rulesList.append(enforceDict)
+                multTagset[labelName] = labelDict
 
-		#print(rulesList)
+        for forbid in tree.findall(forbidPath):
+            for labelSequences in forbid.iterchildren():
+                labelItemList = []
+                for labelItems in labelSequences.iterchildren():
+                    try:
+                        labelItemList.append(labelItems.attrib['label'])
+                    except KeyError:
+                        continue
+                forbidSequences.append(labelItemList)
 
-	#for x in tagsetData:
-	#	print(x)
-	#	print(tagsetData[x])
+        for rules in tree.findall(rulesPath):
+            enforceDict = {}
+            for enforceAfter in rules.iterchildren():
+                if enforceAfter.tag != 'enforce-after':  # Skips comments
+                    continue
+                enforceAfterLabel = enforceAfter.attrib['label']
+                for labelset in enforceAfter.iterchildren():
+                    labelList = []
+                    for label in labelset.iterchildren():
+                        if label.tag == 'label-item':
+                            labelList.append(label.attrib['label'])
+                    enforceDict[enforceAfterLabel] = labelList
+            rulesList.append(enforceDict)
+
+        # print(rulesList)
+
+    # for x in tagsetData:
+    #   print(x)
+    #   print(tagsetData[x])
+
 
 def taggerErrors(errorsConf):
-	for key in errorsConf:
-		if errorsConf[key]["enable"] == True:
-			valid = globals().copy()
-			valid.update(locals())
-			method = valid.get(key)
-			if not method:
-				raise NotImplementedError("Method %s not implemented" % key)
-			method()
+    for key in errorsConf:
+        if errorsConf[key]['enable']:
+            valid = globals().copy()
+            valid.update(locals())
+            method = valid.get(key)
+            if not method:
+                raise NotImplementedError('Method %s not implemented' % key)
+            method()
 
-def main(arg1):
-	"""
-	Main function, handles the lint's workflow
-	"""
-	global errorsConf, tree, fName
 
-	global tagsetData, forbidSequences, multTagset, rulesList 
+def main(arg_list):
+    """
+    Main function, handles the lint's workflow
+    """
+    global errorsConf, tree, fName, args
+    args = arg_list
 
-	tagsetData, forbidSequences, multTagset, rulesList = {}, [], {}, []
+    global tagsetData, forbidSequences, multTagset, rulesList
 
-	errorsConf = readConfig()
-	fName = arg1
+    tagsetData, forbidSequences, multTagset, rulesList = {}, [], {}, []
 
-	tree = ET.parse(fName)	
+    errorsConf = readConfig()
+    fName = args.filename
 
-	parseLabels()
-	taggerErrors(errorsConf)
+    tree = ET.parse(fName)
 
-if __name__=="__main__":
-		sys.exit(main(sys.argv[1]))
+    parseLabels()
+    taggerErrors(errorsConf)
+
+
+if __name__ == '__main__':
+    argparser = argparse.ArgumentParser(description='apertium_lint')
+
+    argparser.add_argument('-c', '--config', action='store',
+                           help='Configuration file for apertium-lint',
+                           default='config.json')
+    argparser.add_argument('filename', action='store', help='File to be linted')
+
+    args = argparser.parse_args()
+    sys.exit(main(args))
